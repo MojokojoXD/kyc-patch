@@ -108,7 +108,8 @@ export default function IndividualKycForm() {
 	}, [isDirty]);
 
 	const nextStage = useCallback(
-		async (step?: IndividualFormStages) => {
+        async ( step?: IndividualFormStages ) =>
+        {
 			//make sure to not force stage past last maximum the user was on;
 			if (step && step <= userProgress.current) {
 				setCurrentFormStage(step);

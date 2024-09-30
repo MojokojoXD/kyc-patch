@@ -180,14 +180,14 @@ function BiographicalForm({ applicantId, countryList }: SingleCategoryForm) {
 						control={control}
 						name={`applicant.${applicantId}.firstName`}
 						rules={{
-							required: 'First Name is required',
+							required: 'Please enter first name',
 							minLength: {
 								value: 2,
 								message: 'Name is too short',
 							},
 						}}
 						render={({ field }) => (
-							<FormItem className='space-y-5'>
+							<FormItem className='space-y-2'>
 								<FormControl>
 									<Input
 										{...field}
@@ -216,7 +216,7 @@ function BiographicalForm({ applicantId, countryList }: SingleCategoryForm) {
 						control={control}
 						name={`applicant.${applicantId}.lastName`}
 						rules={{
-							required: 'Please enter a last name',
+							required: 'Please enter last name',
 							minLength: {
 								value: 2,
 								message: 'Name is too short',
@@ -557,7 +557,7 @@ function BiographicalForm({ applicantId, countryList }: SingleCategoryForm) {
 					control={control}
 					name={`applicant.${applicantId}.maidenName`}
 					render={({ field }) => (
-						<FormItem className='space-y-5'>
+						<FormItem className='space-y-2'>
 							<FormLabel>Maiden name(Optional)</FormLabel>
 							<FormControl>
 								<Input

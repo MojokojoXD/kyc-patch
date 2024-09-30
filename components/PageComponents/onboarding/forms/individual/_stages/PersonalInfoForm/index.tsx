@@ -66,7 +66,6 @@ export default function PersonalInformation({
 				numberOfApplicants
 			);
 
-            console.log( getValues() );
 
 			//@ts-expect-error Unable to profile literal type for fieldsToValidate and trigger method
 			const isValid = await trigger(fieldsToValidate, { shouldFocus: true });

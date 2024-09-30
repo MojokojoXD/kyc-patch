@@ -20,9 +20,11 @@ interface ReviewProps<TFormSteps> {
 }
 
 export default function Review({ jumpToStep }: ReviewProps<DisclosuresSteps>) {
-	const { watch } = useFormContext<IndividualFormSchema>();
+	const { watch,getValues } = useFormContext<IndividualFormSchema>();
 
     const completedForm = useMemo( () => watch(), [ watch ] );
+    
+    console.log( getValues );
     
 	return (
 		<>
