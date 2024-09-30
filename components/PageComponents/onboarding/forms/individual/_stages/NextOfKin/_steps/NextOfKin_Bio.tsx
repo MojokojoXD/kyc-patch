@@ -66,7 +66,7 @@ export default function NextOfKinBio({ countryList }: NextOfKinBioProps) {
 								<AccordionTrigger>
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
-								<AccordionContent className='space-y-8'>
+								<AccordionContent className='data-[state=closed]:hidden' forceMount>
 									<NextOfKinBioForm
 										applicantId={i}
 										countryList={countryList}
@@ -101,9 +101,12 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 				<div className='space-y-4'>
 					<FormField
 						control={control}
-						name={`applicant.${applicantId}.nextOfKin.title.presets`}
+                        name={ `applicant.${ applicantId }.nextOfKin.title.presets` }
+                        rules={ {
+                            required: "Select title"
+                        }}
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className='space-y-2'>
 								<FormLabel>Title</FormLabel>
 								<div className=' grid grid-cols-5 gap-x-3 gap-y-5'>
 									{MULTI_CHOICE_RESPONSES.bio.title.map((c) => (
@@ -116,17 +119,20 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 										/>
 									))}
 
-									<FormMessage />
 								</div>
+                                <FormMessage />
 							</FormItem>
 						)}
 					/>
 					{currentTitleUpdate === 'Other' && (
 						<FormField
 							control={control}
-							name={`applicant.${applicantId}.nextOfKin.title.other`}
+                            name={ `applicant.${ applicantId }.nextOfKin.title.other` }
+                            rules={ {
+                                required: "Please enter other title"
+                            }}
 							render={({ field }) => (
-								<FormItem className='col-span-full'>
+								<FormItem className='space-y-2'>
 									<FormLabel>Other? Specify</FormLabel>
 									<FormControl>
 										<Input
@@ -142,14 +148,21 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 				</div>
 			</div>
 			{/* Full Name */}
-			<div className='space-y-3'>
+			<div className='space-y-2'>
 				<FormLabel>Full Name</FormLabel>
 				<div className='grid grid-cols-3 gap-x-1.5'>
 					<FormField
 						control={control}
-						name={`applicant.${applicantId}.nextOfKin.firstName`}
+                        name={ `applicant.${ applicantId }.nextOfKin.firstName` }
+                        rules={ {
+                            required: "Please enter first name",
+                            minLength: {
+                                value: 2,
+                                message: "name is too short"
+                            }
+                        }}
 						render={({ field }) => (
-							<FormItem className='space-y-5'>
+							<FormItem className='space-y-2'>
 								<FormControl>
 									<Input
 										{...field}
@@ -164,7 +177,7 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 						control={control}
 						name={`applicant.${applicantId}.nextOfKin.middleName`}
 						render={({ field }) => (
-							<FormItem className='space-y-5'>
+							<FormItem className='space-y-2'>
 								<FormControl>
 									<Input
 										{...field}
@@ -176,9 +189,16 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 					/>
 					<FormField
 						control={control}
-						name={`applicant.${applicantId}.nextOfKin.lastName`}
+                        name={ `applicant.${ applicantId }.nextOfKin.lastName` }
+                        rules={ {
+                            required: "Please enter last name",
+                            minLength: {
+                                value: 2,
+                                message: "name is too short"
+                            }
+                        }}
 						render={({ field }) => (
-							<FormItem className='space-y-5'>
+							<FormItem className='space-y-2'>
 								<FormControl>
 									<Input
 										{...field}
@@ -195,9 +215,12 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.dateOfBirth`}
+                    name={ `applicant.${ applicantId }.nextOfKin.dateOfBirth` }
+                    rules={ {
+                        required: "Select date of birth",
+                    }}
 					render={({ field }) => (
-						<FormItem>
+						<FormItem className='space-y-2'>
 							<FormLabel className='block'>Date of Birth</FormLabel>
 							<FormControl>
 								<DatePicker
@@ -218,9 +241,12 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.relationshipToApplicant`}
+                    name={ `applicant.${ applicantId }.nextOfKin.relationshipToApplicant` }
+                    rules={ {
+                        required: "Please enter relationship to applicant",
+                    }}
 					render={({ field }) => (
-						<FormItem className='space-y-5'>
+						<FormItem className='space-y-2'>
 							<FormLabel>Relationship with Account Applicant</FormLabel>
 							<FormControl>
 								<Input
@@ -237,9 +263,12 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.gender`}
+                    name={ `applicant.${ applicantId }.nextOfKin.gender` }
+                    rules={ {
+                        required: "Select gender",
+                    }}
 					render={({ field }) => (
-						<FormItem>
+						<FormItem className='space-y-2'>
 							<FormLabel>Gender</FormLabel>
 							<div className=' grid grid-cols-2 gap-x-3 gap-y-5'>
 								<CustomToggle
@@ -254,8 +283,8 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 									value={'female'}
 									selected={field.value === 'female'}
 								/>
-								<FormMessage />
 							</div>
+                            <FormMessage />
 						</FormItem>
 					)}
 				/>
@@ -264,9 +293,12 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.maritalStatus`}
+                    name={ `applicant.${ applicantId }.nextOfKin.maritalStatus` }
+                    rules={ {
+                        required: "Select marital status",
+                    }}
 					render={({ field }) => (
-						<FormItem>
+						<FormItem space-y-2>
 							<FormLabel>Marital Status</FormLabel>
 							<div className=' grid grid-cols-4 gap-x-3 gap-y-5'>
 								{MULTI_CHOICE_RESPONSES.bio.maritalStatus.map((s) => (
@@ -279,8 +311,8 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 									/>
 								))}
 
-								<FormMessage />
 							</div>
+                            <FormMessage />
 						</FormItem>
 					)}
 				/>
@@ -289,11 +321,14 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.countryOfBirth`}
+                    name={ `applicant.${ applicantId }.nextOfKin.countryOfBirth` }
+                    rules={ {
+                        required: "Select country of birth",
+                    }}
 					render={({ field }) => {
 						const flagUrl = FormHelpers.getFlagURL(field.value, countryList);
 						return (
-							<FormItem className='relative'>
+							<FormItem className='space-y-2'>
 								<FormLabel>Country of Birth</FormLabel>
 								<Select
 									onValueChange={field.onChange}
@@ -314,7 +349,7 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 											<SelectValue placeholder={'Select country'} />
 										</div>
 									</SelectTrigger>
-									<SelectContent className='w-full h-56 overflow-scroll'>
+									<SelectContent className='w-full h-56 overflow-scroll' onCloseAutoFocus={field.onBlur}>
 										{countryList.map((c) => (
 											<SelectItem
 												value={c.cty_name}
@@ -335,9 +370,12 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.placeOfBirth`}
+                    name={ `applicant.${ applicantId }.nextOfKin.placeOfBirth` }
+                    rules={ {
+                        required: "Please enter place of birth",
+                    }}
 					render={({ field }) => (
-						<FormItem className='space-y-5'>
+						<FormItem className='space-y-2'>
 							<FormLabel>Place of Birth</FormLabel>
 							<FormControl>
 								<Input
@@ -354,11 +392,14 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.countryOfResidence`}
+                    name={ `applicant.${ applicantId }.nextOfKin.countryOfResidence` }
+                    rules={ {
+                        required: "Please enter country of residence",
+                    }}
 					render={({ field }) => {
 						const flagUrl = FormHelpers.getFlagURL(field.value, countryList);
 						return (
-							<FormItem className='relative'>
+							<FormItem className='space-y-2'>
 								<FormLabel>Country of Residence</FormLabel>
 								<Select
 									onValueChange={field.onChange}
@@ -379,7 +420,7 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 											<SelectValue placeholder={'Select country'} />
 										</div>
 									</SelectTrigger>
-									<SelectContent className='w-full h-56 overflow-scroll'>
+									<SelectContent className='w-full h-56 overflow-scroll' onCloseAutoFocus={field.onBlur}>
 										{countryList.map((c) => (
 											<SelectItem
 												value={c.cty_name}
@@ -400,11 +441,14 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.countryOfCitizenship`}
+                    name={ `applicant.${ applicantId }.nextOfKin.countryOfCitizenship` }
+                    rules={ {
+                        required: "Select country of citizenship",
+                    }}
 					render={({ field }) => {
 						const flagUrl = FormHelpers.getFlagURL(field.value, countryList);
 						return (
-							<FormItem className='relative'>
+							<FormItem className='space-y-2'>
 								<FormLabel>Nationality/Country of Citizenship</FormLabel>
 								<Select
 									onValueChange={field.onChange}
@@ -425,7 +469,7 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 											<SelectValue placeholder={'Select country'} />
 										</div>
 									</SelectTrigger>
-									<SelectContent className='w-full h-56 overflow-scroll'>
+									<SelectContent className='w-full h-56 overflow-scroll' onCloseAutoFocus={field.onBlur}>
 										{countryList.map((c) => (
 											<SelectItem
 												value={c.cty_name}
@@ -446,9 +490,12 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.percentageAllocation`}
+                    name={ `applicant.${ applicantId }.nextOfKin.percentageAllocation` }
+                    rules={ {
+                        required: "Please enter percentage allocation",
+                    }}
 					render={({ field }) => (
-						<FormItem className='space-y-5'>
+						<FormItem className='space-y-2'>
 							<FormLabel>Percentage Allocation</FormLabel>
 							<FormControl>
 								<Input

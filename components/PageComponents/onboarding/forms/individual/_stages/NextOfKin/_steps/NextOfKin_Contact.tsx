@@ -4,7 +4,8 @@ import {
 	FormItem,
 	FormControl,
 	FormLabel,
-	FormMessage,
+    FormMessage,
+    FormError
 } from '@/components/UIcomponents/ui/form';
 import {
 	Select,
@@ -32,6 +33,8 @@ import type { IndividualFormSchema } from '@/types/forms/individual';
 import type { Country } from '@/types/forms/universal';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import type { SingleCategoryForm } from './NextOfKin_Bio';
+import { ErrorMessage } from '@hookform/error-message';
+import validator from 'validator';
 
 interface NextOfKinContactsProps {
 	countryList: Country[];
@@ -59,7 +62,7 @@ export default function NextOfKinContacts({ countryList }: NextOfKinContactsProp
 								<AccordionTrigger>
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
-								<AccordionContent className='space-y-8'>
+								<AccordionContent className='data-[state=closed]:hidden' forceMount>
 									<NextOfKinContactForm
 										applicantId={i}
 										countryList={countryList}
@@ -75,12 +78,16 @@ export default function NextOfKinContacts({ countryList }: NextOfKinContactsProp
 }
 
 function NextOfKinContactForm({ applicantId, countryList }: SingleCategoryForm) {
-	const { control, setValue, getValues } =
+	const { control, setValue, getValues,formState: { errors }, register,clearErrors } =
 		useFormContext<IndividualFormSchema>();
 
 	const currentMobileAreaCode = getValues(
 		`applicant.${applicantId}.nextOfKin.contacts.mobile.areaCode`
-	);
+    );
+    
+    register( `applicant.${ applicantId }.nextOfKin.contacts.mobile.areaCode`, {
+        required: "Select area code"
+    })
     
 	const handleAreaCode = useCallback(
 		(schemaPath: any, countryUpdate: string) => {
@@ -100,9 +107,12 @@ function NextOfKinContactForm({ applicantId, countryList }: SingleCategoryForm) 
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.contacts.residentialAddress`}
+                    name={ `applicant.${ applicantId }.nextOfKin.contacts.residentialAddress` }
+                    rules={ {
+                        required: "Please enter residential address"
+                    }}
 					render={({ field }) => (
-						<FormItem className='space-y-5'>
+						<FormItem className='space-y-2'>
 							<FormLabel>Residential Address (Not a P.O Box)</FormLabel>
 							<FormControl>
 								<Input
@@ -119,9 +129,12 @@ function NextOfKinContactForm({ applicantId, countryList }: SingleCategoryForm) 
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.contacts.city`}
+                    name={ `applicant.${ applicantId }.nextOfKin.contacts.city` }
+                    rules={ {
+                        required: "Please enter city"
+                    }}
 					render={({ field }) => (
-						<FormItem className='space-y-5'>
+						<FormItem className='space-y-2'>
 							<FormLabel>City/Town</FormLabel>
 							<FormControl>
 								<Input
@@ -138,18 +151,28 @@ function NextOfKinContactForm({ applicantId, countryList }: SingleCategoryForm) 
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.contacts.mobile.lineNumber`}
+                    name={ `applicant.${ applicantId }.nextOfKin.contacts.mobile.lineNumber` }
+                    rules={ {
+                        required: "Please enter phone number",
+                        validate: v => validator.isMobilePhone(v) || "Please enter valid phone number"
+                    }}
 					render={({ field }) => (
-						<FormItem className='space-y-5 relative'>
+						<FormItem className='space-y-2'>
 							<FormLabel>Phone Number</FormLabel>
 							<FormControl>
-								<div className='flex w-full border rounded-lg border-neutral-300 has-[:focus]:border-primary-500'>
+								<div className='flex border rounded-lg border-neutral-300 has-[:focus]:border-primary-500'>
 									<Select
                                         onValueChange={ ( v ) => handleAreaCode(
                                             `applicant.${ applicantId }.nextOfKin.contacts.mobile.areaCode`,
                                             v
-                                        )}>
-										<SelectTrigger className='w-full border-none'>
+                                        ) }
+
+                                        onOpenChange={ () =>
+                                            clearErrors(
+                                                `applicant.${ applicantId }.nextOfKin.contacts.mobile.areaCode`
+                                            ) }
+                                    >
+										<SelectTrigger className='w-1/4 border-none'>
                                             { currentMobileAreaCode ? (
                                                 <p className='text-neutral-700'>
                                                     {currentMobileAreaCode}
@@ -182,11 +205,22 @@ function NextOfKinContactForm({ applicantId, countryList }: SingleCategoryForm) 
 									<Input
 										{...field}
 										placeholder='Enter Phone Number'
-										className='border-none'
+										className='border-none grow'
 									/>
 								</div>
 							</FormControl>
-							<FormMessage />
+							<div className='flex'>
+								<div className='w-1/4'>
+									<ErrorMessage
+										errors={errors}
+										name={`applicant.${applicantId}.nextOfKin.contacts.mobile.areaCode`}
+										as={<FormError />}
+									/>
+								</div>
+								<div>
+									<FormMessage />
+								</div>
+							</div>
 						</FormItem>
 					)}
 				/>
@@ -195,9 +229,13 @@ function NextOfKinContactForm({ applicantId, countryList }: SingleCategoryForm) 
 			<div>
 				<FormField
 					control={control}
-					name={`applicant.${applicantId}.nextOfKin.contacts.email`}
+                    name={ `applicant.${ applicantId }.nextOfKin.contacts.email` }
+                    rules={ {
+                        required: "Please enter email address",
+                        validate: v => validator.isEmail(v) || "Email must be of the format: name@example.com"
+                    }}
 					render={({ field }) => (
-						<FormItem className='space-y-5'>
+						<FormItem className='space-y-2'>
 							<FormLabel>Email Address</FormLabel>
 							<FormControl>
 								<Input

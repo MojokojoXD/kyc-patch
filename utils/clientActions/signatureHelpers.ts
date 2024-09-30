@@ -5,7 +5,7 @@ interface UploadServerResponse {
 	url: string;
 }
 
-const SIGNATURE_UPLOAD_URL = BASE_URL + '/upload';
+const SIGNATURE_UPLOAD_URL = 'api/hello';
 const SIGNATURE_DOWNLOAD_URL = BASE_URL + '/download';
 
 export class SignatureProcessor {

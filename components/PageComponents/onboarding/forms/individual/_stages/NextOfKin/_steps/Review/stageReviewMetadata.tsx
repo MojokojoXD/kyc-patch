@@ -49,7 +49,7 @@ const nextOfKinStepsMetadata: ReviewStepMetadata<NextOfKinSteps>[] = [
 			{
                 id: 8,
 				name: 'Marital Status',
-				path: (index: number) => `applicant.${index}nextOfKin.maritalStatus`,
+				path: (index: number) => `applicant.${index}.nextOfKin.maritalStatus`,
 			},
 			{
                 id: 9,
