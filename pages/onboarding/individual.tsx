@@ -16,6 +16,7 @@ import Loading from '@/components/UIcomponents/Loading';
 import { BASE_URL } from '@/utils/vars/uri';
 import { Country } from '@/types/forms/universal';
 import { FormLayout } from '@/components/UIcomponents/FormLayout';
+import countries from '@/utils/vars/_formDefaults/countries.json'
 
 //Fetch url constants
 const COUNTRY_LIST_URL = BASE_URL + '/kyc/lov/country';
@@ -75,9 +76,9 @@ export default function IndividualKycForm() {
         mode: 'onChange',
 	});
 
-	const [res, isLoading, error] = useHTTPRequest<{ data: Country[] } | null>(
-		COUNTRY_LIST_URL
-	);
+	// const [res, isLoading, error] = useHTTPRequest<{ data: Country[] } | null>(
+	// 	COUNTRY_LIST_URL
+	// );
 
 	const {
 		getValues,
@@ -140,7 +141,7 @@ export default function IndividualKycForm() {
 					<PersonalInformation
 						nextStage={nextStage}
 						prevStage={prevStage}
-						countryList={res ? res.data : []}
+						countryList={countries.data}
 					/>
 				);
 			case IndividualFormStages.NEXT_OF_KIN:
@@ -148,7 +149,7 @@ export default function IndividualKycForm() {
 					<NextOfKin
 						nextStage={nextStage}
 						prevStage={prevStage}
-						countryList={res ? res.data : []}
+						countryList={countries.data}
 					/>
 				);
 			case IndividualFormStages.DISCLOSURES:
@@ -156,7 +157,7 @@ export default function IndividualKycForm() {
 					<Disclosures
 						nextStage={nextStage}
                         prevStage={ prevStage }
-                        countryList={res ? res.data : []}
+                        countryList={countries.data}
 					/>
 				);
 			case IndividualFormStages.CHECKLIST:
@@ -166,10 +167,10 @@ export default function IndividualKycForm() {
 		}
 	};
 
-	if (error) {
-		console.log(error);
-		return <p>Something went wrong! Please try again later</p>;
-    }
+	// if (error) {
+	// 	console.log(error);
+	// 	return <p>Something went wrong! Please try again later</p>;
+    // }
     
     // console.log(getValues())
 
@@ -193,7 +194,7 @@ export default function IndividualKycForm() {
 						stepsCollection={individualFormMetadata}
 						reveal={true}
 					/>
-					{isLoading ? <Loading /> : getIndividualFormStage(currentFormStage)}
+					{false ? <Loading /> : getIndividualFormStage(currentFormStage)}
 				</form>
 			</Form>
 		</FormLayout>

@@ -19,6 +19,7 @@ import { IndividualFormSchema } from '@/types/forms/individual';
 import { useFormContext } from 'react-hook-form';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { LoaderCircle } from 'lucide-react';
+import banks from '@/utils/vars/_formDefaults/banks.json'
 
 //Bank list uri
 const BANK_LIST_URL = BASE_URL + '/kyc/lov/banks';
@@ -43,9 +44,9 @@ export default function PersonalInformation({
 
 	const prevStepCache = useRef<PersonalInformationSteps | null>(null);
 
-	const [res, isLoading, error] = useHTTPRequest<{ data: BankList[] } | null>(
-		BANK_LIST_URL
-	);
+	// const [res, isLoading, error] = useHTTPRequest<{ data: BankList[] } | null>(
+	// 	BANK_LIST_URL
+	// );
 
 	const handleNextStep = useCallback(
 		async (
@@ -126,7 +127,7 @@ export default function PersonalInformation({
 					<BankAccountInfo
 						countryList={countryList}
 						isLoadingBanks={isLoading}
-						bankList={res ? res.data : []}
+						bankList={banks}
 					/>
 				);
 			case PersonalInformationSteps.IDENTITY_PROOF:
@@ -140,10 +141,10 @@ export default function PersonalInformation({
 		}
 	};
 
-	if (error) {
-		console.log(error);
-		return <p className='p-10'>Something went wrong! Try again later.</p>;
-	}
+	// if (error) {
+	// 	console.log(error);
+	// 	return <p className='p-10'>Something went wrong! Try again later.</p>;
+	// }
 
 	return (
 		<>
@@ -166,7 +167,7 @@ export default function PersonalInformation({
 					disabled={isValidating}
 					className='w-1/5'
 					onClick={() => handleNextStep()}>
-					{(isValidating || isLoading )? (
+					{(isValidating )? (
 						<LoaderCircle className='w-5 h-5 animate-spin' />
 					) : (
 						'Continue'
