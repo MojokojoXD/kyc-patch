@@ -126,7 +126,7 @@ export default function PersonalInformation({
 				return (
 					<BankAccountInfo
 						countryList={countryList}
-						isLoadingBanks={isLoading}
+						// isLoadingBanks={isLoading}
 						bankList={banks}
 					/>
 				);

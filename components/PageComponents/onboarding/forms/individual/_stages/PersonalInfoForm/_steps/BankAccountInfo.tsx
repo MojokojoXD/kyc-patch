@@ -38,13 +38,13 @@ import { LoaderCircle } from 'lucide-react';
 interface BankAccountInfoProps {
 	countryList: Country[];
 	bankList: BankList[];
-	isLoadingBanks: boolean;
+	// isLoadingBanks: boolean;
 }
 
 export default function BankAccountInfo({
 	countryList,
 	bankList,
-	isLoadingBanks,
+	// isLoadingBanks,
 }: BankAccountInfoProps) {
 	const form = useFormContext<IndividualFormSchema>();
 	const { watch } = form;
