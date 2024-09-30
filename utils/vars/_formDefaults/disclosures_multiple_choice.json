@@ -1,0 +1,15 @@
+{
+	"fatca": {
+		"status": [
+			"Were you born in the United States of America (USA)?",
+			"Are you a U.S Citizen?",
+			"Are you a U.S Permanent Resident (Green Card holder)?",
+			"Are you a U.S Resident?",
+			"Do you have a US residential or correspondence address?",
+			" Do you have a US Telephone number?",
+			"Have you issued standing instructions to transfer funds to an account with a US address?",
+			"Have you given Power of Attorney or Signature Authority to a person with a US address?",
+			"Do you have a correspondance, c/o or hold mail address in U.S?"
+		]
+	}
+}

@@ -1,0 +1,69 @@
+{
+	"bio": {
+		"title": ["Mr", "Mrs", "Ms", "Prof", "Dr", "Other"],
+		"maritalStatus": ["single", "married", "divorced", "separated"],
+		"residentialStatus": [
+			"Resident Ghanaian",
+			"Resident Foreigner",
+			"Non-Resident Ghanaian",
+			"Non-Resident Foreigner"
+		]
+	},
+	"employment": {
+		"status": ["Employed", "Self-Employed", "Unemployed", "Retired", "Student"],
+		"incomeRange": [
+			"Below 1000",
+			"Between 1000-5000",
+			"Between 5000-10000",
+			"Above 10000"
+		]
+	},
+	"proofOfIdentity": {
+		"idType": ["Passport", "National ID", "Driver's License"]
+	},
+	"riskProfile": {
+		"riskTolerance": ["High", "Medium", "Low"],
+		"investmentHorizon": [
+			"Less than a year",
+			"1 to 2 years",
+			"3 to 5 years",
+			"5 to 10 years",
+			"Over 10 years"
+		],
+		"transactionFrequency": [
+			"Monthly",
+			"Quarterly",
+			"Bi-Annually",
+			"Annually",
+			"Other"
+		],
+		"withdrawalTimetable": [
+			"Less than a year",
+			"1 to 2 years",
+			"3 to 5 years",
+			"More than 5 years"
+		],
+		"emergencyFunds": ["Yes", "No", "Yes, but less than 6 months"],
+		"investmentKnowledge": ["Limited", "Moderate", "Extensive"],
+		"sourceOfFunds": [
+			"Salaries/Wages",
+			"Proceeds from Business",
+			"Inheritance/Gifts",
+			"Sales of Assets",
+			"Personal Savings",
+			"Borrowings",
+			"Retirement"
+		],
+		"statements": {
+			"deliveryModeOptions": ["Email", "Online", "Collection at branch"],
+			"frequencyOptions": ["Semi-Annually", "Annually", "Monthly"]
+		},
+		"reactionOptions": [
+            "Extremely concerned; sell my investment", 
+            "Concerned; consider selling my investment",
+            "Concerned; no consider selling my investment",
+            "Not overly concerned; I'm in it for the long term"
+        ]
+	}
+    
+}

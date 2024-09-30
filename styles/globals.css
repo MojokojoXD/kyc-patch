@@ -1,0 +1,162 @@
+@import url("https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css");
+@import url("https://fonts.googleapis.com/css2?family=Style+Script&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Circular";
+  src: url("../public/fonts/Circular_Pro_Light.otf");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Circular";
+  src: url("../public/fonts/Circular_Pro_Medium.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Circular";
+  src: url("../public/fonts/Circular_Pro_Bold.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Circular";
+  src: url("../public/fonts/Circular_Pro_Black.ttf");
+  font-weight: bold;
+  font-style: normal;
+}
+
+.signature input, .signature-preview {
+  font-family: "Style Script", cursive !important;
+}
+
+html,
+body {
+  padding: 0;
+  font-weight: 400;
+  margin: 0;
+  font-family: "Circular", Inter, -apple-system, BlinkMacSystemFont, Segoe UI,
+    Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
+  --tw-bg-opacity: 1;
+  background-color: rgb(247 249 252 / var(--tw-bg-opacity));
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 25px;
+  background: transparent;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 10px;
+  height: 25%;
+  border: 5px solid rgba(255, 255, 255, 0);
+  background-clip: content-box;
+}
+
+.dec>div>p {
+  line-height: 28px;
+}
+
+.form-input {
+  padding: 4px 4px;
+  border-radius: 8px;
+  height: 48px;
+  border: 1px solid var(--neutral-200, #d2ddee);
+  background: var(--shades-white, #fff);
+}
+
+.notif-list{
+  @apply overflow-y-auto max-h-[749px];
+}
+
+.notif-list::-webkit-scrollbar{
+  @apply bg-neutral-50 w-[2px] md:h-[7px] rounded-full m-2;
+}
+
+.notif-list::-webkit-scrollbar-thumb{
+  @apply bg-neutral-900 rounded-full;
+}
+
+.unread-notif{
+  @apply p-[16px] bg-primary-50 border-l-[2px] border-primary-500 flex gap-[16px] items-start;
+}
+
+.unread-notif,.read-notif{
+  @apply cursor-pointer;
+}
+
+.unread-notif:hover,.read-notif:hover{
+  @apply bg-neutral-50;
+}
+
+.unread-notif .txn-amts{
+  @apply bg-white;
+}
+
+.read-notif{
+  @apply p-[16px] flex gap-[16px] items-start;
+}
+
+.top-nav-card{
+  @apply top-[70px];
+  box-shadow: 0 0 24px 0 rgba(0,0,0,0.04);
+}
+
+.ami{
+  @apply flex gap-[16px] justify-between items-center py-[12px] px-[16px];
+}
+
+.ami:hover{
+  @apply bg-neutral-50;
+}
+
+.ami .icon-angle-right{
+  color: #A4BBDD;
+}
+
+.stats-badge>div{
+  @apply w-fit !important;
+}
+
+.pw-strength{
+  @apply relative;
+}
+
+.pw-strength-bar{
+  @apply h-[8px] w-full rounded-full;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
