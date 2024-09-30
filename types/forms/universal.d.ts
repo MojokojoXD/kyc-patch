@@ -1,9 +1,9 @@
 import { PersonalInformationSteps } from '@/utils/vars/enums';
 
 export interface Country {
-	call_code: string;
+	call_code: string | null;
 	cty_code: string;
-	cty_flag_name: string;
+	cty_flag_name: string | null;
 	cty_name: string;
 	cty_upd_rem: string | null;
 }
@@ -12,7 +12,7 @@ export interface BankList {
 	bank_code: string;
 	bank_name: string;
 	country_code: string;
-	swift_code: string;
+	swift_code: string | null;
 }
 
 export interface BaseContact
@@ -36,7 +36,7 @@ export interface ExpandedContact extends BaseContact {
 }
 
 export interface PhoneInfo {
-	areaCode: string;
+	areaCode: string | null;
 	lineNumber: string;
 }
 

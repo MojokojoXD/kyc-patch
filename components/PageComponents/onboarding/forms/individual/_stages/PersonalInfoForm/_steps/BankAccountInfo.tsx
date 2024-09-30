@@ -57,11 +57,11 @@ export default function BankAccountInfo({
 				<FormSubHeader>Enter your bank account information.</FormSubHeader>
 			</FormHeader>
 			<FormContent>
-				{isLoadingBanks && (
+				{/* {isLoadingBanks && (
 					<div className='absolute bottom-10 left-10 z-10'>
 						<LoaderCircle className='animate-spin text-primary-500' />
 					</div>
-				)}
+				)} */}
                 <div className='space-y-10 py-5'>
 					{applicant.map((c, i) => (
                         <Accordion

@@ -36,7 +36,7 @@ export default function PersonalInformation({
 	countryList,
 }: PersonalInformationProps) {
 	const [currentStep, setCurrentStep] = useState<PersonalInformationSteps>(
-		PersonalInformationSteps.RETAIL_CLIENT
+		PersonalInformationSteps.BANK_INFO
 	);
 	const [isValidating, setIsValidating] = useState<boolean>(false);
 	const { getValues, trigger } =
@@ -127,7 +127,7 @@ export default function PersonalInformation({
 					<BankAccountInfo
 						countryList={countryList}
 						// isLoadingBanks={isLoading}
-						bankList={banks}
+						bankList={banks.data}
 					/>
 				);
 			case PersonalInformationSteps.IDENTITY_PROOF:
