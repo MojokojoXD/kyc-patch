@@ -9,7 +9,6 @@ export default function Onboarding() {
 	const getUAPAgreementHandler = (decision: boolean) => setUAPDecided(decision);
 
 	return (
-		<div className='h-screen w-full'>
 			<FormLayout>
 				{UAPDecided ? (
 					<KycFormOptions />
@@ -17,6 +16,5 @@ export default function Onboarding() {
 					<UAPContent getUAPAgreement={getUAPAgreementHandler} />
 				)}
 			</FormLayout>
-		</div>
 	);
 }

@@ -103,7 +103,7 @@ export default function KycFormOptions() {
 						)}
 					</div>
 				</div>
-				<div className='absolute w-full bottom-0 inset-x-0 flex justify-end h-fit px-10 py-5'>
+				<div className='h-16 flex justify-end'>
 					<Button
 						onClick={handleContinue}
 						disabled={!formID}

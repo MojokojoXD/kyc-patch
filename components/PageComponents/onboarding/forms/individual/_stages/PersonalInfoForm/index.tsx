@@ -36,7 +36,7 @@ export default function PersonalInformation({
 	countryList,
 }: PersonalInformationProps) {
 	const [currentStep, setCurrentStep] = useState<PersonalInformationSteps>(
-		PersonalInformationSteps.BANK_INFO
+		PersonalInformationSteps.RETAIL_CLIENT
 	);
 	const [isValidating, setIsValidating] = useState<boolean>(false);
 	const { getValues, trigger } =
