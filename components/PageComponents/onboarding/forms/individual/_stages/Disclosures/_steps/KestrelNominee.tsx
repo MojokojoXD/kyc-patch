@@ -1171,7 +1171,7 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
                 <div className='space-y-5'>
                     <FormField
                         control={ control }
-                        name={ `applicant.${applicantId}.disclosures.kestrel.nomineeAgreement.signatureURL` }
+                        name={ fieldName }
                         render={ ( { field } ) => (
                         <FormItem>
                             <FormControl>

@@ -50,7 +50,7 @@ export default function SignatureUpload({}: SignatureUploadProps) {
 								<AccordionTrigger>
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
-								<AccordionContent className='space-y-8'>
+								<AccordionContent className='data-[state=closed]:hidden' forceMount>
 									<SignatureUploadForm applicantId={i} />
 								</AccordionContent>
 							</AccordionItem>
@@ -81,14 +81,17 @@ function SignatureUploadForm({ applicantId }: SignatureUploadFormProps) {
 
 	return (
 		<>
-			{/* title */}
+			{/* Signature Upload */}
 			<div>
-				<div className='space-y-4'>
+				<div>
 					<FormField
 						control={control}
-						name={`applicant.${applicantId}.disclosures.signatureURL`}
+                        name={ `applicant.${ applicantId }.disclosures.signatureURL` }
+                        rules={ {
+                            required: "You must upload your signature to continue"
+                        }}
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className='space-y-2'>
 								<FormControl>
 									<SignatureUploader
 										previewURL={currentSignatureURL}

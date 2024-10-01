@@ -25,7 +25,7 @@ export default function NextOfKin({
 }: NextOfKinProps) {
 	const { getValues, trigger } = useFormContext<IndividualFormSchema>();
 	const [currentStep, setCurrentStep] = useState<NextOfKinSteps>(
-		NextOfKinSteps.CONTACT
+		NextOfKinSteps.BIO
 	);
 	const [isValidating, setIsValidating] = useState<boolean>(false);
 

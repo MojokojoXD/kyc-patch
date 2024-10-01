@@ -5,6 +5,7 @@ import {
 	FormControl,
 	FormLabel,
 	FormMessage,
+	FormError,
 } from '@/components/UIcomponents/ui/form';
 import {
 	Select,
@@ -32,7 +33,7 @@ import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle'
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { useMemo } from 'react';
 import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
-
+import { ErrorMessage } from '@hookform/error-message';
 
 interface PepProps {
 	countryList: Country[];
@@ -56,14 +57,16 @@ export default function Pep({ countryList }: PepProps) {
 					{applicant.map((c, i) => (
 						<Accordion
 							key={c.id}
-                            type='single'
-                            defaultValue='item-1'
+							type='single'
+							defaultValue='item-1'
 							collapsible>
 							<AccordionItem value={`item-${c.id}`}>
 								<AccordionTrigger>
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
-								<AccordionContent className='space-y-8'>
+								<AccordionContent
+									className='data-[state=closed]:hidden'
+									forceMount>
 									<PepForm
 										applicantId={i}
 										countryList={countryList}
@@ -79,19 +82,34 @@ export default function Pep({ countryList }: PepProps) {
 }
 
 function PepForm({ applicantId, countryList }: SingleCategoryForm) {
-	const { control, watch, register,setValue } = useFormContext<IndividualFormSchema>();
+	const {
+		control,
+		watch,
+		register,
+        setValue,
+        clearErrors,
+		formState: { errors },
+		getFieldState,
+	} = useFormContext<IndividualFormSchema>();
 
 	const currentPepStatus = watch(
 		`applicant.${applicantId}.disclosures.pepInfo.isPep`
 	);
 
-	const { ref, name } = register(
-		`applicant.${applicantId}.disclosures.pepInfo.pepDetails.country`
+	const { ref, name, onBlur, onChange } = register(
+		`applicant.${applicantId}.disclosures.pepInfo.pepDetails.country`,
+		{
+			required: currentPepStatus === 'Yes' ? 'Select country' : false,
+			deps: `applicant.${applicantId}.disclosures.pepInfo.isPep`,
+		}
 	);
 
 	const currentCountry = watch(name);
 
 	const flagUrl = FormHelpers.getFlagURL(currentCountry, countryList);
+
+	const isErrored = (fieldName: any) =>
+		getFieldState(fieldName).error !== undefined;
 
 	return (
 		<div>
@@ -174,9 +192,12 @@ function PepForm({ applicantId, countryList }: SingleCategoryForm) {
 					<FormField
 						control={control}
 						name={`applicant.${applicantId}.disclosures.pepInfo.isPep`}
+						rules={{
+							required: 'Please select PEP option',
+						}}
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel className='mb-5'>
+								<FormLabel className='mb-5 space-y-2'>
 									Having read and understood the above definition please confirm
 									if you, or any of your directors, authorised persons,
 									shareholders or beneficial owners are a PEP?
@@ -194,30 +215,50 @@ function PepForm({ applicantId, countryList }: SingleCategoryForm) {
 										value={'No'}
 										selected={field.value === 'No'}
 									/>
-
-									<FormMessage />
 								</div>
+								<FormMessage />
 							</FormItem>
 						)}
 					/>
 					{currentPepStatus === 'Yes' && (
 						<>
-							<FormItem className='col-span-full'>
+							<FormItem className='col-span-full space-y-2'>
 								<FormLabel>If &quot;Yes&quot;, Please Specify How</FormLabel>
 								<FormControl>
 									<Input
 										{...register(
-											`applicant.${applicantId}.disclosures.pepInfo.pepDetails.desc`
+											`applicant.${applicantId}.disclosures.pepInfo.pepDetails.desc`,
+											{
+												required: 'Please give a specific reason',
+											}
 										)}
-										placeholder='Speciy how'
+										placeholder='Specify how'
 									/>
 								</FormControl>
-								<FormMessage />
+								<ErrorMessage
+									name={`applicant.${applicantId}.disclosures.pepInfo.pepDetails.desc`}
+									errors={errors}
+									as={<FormError />}
+								/>
 							</FormItem>
 
-							<FormItem className='relative'>
-								<FormLabel>In which country</FormLabel>
-								<Select onValueChange={v => setValue(name, v)} value={currentCountry}>
+							<FormItem className='space-y-2'>
+								<FormLabel
+									className={
+										isErrored(
+											`applicant.${applicantId}.disclosures.pepInfo.pepDetails.country`
+										)
+											? 'text-error-500'
+											: undefined
+									}>
+									In which country
+								</FormLabel>
+								<Select
+									onValueChange={async (v) => {
+                                        setValue( name, v );
+                                        clearErrors( `applicant.${ applicantId }.disclosures.pepInfo.pepDetails.country` );
+									}}
+									value={currentCountry}>
 									<SelectTrigger ref={ref}>
 										<div className='flex space-x-2'>
 											<div className='w-[20px] h-[20] flex items-center'>
@@ -234,7 +275,7 @@ function PepForm({ applicantId, countryList }: SingleCategoryForm) {
 											<SelectValue placeholder={'Select Country'} />
 										</div>
 									</SelectTrigger>
-									<SelectContent className='w-full h-56 overflow-scroll' >
+									<SelectContent className='w-full h-56 overflow-scroll'>
 										{countryList.map((c) => (
 											<SelectItem
 												value={c.cty_name}
@@ -245,7 +286,11 @@ function PepForm({ applicantId, countryList }: SingleCategoryForm) {
 										))}
 									</SelectContent>
 								</Select>
-								<FormMessage />
+								<ErrorMessage
+									errors={errors}
+									name={`applicant.${applicantId}.disclosures.pepInfo.pepDetails.country`}
+									as={<FormError />}
+								/>
 							</FormItem>
 						</>
 					)}

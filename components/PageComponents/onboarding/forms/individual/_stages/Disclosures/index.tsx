@@ -14,6 +14,9 @@ import DisclosuresReview from './_steps/Review';
 import type { Country } from '@/types/forms/universal';
 import disclosuresStepsMetadata from './_steps/Review/stageReviewMetadata';
 import CustomProgress from '@/components/UIcomponents/CompoundUI/CustomProgress';
+import { useFormContext } from 'react-hook-form';
+import type { IndividualFormSchema } from '@/types/forms/individual';
+import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 interface DisclosuresProps {
 	nextStage: () => void;
@@ -27,17 +30,37 @@ export default function Disclosures({
 	countryList,
 }: DisclosuresProps) {
 	const [currentStep, setCurrentStep] = useState<DisclosuresSteps>(
-		DisclosuresSteps.KESTREL_NOMINEE_AGREEMENT
-	);
+		DisclosuresSteps.SIGNATURE_UPLOAD
+    );
+    const [ isValidating, setIsValidating ] = useState<boolean>( false );
+    const { getValues,trigger } = useFormContext<IndividualFormSchema>()
 
 	const prevStepCache = useRef<DisclosuresSteps | null>(null);
 
 	const handleNextStep = useCallback(
-		(forceStep?: DisclosuresSteps, returnStep?: DisclosuresSteps) => {
+		async(forceStep?: DisclosuresSteps, returnStep?: DisclosuresSteps) => {
+			const currentStepMetadata = disclosuresStepsMetadata.find(
+				(m) => m.step === currentStep
+			);
+
+			setIsValidating(true);
+
+			const numberOfApplicants = getValues(`applicant`).length;
+
+			const fieldsToValidate = FormHelpers.generateAllStepFields(
+				currentStepMetadata,
+				numberOfApplicants
+			);
+
+			//@ts-expect-error Unable to profile literal type for fieldsToValidate and trigger method name param
+			const isValid = await trigger(fieldsToValidate, { shouldFocus: true });
+
 			if (prevStepCache.current) {
 				const temp = prevStepCache.current;
 				prevStepCache.current = null;
 				setCurrentStep(temp);
+				setIsValidating(false);
+
 				return;
 			}
 
@@ -47,12 +70,12 @@ export default function Disclosures({
 				return;
 			}
 
-			if (currentStep !== DisclosuresSteps.REVIEW) {
+			if ((currentStep !== DisclosuresSteps.REVIEW) && isValid) {
 				setCurrentStep((prevStep) => prevStep + 1);
 				return;
 			}
 
-			nextStage();
+			isValid && nextStage();
 		},
 		[setCurrentStep, currentStep, prevStepCache, nextStage]
 	);
@@ -98,10 +121,10 @@ export default function Disclosures({
 			<CustomProgress
 				maxSteps={disclosuresStepsMetadata.length}
 				currentStep={currentStep}
-            />
-            <div className='row-span-5 flex flex-col grow'>
-                {getStageStep(currentStep)}
-            </div>
+			/>
+			<div className='row-span-5 flex flex-col grow'>
+				{getStageStep(currentStep)}
+			</div>
 			<div className='flex items-center justify-end px-10 space-x-2 h-32'>
 				<Button
 					type='button'

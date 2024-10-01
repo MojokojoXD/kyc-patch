@@ -68,11 +68,11 @@ function RatificationForm({ applicantId }: RatificationFormProps) {
 		<>
 			{/* title */}
 			<div>
-				<div className='p-4 bg-neutral-50 border border-neutral-100 rounded-lg'>
-					<p className='text-lg font-normal'>
+				<div className='py-4 pl-4 bg-neutral-50 border border-neutral-100 rounded-lg'>
+					<p className='text-lg font-light'>
 						Illiterate/Blind Customer Ratification <br />
 					</p>
-					<p className='text-base leading-loose text-lg font-normal'>
+					<p className='text-base leading-loose text-lg font-light max-w-prose'>
 						I,{' '}
 						<Input
 							{...register(
