@@ -153,10 +153,10 @@ export default function PersonalInformation({
 				maxSteps={personalFormStepsMetadata.length}
 				currentStep={currentStep}
 			/>
-			<div className='row-span-5 flex flex-col grow min-h-96'>
+			<div className='flex flex-col grow'>
 				{getStageStep(currentStep)}
 			</div>
-			<div className='flex items-center justify-end px-10 space-x-2 h-32'>
+			<div className='flex items-center justify-end px-10 space-x-2 h-28'>
 				<Button
 					type='button'
 					variant={'outline'}

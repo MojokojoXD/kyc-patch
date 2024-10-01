@@ -28,73 +28,75 @@ export default function InvestmentCategory() {
 				<FormTitle>Category of Investment</FormTitle>
 			</FormHeader>
 			<FormContent>
-				<FormField
-					control={form.control}
-					name={'csdNumber'}
-					render={({ field }) => (
-						<FormItem className='space-y-2.5'>
-							<FormLabel>CSD Number (If Applicable)</FormLabel>
-							<FormControl>
-								<Input {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name={'catInvestment'}
-					rules={{
-						required: 'Select an option',
-					}}
-					render={({ field }) => (
-						<FormItem className='space-y-2.5'>
-							<FormLabel>Category of Investment</FormLabel>
-							<div className=' grid grid-cols-2 gap-3'>
-								<CustomToggle
-									label='Fixed Income'
-									{...field}
-									value={'Fixed Income'}
-									selected={catInvestment === 'Fixed Income'}
-								/>
-								<CustomToggle
-									label='Equities/Shares'
-									{...field}
-									value={'Equities/Shares'}
-									selected={catInvestment === 'Equities/Shares'}
-								/>
-                            </div>
-                            <FormMessage/>
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-                    name={ 'taxexempt' }
-                    rules={ {
-                        required: "Select an option"
-                    }}
-					render={({ field }) => (
-						<FormItem className='space-y-2.5'>
-							<FormLabel>Are you tax exempt?</FormLabel>
-							<div className=' grid grid-cols-2 gap-3'>
-								<CustomToggle
-									label='Yes'
-									{...field}
-									value={'Yes'}
-									selected={taxexempt === 'Yes'}
-								/>
-								<CustomToggle
-									label='No'
-									{...field}
-									value={'No'}
-									selected={taxexempt === 'No'}
-								/>
-                            </div>
-                            <FormMessage/>
-						</FormItem>
-					)}
-				/>
+				<div className='space-y-4'>
+					<FormField
+						control={form.control}
+						name={'csdNumber'}
+						render={({ field }) => (
+							<FormItem className='space-y-2'>
+								<FormLabel>CSD Number (If Applicable)</FormLabel>
+								<FormControl>
+									<Input {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name={'catInvestment'}
+						rules={{
+							required: 'Select an option',
+						}}
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Category of Investment</FormLabel>
+								<div className=' grid grid-cols-2 gap-x-3'>
+									<CustomToggle
+										label='Fixed Income'
+										{...field}
+										value={'Fixed Income'}
+										selected={catInvestment === 'Fixed Income'}
+									/>
+									<CustomToggle
+										label='Equities/Shares'
+										{...field}
+										value={'Equities/Shares'}
+										selected={catInvestment === 'Equities/Shares'}
+									/>
+								</div>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name={'taxexempt'}
+						rules={{
+							required: 'Select an option',
+						}}
+						render={({ field }) => (
+							<FormItem className='space-y-2'>
+								<FormLabel>Are you tax exempt?</FormLabel>
+								<div className=' grid grid-cols-2 gap-x-3'>
+									<CustomToggle
+										label='Yes'
+										{...field}
+										value={'Yes'}
+										selected={taxexempt === 'Yes'}
+									/>
+									<CustomToggle
+										label='No'
+										{...field}
+										value={'No'}
+										selected={taxexempt === 'No'}
+									/>
+								</div>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
 			</FormContent>
 		</>
 	);

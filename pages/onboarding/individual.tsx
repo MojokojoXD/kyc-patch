@@ -90,22 +90,22 @@ export default function IndividualKycForm() {
 
 	useApplicantAdjustor(currentClientType as ClientType, reset);
 
-	 useEffect(() => {
-		const warnOfDataLoss = (event: BeforeUnloadEvent) => {
-			event.preventDefault();
-			if (isDirty) {
-				const confirmationMsg =
-					'You will lose application progress, if you close this tab';
-				// ( event || event.returnValue) = confirmationMsg;
-				return confirmationMsg;
-			}
+	//  useEffect(() => {
+	// 	const warnOfDataLoss = (event: BeforeUnloadEvent) => {
+	// 		event.preventDefault();
+	// 		if (isDirty) {
+	// 			const confirmationMsg =
+	// 				'You will lose application progress, if you close this tab';
+	// 			// ( event || event.returnValue) = confirmationMsg;
+	// 			return confirmationMsg;
+	// 		}
 
-			return null;
-		};
-		window.addEventListener('beforeunload', warnOfDataLoss);
+	// 		return null;
+	// 	};
+	// 	window.addEventListener('beforeunload', warnOfDataLoss);
 
-		return () => window.removeEventListener('beforeunload', warnOfDataLoss);
-	}, [isDirty]);
+	// 	return () => window.removeEventListener('beforeunload', warnOfDataLoss);
+	// }, [isDirty]);
 
 	const nextStage = useCallback(
         async ( step?: IndividualFormStages ) =>
@@ -176,12 +176,10 @@ export default function IndividualKycForm() {
 	// 	return <p>Something went wrong! Please try again later</p>;
     // }
     
-    console.log(getValues())
-
 	return (
 		<FormLayout>
 			<Form {...form}>
-				<form className='flex flex-col'>
+				<form className='flex flex-col h-full'>
 					<FormProgressSheet
 						renderProgressListing={(s) => (
 							<FormProgressSheetButton
