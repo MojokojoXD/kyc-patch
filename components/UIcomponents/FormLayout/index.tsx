@@ -55,7 +55,7 @@ function FormLayout({children}: FormLayoutProps) {
 	return (
         <div className='h-screen grid grid-cols-3 w-full bg-neutral-50 '>
             <div className='col-start-2 w-full col-span-2 overscroll-none h-full flex items-center relative overflow-hidden'>
-                <div className='w-full max-w-2xl rounded-xl bg-white h-[90vh] top-10 absolute overflow-auto'>
+                <div className='w-full max-w-2xl rounded-xl bg-white h-[90vh] top-10 absolute overflow-auto mb-10'>
                     {children}
                 </div>
             </div>

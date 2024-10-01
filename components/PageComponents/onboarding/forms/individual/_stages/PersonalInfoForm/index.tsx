@@ -156,7 +156,7 @@ export default function PersonalInformation({
 			<div className='flex flex-col grow'>
 				{getStageStep(currentStep)}
 			</div>
-			<div className='flex items-center justify-end px-10 space-x-2 h-28'>
+			<div className='flex items-center justify-end px-10 space-x-2  py-14 h-24'>
 				<Button
 					type='button'
 					variant={'outline'}
