@@ -55,7 +55,7 @@ export default function Disclosures({
 			//@ts-expect-error Unable to profile literal type for fieldsToValidate and trigger method name param
 			const isValid = await trigger(fieldsToValidate, { shouldFocus: true });
 
-			if (prevStepCache.current) {
+			if (prevStepCache.current && isValid) {
 				const temp = prevStepCache.current;
 				prevStepCache.current = null;
 				setCurrentStep(temp);

@@ -162,11 +162,10 @@ export default function IndividualKycForm() {
 					/>
 				);
 			case IndividualFormStages.CHECKLIST:
-                return
-                <div className='p-10'>
+                return (<div className='p-10'>
                     Disclosures
                     ***Under construction****
-                    </div>;
+                </div>);
 			default:
 				throw new Error('form stage ' + stage + ' is not supported');
 		}

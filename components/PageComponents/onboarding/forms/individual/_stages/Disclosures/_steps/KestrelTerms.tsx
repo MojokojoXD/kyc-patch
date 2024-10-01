@@ -2,7 +2,8 @@ import { useFormContext } from 'react-hook-form';
 import {
 	FormField,
 	FormItem,
-	FormMessage,
+    FormMessage,
+    FormControl
 } from '@/components/UIcomponents/ui/form';
 import {
 	AccordionItem,
@@ -1697,7 +1698,7 @@ export default function KestrelTerms() {
 								<AccordionTrigger>
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
-								<AccordionContent className='space-y-8'>
+								<AccordionContent className='data-[state=closed]:hidden' forceMount>
 									<KestrelTermsForm applicantId={i} />
 								</AccordionContent>
 							</AccordionItem>
@@ -1717,13 +1718,16 @@ function KestrelTermsForm({ applicantId }: KestrelTermsFormProps) {
 	return (
 		<div>
 			<div className='space-y-10'>
-				<div className='space-y-5'>
+				<div>
 					<FormField
 						control={control}
-						name={`applicant.${applicantId}.disclosures.kestrel.termsAndConditions`}
+                        name={ `applicant.${ applicantId }.disclosures.kestrel.termsAndConditions` }
+                        rules={ {
+                            validate: v => v === "true" || "Click on the button above to agree to the terms above to continue"
+                        }}
 						render={({ field }) => (
-							<FormItem>
-								<div>
+							<FormItem  className='space-y-2'>
+								<FormControl>
 									<CustomToggle
 										label={'I/We agree to the above Terms and Conditions'}
 										{...field}
@@ -1731,8 +1735,8 @@ function KestrelTermsForm({ applicantId }: KestrelTermsFormProps) {
 										selected={field.value === 'true'}
                                         onChange={e => field.onChange(e.target.checked.toString())}
 									/>
-									<FormMessage />
-								</div>
+								</FormControl>
+                                <FormMessage />
 							</FormItem>
 						)}
 					/>

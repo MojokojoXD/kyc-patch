@@ -154,7 +154,15 @@
                 },
                 "fatca":{
                     "status": [],
-                    "details": {}
+                    "details": {
+                        "ownership": "",
+                        "foreignResidentialAddress": "",
+                        "foreignMailingAddress": "",
+                        "phoneNumber": {
+                            "areaCode": "",
+                            "lineNumber": ""
+                        }
+                    }
                 },
                 "kestrel": {
                    "termsAndConditions": "",

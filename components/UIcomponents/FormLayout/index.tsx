@@ -14,7 +14,7 @@ function FormHeader({ children }: FormHeaderProps) {
 				<Image
 					priority
                     src={ logo }
-                    width={ 130 }
+                    width={ 150 }
 					alt='SSX Logo'
 				/>
 			</div>

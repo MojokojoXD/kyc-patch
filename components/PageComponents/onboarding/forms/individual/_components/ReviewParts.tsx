@@ -202,7 +202,7 @@ function BooleanFieldReviewer({
 				{name}
 			</h3>
 			<p className='font-normal text-base text-neutral-500'>
-				{value[0] === 'true' ? 'Agreed' : 'Not Agreed'}
+				{value[0] === 'true' ? 'Agree' : 'Not Agreed'}
 			</p>
 		</div>
 	);

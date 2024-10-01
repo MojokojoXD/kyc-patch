@@ -5,6 +5,7 @@ import {
 	FormControl,
 	FormLabel,
 	FormMessage,
+	FormError,
 } from '@/components/UIcomponents/ui/form';
 import {
 	Select,
@@ -34,6 +35,8 @@ import MULTI_CHOICE_RESPONSES from '@/utils/vars/_formDefaults/disclosures_multi
 import type { Country } from '@/types/forms/universal';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import Image from 'next/image';
+import { ErrorMessage } from '@hookform/error-message';
+import validator from 'validator';
 
 interface FatcaProps {
 	countryList: Country[];
@@ -66,7 +69,7 @@ export default function Fatca({ countryList }: FatcaProps) {
 								<AccordionTrigger>
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
-								<AccordionContent className='space-y-8'>
+								<AccordionContent className='data-[state=closed]:hidden' forceMount>
 									<FatcaForm
 										applicantId={i}
 										countryList={countryList}
@@ -82,8 +85,18 @@ export default function Fatca({ countryList }: FatcaProps) {
 }
 
 function FatcaForm({ applicantId, countryList }: SingleCategoryForm) {
-	const { control, watch, register, setValue, getValues, resetField } =
-		useFormContext<IndividualFormSchema>();
+	const {
+		control,
+		watch,
+		setValue,
+		getValues,
+		resetField,
+		unregister,
+		getFieldState,
+		register,
+		clearErrors,
+		formState: { errors },
+	} = useFormContext<IndividualFormSchema>();
 
 	const currentFatcaStatus = watch(
 		`applicant.${applicantId}.disclosures.fatca.status`
@@ -101,17 +114,27 @@ function FatcaForm({ applicantId, countryList }: SingleCategoryForm) {
 			);
 
 			setValue(schemaPath, areaCode);
+			clearErrors(schemaPath);
 		},
 		[setValue, countryList]
-    );
-    
-    useEffect( () =>
-    {
-        if ( currentFatcaStatus.length === 0 )
-        {
-            resetField(`applicant.${applicantId}.disclosures.fatca.details`)
-        }
-    }, [currentFatcaStatus,resetField,applicantId])
+	);
+
+	useEffect(() => {
+		if (currentFatcaStatus.length === 0) {
+			unregister(`applicant.${applicantId}.disclosures.fatca.details`);
+		} else {
+			register(
+				`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`,
+				{
+					required:
+						currentFatcaStatus.length === 0 ? false : 'Select area code',
+					value: '',
+				}
+			);
+		}
+	}, [currentFatcaStatus, setValue, register, unregister, applicantId]);
+
+	const isErrored = (field: any) => getFieldState(field).error !== undefined;
 
 	return (
 		<>
@@ -121,7 +144,7 @@ function FatcaForm({ applicantId, countryList }: SingleCategoryForm) {
 					control={control}
 					name={`applicant.${applicantId}.disclosures.fatca.status`}
 					render={({ field }) => (
-						<FormItem className='space-y-5'>
+						<FormItem className='space-y-2'>
 							<FormLabel>FATCA Status</FormLabel>
 							<div className='grid gap-y-3'>
 								{MULTI_CHOICE_RESPONSES.fatca.status.map((c) => (
@@ -157,124 +180,223 @@ function FatcaForm({ applicantId, countryList }: SingleCategoryForm) {
 				<div className='space-y-10'>
 					{/* Ownership */}
 					<div>
-						<FormItem className='space-y-5'>
-							<FormLabel>Ownership(%)</FormLabel>
+						<FormItem className='space-y-2'>
+							<FormLabel
+								className={
+									isErrored(
+										`applicant.${applicantId}.disclosures.fatca.details.ownership`
+									)
+										? 'text-error-500'
+										: undefined
+								}>
+								Ownership(%)
+							</FormLabel>
 							<FormControl>
 								<Input
 									{...register(
-										`applicant.${applicantId}.disclosures.fatca.details.ownership`
+										`applicant.${applicantId}.disclosures.fatca.details.ownership`,
+										{
+											required: 'Please enter ownership',
+                                            validate: {
+                                                isNumeric: (v) =>
+                                                    validator.isNumeric( v ) || 'Must be a number',
+                                                lessThan100: ( v ) =>
+                                                {
+                                                    const value = parseInt( v );
+                                                    return (value > 0 && value <= 100) || "Please enter valid percentage amount" 
+                                                }
+                                            },
+										}
 									)}
 									placeholder='Enter Ownership'
 								/>
 							</FormControl>
-							<FormMessage />
+							<ErrorMessage
+								name={`applicant.${applicantId}.disclosures.fatca.details.ownership`}
+								errors={errors}
+								as={<FormError />}
+							/>
 						</FormItem>
 					</div>
 					{/* Foreign Residential Address */}
 					<div>
-						<FormItem className='space-y-5'>
-							<FormLabel>Foreign Residential Address</FormLabel>
+						<FormItem className='space-y-2'>
+							<FormLabel
+								className={
+									isErrored(
+										`applicant.${applicantId}.disclosures.fatca.details.foreignResidentialAddress`
+									)
+										? 'text-error-500'
+										: undefined
+								}>
+								Foreign Residential Address
+							</FormLabel>
 							<FormControl>
 								<Input
 									{...register(
-										`applicant.${applicantId}.disclosures.fatca.details.foreignResidentialAddress`
+										`applicant.${applicantId}.disclosures.fatca.details.foreignResidentialAddress`,
+										{
+											required: 'Please enter foreign residential address',
+										}
 									)}
 									placeholder='Enter Foreign Residential Address'
 								/>
 							</FormControl>
-							<FormMessage />
+							<ErrorMessage
+								name={`applicant.${applicantId}.disclosures.fatca.details.foreignResidentialAddress`}
+								errors={errors}
+								as={<FormError />}
+							/>
 						</FormItem>
 					</div>
 					{/* Foreign Mailing Address */}
 					<div>
-						<FormItem className='space-y-5'>
-							<FormLabel>Foreign Mailing Address</FormLabel>
+						<FormItem className='space-y-2'>
+                            <FormLabel
+                                className={
+									isErrored(
+										`applicant.${applicantId}.disclosures.fatca.details.foreignMailingAddress`
+									)
+										? 'text-error-500'
+										: undefined
+								}
+                            >Foreign Mailing Address</FormLabel>
 							<FormControl>
 								<Input
 									{...register(
-										`applicant.${applicantId}.disclosures.fatca.details.foreignMailingAddress`
+										`applicant.${applicantId}.disclosures.fatca.details.foreignMailingAddress`,
+										{
+											required: 'Please enter foreign mailing address',
+										}
 									)}
 									placeholder='Enter Foreign Mailing Address'
 								/>
 							</FormControl>
-							<FormMessage />
+							<ErrorMessage
+								name={`applicant.${applicantId}.disclosures.fatca.details.foreignMailingAddress`}
+								errors={errors}
+								as={<FormError />}
+							/>
 						</FormItem>
 					</div>
 					{/* Foreign Telephone Number */}
 					<div>
-						<FormField
-							control={control}
-							name={`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.lineNumber`}
-							render={({ field }) => (
-								<FormItem className='space-y-5 relative'>
-									<FormLabel>Foreign Telephone Number</FormLabel>
-									<FormControl>
-										<div className='flex w-full border rounded-lg border-neutral-300 has-[:focus]:border-primary-500'>
-											<Select
-												onValueChange={(v) =>
-													handleAreaCode(
-														`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`,
-														v
-													)
-												}>
-												<SelectTrigger className='w-1/4 border-none'>
-													{currentMobileAreaCode ? (
-														<p className='text-neutral-700'>
-															{currentMobileAreaCode}
-														</p>
+						<FormItem className='space-y-2'>
+                            <FormLabel
+                                className={
+									(isErrored(
+										`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`
+									) || isErrored(
+										`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.lineNumber`
+									))
+										? 'text-error-500'
+										: undefined
+								}
+                            >Foreign Telephone Number</FormLabel>
+							<FormControl>
+								<div className='flex w-full border rounded-lg border-neutral-300 has-[:focus]:border-primary-500'>
+									<Select
+										onValueChange={(v) =>
+											handleAreaCode(
+												`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`,
+												v
+											)
+										}>
+										<SelectTrigger className='w-1/4 border-none'>
+											{currentMobileAreaCode ? (
+												<p className='text-neutral-700'>
+													{currentMobileAreaCode}
+												</p>
+											) : (
+												<SelectValue placeholder={'+233'} />
+											)}
+										</SelectTrigger>
+										<SelectContent className='h-64'>
+											{countryList.map((c) => (
+												<SelectItem
+													key={c.cty_name}
+													value={c.cty_name}>
+													{c.cty_flag_name ? (
+														<Image
+															src={c.cty_flag_name}
+															width={20}
+															height={20}
+															alt={`${c.cty_name} country code`}
+															className='aspect-square inline mr-2'
+														/>
 													) : (
-														<SelectValue placeholder={'+233'} />
+														<span className='h-[20px] w-[20px] inline-block mr-3'></span>
 													)}
-												</SelectTrigger>
-												<SelectContent className='h-64'>
-													{countryList.map((c) => (
-														<SelectItem
-															key={c.cty_name}
-															value={c.cty_name}>
-															{c.cty_flag_name ? (
-																<Image
-																	src={c.cty_flag_name}
-																	width={20}
-																	height={20}
-																	alt={`${field.value} country code`}
-																	className='aspect-square inline mr-2'
-																/>
-															) : (
-																<span className='h-[20px] w-[20px] inline-block mr-3'></span>
-															)}
-															({c.call_code}) {c.cty_name}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-											<Input
-												{...field}
-												placeholder='Enter Foreign Telephone Number'
-												className='border-none'
-											/>
-										</div>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+													({c.call_code}) {c.cty_name}
+												</SelectItem>
+											))}
+										</SelectContent>
+									</Select>
+									<Input
+										{...register(
+											`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.lineNumber`,
+											{
+												required: 'Please enter phone number',
+												validate: (v) =>
+													validator.isMobilePhone(v) ||
+													'Please enter valid phone number',
+												deps: `applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`,
+											}
+										)}
+										placeholder='Enter Foreign Telephone Number'
+										className='border-none'
+									/>
+								</div>
+							</FormControl>
+							<div className='flex'>
+								<div className='w-1/4'>
+									<ErrorMessage
+										errors={errors}
+										name={`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`}
+										as={<FormError />}
+									/>
+								</div>
+								<div>
+									<ErrorMessage
+										errors={errors}
+										name={`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.lineNumber`}
+										as={<FormError />}
+									/>
+								</div>
+							</div>
+						</FormItem>
 					</div>
 					{/* TIN */}
 					<div>
-						<FormItem className='space-y-5'>
-							<FormLabel>
+						<FormItem className='space-y-2'>
+                            <FormLabel
+                                className={
+									isErrored(
+										`applicant.${applicantId}.disclosures.fatca.details.tin`
+									)
+										? 'text-error-500'
+										: undefined
+								}
+                            >
 								Foreign Tax Identification Number (TIN)/Social Security Number
 								(SSN)/National Identity Number(NIN)
 							</FormLabel>
 							<FormControl>
 								<Input
 									{...register(
-										`applicant.${applicantId}.disclosures.fatca.details.tin`
+										`applicant.${applicantId}.disclosures.fatca.details.tin`,
+										{
+											required: 'Please enter tin',
+										}
 									)}
 									placeholder='Enter TIN/SSN/NIN'
 								/>
 							</FormControl>
-							<FormMessage />
+							<ErrorMessage
+								errors={errors}
+								name={`applicant.${applicantId}.disclosures.fatca.details.tin`}
+								as={<FormError />}
+							/>
 						</FormItem>
 					</div>
 				</div>

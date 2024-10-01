@@ -48,7 +48,7 @@ export default function KestrelNominee() {
 								<AccordionTrigger>
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
-								<AccordionContent className='space-y-8'>
+								<AccordionContent className='data-[state-closed]' forceMount>
 									<KestrelNomineeForm applicantId={i} />
 								</AccordionContent>
 							</AccordionItem>
@@ -1168,12 +1168,15 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 						</li>
 					</ul>
 				</div>
-                <div className='space-y-5'>
+                <div >
                     <FormField
                         control={ control }
                         name={ fieldName }
+                        rules={ {
+                            required: "You must upload your signature to continue"
+                        }}
                         render={ ( { field } ) => (
-                        <FormItem>
+                        <FormItem className='space-y-2'>
                             <FormControl>
                                 <SignatureUploader
                                     previewURL={signatureURL}

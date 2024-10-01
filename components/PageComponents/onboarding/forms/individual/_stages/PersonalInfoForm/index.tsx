@@ -44,10 +44,10 @@ export default function PersonalInformation({
 
 	const prevStepCache = useRef<PersonalInformationSteps | null>(null);
 
-	const [res, isLoading, error] = useHTTPRequest<{ name: string } | null>(
-        // BANK_LIST_URL
-        '/api/onboarding/uploads'
-	);
+	// const [res, isLoading, error] = useHTTPRequest<{ name: string } | null>(
+    //     // BANK_LIST_URL
+    //     '/api/onboarding/uploads'
+	// );
 
 	const handleNextStep = useCallback(
 		async (
@@ -146,7 +146,6 @@ export default function PersonalInformation({
 	// 	return <p className='p-10'>Something went wrong! Try again later.</p>;
 	// }
 
-    console.log(res)
 
 	return (
 		<>
