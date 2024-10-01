@@ -95,7 +95,7 @@ export interface SingleCategoryForm
 }
 
 function BiographicalForm({ applicantId, countryList }: SingleCategoryForm) {
-	const { control, watch, resetField } =
+	const { control, watch, resetField,getFieldState } =
 		useFormContext<IndividualFormSchema>();
 	//watch specific fields that need eager updates
 
@@ -103,7 +103,12 @@ function BiographicalForm({ applicantId, countryList }: SingleCategoryForm) {
 
 	const today = new Date();
 
-	const minAgeDate = sub(today, { years: MIN_AGE });
+    const minAgeDate = sub( today, { years: MIN_AGE } );
+    
+    const firstNameError = getFieldState( `applicant.${ applicantId }.firstName` ).error;
+    const lastNameError = getFieldState( `applicant.${ applicantId }.lastName` ).error;
+
+    const isFullNameValid = (firstNameError === undefined) && (lastNameError === undefined);
 
 	return (
 		<>
@@ -174,7 +179,9 @@ function BiographicalForm({ applicantId, countryList }: SingleCategoryForm) {
 			</div>
 			{/* Full Name */}
 			<div className='space-y-3'>
-				<FormLabel>Full Name</FormLabel>
+                <FormLabel
+                    className={ !isFullNameValid ? "text-error-500" : undefined }
+                >Full Name</FormLabel>
 				<div className='grid grid-cols-3 gap-x-1.5'>
 					<FormField
 						control={control}

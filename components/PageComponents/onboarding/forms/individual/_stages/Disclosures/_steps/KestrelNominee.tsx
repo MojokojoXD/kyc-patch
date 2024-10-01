@@ -2,7 +2,8 @@ import { useFormContext } from 'react-hook-form';
 import {
 	FormItem,
 	FormControl,
-	FormMessage,
+    FormMessage,
+    FormField,
 } from '@/components/UIcomponents/ui/form';
 import {
 	AccordionItem,
@@ -62,9 +63,8 @@ export default function KestrelNominee() {
 type KestrelNomineeFormProps = Pick<SingleCategoryForm, 'applicantId'>;
 
 function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
-	const { getValues, setValue } =
+	const { getValues, setValue,control } =
 		useFormContext<IndividualFormSchema>();
-	const [previewUrl, setPreviewUrl] = useState<string>('');
 	const [signatureStatus, setSignatureStatus] = useState({
 		processing: false,
 		error: false,
@@ -87,61 +87,16 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 				nomineeAgreement: { signatureURL },
 			},
 		},
-	} = useMemo(
-		() => getValues(`applicant.${applicantId}`),
-		[getValues, applicantId]
-	);
+	} = getValues(`applicant.${applicantId}`)
 
 	const today = format(new Date(), 'M/d/yyyy');
 	const fieldName =
 		`applicant.${applicantId}.disclosures.kestrel.nomineeAgreement.signatureURL` as const;
 
-	const handleFileUpload = async (file: File | null) => {
-		const clientID = sessionStorage.getItem('clientId');
-
-		if (!file || !clientID) {
-			setSignatureStatus((prevStatus) => ({ ...prevStatus, error: true }));
-			return;
-		}
-		setSignatureStatus((prevStatus) => ({ ...prevStatus, processing: true }));
-
-		const uploadUrl = await SignatureProcessor.upload(file, clientID);
-
-		if (uploadUrl) {
-			setValue(fieldName, uploadUrl);
-			setValue(
-				`_formMetadata.applicant.${applicantId}.kestrelSignatureFileName`,
-				file.name
-			);
-			return;
-		}
-
-		setSignatureStatus({ processing: false, error: true });
-	};
-
-	useEffect(() => {
-		const downloadImg = async () => {
-			const imageURL = await SignatureProcessor.download(signatureURL);
-
-			if (imageURL) {
-				setPreviewUrl(imageURL);
-				setSignatureStatus((prevStatus) => ({
-					...prevStatus,
-					processing: false,
-				}));
-				return;
-			}
-
-			setSignatureStatus((prevStatus) => ({ ...prevStatus, error: true }));
-		};
-
-		signatureURL && downloadImg();
-	}, [signatureURL]);
 
 	if (signatureStatus.error) {
 		return <p>Something went wrong! Please try again later.</p>;
 	}
-
 	return (
 		<div>
 			<div className='space-y-10'>
@@ -1213,19 +1168,41 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 						</li>
 					</ul>
 				</div>
-				<div className='space-y-5'>
-					<FormItem>
-						<FormControl>
-							<SignatureUploader
-								previewURL={previewUrl}
-								isLoading={signatureStatus.processing}
-								onFileUpload={handleFileUpload}
-								fileName={kestrelSignatureFileName}
-								name={fieldName}
-							/>
-						</FormControl>
-						<FormMessage />
-					</FormItem>
+                <div className='space-y-5'>
+                    <FormField
+                        control={ control }
+                        name={ `applicant.${applicantId}.disclosures.kestrel.nomineeAgreement.signatureURL` }
+                        render={ ( { field } ) => (
+                        <FormItem>
+                            <FormControl>
+                                <SignatureUploader
+                                    previewURL={signatureURL}
+                                    isLoading={signatureStatus.processing}
+                                        onFileUpload={ async( file ) =>
+                                        {
+                                            if ( !file ) return;
+                                            setSignatureStatus( status => ({ ...status, processing: false }) )
+                                            try
+                                            {
+                                                const base64URL = await SignatureProcessor.fileToURL( file );
+                                                field.onChange( base64URL );
+                                                setValue( `_formMetadata.applicant.${ applicantId }.kestrelSignatureFileName`,file.name );
+
+                                                setSignatureStatus( status => ( { ...status, processing: false } ) );
+                                            } catch ( error )
+                                            {
+                                                console.log( error );
+                                                setSignatureStatus( status => ( { processing: false, error: true } ) );
+                                            }
+                                    }}
+                                    fileName={kestrelSignatureFileName}
+                                    name={fieldName}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                        
+                    )}/>
 				</div>
 			</div>
 		</div>

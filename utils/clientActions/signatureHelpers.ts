@@ -5,7 +5,7 @@ interface UploadServerResponse {
 	url: string;
 }
 
-const SIGNATURE_UPLOAD_URL = 'api/hello';
+const SIGNATURE_UPLOAD_URL = '/api/onboarding/uploads';
 const SIGNATURE_DOWNLOAD_URL = BASE_URL + '/download';
 
 export class SignatureProcessor {
@@ -75,5 +75,17 @@ export class SignatureProcessor {
 		} catch (error) {
 			console.log(error);
 		}
-	};
+    };
+    
+    static fileToURL = ( file: File ):Promise<string | ArrayBuffer | null> => 
+        new Promise( ( resolve, reject ) =>
+        {
+            const fileReader = new FileReader();
+
+
+            fileReader.onload = () => resolve( fileReader.result ) ;
+            fileReader.onerror = () => reject( fileReader.error );
+
+            fileReader.readAsDataURL( file  )
+        } )
 }

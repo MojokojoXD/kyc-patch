@@ -65,7 +65,7 @@ const individualFormMetadata = [
 
 export default function IndividualKycForm() {
 	const [currentFormStage, setCurrentFormStage] =
-		useState<IndividualFormStages>(IndividualFormStages.INTRO);
+		useState<IndividualFormStages>(IndividualFormStages.DISCLOSURES);
 
 	const userProgress = useRef<IndividualFormStages>(currentFormStage);
 
@@ -177,7 +177,7 @@ export default function IndividualKycForm() {
 	// 	return <p>Something went wrong! Please try again later</p>;
     // }
     
-    // console.log(getValues())
+    console.log(getValues())
 
 	return (
 		<FormLayout>

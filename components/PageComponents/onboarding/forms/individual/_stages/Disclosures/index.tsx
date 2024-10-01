@@ -27,7 +27,7 @@ export default function Disclosures({
 	countryList,
 }: DisclosuresProps) {
 	const [currentStep, setCurrentStep] = useState<DisclosuresSteps>(
-		DisclosuresSteps.SIGNATURE_UPLOAD
+		DisclosuresSteps.KESTREL_NOMINEE_AGREEMENT
 	);
 
 	const prevStepCache = useRef<DisclosuresSteps | null>(null);

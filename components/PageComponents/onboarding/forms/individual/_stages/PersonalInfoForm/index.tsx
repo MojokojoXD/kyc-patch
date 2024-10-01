@@ -46,7 +46,7 @@ export default function PersonalInformation({
 
 	const [res, isLoading, error] = useHTTPRequest<{ name: string } | null>(
         // BANK_LIST_URL
-        '/api/hello'
+        '/api/onboarding/uploads'
 	);
 
 	const handleNextStep = useCallback(

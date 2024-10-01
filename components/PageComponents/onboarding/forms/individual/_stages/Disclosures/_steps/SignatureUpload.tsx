@@ -67,61 +67,12 @@ type SignatureUploadFormProps = Pick<SingleCategoryForm,'applicantId'>
 function SignatureUploadForm({ applicantId }: SignatureUploadFormProps) {
 	const [isProcessingSignature, setIsProcessingSignature] =
         useState<boolean>( false );
-    const [ previewURL, setPreviewURL ] = useState<string | null>( null );
     const [ signatureError, setSignatureError ] = useState<boolean>( false );
     const { control, setValue, getValues } = useFormContext<IndividualFormSchema>();
     
 
     const currentSignatureURL = getValues( `applicant.${ applicantId }.disclosures.signatureURL` );
     const currentNativeSignatureFileName = getValues( `_formMetadata.applicant.${ applicantId }.signatureFileName` );
-
-	const handleSignatureUpload = async (file: File | null) => {
-
-		const clientId = sessionStorage.getItem('clientId');
-
-        if ( !file ) return;
-        if ( !clientId )
-        {
-            setSignatureError( true );
-			return;
-        }
-        
-		try {
-            const imageStorageURL = await SignatureProcessor.upload(file,clientId)
-            
-            return imageStorageURL
-            
-        } catch ( error )
-        {
-            
-            console.log( error )
-        
-        }
-	};
-
-    useEffect( () =>
-    {
-        const getDownloadURL = async () =>
-        {
-            setIsProcessingSignature( true );
-
-            const downloadURL = await SignatureProcessor.download( currentSignatureURL );
-
-            if ( !downloadURL )
-            {
-                setSignatureError( true );
-                setIsProcessingSignature( false );
-                return;
-            }
-
-            setPreviewURL( downloadURL );
-            setIsProcessingSignature( false );
-        }
-
-       currentSignatureURL && getDownloadURL();
-
-        
-    }, [ currentSignatureURL ] )
     
     if ( signatureError )
     {
@@ -140,21 +91,28 @@ function SignatureUploadForm({ applicantId }: SignatureUploadFormProps) {
 							<FormItem>
 								<FormControl>
 									<SignatureUploader
-										previewURL={previewURL}
+										previewURL={currentSignatureURL}
                                         onFileUpload={ async( file ) =>
                                         {
+                                            if ( !file ) return;
                                             setIsProcessingSignature( true );
 
-                                            const signatureURL = await handleSignatureUpload( file );
-                                            
-                                            if ( !signatureURL )
+                                            try {
+                                                const base64ImgURL = await SignatureProcessor.fileToURL( file );
+
+                                                console.log(base64ImgURL)
+                                                field.onChange( base64ImgURL );
+
+                                                setValue( `_formMetadata.applicant.${ applicantId }.signatureFileName`, file.name );
+                                                
+                                                setIsProcessingSignature( false );
+
+                                            } catch ( error )
                                             {
                                                 setIsProcessingSignature( false );
-                                                return;
+                                                setSignatureError(true)
+                                                console.log(error)
                                             }
-
-                                            field.onChange( signatureURL );
-                                            setValue( `_formMetadata.applicant.${ applicantId }.signatureFileName`, file?.name || "" );
                                         } }
                                         name={ field.name }
                                         isLoading={ isProcessingSignature }

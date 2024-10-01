@@ -168,29 +168,15 @@ function ImageFieldReviewer({
 	value: PossibleFormEntryTypes;
 	name: string;
 }) {
-    const [ previewURL, setPreviewURL ] = useState<string>( '' );
-    
-	useEffect(() => {
-		const getImageURL = async () => {
-			const imageURL = await SignatureProcessor.download(value.at(0) as string);
-
-			if (!imageURL) return;
-
-			setPreviewURL(imageURL);
-		};
-
-		value.length > 0 && getImageURL();
-	}, [value]);
-
 	return (
 		<div className='space-y-3'>
 			<h3 className='text-base font-medium capitalize text-neutral-700'>
 				{name}
 			</h3>
 			<div className='relative h-[130px] w-2/5'>
-				{previewURL ? (
+				{value.length > 0 ? (
 					<Image
-						src={previewURL}
+						src={value.at(0) as string}
 						fill
 						className='object-cover'
 						alt={`${name} review image`}
