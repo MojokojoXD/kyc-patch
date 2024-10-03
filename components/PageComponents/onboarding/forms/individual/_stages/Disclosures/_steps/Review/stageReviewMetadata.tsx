@@ -152,7 +152,11 @@ const disclosuresStepsMetadata: ReviewStepMetadata<DisclosuresSteps>[] = [
             }
         ],
 	},
-   
+    {
+        step: DisclosuresSteps.REVIEW,
+        header: "Review",
+        field: []
+    }
     
 ];
 

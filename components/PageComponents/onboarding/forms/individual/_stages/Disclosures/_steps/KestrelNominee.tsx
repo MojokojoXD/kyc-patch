@@ -2,8 +2,8 @@ import { useFormContext } from 'react-hook-form';
 import {
 	FormItem,
 	FormControl,
-    FormMessage,
-    FormField,
+	FormMessage,
+	FormField,
 } from '@/components/UIcomponents/ui/form';
 import {
 	AccordionItem,
@@ -17,11 +17,12 @@ import {
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individual';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
 import { format } from 'date-fns';
 import SignatureUploader from '@/components/UIcomponents/CompoundUI/SignatureUploader';
 import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
+import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 export default function KestrelNominee() {
 	const form = useFormContext<IndividualFormSchema>();
@@ -48,7 +49,9 @@ export default function KestrelNominee() {
 								<AccordionTrigger>
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
-								<AccordionContent className='data-[state-closed]' forceMount>
+								<AccordionContent
+									className='data-[state=closed]:hidden'
+									forceMount>
 									<KestrelNomineeForm applicantId={i} />
 								</AccordionContent>
 							</AccordionItem>
@@ -63,17 +66,17 @@ export default function KestrelNominee() {
 type KestrelNomineeFormProps = Pick<SingleCategoryForm, 'applicantId'>;
 
 function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
-	const { getValues, setValue,control } =
+	const { getValues, setValue, control } =
 		useFormContext<IndividualFormSchema>();
 	const [signatureStatus, setSignatureStatus] = useState({
 		processing: false,
 		error: false,
 	});
+	const [previewURL, setPreviewURL] = useState<string>('');
 
 	const { kestrelSignatureFileName } = getValues(
 		`_formMetadata.applicant.${applicantId}`
-    );
-    
+	);
 
 	const {
 		firstName,
@@ -87,16 +90,36 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 				nomineeAgreement: { signatureURL },
 			},
 		},
-	} = getValues(`applicant.${applicantId}`)
+	} = getValues(`applicant.${applicantId}`);
+
 
 	const today = format(new Date(), 'M/d/yyyy');
 	const fieldName =
 		`applicant.${applicantId}.disclosures.kestrel.nomineeAgreement.signatureURL` as const;
 
+	useEffect(() => {
+		const downloadImg = async (fileName: string) => {
+			if (!fileName) return;
+			const img = await SignatureProcessor.download(fileName);
+
+			if (img) {
+				setPreviewURL(img);
+				setSignatureStatus((status) => ({ error: false, processing: false }));
+				return;
+			}
+			setSignatureStatus((status) => ({ processing: false, error: true }));
+		};
+
+		if (signatureURL !== '') {
+			setSignatureStatus((status) => ({ ...status, processing: true }));
+			downloadImg(signatureURL);
+		}
+	}, [signatureURL]);
 
 	if (signatureStatus.error) {
 		return <p>Something went wrong! Please try again later.</p>;
 	}
+
 	return (
 		<div>
 			<div className='space-y-10'>
@@ -163,7 +186,8 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							policies (including financial policies) of a person, whether
 							through the ownership of voting securities, by contract or
 							otherwise (including, with correlative meanings, the terms
-							&quot;controlling&quot;, &quot;controlled by&quot; and &quot;under common control with&quot;);
+							&quot;controlling&quot;, &quot;controlled by&quot; and &quot;under
+							common control with&quot;);
 						</li>
 					</ul>
 					<h2>Agreement:</h2>
@@ -217,9 +241,9 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 					</p>
 					<h2>Nominee Account:</h2>
 					<p>
-						means the account maintained by the Nominee specifying the Client&apos;s
-						Securities and cash held by the Nominee on behalf of the Client
-						pursuant to Clause 3.1 of this Agreement;
+						means the account maintained by the Nominee specifying the
+						Client&apos;s Securities and cash held by the Nominee on behalf of
+						the Client pursuant to Clause 3.1 of this Agreement;
 					</p>
 					<h2>Nominee Trading Account:</h2>
 					<p>
@@ -283,35 +307,38 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 					<ol className='list-[lower-alpha] list-outside space-y-5 px-5'>
 						<li>
 							The Client hereby unequivocally instructs and appoints the Nominee
-							to hold, deal in and register the Client&apos;s Securities (in so far
-							as any of the Client&apos;s Securities are registrable) in the
-							Nominee&apos;s name pursuant to the terms of this Agreement PROVIDED
-							ALWAYS that the Client shall at all times retain beneficial
-							ownership and interest in the Client&apos;s Securities notwithstanding
-							that the Nominee is recorded as the holder of the legal title.
+							to hold, deal in and register the Client&apos;s Securities (in so
+							far as any of the Client&apos;s Securities are registrable) in the
+							Nominee&apos;s name pursuant to the terms of this Agreement
+							PROVIDED ALWAYS that the Client shall at all times retain
+							beneficial ownership and interest in the Client&apos;s Securities
+							notwithstanding that the Nominee is recorded as the holder of the
+							legal title.
 						</li>
 						<li>
-							The Client acknowledges and accepts that the Client&apos;s Securities
-							may be co-mingled in a common pool with other Securities held by
-							the Nominee, its agent&apos;s, sub-nominees, subcontractors or
-							counterparties on behalf of other clients.
+							The Client acknowledges and accepts that the Client&apos;s
+							Securities may be co-mingled in a common pool with other
+							Securities held by the Nominee, its agent&apos;s, sub-nominees,
+							subcontractors or counterparties on behalf of other clients.
 						</li>
 					</ol>
 					<h2>Establishment of Accounts</h2>
 					<ol className='list-[lower-alpha] list-outside px-5 space-y-5'>
 						<li>
 							The Client hereby unequivocally authorises the Nominee to open, at
-							its absolute discretion, one or more accounts in the Nominee&apos;s
-							books and accounts in respect of the Client&apos;s Securities and to
-							segregate, in the Nominee&apos;s books and accounts, the Client&apos;s
-							Securities from Securities held for the Nominee&apos;s own account or
-							on account of third (3rd) parties.
+							its absolute discretion, one or more accounts in the
+							Nominee&apos;s books and accounts in respect of the Client&apos;s
+							Securities and to segregate, in the Nominee&apos;s books and
+							accounts, the Client&apos;s Securities from Securities held for
+							the Nominee&apos;s own account or on account of third (3rd)
+							parties.
 						</li>
 						<li>
 							The Client hereby unequivocally instructs and authorises the
 							Nominee to, at its sole discretion, open and maintain a Nominee
 							Trading Account, in accordance with the Kestrel Terms and
-							Conditions, to hold or otherwise deal in the Client&apos;s Securities.
+							Conditions, to hold or otherwise deal in the Client&apos;s
+							Securities.
 						</li>
 						<li>
 							The Nominee may at any time, in its sole discretion and without
@@ -326,19 +353,19 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 					<ol className='list-[lower-alpha] list-outside space-y-5 px-5'>
 						<li>
 							The Nominee is hereby unequivocally appointed and authorised to
-							perform all or any of the following acts (the &quot;Services&quot;), and the
-							Nominee accepts such appointment and authority save that the
-							Nominee reserves the absolute right to refuse to perform any act
-							or refrain from performing any act if, in its sole discretion,
-							there are grounds for such refusal:
+							perform all or any of the following acts (the
+							&quot;Services&quot;), and the Nominee accepts such appointment
+							and authority save that the Nominee reserves the absolute right to
+							refuse to perform any act or refrain from performing any act if,
+							in its sole discretion, there are grounds for such refusal:
 						</li>
 						<ol className='list-[lower-roman] list-outside pl-10 space-y-5'>
 							<li>
 								to deal in the Client&apos;s Securities in accordance with the
 								written or, at the discretion of the Nominee, oral instructions
 								of the Client;
-                            </li>
-                            <li>
+							</li>
+							<li>
 								to purchase or subscribe for any type of Security in accordance
 								with the Client&apos;s instructions and following receipt of
 								sufficient funds required for that purpose unless the Nominee
@@ -347,9 +374,9 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 								deem fit;
 							</li>
 							<li>
-								to hold or to arrange for the Client&apos;s Securities, including
-								documents of title and any other instruments relating to the
-								Client&apos;s Securities, to be held in safe custody;
+								to hold or to arrange for the Client&apos;s Securities,
+								including documents of title and any other instruments relating
+								to the Client&apos;s Securities, to be held in safe custody;
 							</li>
 							<li>
 								to receive and collect certificates or other evidence of title,
@@ -360,9 +387,9 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							</li>
 							<li>
 								to deliver documents of title and any other instruments relating
-								to the Client&apos;s Securities to the Client or to the order of the
-								Client in accordance with the Client&apos;s instructions but at the
-								sole risk of the Client;
+								to the Client&apos;s Securities to the Client or to the order of
+								the Client in accordance with the Client&apos;s instructions but
+								at the sole risk of the Client;
 							</li>
 							<li>
 								to collect and/or receive, for the account of the Client, all
@@ -387,9 +414,9 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 								order in any such actions or legal proceedings as aforesaid;
 							</li>
 							<li>
-								to sell or otherwise dispose of the Client&apos;s Securities or any
-								part(s) thereof and to deal with any proceeds in accordance with
-								this Agreement;
+								to sell or otherwise dispose of the Client&apos;s Securities or
+								any part(s) thereof and to deal with any proceeds in accordance
+								with this Agreement;
 							</li>
 							<li>
 								to agree upon the terms of, enter into and execute all
@@ -397,8 +424,8 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 								transfers, assignments, guarantees and deeds and to do such
 								things for and on behalf of the Client as the Nominee may deem
 								necessary or expedient and at such time(s) as the Nominee shall
-								deem fit in respect of or in relation to the Client&apos;s Securities
-								or trading under a Nominee Trading Account;
+								deem fit in respect of or in relation to the Client&apos;s
+								Securities or trading under a Nominee Trading Account;
 							</li>
 							<li>
 								to open, carry on, supervise, conduct, manage and/or operate a
@@ -414,9 +441,9 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 								power and authority to assent, consent and agree to any
 								modifications, variations, additions and amendments to such
 								instructions, notices, requests, orders or demands as the
-								Nominee may deem fit in order to give effect to the Client&apos;s
-								instructions or to otherwise enable the Nominee carry out its
-								obligations hereunder; and
+								Nominee may deem fit in order to give effect to the
+								Client&apos;s instructions or to otherwise enable the Nominee
+								carry out its obligations hereunder; and
 							</li>
 							<li>
 								generally to act on and give effect to the instructions of the
@@ -439,7 +466,8 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							</li>
 							<li>
 								to withhold or make payment of any taxes or duties payable on or
-								in respect of the Client&apos;s Securities on behalf of the Client;
+								in respect of the Client&apos;s Securities on behalf of the
+								Client;
 							</li>
 							<li>
 								in the absence of or delay in receiving instructions from the
@@ -451,22 +479,23 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							<li>
 								to participate in and to comply with the rules and regulations
 								of any system which provides securities exchange or clearing and
-								settlement facilities in respect of the Client&apos;s Securities.
+								settlement facilities in respect of the Client&apos;s
+								Securities.
 							</li>
 						</ul>
 						<li>
 							The Nominee shall be under no duty to investigate, participate in
 							or take any action concerning attendance at meetings, voting or
 							other rights or enforcement of rights of whatever nature attaching
-							to or derived from the Client&apos;s Securities except as may otherwise
-							be expressly agreed to by the Nominee in writing.
+							to or derived from the Client&apos;s Securities except as may
+							otherwise be expressly agreed to by the Nominee in writing.
 						</li>
 						<li>
 							The Nominee shall not be responsible for monitoring, claiming or
 							doing any other acts in relation to dividends, rights, bonus and
 							any other entitlements or schemes of arrangement in connection
-							with the Client&apos;s Securities except as may otherwise be expressly
-							agreed to by the Nominee in writing.
+							with the Client&apos;s Securities except as may otherwise be
+							expressly agreed to by the Nominee in writing.
 						</li>
 						<li>
 							In the event that the Client instructs the Nominee to sell,
@@ -493,10 +522,10 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 						<li>
 							The Client shall provide such information or documentation that
 							the Nominee may request from time to time to enable the Nominee
-							provide the Services; including copies of the Client&apos;s certificate
-							of incorporation, proof of directorships, regulatory licenses,
-							lists of Authorized Persons and any other information requested by
-							the Nominee for its files and records.
+							provide the Services; including copies of the Client&apos;s
+							certificate of incorporation, proof of directorships, regulatory
+							licenses, lists of Authorized Persons and any other information
+							requested by the Nominee for its files and records.
 						</li>
 						<li>
 							The Nominee shall not be held liable for any implied losses or
@@ -511,13 +540,13 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							Terms and Conditions.
 						</li>
 						<li>
-							The Client may, in accordance with the Nominee&apos;s requirements and
-							the Kestrel Terms and Conditions, appoint an Authorized Person(s)
-							to give instructions or other communications to the Nominee on
-							behalf of the Client and the terms of the Kestrel Terms and
-							Conditions and any agreement between the parties relating to the
-							appointment of Authorised Persons shall apply to such instructions
-							or communications.
+							The Client may, in accordance with the Nominee&apos;s requirements
+							and the Kestrel Terms and Conditions, appoint an Authorized
+							Person(s) to give instructions or other communications to the
+							Nominee on behalf of the Client and the terms of the Kestrel Terms
+							and Conditions and any agreement between the parties relating to
+							the appointment of Authorised Persons shall apply to such
+							instructions or communications.
 						</li>
 						<li>
 							The Nominee shall be entitled but is not obliged to, accept
@@ -569,9 +598,9 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							</li>
 							<li>
 								the Client is and shall at all times remain the ultimate and
-								absolute beneficial owner of the Client&apos;s Securities and the
-								only person entitled to all rights, title and interest in and to
-								the Client&apos;s Securities;
+								absolute beneficial owner of the Client&apos;s Securities and
+								the only person entitled to all rights, title and interest in
+								and to the Client&apos;s Securities;
 							</li>
 							<li>
 								the Client is legally authorized and empowered to represent and
@@ -579,8 +608,8 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							</li>
 							<li>
 								the Client is fully aware of all Market Regulations governing
-								the dealing of the Client&apos;s Securities and the Client shall at
-								all times observe and comply with all Market Regulations;
+								the dealing of the Client&apos;s Securities and the Client shall
+								at all times observe and comply with all Market Regulations;
 							</li>
 							<li>
 								the Client and any of its clients are sophisticated, qualified,
@@ -643,21 +672,21 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 					</ul>
 					<h2>Income and Capital Distribution</h2>
 					<p>
-						Subject to any of the Nominee&apos;s rights of deduction or set-off under
-						this Agreement, the Kestrel Terms and Conditions or under any Market
-						Regulations, the Nominee shall pay to the Client all collection or
-						receipt of dividends, distributions, proceeds of sale, benefits and
-						other things of value with respect to the Client&apos;s Securities at any
-						time whilst they are registered in the name of the Nominee or the
-						Nominee&apos;s nominees or any of its agents or any other person
-						appointed by the Nominee.
+						Subject to any of the Nominee&apos;s rights of deduction or set-off
+						under this Agreement, the Kestrel Terms and Conditions or under any
+						Market Regulations, the Nominee shall pay to the Client all
+						collection or receipt of dividends, distributions, proceeds of sale,
+						benefits and other things of value with respect to the Client&apos;s
+						Securities at any time whilst they are registered in the name of the
+						Nominee or the Nominee&apos;s nominees or any of its agents or any
+						other person appointed by the Nominee.
 					</p>
 					<h2>Relationship of the Parties and Liability</h2>
 					<p>
 						The provision of the Services does not constitute the Nominee as
 						trustee and the Nominee shall have no trust or other obligations in
-						respect of the Client&apos;s Securities except those contained in this
-						Agreement or as otherwise agreed by the Nominee in writing.
+						respect of the Client&apos;s Securities except those contained in
+						this Agreement or as otherwise agreed by the Nominee in writing.
 					</p>
 					<ul className='list-disc pl-10 mr-5'>
 						<li>
@@ -667,14 +696,15 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 						<li>
 							8.3 The Client shall at all times be liable for and irrevocably
 							agrees that the Nominee shall not be liable for any taxes or
-							duties payable on or in respect of the Client&apos;s Securities nor for
-							any diminution in the value of the Client&apos;s Securities. Without
-							prejudice to the foregoing, where the Nominee is liable for any
-							taxes under any law in relation to the Client&apos;s Securities
-							including, without limitation, any capital gains taxes, the Client
-							hereby agrees and undertakes to, within five (5) Business Days of
-							demand by the Nominee, pay the Nominee such amount as the Nominee
-							may demand to make payment of such taxes.
+							duties payable on or in respect of the Client&apos;s Securities
+							nor for any diminution in the value of the Client&apos;s
+							Securities. Without prejudice to the foregoing, where the Nominee
+							is liable for any taxes under any law in relation to the
+							Client&apos;s Securities including, without limitation, any
+							capital gains taxes, the Client hereby agrees and undertakes to,
+							within five (5) Business Days of demand by the Nominee, pay the
+							Nominee such amount as the Nominee may demand to make payment of
+							such taxes.
 						</li>
 						<li>
 							8.4 In addition to any exclusions under the Kestrel Terms and
@@ -717,9 +747,9 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							guarantees, covenants, indemnities, and agreements of the Client
 							contained herein, is a continuing guarantee and shall remain in
 							full force and effect and shall not be discharged until such time
-							as all of the Nominee&apos;s obligations shall be indefeasibly paid in
-							full in cash and duly performed or complied with in accordance
-							with the terms thereof.
+							as all of the Nominee&apos;s obligations shall be indefeasibly
+							paid in full in cash and duly performed or complied with in
+							accordance with the terms thereof.
 						</li>
 						<li>
 							The guarantee by the Client under this Clause is a guarantee of
@@ -735,11 +765,11 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 						</li>
 						<li>
 							The Client shall indemnify the Nominee and each and every of the
-							Nominee&apos;s Affiliates, sub-nominees, agents and any other person
-							appointed by it and their respective officers and employees and
-							keep the same fully indemnified at all times against any and all
-							claims, liabilities, damages, fees, costs and expenses of any kind
-							which may be incurred by any of them and all actions or
+							Nominee&apos;s Affiliates, sub-nominees, agents and any other
+							person appointed by it and their respective officers and employees
+							and keep the same fully indemnified at all times against any and
+							all claims, liabilities, damages, fees, costs and expenses of any
+							kind which may be incurred by any of them and all actions or
 							proceedings which may be brought against any of them in connection
 							with:
 						</li>
@@ -781,8 +811,8 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 								employee, agent or advisor of the Client; and
 							</li>
 							<li>
-								any failure, error, omission or delay of the Client&apos;s computer
-								or communications systems.
+								any failure, error, omission or delay of the Client&apos;s
+								computer or communications systems.
 							</li>
 						</ol>
 						<li>
@@ -818,9 +848,9 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							shall pre-fund and pay to the Nominee the purchase price and all
 							associated costs in full and cleared funds, unless agreed
 							otherwise in writing by the Nominee in advance. The Nominee shall
-							not be obliged to effect any of the Client&apos;s instructions under
-							this Agreement unless the Client shall have first performed its
-							obligations under this Clause.
+							not be obliged to effect any of the Client&apos;s instructions
+							under this Agreement unless the Client shall have first performed
+							its obligations under this Clause.
 						</li>
 						<li>
 							Should the Nominee commit any funds towards the purchase of
@@ -852,21 +882,21 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							responsible for and/or reimburse the Nominee on demand for any
 							taxes, third party fees or expenses that the Nominee may be
 							required to undertake as a result of providing services in respect
-							of any securities held, purchased or transferred on the Client&apos;s
-							behalf.
+							of any securities held, purchased or transferred on the
+							Client&apos;s behalf.
 						</li>
 						<li>
 							Any and all tax liabilities (including any capital gains tax) and
 							reporting requirements that may arise from the Services or may
-							otherwise be in connection with the Client&apos;s Securities shall at
-							all times be the responsibility of the Client
+							otherwise be in connection with the Client&apos;s Securities shall
+							at all times be the responsibility of the Client
 						</li>
 						<li>
 							The Client shall also forthwith upon the notice from the Nominee,
 							pay to and/or reimburse the Nominee all other costs and expenses
-							incurred by the Nominee, the Nominee&apos;s Affiliates, the Nominee&apos;s
-							nominees or any of its agents or any other person appointed by it
-							in the provision of the Services.
+							incurred by the Nominee, the Nominee&apos;s Affiliates, the
+							Nominee&apos;s nominees or any of its agents or any other person
+							appointed by it in the provision of the Services.
 						</li>
 						<li>
 							A statement as to the nature and amount of fees, costs and
@@ -887,15 +917,15 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 						<ol className='list-[lower-roman] ml-10 mr-5'>
 							<li>
 								be entitled to debit automatically and/or set-off against any of
-								the Client&apos;s Securities or any account of the Client with the
-								Nominee or its Affiliates in or towards settlement of such
+								the Client&apos;s Securities or any account of the Client with
+								the Nominee or its Affiliates in or towards settlement of such
 								outstanding amount(s); and
 							</li>
 							<li>
 								unless otherwise prohibited by law, have a lien over the
-								Securities with the power to sell any or all of the Client&apos;s
-								Securities in or towards settlement of such outstanding
-								amount(s).
+								Securities with the power to sell any or all of the
+								Client&apos;s Securities in or towards settlement of such
+								outstanding amount(s).
 							</li>
 						</ol>
 					</ul>
@@ -923,8 +953,8 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							All written notices or communication by the Nominee under this
 							Agreement may be sent to the last postal or e-mail address
 							notified to the Nominee by the Client or by posting such
-							information on Kestrel&apos;s website (whose details are provided in
-							Clause 12.1 above) and shall be deemed to have been received by
+							information on Kestrel&apos;s website (whose details are provided
+							in Clause 12.1 above) and shall be deemed to have been received by
 							the Client when sent to the relevant address or when posted on
 							Kestrel&apos;s website.
 						</p>
@@ -942,9 +972,9 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 					<h2>Termination</h2>
 					<ul className='list-disc'>
 						<li>
-							Either party may terminate this Agreement by thirty (30) days&apos;
-							written notice to the other unless the parties mutually agree on a
-							different time period.
+							Either party may terminate this Agreement by thirty (30)
+							days&apos; written notice to the other unless the parties mutually
+							agree on a different time period.
 						</li>
 						<li>
 							Notwithstanding Clause 13.1 above, the Nominee may give notice of
@@ -954,19 +984,20 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							the dissolution of the Client is made by a court of competent
 							jurisdiction or where a receivership order in relation to the
 							Client is made or issued or a receiver is appointed over or takes
-							possession of the Client&apos;s assets or where an encumbrancer takes
-							possession or otherwise sells any of the Client&apos;s assets or where
-							the Client makes an arrangement or composition with its creditors
-							generally or makes an application to a court of competent
-							jurisdiction for protection from its creditors generally.
+							possession of the Client&apos;s assets or where an encumbrancer
+							takes possession or otherwise sells any of the Client&apos;s
+							assets or where the Client makes an arrangement or composition
+							with its creditors generally or makes an application to a court of
+							competent jurisdiction for protection from its creditors
+							generally.
 						</li>
 						<li>
 							Any termination of this Agreement and any withdrawals of the
-							Client&apos;s Securities, whether or not following termination, shall
-							be without prejudice to the right of the Nominee to settle any
-							transactions entered into or to settle any liability incurred by
-							the Client under this Agreement or by the Nominee on behalf of the
-							Client prior to termination and/or at the discretion of the
+							Client&apos;s Securities, whether or not following termination,
+							shall be without prejudice to the right of the Nominee to settle
+							any transactions entered into or to settle any liability incurred
+							by the Client under this Agreement or by the Nominee on behalf of
+							the Client prior to termination and/or at the discretion of the
 							Nominee, to cancel any unexecuted instructions. The Client shall
 							remain liable for all cost and expense incurred as a result of the
 							Nominee settling such transactions and/or cancelling any
@@ -974,7 +1005,8 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 						</li>
 						<li>
 							Upon termination, the Nominee shall transfer (or cause to be
-							transferred) the Client&apos;s Securities as the Client shall direct.
+							transferred) the Client&apos;s Securities as the Client shall
+							direct.
 						</li>
 					</ul>
 					<h2>Kestrel Terms and Conditions</h2>
@@ -983,10 +1015,10 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 						Agreement as if the same were set out herein in extenso. If any
 						material inconsistency is revealed between the Kestrel Terms and
 						Conditions and this Agreement, the provisions of the Kestrel Terms
-						and Conditions shall prevail. References to &quot;Kestrel&quot; in the Kestrel
-						Terms and Conditions shall be deemed to refer to the Nominee and
-						references to the &quot;Client&quot; in the Kestrel Terms and Conditions shall
-						be deemed to refer to the Client.
+						and Conditions shall prevail. References to &quot;Kestrel&quot; in
+						the Kestrel Terms and Conditions shall be deemed to refer to the
+						Nominee and references to the &quot;Client&quot; in the Kestrel
+						Terms and Conditions shall be deemed to refer to the Client.
 					</p>
 					<h2>Non-exclusivity</h2>
 					<p>Nothing in this Agreement shall prevent:</p>
@@ -1005,8 +1037,8 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 							the Nominee or its Affiliates from contracting or entering into
 							any financial, banking, commercial, advisory or other transaction
 							with any company or body any of whose shares, stocks or bonds
-							shall for the time being form part of the Client&apos;s Securities or
-							from being interested in any such contract or transaction and
+							shall for the time being form part of the Client&apos;s Securities
+							or from being interested in any such contract or transaction and
 							neither Nominee nor its Affiliates shall be liable to account to
 							the Client for any profits or benefits made or derived by or in
 							connection with any such contract transaction or dealing.
@@ -1168,44 +1200,74 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 						</li>
 					</ul>
 				</div>
-                <div >
-                    <FormField
-                        control={ control }
-                        name={ fieldName }
-                        rules={ {
-                            required: "You must upload your signature to continue"
-                        }}
-                        render={ ( { field } ) => (
-                        <FormItem className='space-y-2'>
-                            <FormControl>
-                                <SignatureUploader
-                                    previewURL={signatureURL}
-                                    isLoading={signatureStatus.processing}
-                                        onFileUpload={ async( file ) =>
-                                        {
-                                            if ( !file ) return;
-                                            setSignatureStatus( status => ({ ...status, processing: false }) )
-                                            try
-                                            {
-                                                const base64URL = await SignatureProcessor.fileToURL( file );
-                                                field.onChange( base64URL );
-                                                setValue( `_formMetadata.applicant.${ applicantId }.kestrelSignatureFileName`,file.name );
+				<div>
+					<FormField
+						control={control}
+						name={fieldName}
+						rules={{
+							required: 'You must upload your signature to continue',
+						}}
+						render={({ field }) => (
+							<FormItem className='space-y-2'>
+								<FormControl>
+									<SignatureUploader
+										previewURL={previewURL}
+										isLoading={signatureStatus.processing}
+										onFileUpload={async (file) => {
+											if (!file) return;
 
-                                                setSignatureStatus( status => ( { ...status, processing: false } ) );
-                                            } catch ( error )
-                                            {
-                                                console.log( error );
-                                                setSignatureStatus( status => ( { processing: false, error: true } ) );
-                                            }
-                                    }}
-                                    fileName={kestrelSignatureFileName}
-                                    name={fieldName}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                        
-                    )}/>
+											setSignatureStatus((status) => ({
+												...status,
+												processing: true,
+											}));
+
+											const clientId = sessionStorage.getItem('clientId');
+
+											if (!clientId) {
+												setSignatureStatus((status) => ({
+													processing: false,
+													error: true,
+												}));
+												return;
+											}
+
+											const formData = {
+												file: file,
+											};
+
+											const uploadURL = await FormHelpers.statelessRequest<
+												typeof formData,
+												{ url: string }
+											>('/api/onboarding/uploads?clientId=' + clientId, {
+												method: 'POST',
+												data: formData,
+												headers: {
+													'Content-Type': 'multipart/form-data',
+												},
+											});
+
+											if (!uploadURL) {
+												setSignatureStatus((status) => ({
+													processing: false,
+													error: true,
+												}));
+												return;
+											}
+
+											field.onChange(uploadURL.url);
+											setValue(
+												`_formMetadata.applicant.${applicantId}.kestrelSignatureFileName`,
+												file.name
+											);
+										}}
+										fileName={kestrelSignatureFileName}
+										name={field.name}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 				</div>
 			</div>
 		</div>

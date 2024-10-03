@@ -138,7 +138,12 @@ const nextOfKinStepsMetadata: ReviewStepMetadata<NextOfKinSteps>[] = [
                 path: ( index: number ) => `applicant.${ index }.nextOfKin.proofOfIdentity.expiry`,
 			}
 		],
-	},
+    },
+    {
+        step: NextOfKinSteps.REVIEW,
+        header: "Review",
+        field: []
+    }
 ];
 
 

@@ -1,4 +1,5 @@
 import { BASE_URL } from '../vars/uri';
+import { FormHelpers } from './formHelpers';
 import axios from 'axios';
 
 interface UploadServerResponse {
@@ -54,30 +55,18 @@ export class SignatureProcessor {
 		}
 	};
 
-	static download = async (signatureURL: string):Promise<Blob | undefined> => {
-		if (!signatureURL ) return;
+	static download = async (fileName: string):Promise<string | undefined> => {
+        if ( !fileName ) return;
 
-		const signatureStorageURL = new URL(signatureURL);
-
-		const signatureFileName = signatureStorageURL.pathname.split('/').pop();
-
-		try {
-			const downloadProcessorRes = await axios(SIGNATURE_DOWNLOAD_URL, {
-				method: 'POST',
-				data: {
-					fileName: signatureFileName,
-                },
-                withCredentials: true,
+		const image = await FormHelpers.statelessRequest<{}, Blob>(
+            '/api/onboarding/download?file=' + fileName,
+            {
                 responseType: 'blob',
-            } );
-            
-			if (!downloadProcessorRes.data) return;
-            // const signatureURL = new Buffer( downloadProcessorRes.data ).toString( 'base64' );
-			return downloadProcessorRes.data;
-		} catch (error) {
-            console.log( error );
-            return;
-		}
+            }
+        );
+        const blob = new Blob([image]);
+
+        return URL.createObjectURL(blob);
     };
     
     static fileToURL = ( file: File ):Promise<string | ArrayBuffer | null> => 

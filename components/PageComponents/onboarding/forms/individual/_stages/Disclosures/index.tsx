@@ -30,7 +30,7 @@ export default function Disclosures({
 	countryList,
 }: DisclosuresProps) {
 	const [currentStep, setCurrentStep] = useState<DisclosuresSteps>(
-		DisclosuresSteps.SIGNATURE_UPLOAD
+		DisclosuresSteps.KESTREL_NOMINEE_AGREEMENT
     );
     const [ isValidating, setIsValidating ] = useState<boolean>( false );
     const { getValues,trigger } = useFormContext<IndividualFormSchema>()
@@ -122,10 +122,10 @@ export default function Disclosures({
 				maxSteps={disclosuresStepsMetadata.length}
 				currentStep={currentStep}
 			/>
-			<div className='row-span-5 flex flex-col grow'>
+			<div className='flex flex-col grow'>
 				{getStageStep(currentStep)}
 			</div>
-			<div className='flex items-center justify-end px-10 space-x-2 h-32'>
+			<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0'>
 				<Button
 					type='button'
 					variant={'outline'}

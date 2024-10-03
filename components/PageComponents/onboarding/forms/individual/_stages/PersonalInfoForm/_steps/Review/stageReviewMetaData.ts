@@ -507,7 +507,12 @@ const personalFormStepsMetadata: ReviewStepMetadata<PersonalInformationSteps>[] 
             },
             
 		],
-	},
+    },
+    {
+        step: PersonalInformationSteps.REVIEW,
+        header: "Review",
+        field: []
+    }
 ];
 
 

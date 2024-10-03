@@ -37,7 +37,7 @@ export default function AfrinvestPrivacyPolicy() {
 				</FormSubHeader>
 			</FormHeader>
 			<FormContent>
-				<div className='text-base font-normal leading-relaxed px-6 py-10 bg-neutral-50 rounded-md border border-neutral-100 space-y-6 h-3/4 max-h-[28rem] overflow-auto max-w-prose '>
+				<div className='text-base font-normal leading-relaxed px-6 py-10 bg-neutral-50 rounded-md border border-neutral-100 space-y-6 overflow-auto max-w-prose '>
 					<p>
 						We will like to hold and process your personal data for the
 						provision of financial services to you subject to your express

@@ -24,7 +24,6 @@ import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
 import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
-
 interface SignatureUploadProps {}
 
 export default function SignatureUpload({}: SignatureUploadProps) {
@@ -44,14 +43,16 @@ export default function SignatureUpload({}: SignatureUploadProps) {
 					{applicant.map((c, i) => (
 						<Accordion
 							key={c.id}
-                            type='single'
-                            defaultValue='item-1'
+							type='single'
+							defaultValue='item-1'
 							collapsible>
 							<AccordionItem value={`item-${c.id}`}>
 								<AccordionTrigger>
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
-								<AccordionContent className='data-[state=closed]:hidden' forceMount>
+								<AccordionContent
+									className='data-[state=closed]:hidden'
+									forceMount>
 									<SignatureUploadForm applicantId={i} />
 								</AccordionContent>
 							</AccordionItem>
@@ -63,22 +64,44 @@ export default function SignatureUpload({}: SignatureUploadProps) {
 	);
 }
 
-type SignatureUploadFormProps = Pick<SingleCategoryForm,'applicantId'>
+type SignatureUploadFormProps = Pick<SingleCategoryForm, 'applicantId'>;
 
 function SignatureUploadForm({ applicantId }: SignatureUploadFormProps) {
 	const [isProcessingSignature, setIsProcessingSignature] =
-        useState<boolean>( false );
-    const [ signatureError, setSignatureError ] = useState<boolean>( false );
-    const { control, setValue, getValues } = useFormContext<IndividualFormSchema>();
-    
+		useState<boolean>(false);
+	const [signatureError, setSignatureError] = useState<boolean>(false);
+	const [previewURL, setPreviewURL] = useState<string>('');
+	const { control, setValue, getValues } =
+		useFormContext<IndividualFormSchema>();
 
-    const currentSignatureURL = getValues( `applicant.${ applicantId }.disclosures.signatureURL` );
-    const currentNativeSignatureFileName = getValues( `_formMetadata.applicant.${ applicantId }.signatureFileName` );
-    
-    if ( signatureError )
-    {
-        return <p className='p-10'>Something went wrong! Please try again later</p>
-    }
+	const currentSignatureURL = getValues(
+		`applicant.${applicantId}.disclosures.signatureURL`
+	);
+	const currentNativeSignatureFileName = getValues(
+		`_formMetadata.applicant.${applicantId}.signatureFileName`
+	);
+
+	useEffect(() => {
+		const downloadImgURL = async (fileName: string) => {
+			const fileURL = await SignatureProcessor.download(fileName);
+
+			if (fileURL) {
+				setPreviewURL(fileURL);
+				setIsProcessingSignature(false);
+				return;
+			}
+
+			setSignatureError(true);
+		};
+
+		if (currentSignatureURL) {
+			downloadImgURL(currentSignatureURL);
+		}
+	}, [currentSignatureURL]);
+
+	if (signatureError) {
+		return <p className='p-10'>Something went wrong! Please try again later</p>;
+	}
 
 	return (
 		<>
@@ -87,64 +110,63 @@ function SignatureUploadForm({ applicantId }: SignatureUploadFormProps) {
 				<div>
 					<FormField
 						control={control}
-                        name={ `applicant.${ applicantId }.disclosures.signatureURL` }
-                        rules={ {
-                            required: "You must upload your signature to continue"
-                        }}
+						name={`applicant.${applicantId}.disclosures.signatureURL`}
+						rules={{
+							required: 'You must upload your signature to continue',
+						}}
 						render={({ field }) => (
 							<FormItem className='space-y-2'>
 								<FormControl>
 									<SignatureUploader
-										previewURL={currentSignatureURL}
-                                        onFileUpload={ async( file ) =>
-                                        {
-                                            if ( !file ) return;
-                                            setIsProcessingSignature( true );
+										previewURL={previewURL}
+										onFileUpload={async (file) => {
+											if (!file) return;
+											setIsProcessingSignature(true);
 
-                                            const clientId = sessionStorage.getItem( "clientId" )
-                                            
-                                            if ( !clientId )
-                                            {
-                                                setSignatureError( true );
-                                                setIsProcessingSignature( false );
-                                            }
+											const clientId = sessionStorage.getItem('clientId');
 
-                                            try {
-                                                
-                                                const formData = {
-                                                    file: file,
-                                                    fileName: file.name
-                                                }
+											if (!clientId) {
+												setSignatureError(true);
+												setIsProcessingSignature(false);
+												return;
+											}
 
-                                                const res = await FormHelpers.statelessRequest( "/api/onboarding/uploads?" + `clientId=${clientId}`, {
-                                                    data: formData,
-                                                    method: "POST",
-                                                    headers: {
-                                                        "Content-Type": "multipart/form-data"
-                                                    },
-                                                    responseType: 'blob'
-                                                })
-                                                
-                                                const blob = new Blob( [ res ] );
+											try {
+												const formData = {
+													file: file,
+												};
 
-                                                const url = URL.createObjectURL( blob )
+												const res = await FormHelpers.statelessRequest<
+													typeof formData,
+													{ url: string }
+												>('/api/onboarding/uploads?clientId=' + clientId, {
+													data: formData,
+													method: 'POST',
+													headers: {
+														'Content-Type': 'multipart/form-data',
+													},
+												});
 
-                                                field.onChange( url );
+												if (!res) {
+													setIsProcessingSignature(false);
+													setSignatureError(true);
+													return;
+												}
 
-                                                setValue( `_formMetadata.applicant.${ applicantId }.signatureFileName`, file.name );
-                                                
-                                                setIsProcessingSignature( false );
+												field.onChange(res.url);
 
-                                            } catch ( error )
-                                            {
-                                                setIsProcessingSignature( false );
-                                                // setSignatureError(true)
-                                                console.log(error)
-                                            }
-                                        } }
-                                        name={ field.name }
-                                        isLoading={ isProcessingSignature }
-                                        fileName={currentNativeSignatureFileName}
+												setValue(
+													`_formMetadata.applicant.${applicantId}.signatureFileName`,
+													file.name
+												);
+											} catch (error) {
+												setIsProcessingSignature(false);
+												console.log(error);
+											}
+										}}
+										name={field.name}
+										isLoading={isProcessingSignature}
+										fileName={currentNativeSignatureFileName}
 									/>
 								</FormControl>
 								<FormMessage />

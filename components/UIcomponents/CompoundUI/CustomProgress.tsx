@@ -10,7 +10,7 @@ type CustomProgressProps<TFormSteps> = {
 
 export default function CustomProgress<TFormSteps>( { maxSteps, currentStep, disable }: CustomProgressProps<TFormSteps> )
 {
-    const progressPercentage = ( ( ( currentStep as number) - 1) / maxSteps ) * 100;
+    const progressPercentage = ( (  currentStep as number) / maxSteps ) * 100;
 
     return (
         <div className={'fixed top-3 left-0 z-[70] sm:max-w-xs w-2/6 min-w-72 h-24 flex flex-col justify-center items-center p-6 text-neutral-700'}>

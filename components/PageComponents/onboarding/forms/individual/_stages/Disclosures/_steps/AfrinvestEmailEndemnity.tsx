@@ -33,7 +33,7 @@ export default function AfrinvestEmailEndemnity() {
 				<FormTitle>Email Indemnity - Afrinvest</FormTitle>
 			</FormHeader>
 			<FormContent>
-				<div className='text-base font-normal leading-relaxed px-6 py-10 bg-neutral-50 rounded-md border border-neutral-100 space-y-6 h-3/4 max-w-prose '>
+				<div className='text-base font-normal leading-relaxed px-6 py-10 bg-neutral-50 rounded-md border border-neutral-100 space-y-6 max-w-prose '>
 					<p>
 						In consideration of Afrinvest Securities Limited (the “Company)
 						agreeing to accept and honour electronic mail instructions from

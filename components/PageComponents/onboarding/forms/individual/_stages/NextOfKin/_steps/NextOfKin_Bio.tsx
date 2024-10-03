@@ -298,8 +298,8 @@ function NextOfKinBioForm({ applicantId, countryList }: SingleCategoryForm) {
                         required: "Select marital status",
                     }}
 					render={({ field }) => (
-						<FormItem space-y-2>
-							<FormLabel>Marital Status</FormLabel>
+						<FormItem >
+							<FormLabel className='space-y-2'>Marital Status</FormLabel>
 							<div className=' grid grid-cols-4 gap-x-3 gap-y-5'>
 								{MULTI_CHOICE_RESPONSES.bio.maritalStatus.map((s) => (
 									<CustomToggle

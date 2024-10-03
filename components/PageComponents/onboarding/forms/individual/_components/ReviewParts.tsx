@@ -167,16 +167,41 @@ function ImageFieldReviewer({
 }: {
 	value: PossibleFormEntryTypes;
 	name: string;
-}) {
+    } )
+{
+    const [ isLoading, setIsLoading ] = useState<boolean>( true );
+    const [ imageURL, setImageURL ] = useState<string>( "" );
+    
+    useEffect( () =>
+    {
+
+        const downloadImg = async ( fileName: string ) =>
+        {
+            const imgURL = await SignatureProcessor.download( fileName );
+
+            if ( imgURL )
+            {
+                setImageURL( imgURL );
+            }
+
+            setIsLoading( false );
+        }
+
+        if ( value )
+        {
+            downloadImg( value.at( 0 ) as string );
+        }
+        
+    }, [ value ])
 	return (
 		<div className='space-y-3'>
 			<h3 className='text-base font-medium capitalize text-neutral-700'>
 				{name}
 			</h3>
 			<div className='relative h-[130px] w-2/5'>
-				{value.length > 0 ? (
+				{ !isLoading ? (
 					<Image
-						src={value.at(0) as string}
+						src={imageURL}
 						fill
 						className='object-cover'
 						alt={`${name} review image`}

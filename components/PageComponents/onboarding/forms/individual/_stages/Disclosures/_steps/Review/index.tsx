@@ -24,7 +24,7 @@ export default function Review({ jumpToStep }: ReviewProps<DisclosuresSteps>) {
 
     const completedForm = useMemo( () => watch(), [ watch ] );
     
-    console.log( getValues );
+    console.log( getValues() );
     
 	return (
 		<>
