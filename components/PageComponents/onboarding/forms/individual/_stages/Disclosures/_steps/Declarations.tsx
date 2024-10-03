@@ -24,7 +24,7 @@ import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
 
 export default function Declarations() {
 	const form = useFormContext<IndividualFormSchema>();
-	const { watch } = form;
+	const { watch} = form;
 
 	const applicant = useMemo(() => watch('applicant'), [watch]);
 

@@ -22,6 +22,7 @@ import type { IndividualFormSchema } from '@/types/forms/individual';
 import { useMemo, useState, useEffect } from 'react';
 import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
 import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
+import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 
 interface SignatureUploadProps {}
@@ -100,11 +101,35 @@ function SignatureUploadForm({ applicantId }: SignatureUploadFormProps) {
                                             if ( !file ) return;
                                             setIsProcessingSignature( true );
 
-                                            try {
-                                                const base64ImgURL = await SignatureProcessor.fileToURL( file );
+                                            const clientId = sessionStorage.getItem( "clientId" )
+                                            
+                                            if ( !clientId )
+                                            {
+                                                setSignatureError( true );
+                                                setIsProcessingSignature( false );
+                                            }
 
-                                                console.log(base64ImgURL)
-                                                field.onChange( base64ImgURL );
+                                            try {
+                                                
+                                                const formData = {
+                                                    file: file,
+                                                    fileName: file.name
+                                                }
+
+                                                const res = await FormHelpers.statelessRequest( "/api/onboarding/uploads?" + `clientId=${clientId}`, {
+                                                    data: formData,
+                                                    method: "POST",
+                                                    headers: {
+                                                        "Content-Type": "multipart/form-data"
+                                                    },
+                                                    responseType: 'blob'
+                                                })
+                                                
+                                                const blob = new Blob( [ res ] );
+
+                                                const url = URL.createObjectURL( blob )
+
+                                                field.onChange( url );
 
                                                 setValue( `_formMetadata.applicant.${ applicantId }.signatureFileName`, file.name );
                                                 
@@ -113,7 +138,7 @@ function SignatureUploadForm({ applicantId }: SignatureUploadFormProps) {
                                             } catch ( error )
                                             {
                                                 setIsProcessingSignature( false );
-                                                setSignatureError(true)
+                                                // setSignatureError(true)
                                                 console.log(error)
                                             }
                                         } }

@@ -5,7 +5,8 @@ interface UploadServerResponse {
 	url: string;
 }
 
-const SIGNATURE_UPLOAD_URL = '/api/onboarding/uploads';
+// const SIGNATURE_UPLOAD_URL = '/api/onboarding/uploads';
+const SIGNATURE_UPLOAD_URL = BASE_URL + '/upload';
 const SIGNATURE_DOWNLOAD_URL = BASE_URL + '/download';
 
 export class SignatureProcessor {
@@ -23,8 +24,8 @@ export class SignatureProcessor {
 	static upload = async (file: File, clientId: string) => {
 		if (!File || !clientId) return;
 
-		const renamedFile = this.modifyFileName(file, clientId);
-
+        const renamedFile = this.modifyFileName( file, clientId );
+        
 		const payload = new FormData();
 
 		payload.append('file', renamedFile);
@@ -42,7 +43,10 @@ export class SignatureProcessor {
 
 			if (res.status === 200) {
 				return res.data.url;
-			}
+            }
+            
+
+            console.log(res)
 
 			return;
 		} catch (error) {
@@ -50,7 +54,7 @@ export class SignatureProcessor {
 		}
 	};
 
-	static download = async (signatureURL: string) => {
+	static download = async (signatureURL: string):Promise<Blob | undefined> => {
 		if (!signatureURL ) return;
 
 		const signatureStorageURL = new URL(signatureURL);
@@ -58,22 +62,21 @@ export class SignatureProcessor {
 		const signatureFileName = signatureStorageURL.pathname.split('/').pop();
 
 		try {
-			const downloadProcessorRes = await axios<Blob>(SIGNATURE_DOWNLOAD_URL, {
+			const downloadProcessorRes = await axios(SIGNATURE_DOWNLOAD_URL, {
 				method: 'POST',
 				data: {
 					fileName: signatureFileName,
-				},
-				responseType: 'blob',
-				withCredentials: true,
-			});
-
+                },
+                withCredentials: true,
+                responseType: 'blob',
+            } );
+            
 			if (!downloadProcessorRes.data) return;
-
-			const signatureURL = URL.createObjectURL(downloadProcessorRes.data);
-
-			return signatureURL;
+            // const signatureURL = new Buffer( downloadProcessorRes.data ).toString( 'base64' );
+			return downloadProcessorRes.data;
 		} catch (error) {
-			console.log(error);
+            console.log( error );
+            return;
 		}
     };
     
