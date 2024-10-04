@@ -1,6 +1,6 @@
 import { Button } from '@/components/UIcomponents/ui/button';
 import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect} from 'react';
 import { useRouter } from 'next/router';
 import {
 	FormContent,
@@ -10,9 +10,6 @@ import {
 } from '@/components/UIcomponents/FormLayout';
 import { BASE_URL } from '@/utils/vars/uri';
 import axios from 'axios';
-import { UserActions } from '@/utils/clientActions/userActions';
-import Loading from '@/components/UIcomponents/Loading';
-import { UserContext } from '@/Contexts/UserProfileProvider';
 
 const formOptions = [
 	{
@@ -34,20 +31,18 @@ const formOptions = [
 
 const BROKER_INFO_URL = BASE_URL + '/';
 
+
+
 export default function KycFormOptions() {
 	const router = useRouter();
 	const [formID, setFormID] = useState<string>('');
 	const [selectionError, setSelectionError] = useState<string>('');
-    const [ isLoading, setIsLoading ] = useState<boolean>( false );
     
-    //use app wide context;
-    const appWideData = useContext( UserContext );
-
 	const handleFormSelection = (formIDUpdate: string) => setFormID(formIDUpdate);
 
 	const handleContinue = () => {
-		const selectedForm = formOptions.filter((o) => o.id === formID).at(0);
-        if ( selectionError ) return;
+        const selectedForm = formOptions.filter( ( o ) => o.id === formID ).at( 0 );
+        
 		if (!selectedForm) {
 			setSelectionError('form selection failure');
 			return;
@@ -58,58 +53,10 @@ export default function KycFormOptions() {
 		router.replace('/onboarding' + formPath);
 	};
 
-	const initOnboardingIds = async () => {
-		const { slug } = router.query;
-
-		if (!slug || !Array.isArray(slug)) {
-			router.replace('/404');
-			return;
-		}
-
-        const [ clientId, submissionId ] = slug;
-
-        try {
-            setIsLoading(true)
-    
-            const isValid = await UserActions.isClientIdValid( clientId );
-
-            if ( !isValid  )
-            {
-                setIsLoading( false );
-                setSelectionError( "This link has expired. Contact your broker for a new one!" )
-                return;
-            }
-    
-            const broker = await UserActions.getUserAndBrokerInfo( clientId, submissionId );
-
-            if ( !broker )
-            {
-                setIsLoading( false );
-                setSelectionError( 'Failed to load broker information. Please contact system admin' );
-                return;
-            }
-
-            appWideData?.getOnboardingFacts( {
-                clientID: clientId,
-                broker: {...broker}
-            })
-            
-            setIsLoading( false );
-            
-        } catch (error) {
-            console.log( error );
-        }
-    
-	};
-
-	useEffect(() => {
-		initOnboardingIds();
-    }, [] );
-    
+	
 
 	return (
         <>
-            { isLoading && <Loading/> }
 			<FormHeader>
 				<FormTitle>KYC Verification</FormTitle>
 				<FormSubHeader>

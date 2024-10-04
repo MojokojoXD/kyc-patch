@@ -64,7 +64,7 @@ const individualFormMetadata = [
 	},
 ];
 
-export default function IndividualKycForm() {
+export default function IndividualKycFormPage() {
 	const [currentFormStage, setCurrentFormStage] =
 		useState<IndividualFormStages>(IndividualFormStages.INTRO);
 
