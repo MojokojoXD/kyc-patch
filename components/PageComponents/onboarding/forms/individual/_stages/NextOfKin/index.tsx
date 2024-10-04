@@ -112,7 +112,7 @@ export default function NextOfKin({
 			<div className='row-span-5 flex flex-col grow'>
 				{getStageStep(currentStep)}
 			</div>
-			<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0'>
+			<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0 bg-white'>
 				<Button
 					type='button'
 					variant={'outline'}

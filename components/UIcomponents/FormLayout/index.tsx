@@ -9,18 +9,23 @@ interface FormHeaderProps {
 
 function FormHeader({ children }: FormHeaderProps) {
 	return (
-		<div className={`rounded-xl overflow-hidden sticky row-span-4 top-0 z-10 bg-white ${children ? "" : ""}`}>
-			<div className='h-[98px] bg-neutral-100 flex justify-center items-center overflow-hidden'>
-				<Image
-					priority
-                    src={ logo }
-                    width={ 150 }
-					alt='SSX Logo'
-				/>
+		<div className='rounded-t-xl row-span-4 bg-white sticky top-0 overflow-hidden z-10'>
+            <div className='h-[98px] bg-neutral-100 flex justify-center items-center'>
+                <div className='h-[150px] w-[149px] relative'>
+                    <Image
+                        priority
+                        src={ logo }
+                        fill
+                        className='object-contain'
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        alt='SSX Logo'
+                    />
+
+                </div>
 			</div>
-            <div className='px-10 py-5 space-y-3 min-h-16'>
-                { children }
-            </div>
+			<div className='flex flex-col pt-[40px] px-[40px] pb-[20px] justify-center'>
+				<div className='space-y-[8px]'>{children}</div>
+			</div>
 		</div>
 	);
 }
@@ -28,35 +33,44 @@ function FormHeader({ children }: FormHeaderProps) {
 type FormTitleProps = FormHeaderProps & object;
 
 function FormTitle({ children }: FormTitleProps) {
-	return <h1 className={`text-2xl font-bold text-neutral-700`}>{children}</h1>;
+	return <h1 className={`heading5Bold`}>{children}</h1>;
 }
 
 type FormSubHeaderProps = FormHeaderProps & object;
 
 function FormSubHeader({ children }: FormSubHeaderProps) {
 	return (
-		<p className='max-w-prose leading-relaxed text-neutral-500 text-base'>
-			{children}
-		</p>
+		<p className='max-w-prose text-neutral-500 paragraph2Regular'>{children}</p>
 	);
 }
 
 type FormContentProps = FormHeaderProps & ComponentPropsWithoutRef<'div'>;
 
-export function FormContent({ children,className, ...props }: FormContentProps) {
+export function FormContent({
+	children,
+	className,
+	...props
+}: FormContentProps) {
 	return (
-		<div className={cn('px-10 pt-5 space-y-8 border-t border-neutral-100 grow oveflow-auto',className)} {...props}>{children}</div>
+		<div
+			className={cn(
+				'bg-white px-[40px] pb-[40px] pt-[20px] space-y-8 grow',
+				className
+			)}
+			{...props}>
+			{children}
+		</div>
 	);
 }
 
 type FormLayoutProps = FormHeaderProps & object;
 
-function FormLayout({children}: FormLayoutProps) {
+function FormLayout({ children }: FormLayoutProps) {
 	return (
-        <div className='h-screen grid grid-cols-3 w-full bg-neutral-50 '>
-            <div className='col-start-2 w-full col-span-2 overscroll-none h-full flex items-center relative overflow-hidden'>
-                <div className='w-full max-w-2xl rounded-xl bg-white h-[90vh] top-10 absolute overflow-auto mb-10'>
-                    {children}
+		<div className='w-full h-screen'>
+            <div className='relative w-full bg-neutral-50 h-screen flex justify-center'>
+                <div className='w-full max-w-[716px] h-fit min-h-80 absolute top-[5%] rounded-xl bg-white'>
+                    { children }
                 </div>
             </div>
 		</div>

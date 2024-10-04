@@ -17,18 +17,28 @@ import {
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individual';
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect, useRef, useContext } from 'react';
 import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
 import { format } from 'date-fns';
 import SignatureUploader from '@/components/UIcomponents/CompoundUI/SignatureUploader';
 import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
+import { UserContext } from '@/Contexts/UserProfileProvider';
 
 export default function KestrelNominee() {
 	const form = useFormContext<IndividualFormSchema>();
 	const { watch } = form;
 
 	const applicant = useMemo(() => watch('applicant'), [watch]);
+
+    const appWideData = useContext( UserContext );
+
+    let onboardingFacts = appWideData?.onboardingFacts;
+
+    if ( !onboardingFacts )
+    {
+        return <p className='p-10'>Something went wrong! Please try again later</p>
+    }
 
 	return (
 		<>
@@ -52,7 +62,10 @@ export default function KestrelNominee() {
 								<AccordionContent
 									className='data-[state=closed]:hidden'
 									forceMount>
-									<KestrelNomineeForm applicantId={i} />
+									<KestrelNomineeForm
+										applicantId={i}
+										clientID={ onboardingFacts.clientID }
+									/>
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>
@@ -63,9 +76,14 @@ export default function KestrelNominee() {
 	);
 }
 
-type KestrelNomineeFormProps = Pick<SingleCategoryForm, 'applicantId'>;
+type KestrelNomineeFormProps = Pick<SingleCategoryForm, 'applicantId'> & {
+	clientID: string;
+};
 
-function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
+function KestrelNomineeForm({
+	applicantId,
+	clientID,
+}: KestrelNomineeFormProps) {
 	const { getValues, setValue, control } =
 		useFormContext<IndividualFormSchema>();
 	const [signatureStatus, setSignatureStatus] = useState({
@@ -92,10 +110,11 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 		},
 	} = getValues(`applicant.${applicantId}`);
 
-
 	const today = format(new Date(), 'M/d/yyyy');
 	const fieldName =
-		`applicant.${applicantId}.disclosures.kestrel.nomineeAgreement.signatureURL` as const;
+        `applicant.${ applicantId }.disclosures.kestrel.nomineeAgreement.signatureURL` as const;
+    
+    
 
 	useEffect(() => {
 		const downloadImg = async (fileName: string) => {
@@ -1221,16 +1240,6 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 												processing: true,
 											}));
 
-											const clientId = sessionStorage.getItem('clientId');
-
-											if (!clientId) {
-												setSignatureStatus((status) => ({
-													processing: false,
-													error: true,
-												}));
-												return;
-											}
-
 											const formData = {
 												file: file,
 											};
@@ -1238,7 +1247,7 @@ function KestrelNomineeForm({ applicantId }: KestrelNomineeFormProps) {
 											const uploadURL = await FormHelpers.statelessRequest<
 												typeof formData,
 												{ url: string }
-											>('/api/onboarding/uploads?clientId=' + clientId, {
+											>('/api/onboarding/uploads?clientId=' + clientID, {
 												method: 'POST',
 												data: formData,
 												headers: {

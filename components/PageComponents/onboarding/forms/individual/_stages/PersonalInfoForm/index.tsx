@@ -69,7 +69,9 @@ export default function PersonalInformation({
 
 
 			//@ts-expect-error Unable to profile literal type for fieldsToValidate and trigger method
-			const isValid = await trigger(fieldsToValidate, { shouldFocus: true });
+            const isValid = await trigger( fieldsToValidate, { shouldFocus: true } );
+            
+            // const isValid = true;
 
 			if (prevStepCache.current && isValid) {
 				const temp = prevStepCache.current;
@@ -156,7 +158,7 @@ export default function PersonalInformation({
 			<div className='flex flex-col grow'>
 				{getStageStep(currentStep)}
 			</div>
-			<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0'>
+			<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0 bg-white'>
 				<Button
 					type='button'
 					variant={'outline'}
@@ -166,12 +168,11 @@ export default function PersonalInformation({
 				<Button
 					type='button'
 					disabled={isValidating}
-					className='w-1/5'
 					onClick={() => handleNextStep()}>
 					{(isValidating )? (
 						<LoaderCircle className='w-5 h-5 animate-spin' />
 					) : (
-						'Continue'
+						'Save & Continue'
 					)}
 				</Button>
 			</div>

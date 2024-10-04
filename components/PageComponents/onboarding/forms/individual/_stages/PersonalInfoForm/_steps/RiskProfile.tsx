@@ -578,7 +578,6 @@ function RiskProfileForm({ applicantId }: RiskProfileFormProps) {
                                         field.onChange( e.target.checked.toString())
                                     }  }
                                     type='checkbox'
-                                    className='text-base py-10'
                                     selected={field.value === 'true'}
                                 />                   
                             </FormControl>

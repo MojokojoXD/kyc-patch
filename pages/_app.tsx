@@ -2,6 +2,38 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import UserContextProvider from '@/Contexts/UserProfileProvider';
+import localFont from 'next/font/local'
+
+const circular = localFont({
+    src: [
+      {
+        path: '../public/fonts/Circular_Pro_Black.ttf',
+        weight: '900',
+            style: 'normal',
+      },
+      {
+        path: '../public/fonts/Circular_Pro_Bold.ttf',
+        weight: '700',
+        style: 'normal',
+        },
+        {
+            path: '../public/fonts/Circular_Pro_Book.ttf',
+            weight: '400',
+            style: 'normal'
+      },
+      {
+        path: '../public/fonts/Circular_Pro_Medium.ttf',
+        weight: '500',
+        style: 'normal',
+      },
+      {
+        path: '../public/fonts/Circular_Pro_Light.otf',
+        weight: '100',
+          style: 'normal',
+        
+      },
+    ],
+  })
 
 export default function App( { Component, pageProps }: AppProps ) 
 {
@@ -17,7 +49,7 @@ export default function App( { Component, pageProps }: AppProps )
     }
 
 	return (
-		<>
+		<main className={ circular.className }>
 			<Head>
 				<title>SecondSTAX KYC</title>
 				<link
@@ -30,6 +62,6 @@ export default function App( { Component, pageProps }: AppProps )
             <UserContextProvider>
                     <Component {...pageProps} />
 			</UserContextProvider>
-		</>
+		</main>
 	);
 }

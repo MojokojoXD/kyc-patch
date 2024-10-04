@@ -20,9 +20,9 @@ export default function IndividualFormIntro({
                 <FormHeader>
                     <FormTitle>KYC Verification</FormTitle>
                 </FormHeader>
-                <FormContent className=''>
+                <FormContent >
                     <CustomProgress disable maxSteps={1} currentStep={0}/>
-                    <div className='max-w-prose leading-relaxed overflow-y-scroll text-base font-normal my-5 text-neutral-700 p-5 grow space-y-3'>
+                    <div className='max-w-prose paragraph2Medium text-neutral-700 grow space-y-1.5'>
                         <p>
                             Kindly comply with regulations and help us secure our platform and
                             users with our quick and easy verification process. Some questions
@@ -36,7 +36,7 @@ export default function IndividualFormIntro({
                             documents. See details of the application below:
                         </p>
                     </div>
-                    <div className='flex items-center justify-end px-10 space-x-2 h-32'>
+                    <div className='flex items-center justify-end space-x-2 h-32'>
                         <Button
                             type='button'
                             onClick={() => nextStage()}>

@@ -99,7 +99,7 @@ const FormLabel = React.forwardRef<
 		<Label
 			ref={ref}
 			className={cn(
-				'font-medium text-base text-neutral-800 block',
+				'paragraph2Medium text-neutral-800 block',
 				error && 'text-error-500 dark:text-error-500',
 				className
 			)}

@@ -19,19 +19,31 @@ import {
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individual';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useContext } from 'react';
 import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
 import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
+import { UserContext } from '@/Contexts/UserProfileProvider';
+import { useRouter } from 'next/router';
 
 interface SignatureUploadProps {}
 
 export default function SignatureUpload({}: SignatureUploadProps) {
 	const form = useFormContext<IndividualFormSchema>();
+	const router = useRouter();
 	const { watch } = form;
 
-	const applicant = useMemo(() => watch('applicant'), [watch]);
+	const appWideData = useContext(UserContext);
 
+    const applicant = useMemo( () => watch( 'applicant' ), [ watch ] );
+    
+    let onboardingFacts = appWideData?.onboardingFacts;
+
+    if ( !onboardingFacts )
+    {
+        return <p className='p-10'>Something went wrong! Please try again later</p>
+    }
+    
 	return (
 		<>
 			<FormHeader>
@@ -53,7 +65,10 @@ export default function SignatureUpload({}: SignatureUploadProps) {
 								<AccordionContent
 									className='data-[state=closed]:hidden'
 									forceMount>
-									<SignatureUploadForm applicantId={i} />
+									<SignatureUploadForm
+										applicantId={i}
+										clientID={onboardingFacts.clientID}
+									/>
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>
@@ -64,9 +79,14 @@ export default function SignatureUpload({}: SignatureUploadProps) {
 	);
 }
 
-type SignatureUploadFormProps = Pick<SingleCategoryForm, 'applicantId'>;
+type SignatureUploadFormProps = Pick<SingleCategoryForm, 'applicantId'> & {
+	clientID: string;
+};
 
-function SignatureUploadForm({ applicantId }: SignatureUploadFormProps) {
+function SignatureUploadForm({
+	applicantId,
+	clientID,
+}: SignatureUploadFormProps) {
 	const [isProcessingSignature, setIsProcessingSignature] =
 		useState<boolean>(false);
 	const [signatureError, setSignatureError] = useState<boolean>(false);
@@ -123,14 +143,6 @@ function SignatureUploadForm({ applicantId }: SignatureUploadFormProps) {
 											if (!file) return;
 											setIsProcessingSignature(true);
 
-											const clientId = sessionStorage.getItem('clientId');
-
-											if (!clientId) {
-												setSignatureError(true);
-												setIsProcessingSignature(false);
-												return;
-											}
-
 											try {
 												const formData = {
 													file: file,
@@ -139,7 +151,7 @@ function SignatureUploadForm({ applicantId }: SignatureUploadFormProps) {
 												const res = await FormHelpers.statelessRequest<
 													typeof formData,
 													{ url: string }
-												>('/api/onboarding/uploads?clientId=' + clientId, {
+												>('/api/onboarding/uploads?clientId=' + clientID, {
 													data: formData,
 													method: 'POST',
 													headers: {

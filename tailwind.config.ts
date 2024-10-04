@@ -9,7 +9,8 @@ module.exports = {
       "./lib/**/*.{js,ts,jsx,tsx,mdx}",
     ],
     theme: {
-    	extend: {
+        extend: {
+            
     		gridTemplateColumns: {
     			'6': 'repeat(6, minmax(0, 1fr))',
     			'13': 'repeat(13, minmax(0, 1fr))',

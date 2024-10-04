@@ -62,7 +62,7 @@ export default function BiographicalInfo({
 				</FormSubHeader>
 			</FormHeader>
 			<FormContent>
-				<div className='space-y-10 py-5'>
+				<div className='space-y-[8px]'>
 					{applicant.map((c, i) => (
 						<Accordion
 							key={c.id}
@@ -74,7 +74,7 @@ export default function BiographicalInfo({
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
                                 <AccordionContent
-									className='space-y-8 data-[state=closed]:hidden' forceMount>
+									className='data-[state=closed]:hidden' forceMount>
 									<BiographicalForm
 										applicantId={i}
 										countryList={countryList}
@@ -114,7 +114,7 @@ function BiographicalForm({ applicantId, countryList }: SingleCategoryForm) {
 		<>
 			{/* title */}
 			<div>
-				<div className='space-y-6'>
+				<div className='space-y-[16px]'>
 					<FormField
 						control={control}
 						name={`applicant.${applicantId}.title.presets`}
@@ -182,7 +182,7 @@ function BiographicalForm({ applicantId, countryList }: SingleCategoryForm) {
                 <FormLabel
                     className={ !isFullNameValid ? "text-error-500" : undefined }
                 >Full Name</FormLabel>
-				<div className='grid grid-cols-3 gap-x-1.5'>
+				<div className='grid grid-cols-3 gap-x-[4px]'>
 					<FormField
 						control={control}
 						name={`applicant.${applicantId}.firstName`}

@@ -28,7 +28,7 @@ export default function InvestmentCategory() {
 				<FormTitle>Category of Investment</FormTitle>
 			</FormHeader>
 			<FormContent>
-				<div className='space-y-4'>
+				<div className='space-y-[40px]'>
 					<FormField
 						control={form.control}
 						name={'csdNumber'}

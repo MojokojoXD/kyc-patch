@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, useContext } from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individual';
 import INDIVIDUAL_FORM_DEFAULTS from '@/utils/vars/_formDefaults/defaults_individual.json';
 import { Form } from '@/components/UIcomponents/ui/form';
@@ -16,7 +16,8 @@ import Loading from '@/components/UIcomponents/Loading';
 import { BASE_URL } from '@/utils/vars/uri';
 import { Country } from '@/types/forms/universal';
 import { FormLayout } from '@/components/UIcomponents/FormLayout';
-import countries from '@/utils/vars/_formDefaults/countries.json'
+import countries from '@/utils/vars/_formDefaults/countries.json';
+import { UserContext } from '@/Contexts/UserProfileProvider';
 
 //Fetch url constants
 const COUNTRY_LIST_URL = BASE_URL + '/kyc/lov/country';
@@ -72,9 +73,11 @@ export default function IndividualKycForm() {
 	const form = useForm<IndividualFormSchema>({
 		defaultValues: {
 			...INDIVIDUAL_FORM_DEFAULTS,
-        },
-        mode: 'onChange',
+		},
+		mode: 'onChange',
 	});
+
+	const appWideData = useContext(UserContext);
 
 	// const [res, isLoading, error] = useHTTPRequest<{ data: Country[] } | null>(
 	// 	COUNTRY_LIST_URL
@@ -90,26 +93,26 @@ export default function IndividualKycForm() {
 
 	useApplicantAdjustor(currentClientType as ClientType, reset);
 
-	//  useEffect(() => {
-	// 	const warnOfDataLoss = (event: BeforeUnloadEvent) => {
-	// 		event.preventDefault();
-	// 		if (isDirty) {
-	// 			const confirmationMsg =
-	// 				'You will lose application progress, if you close this tab';
-	// 			// ( event || event.returnValue) = confirmationMsg;
-	// 			return confirmationMsg;
-	// 		}
+	 useEffect(() => {
+		const warnOfDataLoss = (event: BeforeUnloadEvent) => {
+			event.preventDefault();
+			if (isDirty) {
+				const confirmationMsg =
+					'You will lose application progress, if you close this tab';
+				// ( event || event.returnValue) = confirmationMsg;
+				return confirmationMsg;
+			}
 
-	// 		return null;
-	// 	};
-	// 	window.addEventListener('beforeunload', warnOfDataLoss);
+			return null;
+		};
+		appWideData && window.addEventListener('beforeunload', warnOfDataLoss);
 
-	// 	return () => window.removeEventListener('beforeunload', warnOfDataLoss);
-	// }, [isDirty]);
+		return () => window.removeEventListener('beforeunload', warnOfDataLoss);
+     }, [ isDirty, appWideData ] );
+    
 
 	const nextStage = useCallback(
-        async ( step?: IndividualFormStages ) =>
-        {
+		async (step?: IndividualFormStages) => {
 			//make sure to not force stage past last maximum the user was on;
 			if (step && step <= userProgress.current) {
 				setCurrentFormStage(step);
@@ -138,7 +141,7 @@ export default function IndividualKycForm() {
 			case IndividualFormStages.INTRO:
 				return <IndividualFormIntro nextStage={nextStage} />;
 			case IndividualFormStages.PERSONAL:
-                return (
+				return (
 					<PersonalInformation
 						nextStage={nextStage}
 						prevStage={prevStage}
@@ -146,7 +149,7 @@ export default function IndividualKycForm() {
 					/>
 				);
 			case IndividualFormStages.NEXT_OF_KIN:
-                return (
+				return (
 					<NextOfKin
 						nextStage={nextStage}
 						prevStage={prevStage}
@@ -154,32 +157,37 @@ export default function IndividualKycForm() {
 					/>
 				);
 			case IndividualFormStages.DISCLOSURES:
-                return (
+				return (
 					<Disclosures
 						nextStage={nextStage}
-                        prevStage={ prevStage }
-                        countryList={countries.data}
+						prevStage={prevStage}
+						countryList={countries.data}
 					/>
 				);
 			case IndividualFormStages.CHECKLIST:
-                return (<div className='p-10'>
-                    Disclosures
-                    ***Under construction****
-                </div>);
+				return (
+					<div className='p-10'>Disclosures ***Under construction****</div>
+				);
 			default:
 				throw new Error('form stage ' + stage + ' is not supported');
 		}
-	};
+    };
+    
+    if ( !appWideData || !appWideData.onboardingFacts )
+    {
+        console.log( 'missing client ID information' );
+        return <p className='p-10'>Something went wrong! Please contact system admin</p>
+    }
 
 	// if (error) {
 	// 	console.log(error);
 	// 	return <p>Something went wrong! Please try again later</p>;
-    // }
-    
+	// }
+
 	return (
 		<FormLayout>
 			<Form {...form}>
-				<form className='flex flex-col h-full'>
+				<form className='flex flex-col h-full bg-white'>
 					<FormProgressSheet
 						renderProgressListing={(s) => (
 							<FormProgressSheetButton

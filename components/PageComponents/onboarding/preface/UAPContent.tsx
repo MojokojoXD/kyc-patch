@@ -28,8 +28,8 @@ export default function UAPContent({ getUAPAgreement }: UAPContentProps) {
 				</FormSubHeader>
 			</FormHeader>
 			<FormContent>
-				<div className='py-2 bg-neutral-50 my-3'>
-					<div className='max-w-prose leading-relaxed bg-neutral-50 h-60 overflow-y-scroll text-base font-light text-neutral-700 px-5 rounded-sm'>
+				<div className='py-5 bg-neutral-50 rounded-md'>
+					<div className='max-w-prose paragraph2Medium text-neutral-700 px-[16px] overflow-auto space-y-[12px] h-96'>
 						<p>SecondSTAX has taken steps, including those below to ensure:</p>
 						<ul className='list-disc pl-3'>
 							<li>
@@ -327,12 +327,11 @@ export default function UAPContent({ getUAPAgreement }: UAPContentProps) {
                         User Acceptance Policy document'
 					onChange={handleAcceptance}
 					type='checkbox'
-					className='py-6 h-16 text-base text-left'
+					className='h-[76px]'
 				/>
-				<div className='h-16 flex justify-end'>
+				<div className='pb-8 flex justify-end'>
 					<Button
 						type='button'
-						size={'sm'}
 						disabled={!isUAPAccepted}
 						onClick={handleSubmit}>
 						Accept & Continue

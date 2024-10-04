@@ -64,7 +64,7 @@ const FormProgressSheetButton = ({
 			{...props}
 			variant={'link'}
 			className={cn(
-				'px-14 w-full outline-none justify-start focus-visible:outline-none py-8 focus-visible-ring-none hover:no-underline',
+				'px-8 w-full outline-none justify-start focus-visible:outline-none py-8 focus-visible-ring-none hover:no-underline heading1Regular',
 				active &&
 					'bg-neutral-100 text-neutral-500 rounded-none hover:bg-neutral-100 shadow-inner'
 			)}>

@@ -1,10 +1,18 @@
 import { createContext, useState, useEffect } from 'react';
 import type { Profile } from '@/types/accounts/user';
-import { UserActions } from '@/utils/clientActions/user';
+import type { Broker } from '@/types/forms/broker';
+import { UserActions } from '@/utils/clientActions/userActions';
+
+type OnboardingFacts = {
+    clientID: string;
+    broker: Broker;
+}
 
 export interface UserContextSchema {
-    profile: Profile | undefined;
-    setUserProfile: ( profile: Profile ) => void;
+	profile: Profile | undefined;
+    onboardingFacts: OnboardingFacts | undefined;
+    getUserProfile: ( profile: Profile ) => void;
+    getOnboardingFacts: ( facts: OnboardingFacts ) => void;
 }
 
 interface UserContextProviderProps {
@@ -15,9 +23,11 @@ export const UserContext = createContext<UserContextSchema | null>(null);
 
 function UserContextProvider({ children }: UserContextProviderProps) {
     const [ userProfile, setUserProfile ] = useState<Profile | undefined>( undefined );
-    
+    const [ onboardingFacts, setOnboardingFacts ] = useState<OnboardingFacts | undefined>()
 
     const getUserProfile = ( profile: Profile ) => setUserProfile( profile );
+
+    const getOnboardingFacts = ( facts: OnboardingFacts | undefined ) => setOnboardingFacts( facts );
 
 
 	//fetch user profile using access token set in site cookie
@@ -39,7 +49,9 @@ function UserContextProvider({ children }: UserContextProviderProps) {
         <UserContext.Provider value={
             {
                 profile: userProfile,
-                setUserProfile: getUserProfile,   
+                onboardingFacts: onboardingFacts,
+                getUserProfile,
+                getOnboardingFacts
             }
         }>
 			{children}
