@@ -3,7 +3,7 @@ import type { Profile } from '@/types/accounts/user';
 import type { Broker } from '@/types/forms/broker';
 import { UserActions } from '@/utils/clientActions/userActions';
 
-type OnboardingFacts = {
+export type OnboardingFacts = {
     clientID: string;
     broker: Broker;
 }
