@@ -27,16 +27,14 @@ const BANK_LIST_URL = BASE_URL + '/kyc/lov/banks';
 interface PersonalInformationProps {
 	nextStage: () => void;
 	prevStage: () => void;
-	countryList: Country[];
 }
 
 export default function PersonalInformation({
 	nextStage,
 	prevStage,
-	countryList,
 }: PersonalInformationProps) {
 	const [currentStep, setCurrentStep] = useState<PersonalInformationSteps>(
-		PersonalInformationSteps.RETAIL_CLIENT
+		PersonalInformationSteps.CONTACT_INFO
 	);
 	const [isValidating, setIsValidating] = useState<boolean>(false);
 	const { getValues, trigger } =
@@ -60,7 +58,7 @@ export default function PersonalInformation({
 
 			setIsValidating(true);
 
-			const numberOfApplicants = getValues(`applicant`).length;
+			const numberOfApplicants = getValues('_formMetadata.applicantCount').length;
 
 			const fieldsToValidate = FormHelpers.generateAllStepFields(
 				currentStepMetadata,
@@ -119,9 +117,9 @@ export default function PersonalInformation({
 			case PersonalInformationSteps.INVESTMENT_CAT:
 				return <InvestmentCategory />;
 			case PersonalInformationSteps.BIO:
-				return <BiographicalInfo countryList={countryList} />;
+				return <BiographicalInfo/>;
 			case PersonalInformationSteps.CONTACT_INFO:
-				return <Contacts countryList={countryList} />;
+				return <Contacts />;
 			case PersonalInformationSteps.EMPLOYMENT_INFO:
 				return <EmploymentInfo countryList={countryList} />;
 			case PersonalInformationSteps.BANK_INFO:

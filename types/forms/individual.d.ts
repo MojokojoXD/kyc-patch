@@ -6,14 +6,17 @@ import type {
 	BankAccount,
 } from './universal';
 
+export type ClientType = 'Individual' | 'Joint Account'
+
 export interface IndividualFormSchema {
-	_formMetadata: {
+    _formMetadata: {
+        applicantCount: number;
 		applicant: {
 			signatureFileName: string;
 			kestrelSignatureFileName: string;
 		}[];
 	};
-	clientType: string;
+	clientType: ClientType;
 	clientStatus: string;
 	csdNumber: string;
 	catInvestment: string;
@@ -23,13 +26,9 @@ export interface IndividualFormSchema {
 
 export interface ApplicantInfo extends BiographicalCore {
 	id: number;
-	residentialStatus: string;
 	mothersMaidenName: string;
 	maidenName: string;
 	tin: string;
-	stateOfOrigin: string;
-	localGovernment: string;
-	religion: string;
 	contacts: ExpandedContact;
 	employment: {
 		status: string;
@@ -120,7 +119,18 @@ interface BiographicalCore {
 	countryOfBirth: string;
 	countryOfResidence: string;
 	countryOfCitizenship: string;
-	placeOfBirth: string;
+    placeOfBirth: string;
+    stateOfOrigin?: string;
+	localGovernment?: string;
+    religion?: string;
+    licenseNumber?; string;
+    residence?: {
+        status: string;
+        permitNumber: string;
+        permitIssueDate: string;
+        permitExpiry: string;
+        permitIssueDate
+    }
 }
 
 type NextOfKinInfo = BiographicalCore & {
@@ -145,23 +155,26 @@ interface Disclosures {
 	};
 	fatca: {
 		status: string[];
-		details?: {
-			ownership: string;
-			foreignResidentialAddress: string;
-			foreignMailingAddress: string;
-			phoneNumber: PhoneInfo;
-			tin: string;
-		} | object;
+		details?:
+			| {
+					ownership: string;
+					foreignResidentialAddress: string;
+					foreignMailingAddress: string;
+					phoneNumber: PhoneInfo;
+					tin: string;
+			  }
+			| object;
 	};
 	kestrel: {
 		termsAndConditions: string;
 		nomineeAgreement: {
 			signatureURL: string;
 		};
-    };
-    afrinvest: {
-        indemnityAgreement: string;
-        privacyPolicyAgreement: string;
-    },
-    declarations: string;
+	};
+	afrinvest: {
+		indemnityAgreement: string;
+		privacyPolicyAgreement: string;
+	};
+	declarations: string;
 }
+

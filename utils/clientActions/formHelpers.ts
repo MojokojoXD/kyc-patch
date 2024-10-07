@@ -1,4 +1,5 @@
 import type { Country } from '@/types/forms/universal';
+import countries from '@/utils/vars/_formDefaults/countries.json'
 import axios from 'axios';
 import type { AxiosRequestConfig } from 'axios';
 import { BASE_URL } from '../vars/uri';
@@ -8,8 +9,17 @@ export class FormHelpers {
 	static getFlagURL = (country: string, countryList: Country[]) =>
 		!country
 			? ''
-			: (countryList.filter((c) => c.cty_name == country).at(0) as Country)
-					.cty_flag_name;
+			: (countryList.filter((c) => c.cty_code == country).at(0) as Country)
+                .cty_flag_name;
+    static getCodeFromFullCountryName( country: string )
+    {
+        const target = countries.data.filter( c => c.cty_name === country ).at( 0 );
+
+        if ( !target ) return
+        
+        return target.cty_code
+    }
+       
 
 	static getCountryAreaCode = (country: string, countryList: Country[]) =>
 		!country

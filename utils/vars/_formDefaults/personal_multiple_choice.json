@@ -1,13 +1,8 @@
 {
 	"bio": {
-		"title": ["Mr", "Mrs", "Ms", "Prof", "Dr", "Other"],
-		"maritalStatus": ["single", "married", "divorced", "separated"],
-		"residentialStatus": [
-			"Resident Ghanaian",
-			"Resident Foreigner",
-			"Non-Resident Ghanaian",
-			"Non-Resident Foreigner"
-		]
+		"title": ["Mr", "Mrs", "Ms", "Prof", "Dr"],
+        "gender": ["Male","Female"],
+		"maritalStatus": ["single", "married", "divorced", "separated"]
 	},
 	"employment": {
 		"status": ["Employed", "Self-Employed", "Unemployed", "Retired", "Student"],

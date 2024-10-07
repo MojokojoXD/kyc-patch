@@ -1,7 +1,7 @@
 import type { Profile } from '@/types/accounts/user';
 import axios, { AxiosResponse } from 'axios';
 import { BASE_URL } from '../vars/uri';
-import type { Broker } from '@/types/forms/broker';
+import type { BrokerDetails } from '@/types/forms/broker';
 
 const USER_PROFILE_ENDPOINT = 'users/self';
 
@@ -9,7 +9,7 @@ const SUBMISSION_URL = BASE_URL + '/kyc/client/submit';
 
 interface UserBrokerResponse {
 	data: {
-        brokerData: Broker;
+        brokerData: BrokerDetails;
 	};
 }
 

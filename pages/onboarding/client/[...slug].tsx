@@ -10,20 +10,17 @@ import type { OnboardingFacts } from '@/Contexts/UserProfileProvider';
 
 export async function getServerSideProps({
 	req,
-	res,
+    res,
+    params
 }: GetServerSidePropsContext): Promise<
 	GetServerSidePropsResult<OnboardingFacts>
 > {
-	try {
-		const params = req.url?.split('/client/').at(1);
+    try
+    {
+        if ( !params || !params.slug )
+            throw new Error( 'malformed or missing onboarding ids' );
 
-		const onboardingIDs = params?.split('/');
-
-		if (!onboardingIDs || onboardingIDs?.length !== 2) {
-			throw new Error('malformed or missing onboarding ids');
-		}
-
-		const [clientID, submissionID] = onboardingIDs;
+		const [clientID, submissionID] = params.slug as string[];
 
 		const isValid = await UserActions.isClientIdValid(clientID);
 

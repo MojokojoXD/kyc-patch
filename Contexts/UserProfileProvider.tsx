@@ -1,11 +1,11 @@
 import { createContext, useState, useEffect } from 'react';
 import type { Profile } from '@/types/accounts/user';
-import type { Broker } from '@/types/forms/broker';
+import type { BrokerDetails } from '@/types/forms/broker';
 import { UserActions } from '@/utils/clientActions/userActions';
 
 export type OnboardingFacts = {
     clientID: string;
-    broker: Broker;
+    broker: BrokerDetails;
 }
 
 export interface UserContextSchema {

@@ -166,7 +166,7 @@ const FormMessage = React.forwardRef<
 			ref={ref}
 			id={formMessageId}
 			className={cn(
-				'text-sm font-normal text-error-500 dark:text-red-900 flex items-center',
+				'text-sm font-normal text-error-500 dark:text-red-900 flex items-center absolute',
 				className
 			)}
 			{...props}>
@@ -178,7 +178,7 @@ const FormMessage = React.forwardRef<
 FormMessage.displayName = 'FormMessage';
 
 const FormError = ({ children }: { children?: React.ReactNode }) => (
-	<p className='text-sm font-normal text-error-500'>
+	<p className='text-sm font-normal text-error-500 absolute'>
 		<CircleAlert className='w-4 h-4 mr-1 inline-block' />
 		{children}
 	</p>

@@ -36,11 +36,8 @@ import type { SingleCategoryForm } from './BiographicalInfo';
 import validator from 'validator';
 import { ErrorMessage } from '@hookform/error-message';
 
-interface ContactsProps {
-	countryList: Country[];
-}
 
-export default function Contacts({ countryList }: ContactsProps) {
+export default function Contacts() {
 	const form = useFormContext<IndividualFormSchema>();
 	const { watch } = form;
 	const applicant = useMemo(() => watch('applicant'), [watch]);

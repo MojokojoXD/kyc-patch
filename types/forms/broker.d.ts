@@ -6,10 +6,12 @@ export interface BrokerFacts {
 	};
 }
 
-export interface Broker {
+export interface BrokerDetails {
 	broker_id: string;
 	org_code: string;
 	org_cty: string;
 	org_email: string;
 	org_con1_email: string;
 }
+
+

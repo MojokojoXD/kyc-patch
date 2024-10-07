@@ -18,15 +18,13 @@ import { Country } from '@/types/forms/universal';
 import { FormLayout } from '@/components/UIcomponents/FormLayout';
 import countries from '@/utils/vars/_formDefaults/countries.json';
 import { UserContext } from '@/Contexts/UserProfileProvider';
+import type { ClientType } from '@/types/forms/individual';
 
 //Fetch url constants
 const COUNTRY_LIST_URL = BASE_URL + '/kyc/lov/country';
 
 //Enumerations
-export enum ClientType {
-	INDIVIDUAL = 'Individual',
-	JOINT = 'Joint Account',
-}
+
 export enum IndividualFormStages {
 	INTRO = 1,
 	PERSONAL = 2,
@@ -70,10 +68,18 @@ export default function IndividualKycFormPage() {
 
 	const userProgress = useRef<IndividualFormStages>(currentFormStage);
 
-	const form = useForm<IndividualFormSchema>({
-		defaultValues: {
-			...INDIVIDUAL_FORM_DEFAULTS,
-		},
+    const form = useForm<IndividualFormSchema>( {
+        defaultValues: {
+            _formMetadata: {
+                applicantCount: 1,
+                applicant: [
+                    {
+                        signatureFileName: "",
+                        kestrelSignatureFileName: "",
+                    }
+                ]
+            }
+        },
 		mode: 'onChange',
 	});
 
@@ -91,9 +97,9 @@ export default function IndividualKycFormPage() {
 
 	const currentClientType = getValues('clientType');
 
-	useApplicantAdjustor(currentClientType as ClientType, reset);
+	// useApplicantAdjustor(currentClientType as ClientType, reset);
 
-	 useEffect(() => {
+	useEffect(() => {
 		const warnOfDataLoss = (event: BeforeUnloadEvent) => {
 			event.preventDefault();
 			if (isDirty) {
@@ -108,8 +114,7 @@ export default function IndividualKycFormPage() {
 		appWideData && window.addEventListener('beforeunload', warnOfDataLoss);
 
 		return () => window.removeEventListener('beforeunload', warnOfDataLoss);
-     }, [ isDirty, appWideData ] );
-    
+	}, [isDirty, appWideData]);
 
 	const nextStage = useCallback(
 		async (step?: IndividualFormStages) => {
@@ -145,7 +150,6 @@ export default function IndividualKycFormPage() {
 					<PersonalInformation
 						nextStage={nextStage}
 						prevStage={prevStage}
-						countryList={countries.data}
 					/>
 				);
 			case IndividualFormStages.NEXT_OF_KIN:
@@ -171,18 +175,20 @@ export default function IndividualKycFormPage() {
 			default:
 				throw new Error('form stage ' + stage + ' is not supported');
 		}
-    };
-    
-    if ( !appWideData || !appWideData.onboardingFacts )
-    {
-        console.log( 'missing client ID information' );
-        return <p className='p-10'>Something went wrong! Please contact system admin</p>
-    }
+	};
+
+	// if ( !appWideData || !appWideData.onboardingFacts )
+	// {
+	//     console.log( 'missing client ID information' );
+	//     return <p className='p-10'>Something went wrong! Please contact system admin</p>
+	// }
 
 	// if (error) {
 	// 	console.log(error);
 	// 	return <p>Something went wrong! Please try again later</p>;
 	// }
+
+	console.log(getValues());
 
 	return (
 		<FormLayout>
