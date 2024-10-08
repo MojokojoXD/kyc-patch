@@ -16,18 +16,16 @@ export enum ClientTypeCount {
 }
 
 export default function RetailClient() {
-	const { setValue, getValues } = useFormContext<IndividualFormSchema>();
+	const { watch, setValue } = useFormContext<IndividualFormSchema>();
 
-	const currentClientType = getValues('clientType') as ClientType;
+	const currentClientType = watch(`clientType`);
 
 	useEffect(() => {
 		setValue(
-			'_formMetadata.applicantCount',
-			currentClientType === 'Individual'
-				? ClientTypeCount.INDIVIDUAL
-				: ClientTypeCount.JOINT_ACCOUNT
+			`_formMetadata.applicantCount`,
+			currentClientType === 'Individual' ? 1 : 2
 		);
-	}, [currentClientType, setValue]);
+	}, [currentClientType]);
 
 	return (
 		<>

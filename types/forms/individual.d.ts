@@ -13,7 +13,7 @@ export interface IndividualFormSchema {
         applicantCount: number;
 		applicant: {
 			signatureFileName: string;
-			kestrelSignatureFileName: string;
+            kestrelSignatureFileName: string;
 		}[];
 	};
 	clientType: ClientType;
@@ -32,7 +32,7 @@ export interface ApplicantInfo extends BiographicalCore {
 	contacts: ExpandedContact;
 	employment: {
 		status: string;
-		statusDetails?: Employed | StudentEmployment | object;
+		statusDetails?: Employed | StudentEmployment | null;
 	};
 	bank: BankInfo;
 	proofOfIdentity: ProofOfIdentity;
@@ -69,7 +69,6 @@ export interface ApplicantInfo extends BiographicalCore {
 
 export interface Employed {
 	occupation: string;
-	profession: string;
 	name: string;
 	address: string;
 	city: string;

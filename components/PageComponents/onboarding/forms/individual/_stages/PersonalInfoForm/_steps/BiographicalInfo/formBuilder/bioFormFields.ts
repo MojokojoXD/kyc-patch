@@ -6,7 +6,7 @@ import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import Image from 'next/image';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import OPTIONS from '@/utils/vars/_formDefaults/personal_multiple_choice.json';
-import { dyanamic_bio_fields } from './DynamicFields/fieldsMap';
+import { dynamicBioFields } from './dynamicFields/fieldsMap';
 
 const today = new Date();
 const minAgeDate = sub(today, { years: 18 });
@@ -119,7 +119,12 @@ const base_bio_fields = (indexer: number): FormFactoryProps[] => [
 		},
 		options: {
 			keySelector: (key: Country) => key.cty_name,
-			keys: countries.data,
+            keys: countries.data,
+            priorityKeys: (keys: Country[]) =>
+				keys.filter(
+					(k) =>
+						k.cty_code === 'GH' || k.cty_code === 'NG' || k.cty_code === 'KE'
+				),
 		},
 		placeholder: 'Select country',
 	},
@@ -132,7 +137,12 @@ const base_bio_fields = (indexer: number): FormFactoryProps[] => [
 		},
 		options: {
 			keySelector: (key: Country) => key.cty_name,
-			keys: countries.data,
+            keys: countries.data,
+            priorityKeys: (keys: Country[]) =>
+				keys.filter(
+					(k) =>
+						k.cty_code === 'GH' || k.cty_code === 'NG' || k.cty_code === 'KE'
+				),
 		},
 		placeholder: 'Select country',
 	},
@@ -145,7 +155,12 @@ const base_bio_fields = (indexer: number): FormFactoryProps[] => [
 		},
 		options: {
 			keySelector: (key: Country) => key.cty_name,
-			keys: countries.data,
+            keys: countries.data,
+            priorityKeys: (keys: Country[]) =>
+				keys.filter(
+					(k) =>
+						k.cty_code === 'GH' || k.cty_code === 'NG' || k.cty_code === 'KE'
+				),
 		},
 		placeholder: 'Select country',
 	},
@@ -169,9 +184,9 @@ const base_bio_fields = (indexer: number): FormFactoryProps[] => [
 
 const getBioFields = (indexer: number, ...identifiers: (string)[]) =>
 	identifiers.reduce<FormFactoryProps[]>((result, currentValue) => {
-		if (!dyanamic_bio_fields.has(currentValue)) return result;
+		if (!dynamicBioFields.has(currentValue)) return result;
 
-		return result.concat(dyanamic_bio_fields.get(currentValue)?.call(this, indexer) || []);
+		return result.concat(dynamicBioFields.get(currentValue)?.call(this, indexer) || []);
 	}, base_bio_fields(indexer));
 
 export { getBioFields };

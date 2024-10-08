@@ -19,7 +19,7 @@ import { IndividualFormSchema } from '@/types/forms/individual';
 import { useFormContext } from 'react-hook-form';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { LoaderCircle } from 'lucide-react';
-import banks from '@/utils/vars/_formDefaults/banks.json'
+import banks from '@/utils/vars/_formDefaults/banks.json';
 
 //Bank list uri
 const BANK_LIST_URL = BASE_URL + '/kyc/lov/banks';
@@ -34,17 +34,16 @@ export default function PersonalInformation({
 	prevStage,
 }: PersonalInformationProps) {
 	const [currentStep, setCurrentStep] = useState<PersonalInformationSteps>(
-		PersonalInformationSteps.CONTACT_INFO
+		PersonalInformationSteps.BANK_INFO
 	);
 	const [isValidating, setIsValidating] = useState<boolean>(false);
-	const { getValues, trigger } =
-		useFormContext<IndividualFormSchema>();
+	const { getValues, trigger } = useFormContext<IndividualFormSchema>();
 
 	const prevStepCache = useRef<PersonalInformationSteps | null>(null);
 
 	// const [res, isLoading, error] = useHTTPRequest<{ name: string } | null>(
-    //     // BANK_LIST_URL
-    //     '/api/onboarding/uploads'
+	//     // BANK_LIST_URL
+	//     '/api/onboarding/uploads'
 	// );
 
 	const handleNextStep = useCallback(
@@ -58,18 +57,18 @@ export default function PersonalInformation({
 
 			setIsValidating(true);
 
-			const numberOfApplicants = getValues('_formMetadata.applicantCount').length;
+            const numberOfApplicants = 1;
+            
+            console.log(getValues())
 
 			const fieldsToValidate = FormHelpers.generateAllStepFields(
 				currentStepMetadata,
 				numberOfApplicants
 			);
 
-
 			//@ts-expect-error Unable to profile literal type for fieldsToValidate and trigger method
-            const isValid = await trigger( fieldsToValidate, { shouldFocus: true } );
-            
-            // const isValid = true;
+			const isValid =
+				true || (await trigger(fieldsToValidate, { shouldFocus: true }));
 
 			if (prevStepCache.current && isValid) {
 				const temp = prevStepCache.current;
@@ -117,15 +116,14 @@ export default function PersonalInformation({
 			case PersonalInformationSteps.INVESTMENT_CAT:
 				return <InvestmentCategory />;
 			case PersonalInformationSteps.BIO:
-				return <BiographicalInfo/>;
+				return <BiographicalInfo />;
 			case PersonalInformationSteps.CONTACT_INFO:
 				return <Contacts />;
 			case PersonalInformationSteps.EMPLOYMENT_INFO:
-				return <EmploymentInfo countryList={countryList} />;
+				return <EmploymentInfo />;
 			case PersonalInformationSteps.BANK_INFO:
 				return (
 					<BankAccountInfo
-						countryList={countryList}
 						// isLoadingBanks={isLoading}
 						bankList={banks.data}
 					/>
@@ -146,16 +144,13 @@ export default function PersonalInformation({
 	// 	return <p className='p-10'>Something went wrong! Try again later.</p>;
 	// }
 
-
 	return (
 		<>
 			<CustomProgress
 				maxSteps={personalFormStepsMetadata.length}
 				currentStep={currentStep}
 			/>
-			<div className='flex flex-col grow'>
-				{getStageStep(currentStep)}
-			</div>
+			<div className='flex flex-col grow'>{getStageStep(currentStep)}</div>
 			<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0 bg-white'>
 				<Button
 					type='button'
@@ -167,7 +162,7 @@ export default function PersonalInformation({
 					type='button'
 					disabled={isValidating}
 					onClick={() => handleNextStep()}>
-					{(isValidating )? (
+					{isValidating ? (
 						<LoaderCircle className='w-5 h-5 animate-spin' />
 					) : (
 						'Save & Continue'

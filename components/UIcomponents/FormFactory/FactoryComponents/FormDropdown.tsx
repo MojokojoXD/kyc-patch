@@ -1,7 +1,14 @@
 import type { FactoryComponentProps } from '..';
-import { FormItem, FormControl, FormError, FormLabel,FormMessage } from '../../ui/form';
+import {
+	FormItem,
+	FormControl,
+	FormError,
+	FormLabel,
+	FormMessage,
+} from '../../ui/form';
 import { useFormContext } from 'react-hook-form';
 import { CustomToggle } from '../../CompoundUI/CustomToggle';
+import type { Country } from '@/types/forms/universal';
 import { cn } from '@/lib/utils';
 import {
 	Select,
@@ -9,6 +16,7 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
+	SelectGroup,
 } from '../../ui/select';
 import { Controller } from 'react-hook-form';
 
@@ -19,24 +27,36 @@ export default function FormDropdown({
 	name,
 	placeholder,
 	rules,
-    options,
-    defaultValue = '',
+	options,
+	defaultValue = '',
 	componentProps = {},
 }: FormDropdownProps) {
 	const { register, control, trigger } = useFormContext();
 
+    let priorityList = [];
+    let mainList = []
 
+	if (options && options.priorityKeys) {
+        priorityList = options.priorityKeys( options.keys );
+    }
+    
+    if ( options && options.keys )
+    {
+        const priorityListKeys = priorityList.map( p => options.keySelector( p ) );
+        mainList = options.keys.filter( k => !priorityListKeys.includes( options.keySelector( k ) ) );
+    }
 	return (
 		<Controller
 			control={control}
-            name={ name }
-            defaultValue={defaultValue}
+			name={name}
+			defaultValue={defaultValue}
 			rules={{
 				...rules,
 			}}
-			render={({ field,fieldState }) => (
+			render={({ field, fieldState }) => (
 				<FormItem className='space-y-2'>
-					<FormLabel className={fieldState.error ? 'text-error-500' : undefined}>
+					<FormLabel
+						className={fieldState.error ? 'text-error-500' : undefined}>
 						{label}
 					</FormLabel>
 					<FormControl>
@@ -46,20 +66,33 @@ export default function FormDropdown({
 							<SelectTrigger ref={field.ref}>
 								<SelectValue placeholder={placeholder} />
 							</SelectTrigger>
-							<SelectContent >
-								{options && options.keys.map((o) => (
-									<SelectItem
-										key={options.keySelector(o)}
-										value={options.keySelector(o)}>
-										{options.keySelector(o)}
-									</SelectItem>
-								))}
+							<SelectContent>
+								<SelectGroup>
+									{priorityList.map((o) => (
+										<SelectItem
+											key={options!.keySelector(o)}
+                                            value={ options!.keySelector( o ) }
+                                        >
+											{options!.keySelector(o)}
+										</SelectItem>
+									))}
+								</SelectGroup>
+								{priorityList.length > 0 && (
+									<hr className='my-2 border-neutral-200' />
+								)}
+								<SelectGroup>
+									{mainList.map((o) => (
+											<SelectItem
+												key={options.keySelector(o)}
+												value={options.keySelector(o)}>
+												{options.keySelector(o)}
+											</SelectItem>
+										))}
+								</SelectGroup>
 							</SelectContent>
 						</Select>
 					</FormControl>
-                    <FormMessage>
-                        {fieldState.error?.message}
-                    </FormMessage>
+					<FormMessage>{fieldState.error?.message}</FormMessage>
 				</FormItem>
 			)}
 		/>

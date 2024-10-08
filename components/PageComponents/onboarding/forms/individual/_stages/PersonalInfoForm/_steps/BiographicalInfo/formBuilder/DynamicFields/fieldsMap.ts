@@ -1,9 +1,9 @@
 import type { FormFactoryProps } from '@/components/UIcomponents/FormFactory';
-import { DATAB_FIELDS } from './brokerSpecific/DATAB';
-import { NIGERIA_FIELDS } from './nationalitySpecific/Nigeria';
+import { DATAB_FIELDS } from './brokerSpecific/databank';
+import { NIGERIA_FIELDS } from './clientSpecific/nigeria';
 import { RESIDENCE_FIELDS } from './misc/Residence';
 
-const dyanamic_bio_fields: ReadonlyMap<
+const dynamicBioFields: ReadonlyMap<
 	string,
 	(indexer: number) => FormFactoryProps[]
 > = new Map([
@@ -13,4 +13,4 @@ const dyanamic_bio_fields: ReadonlyMap<
 ]);
 
 
-export { dyanamic_bio_fields };
+export { dynamicBioFields };

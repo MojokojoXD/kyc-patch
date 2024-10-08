@@ -12,7 +12,7 @@ const investmentCatergoryFields: FormFactoryProps[] = [
 		name: 'catInvestment',
 		label: 'Category of Investment',
 		options: {
-			keySelector: (key: string) => string,
+			keySelector: (key: string) => key,
 			keys: ['Fixed Income', 'Equities/Shares'],
 		},
 		rules: {

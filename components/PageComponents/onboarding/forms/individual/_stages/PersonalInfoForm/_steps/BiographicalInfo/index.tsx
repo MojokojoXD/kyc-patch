@@ -41,15 +41,12 @@ import type { BrokerDetails } from '@/types/forms/broker';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 import { getBioFields } from './formBuilder/bioFormFields';
 import type { ClientType } from '@/types/forms/individual';
-//Minimum age constant for form sign up
-
-const MIN_AGE = 18;
 
 export default function BiographicalInfo() {
 	const form = useFormContext<IndividualFormSchema>();
-	const { getValues } = form;
+	const { watch } = form;
 
-	const applicantCount = getValues('_formMetadata.applicantCount')
+	const applicantCount = watch('_formMetadata.applicantCount')
 
 	const appWideData = useContext(UserContext);
 
@@ -66,8 +63,8 @@ export default function BiographicalInfo() {
 			<FormContent>
 				<div className='space-y-[8px]'>
 					{[...Array(applicantCount).keys()].map((c, i) => {
-						const firstName = getValues(`applicant.${i}.firstName`);
-						const lastName = getValues(`applicant.${i}.lastName`);
+						const firstName = watch(`applicant.${i}.firstName`);
+						const lastName = watch(`applicant.${i}.lastName`);
 
 						return (
 							<Accordion
@@ -117,7 +114,7 @@ function BiographicalForm({ applicantId, brokerInfo }: BiographicalFormProps) {
 		FormHelpers.getCodeFromFullCountryName(currentNationality) || '';
 
 	const addResidenceFields =
-		brokerInfo.org_code === 'DATAB' ||
+		brokerInfo!.org_code === 'DATAB' ||
 		currentNationalityCode !== brokerInfo?.org_cty;
 
 	const fields = useMemo(

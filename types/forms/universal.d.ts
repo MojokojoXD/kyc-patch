@@ -19,15 +19,16 @@ export interface BaseContact
 {
     residentialAddress: string;
 	city: string;
-    mobile: PhoneInfo;
+    phoneNumber: PhoneInfo;
 	email: string;
 }
 
 export interface ExpandedContact extends BaseContact {
 	postalAddress: string;
-	postalCode: string;
-    digitalAddress: string;
-    nearestLandmark: string;
+    postalCode?: string;
+    faxNumber?: PhoneInfo
+    digitalAddress?: string;
+    nearestLandmark?: string;
 	emergencyContact: {
 		contactName: string;
 		relation: string;
@@ -35,10 +36,9 @@ export interface ExpandedContact extends BaseContact {
 	};
 }
 
-export interface PhoneInfo {
-	areaCode: string | null;
-	lineNumber: string;
-}
+export type PhoneInfo = {
+    value: string
+}[]
 
 export interface FormMetaData {
 	step_no: PersonalInformationSteps;

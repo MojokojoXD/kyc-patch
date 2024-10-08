@@ -5,7 +5,6 @@
 		"maritalStatus": ["single", "married", "divorced", "separated"]
 	},
 	"employment": {
-		"status": ["Employed", "Self-Employed", "Unemployed", "Retired", "Student"],
 		"incomeRange": [
 			"Below 1000",
 			"Between 1000-5000",

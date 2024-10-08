@@ -7,7 +7,6 @@ import IndividualFormIntro from '@/components/PageComponents/onboarding/forms/in
 import PersonalInformation from '@/components/PageComponents/onboarding/forms/individual/_stages/PersonalInfoForm';
 import NextOfKin from '@/components/PageComponents/onboarding/forms/individual/_stages/NextOfKin';
 import Disclosures from '@/components/PageComponents/onboarding/forms/individual/_stages/Disclosures';
-import useApplicantAdjustor from '@/components/PageComponents/onboarding/forms/individual/_customHooks/useApplicantAdjustor';
 import FormProgressSheet, {
 	FormProgressSheetButton,
 } from '@/components/UIcomponents/CompoundUI/FormProgressSheet';
@@ -68,18 +67,18 @@ export default function IndividualKycFormPage() {
 
 	const userProgress = useRef<IndividualFormStages>(currentFormStage);
 
-    const form = useForm<IndividualFormSchema>( {
-        defaultValues: {
-            _formMetadata: {
-                applicantCount: 1,
-                applicant: [
-                    {
-                        signatureFileName: "",
-                        kestrelSignatureFileName: "",
-                    }
-                ]
-            }
-        },
+	const form = useForm({
+		defaultValues: {
+			_formMetadata: {
+				applicantCount: 1,
+				applicant: [
+					{
+						signatureFileName: '',
+						kestrelSignatureFileName: '',
+					},
+				],
+            },
+		},
 		mode: 'onChange',
 	});
 
@@ -95,7 +94,6 @@ export default function IndividualKycFormPage() {
 		formState: { isDirty },
 	} = form;
 
-	const currentClientType = getValues('clientType');
 
 	// useApplicantAdjustor(currentClientType as ClientType, reset);
 
@@ -179,7 +177,7 @@ export default function IndividualKycFormPage() {
 
 	// if ( !appWideData || !appWideData.onboardingFacts )
 	// {
-	//     console.log( 'missing client ID information' );
+	//     console.log(232221` 'missing client ID information' );
 	//     return <p className='p-10'>Something went wrong! Please contact system admin</p>
 	// }
 
@@ -188,7 +186,7 @@ export default function IndividualKycFormPage() {
 	// 	return <p>Something went wrong! Please try again later</p>;
 	// }
 
-	console.log(getValues());
+	// console.log(getValues());
 
 	return (
 		<FormLayout>

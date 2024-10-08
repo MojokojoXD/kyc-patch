@@ -103,7 +103,7 @@ function FatcaForm({ applicantId, countryList }: SingleCategoryForm) {
 	);
 
 	const currentMobileAreaCode = getValues(
-		`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`
+		`applicant.${applicantId}.disclosures.fatca.details.phoneNumber`
 	);
 
 	const handleAreaCode = useCallback(
@@ -124,12 +124,7 @@ function FatcaForm({ applicantId, countryList }: SingleCategoryForm) {
 			unregister(`applicant.${applicantId}.disclosures.fatca.details`);
 		} else {
 			register(
-				`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`,
-				{
-					required:
-						currentFatcaStatus.length === 0 ? false : 'Select area code',
-					value: '',
-				}
+				`applicant.${applicantId}.disclosures.fatca.details.phoneNumber`
 			);
 		}
 	}, [currentFatcaStatus, setValue, register, unregister, applicantId]);
@@ -279,93 +274,7 @@ function FatcaForm({ applicantId, countryList }: SingleCategoryForm) {
 							/>
 						</FormItem>
 					</div>
-					{/* Foreign Telephone Number */}
-					<div>
-						<FormItem className='space-y-2'>
-                            <FormLabel
-                                className={
-									(isErrored(
-										`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`
-									) || isErrored(
-										`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.lineNumber`
-									))
-										? 'text-error-500'
-										: undefined
-								}
-                            >Foreign Telephone Number</FormLabel>
-							<FormControl>
-								<div className='flex w-full border rounded-lg border-neutral-300 has-[:focus]:border-primary-500'>
-									<Select
-										onValueChange={(v) =>
-											handleAreaCode(
-												`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`,
-												v
-											)
-										}>
-										<SelectTrigger className='w-1/4 border-none'>
-											{currentMobileAreaCode ? (
-												<p className='text-neutral-700'>
-													{currentMobileAreaCode}
-												</p>
-											) : (
-												<SelectValue placeholder={'+233'} />
-											)}
-										</SelectTrigger>
-										<SelectContent className='h-64'>
-											{countryList.map((c) => (
-												<SelectItem
-													key={c.cty_name}
-													value={c.cty_name}>
-													{c.cty_flag_name ? (
-														<Image
-															src={c.cty_flag_name}
-															width={20}
-															height={20}
-															alt={`${c.cty_name} country code`}
-															className='aspect-square inline mr-2'
-														/>
-													) : (
-														<span className='h-[20px] w-[20px] inline-block mr-3'></span>
-													)}
-													({c.call_code}) {c.cty_name}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<Input
-										{...register(
-											`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.lineNumber`,
-											{
-												required: 'Please enter phone number',
-												validate: (v) =>
-													validator.isMobilePhone(v) ||
-													'Please enter valid phone number',
-												deps: `applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`,
-											}
-										)}
-										placeholder='Enter Foreign Telephone Number'
-										className='border-none'
-									/>
-								</div>
-							</FormControl>
-							<div className='flex'>
-								<div className='w-1/4'>
-									<ErrorMessage
-										errors={errors}
-										name={`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.areaCode`}
-										as={<FormError />}
-									/>
-								</div>
-								<div>
-									<ErrorMessage
-										errors={errors}
-										name={`applicant.${applicantId}.disclosures.fatca.details.phoneNumber.lineNumber`}
-										as={<FormError />}
-									/>
-								</div>
-							</div>
-						</FormItem>
-					</div>
+					
 					{/* TIN */}
 					<div>
 						<FormItem className='space-y-2'>
