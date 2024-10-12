@@ -4,35 +4,39 @@ import NextOfKinBio from './_steps/NextOfKin_Bio';
 import NextOfKinContacts from './_steps/NextOfKin_Contact';
 import NextOfKin_IdentityProof from './_steps/NextOfKin_IdentityProof';
 import NextofKin_Review from './_steps/Review';
-import type { Country } from '@/types/forms/universal';
-import { NextOfKinSteps } from '@/utils/vars/enums';
+// import { NextOfKinSteps } from '@/utils/vars/enums';
 import nextOfKinStepsMetadata from './_steps/Review/stageReviewMetadata';
 import CustomProgress from '@/components/UIcomponents/CompoundUI/CustomProgress';
 import { useFormContext } from 'react-hook-form';
 import type { IndividualFormSchema } from '@/types/forms/individual';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
+import type { FormStage } from '@/types/Components/onboarding';
 
-interface NextOfKinProps {
-	nextStage: () => void;
-	prevStage: () => void;
-	countryList: Country[];
-}
+const NextOfKinSteps = {
+    BIO: 1,
+    CONTACT: 2,
+    PROOF_OF_IDENTITY: 3,
+    REVIEW: 4
+} as const;
 
-export default function NextOfKin({
+type NextOfKinSteps = typeof NextOfKinSteps;
+
+export const NextOfKin: FormStage = ({
 	nextStage,
-	prevStage,
-	countryList,
-}: NextOfKinProps) {
-	const { getValues, trigger } = useFormContext<IndividualFormSchema>();
+    prevStage,
+    renderStep
+}) => {
+	const { getValues, trigger } =
+		useFormContext<IndividualFormSchema>();
 	const [currentStep, setCurrentStep] = useState<NextOfKinSteps>(
 		NextOfKinSteps.BIO
 	);
-	const [isValidating, setIsValidating] = useState<boolean>(false);
+	const [setIsValidating] = useState<boolean>(false);
 
 	const prevStepCache = useRef<NextOfKinSteps | null>(null);
 
 	const handleNextStep = useCallback(
-		async(forceStep?: NextOfKinSteps, returnStep?: NextOfKinSteps) => {
+		async (forceStep?: NextOfKinSteps, returnStep?: NextOfKinSteps) => {
 			const currentStepMetadata = nextOfKinStepsMetadata.find(
 				(m) => m.step === currentStep
 			);
@@ -47,7 +51,9 @@ export default function NextOfKin({
 			);
 
 			//@ts-expect-error Unable to profile literal type for fieldsToValidate and trigger method name param
-			const isValid = await trigger(fieldsToValidate, { shouldFocus: true });
+			const isValid = await trigger(fieldsToValidate, {
+				shouldFocus: true,
+			});
 
 			if (prevStepCache.current && isValid) {
 				const temp = prevStepCache.current;
@@ -66,7 +72,7 @@ export default function NextOfKin({
 				return;
 			}
 
-			if ((currentStep !== NextOfKinSteps.REVIEW) && isValid) {
+			if (currentStep !== NextOfKinSteps.REVIEW && isValid) {
 				setCurrentStep((prevStep) => prevStep + 1);
 				setIsValidating(false);
 
@@ -76,7 +82,15 @@ export default function NextOfKin({
 			isValid && nextStage();
 			setIsValidating(false);
 		},
-		[setCurrentStep, currentStep, prevStepCache, nextStage]
+		[
+			setCurrentStep,
+			currentStep,
+			prevStepCache,
+			nextStage,
+			getValues,
+			trigger,
+			setIsValidating,
+		]
 	);
 
 	const handlePrevStep = useCallback(() => {
@@ -110,7 +124,10 @@ export default function NextOfKin({
 				currentStep={currentStep}
 			/>
 			<div className='row-span-5 flex flex-col grow'>
-				{getStageStep(currentStep)}
+                { renderStep( {
+                    step: currentStep,
+                    finalStep: NextOfKinSteps.REVIEW
+                }, getStageStep(currentStep) )}
 			</div>
 			<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0 bg-white'>
 				<Button
@@ -127,4 +144,4 @@ export default function NextOfKin({
 			</div>
 		</>
 	);
-}
+};

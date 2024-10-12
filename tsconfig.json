@@ -17,7 +17,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "declarationDir": "./AllTypes",
+    "declarationMap": true,
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

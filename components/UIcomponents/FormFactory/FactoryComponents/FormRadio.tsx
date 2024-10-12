@@ -1,16 +1,12 @@
-import type { FactoryComponentProps } from '..';
+import type { FactoryComponentProps } from '@/types/Components/formFactory';
 import {
 	FormItem,
-	FormControl,
-	FormError,
 	FormLabel,
 	FormMessage,
 } from '../../ui/form';
-import { useFormContext,useFormState } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
+import { useFormContext } from 'react-hook-form';
 import { CustomToggle } from '../../CompoundUI/CustomToggle';
 import { cn } from '@/lib/utils';
-import type { IndividualFormSchema } from '@/types/forms/individual';
 import { Controller } from 'react-hook-form';
 
 interface FormRadioProps extends FactoryComponentProps {}
@@ -18,18 +14,13 @@ interface FormRadioProps extends FactoryComponentProps {}
 export default function FormRadio({
 	label,
 	name,
-	placeholder,
 	rules,
 	options,
 	defaultValue = '',
-	componentProps = {},
+	componentProps = { toggleStyles: 'text-nowrap truncate', className: "" },
 }: FormRadioProps) {
 	const { control } = useFormContext();
 
-	const gridStyles =
-		componentProps && componentProps.className
-			? (componentProps.className as string)
-			: '';
 
     return (
         <Controller
@@ -42,13 +33,14 @@ export default function FormRadio({
                     <FormLabel className={fieldState.error ? 'text-error-500' : undefined}>
                         {label}
                     </FormLabel>
-                    <div className={cn('grid gap-[4px]', gridStyles)}>
+                    <div className={cn('grid gap-[4px]', componentProps.className)}>
                         {options &&
                             options.keys.map((o: string) => (
                                 <CustomToggle
                                     key={options.keySelector(o)}
                                     { ...field}
-                                    value={options.keySelector(o)}
+                                    value={ options.keySelector( o ) }
+                                    className={ componentProps.toggleStyles }
                                     label={options.keySelector(o)}
                                     selected={field.value === options.keySelector(o)}
                                 />

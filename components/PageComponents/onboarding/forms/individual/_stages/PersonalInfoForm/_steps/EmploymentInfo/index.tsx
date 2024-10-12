@@ -13,13 +13,23 @@ import {
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individual';
-import type { SingleCategoryForm } from '../BiographicalInfo';
-import { generateEmploymentFields } from './formBuilder/employmentFormField';
+import { employmentFieldsModel } from './formBuilder/employmentFormField';
+import { FormFieldAggregator } from '@/components/PageComponents/onboarding/forms/utils/FormFieldAggregator';
 import FormFactory from '@/components/UIcomponents/FormFactory';
+import type { FormStep } from '@/types/Components/onboarding';
+import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
+import { BrokerCurrency } from '@/utils/vars/brokers';
 
-export default function EmploymentInfo() {
-	const { watch,getValues } = useFormContext<IndividualFormSchema>();
-	const applicants = watch(`_formMetadata.applicantCount`);
+export const EmploymentInfo: FormStep = ({
+	applicantCount,
+	passCountryList,
+	passBrokerInfo,
+}) => {
+	const { getValues } = useFormContext<IndividualFormSchema>();
+
+	const countryList = passCountryList?.call(this, true);
+
+	const broker = passBrokerInfo?.call(this, true);
 
 	return (
 		<>
@@ -29,7 +39,7 @@ export default function EmploymentInfo() {
 			</FormHeader>
 			<FormContent>
 				<div className='space-y-[8px] py-5'>
-					{[...Array(applicants).keys()].map((c, i) => {
+					{[...Array(applicantCount).keys()].map((c, i) => {
 						const firstName = getValues(`applicant.${i}.firstName`);
 						const lastName = getValues(`applicant.${i}.lastName`);
 						return (
@@ -43,9 +53,13 @@ export default function EmploymentInfo() {
 										Applicant #{c + 1}: {firstName} {lastName}
 									</AccordionTrigger>
 									<AccordionContent
-										className='space-y-8 data-[state=closed]:hidden'
+										className='data-[state=closed]:hidden'
 										forceMount>
-										<EmploymentForm applicantId={i} />
+										<EmploymentForm
+											applicantId={i}
+											countryList={countryList}
+											broker={broker}
+										/>
 									</AccordionContent>
 								</AccordionItem>
 							</Accordion>
@@ -55,29 +69,62 @@ export default function EmploymentInfo() {
 			</FormContent>
 		</>
 	);
-}
+};
+
+type EmploymentFormProps = SingleFormFieldsGeneratorProps &
+	Record<string, never>;
 
 function EmploymentForm({
 	applicantId,
-}: Pick<SingleCategoryForm, 'applicantId'>) {
+	countryList,
+	broker = { org_code: 'DATAB' },
+}: EmploymentFormProps) {
 	const { watch, resetField } = useFormContext<IndividualFormSchema>();
 
 	const currentEmploymentStatus = watch(
 		`applicant.${applicantId}.employment.status`
 	);
 
-	const dynamicFieldIdentifiers =
-		currentEmploymentStatus === 'Employed' ||
-		currentEmploymentStatus === 'Self-Employed'
-			? ['employed', 'student']
-			: currentEmploymentStatus === 'Student'
-			? ['student']
-			: [];
+	const currency = BrokerCurrency[broker!.org_code];
 
-	const fields = useMemo(
-		() => generateEmploymentFields(applicantId, ...dynamicFieldIdentifiers),
-		[currentEmploymentStatus, applicantId]
-	);
+	const aggregatorResults = useMemo(() => {
+		const aggregator = new FormFieldAggregator(
+			employmentFieldsModel
+		).init(broker?.org_code, {
+			index: applicantId,
+			countryList,
+			currency,
+		});
+
+		const isKESTREL = broker.org_code === 'KESTR'; // condition not inlined to improve readability
+
+		aggregator.modifyFields(
+			`applicant.${applicantId}.employment.status`,
+			(currentField) =>
+				isKESTREL
+					? {
+							options: {
+								...currentField.options,
+								keys: ['Employed', 'Self-Employed'],
+							},
+					  }
+					: null
+		);
+
+		aggregator.modifyFields('remove-all-except', {
+			removeAllExcept:
+				currentEmploymentStatus === 'Student' &&
+				broker.org_code === 'DATAB',
+		});
+
+		aggregator.modifyFields('control-employment', {
+			removeAllExcept:
+				currentEmploymentStatus === 'Retired' ||
+				currentEmploymentStatus === 'Unemployed',
+		});
+
+		return aggregator.generate();
+	}, [applicantId, currentEmploymentStatus, countryList, broker]);
 
 	useEffect(() => {
 		if (
@@ -88,11 +135,13 @@ function EmploymentForm({
 				defaultValue: null,
 			});
 		}
-	}, [currentEmploymentStatus]);
+	}, [currentEmploymentStatus, applicantId, resetField]);
+
+	console.log(currentEmploymentStatus);
 
 	return (
 		<>
-			{fields.map((f) => (
+			{aggregatorResults.fields.map((f) => (
 				<FormFactory
 					key={f.name}
 					{...f}

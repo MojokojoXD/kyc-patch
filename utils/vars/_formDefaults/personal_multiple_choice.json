@@ -50,7 +50,7 @@
 		],
 		"statements": {
 			"deliveryModeOptions": ["Email", "Online", "Collection at branch"],
-			"frequencyOptions": ["Semi-Annually", "Annually", "Monthly"]
+			"frequencyOptions": [ "Monthly","Quarterly"]
 		},
 		"reactionOptions": [
             "Extremely concerned; sell my investment", 

@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { useFormContext } from 'react-hook-form';
 import {
 	FormField,
@@ -91,7 +90,7 @@ function NextOfKinContactForm({ applicantId, countryList }: SingleCategoryForm) 
     })
     
 	const handleAreaCode = useCallback(
-		(schemaPath: any, countryUpdate: string) => {
+		(schemaPath, countryUpdate: string) => {
 			const areaCode = FormHelpers.getCountryAreaCode(
 				countryUpdate,
 				countryList

@@ -8,20 +8,13 @@ import {
 	FormError,
 } from '@/components/UIcomponents/ui/form';
 import {
-	Select,
-	SelectContent,
-	SelectTrigger,
-	SelectValue,
-	SelectItem,
-} from '@/components/UIcomponents/ui/select';
-import {
 	AccordionItem,
 	Accordion,
 	AccordionContent,
 	AccordionTrigger,
 } from '@/components/UIcomponents/ui/accordion';
 import { Input } from '@/components/UIcomponents/ui/input';
-import { useMemo, useCallback, useEffect } from 'react';
+import { useMemo } from 'react';
 import {
 	FormHeader,
 	FormTitle,
@@ -33,8 +26,6 @@ import type { SingleCategoryForm } from '../../PersonalInfoForm/_steps/Biographi
 import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle';
 import MULTI_CHOICE_RESPONSES from '@/utils/vars/_formDefaults/disclosures_multiple_choice.json';
 import type { Country } from '@/types/forms/universal';
-import { FormHelpers } from '@/utils/clientActions/formHelpers';
-import Image from 'next/image';
 import { ErrorMessage } from '@hookform/error-message';
 import validator from 'validator';
 
@@ -84,52 +75,8 @@ export default function Fatca({ countryList }: FatcaProps) {
 	);
 }
 
-function FatcaForm({ applicantId, countryList }: SingleCategoryForm) {
-	const {
-		control,
-		watch,
-		setValue,
-		getValues,
-		resetField,
-		unregister,
-		getFieldState,
-		register,
-		clearErrors,
-		formState: { errors },
-	} = useFormContext<IndividualFormSchema>();
-
-	const currentFatcaStatus = watch(
-		`applicant.${applicantId}.disclosures.fatca.status`
-	);
-
-	const currentMobileAreaCode = getValues(
-		`applicant.${applicantId}.disclosures.fatca.details.phoneNumber`
-	);
-
-	const handleAreaCode = useCallback(
-		(schemaPath: any, countryUpdate: string) => {
-			const areaCode = FormHelpers.getCountryAreaCode(
-				countryUpdate,
-				countryList
-			);
-
-			setValue(schemaPath, areaCode);
-			clearErrors(schemaPath);
-		},
-		[setValue, countryList]
-	);
-
-	useEffect(() => {
-		if (currentFatcaStatus.length === 0) {
-			unregister(`applicant.${applicantId}.disclosures.fatca.details`);
-		} else {
-			register(
-				`applicant.${applicantId}.disclosures.fatca.details.phoneNumber`
-			);
-		}
-	}, [currentFatcaStatus, setValue, register, unregister, applicantId]);
-
-	const isErrored = (field: any) => getFieldState(field).error !== undefined;
+function FatcaForm({ applicantId }: SingleCategoryForm) {
+	
 
 	return (
 		<>

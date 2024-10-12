@@ -1,23 +1,10 @@
-// import type { BrokerFacts } from "@/types/forms/broker";
 
-// const testCurrency = {
-//     currency: 'SSX'
-// }
+export const BrokerCurrency = {
+	KESTR: 'KES',
+	DATAB: 'GHC',
+	AFRIN: 'NGN',
+	MERIS: 'SSX',
+	1: 'SSX',
+} as const;
 
-// const BROKERS: BrokerFacts = {
-//     'KESTR': {
-//         currency: "KES"
-//     },
-//     'AFRIN': {
-//         currency: 'NGN'
-//     },
-//     'DATAB': {
-//         currency: 'GHS'
-//     },
-//     'MERIS': testCurrency,
-//     '1': testCurrency,
-//     ''
-// } as const
-
-
-// no need for a broker currency mapping
+export type BrokerCurrencyEnum = typeof BrokerCurrency;

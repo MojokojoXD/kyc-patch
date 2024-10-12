@@ -1,20 +1,18 @@
-import type { FactoryComponentProps } from '..';
+import type { FactoryComponentProps } from '@/types/Components/formFactory';
 import { FormItem, FormControl, FormError, FormLabel } from '../../ui/form';
 import { useFormContext } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { useFormState } from 'react-hook-form';
 import { CustomToggle } from '../../CompoundUI/CustomToggle';
 import { cn } from '@/lib/utils';
-import { useEffect } from 'react';
 
 interface FormCheckBoxProps extends FactoryComponentProps {}
 
 export default function FormCheckBox({
 	label,
 	name,
-    placeholder,
     options,
-	rules,
+    rules,
 	componentProps = {},
 }: FormCheckBoxProps) {
 	const { register, control, getValues } = useFormContext();
@@ -36,8 +34,8 @@ export default function FormCheckBox({
 				<div className={cn('grid gap-[4px]', gridStyles)}>
 					{options && (options.keys as string[]).map((o) => (
 						<CustomToggle
-							key={o}
-							{...register(name)}
+							key={options.}
+							{...register(name,{...rules})}
 							type={'checkbox'}
 							value={o}
 							label={o}

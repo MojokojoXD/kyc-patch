@@ -1,6 +1,6 @@
 import { Button } from '@/components/UIcomponents/ui/button';
 import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle';
-import { useState, useEffect} from 'react';
+import { useState} from 'react';
 import { useRouter } from 'next/router';
 import {
 	FormContent,
@@ -8,8 +8,6 @@ import {
 	FormTitle,
 	FormSubHeader,
 } from '@/components/UIcomponents/FormLayout';
-import { BASE_URL } from '@/utils/vars/uri';
-import axios from 'axios';
 
 const formOptions = [
 	{
@@ -29,7 +27,7 @@ const formOptions = [
 	},
 ];
 
-const BROKER_INFO_URL = BASE_URL + '/';
+// const BROKER_INFO_URL = BASE_URL + '/';
 
 
 

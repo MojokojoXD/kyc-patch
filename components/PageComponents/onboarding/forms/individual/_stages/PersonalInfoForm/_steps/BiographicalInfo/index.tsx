@@ -1,56 +1,37 @@
 import { useFormContext } from 'react-hook-form';
 import {
-	FormField,
-	FormItem,
-	FormControl,
-	FormLabel,
-	FormMessage,
-} from '@/components/UIcomponents/ui/form';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/UIcomponents/ui/select';
-import {
 	AccordionItem,
 	Accordion,
 	AccordionContent,
 	AccordionTrigger,
 } from '@/components/UIcomponents/ui/accordion';
-import { Input } from '@/components/UIcomponents/ui/input';
-import Image from 'next/image';
 import {
 	FormHeader,
 	FormTitle,
 	FormSubHeader,
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
-import DatePicker from '@/components/UIcomponents/CompoundUI/DatePicker';
 import type { IndividualFormSchema } from '@/types/forms/individual';
-import type { Country } from '@/types/forms/universal';
-import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle';
-import MULTI_CHOICE_RESPONSES from '@/utils/vars/_formDefaults/personal_multiple_choice.json';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
-import { sub } from 'date-fns';
-import validator from 'validator';
-import { useMemo, useContext, Fragment } from 'react';
-import { UserContext } from '@/Contexts/UserProfileProvider';
-import type { BrokerDetails } from '@/types/forms/broker';
+import { useMemo, Fragment } from 'react';
 import FormFactory from '@/components/UIcomponents/FormFactory';
-import { getBioFields } from './formBuilder/bioFormFields';
-import type { ClientType } from '@/types/forms/individual';
+import { FormFieldAggregator } from '@/components/PageComponents/onboarding/forms/utils/FormFieldAggregator';
+import { bioFieldsModel } from './formBuilder/bioFormFields';
+import type {
+	FormStep,
+	SingleFormFieldsGeneratorProps,
+} from '@/types/Components/onboarding';
 
-export default function BiographicalInfo() {
-	const form = useFormContext<IndividualFormSchema>();
-	const { watch } = form;
+export const BiographicalInfo: FormStep = ({
+	applicantCount,
+	passCountryList,
+	passBrokerInfo,
+}) => {
+	const { watch } = useFormContext<IndividualFormSchema>();
 
-	const applicantCount = watch('_formMetadata.applicantCount')
+	const countryList = passCountryList?.call(this, true);
 
-	const appWideData = useContext(UserContext);
-
-	const facts = appWideData?.onboardingFacts;
+	const broker = passBrokerInfo?.call(this, true);
 
 	return (
 		<>
@@ -61,7 +42,7 @@ export default function BiographicalInfo() {
 				</FormSubHeader>
 			</FormHeader>
 			<FormContent>
-				<div className='space-y-[8px]'>
+				<div className='space-y-[8px] py-5'>
 					{[...Array(applicantCount).keys()].map((c, i) => {
 						const firstName = watch(`applicant.${i}.firstName`);
 						const lastName = watch(`applicant.${i}.lastName`);
@@ -81,7 +62,8 @@ export default function BiographicalInfo() {
 										forceMount>
 										<BiographicalForm
 											applicantId={i}
-											brokerInfo={facts?.broker}
+											broker={broker}
+											countryList={countryList}
 										/>
 									</AccordionContent>
 								</AccordionItem>
@@ -92,45 +74,65 @@ export default function BiographicalInfo() {
 			</FormContent>
 		</>
 	);
-}
-
-export interface SingleCategoryForm {
-	countryList: Country[];
-	applicantId: number;
-}
-
-type BiographicalFormProps = Omit<SingleCategoryForm, 'countryList'> & {
-	brokerInfo?: BrokerDetails;
 };
 
-function BiographicalForm({ applicantId, brokerInfo }: BiographicalFormProps) {
+interface BiographicalFormProps
+	extends SingleFormFieldsGeneratorProps {}
+
+function BiographicalForm({
+	applicantId,
+	broker,
+	countryList,
+}: BiographicalFormProps) {
 	const { watch } = useFormContext();
 
-	const currentNationality = watch(
-		`applicant.${applicantId}.countryOfCitizenship`
+	const currentResidence = watch(
+		`applicant.${applicantId}.countryOfResidence`
 	) as string;
-
-	const currentNationalityCode =
-		FormHelpers.getCodeFromFullCountryName(currentNationality) || '';
-
-	const addResidenceFields =
-		brokerInfo!.org_code === 'DATAB' ||
-		currentNationalityCode !== brokerInfo?.org_cty;
-
-	const fields = useMemo(
-		() =>
-			getBioFields(
-				applicantId,
-				brokerInfo?.org_code as string,
-				currentNationalityCode,
-				addResidenceFields ? 'RESIDENCE' : ''
-			),
-		[applicantId, brokerInfo, currentNationalityCode]
+	const citizenship = watch(
+		`applicant.${applicantId}.countryOfCitizenship`
 	);
+
+	/*Get country code of client's nationality to determine nationality 
+    specific field*/
+	const citizenshipCode = FormHelpers.getCodeFromFullCountryName(
+		citizenship,
+		countryList
+	);
+	const residenceCountryCode =
+		FormHelpers.getCodeFromFullCountryName(
+			currentResidence,
+			countryList
+		) || '';
+
+	const aggregatorResults = useMemo(() => {
+		const aggregator = new FormFieldAggregator(bioFieldsModel).init(
+			broker?.org_code,
+			{
+				index: applicantId,
+				countryList,
+			}
+		);
+
+		aggregator.modifyFields('local', {
+			required: residenceCountryCode === broker?.org_cty,
+		});
+		aggregator.modifyFields('foreign', {
+			required: (residenceCountryCode || citizenshipCode) !== broker?.org_cty,
+		});
+
+		return aggregator.generate();
+	}, [
+		applicantId,
+		broker,
+		countryList,
+		residenceCountryCode,
+		citizenship,
+	]);
 
 	return (
 		<>
-			{fields.map((f) => (
+			{aggregatorResults.fields.map((f) => (
 				<FormFactory
 					key={f.name as string}
 					{...f}

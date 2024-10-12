@@ -5,7 +5,6 @@ import {
 	AccordionContent,
 	AccordionTrigger,
 } from '@/components/UIcomponents/ui/accordion';
-import Image from 'next/image';
 import {
 	FormHeader,
 	FormTitle,
@@ -13,24 +12,24 @@ import {
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individual';
-import type { Country } from '@/types/forms/universal';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
-import { useMemo, useContext } from 'react';
-import { UserContext } from '@/Contexts/UserProfileProvider';
-import type { BrokerDetails } from '@/types/forms/broker';
+import { useMemo } from 'react';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 import { generateContactFields } from './formBuilder/contactFormFields';
-import type { SingleCategoryForm } from '../BiographicalInfo';
+import type { FormStep } from '@/types/Components/onboarding';
+import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
+import { contactFieldsModel } from './formBuilder/contactFormFields';
+import { FormFieldAggregator } from '@/components/PageComponents/onboarding/forms/utils/FormFieldAggregator';
 
-export default function Contacts() {
-	const form = useFormContext<IndividualFormSchema>();
-	const { watch,getValues } = form;
+export const Contacts: FormStep = ({
+	applicantCount,
+	passBrokerInfo,
+	passCountryList,
+}) => {
+	const { getValues } = useFormContext<IndividualFormSchema>();
 
-    const applicantCount = watch( '_formMetadata.applicantCount' );
-
-	const appWideData = useContext(UserContext);
-
-	const facts = appWideData?.onboardingFacts;
+	const countryList = passCountryList?.call(this, true);
+	const broker = passBrokerInfo?.call(this, true);
 
 	return (
 		<>
@@ -39,7 +38,7 @@ export default function Contacts() {
 				<FormSubHeader>Enter your contact information.</FormSubHeader>
 			</FormHeader>
 			<FormContent>
-				<div className='space-y-[8px]'>
+				<div className='space-y-[8px] py-5'>
 					{[...Array(applicantCount).keys()].map((c, i) => {
 						const firstName = getValues(`applicant.${i}.firstName`);
 						const lastName = getValues(`applicant.${i}.lastName`);
@@ -59,7 +58,8 @@ export default function Contacts() {
 										forceMount>
 										<ContactForm
 											applicantId={i}
-											brokerInfo={facts?.broker}
+											broker={broker}
+											countryList={countryList}
 										/>
 									</AccordionContent>
 								</AccordionItem>
@@ -70,34 +70,54 @@ export default function Contacts() {
 			</FormContent>
 		</>
 	);
-}
-
-type ContactFormProps = Omit<SingleCategoryForm, 'countryList'> & {
-	brokerInfo?: BrokerDetails;
 };
 
-function ContactForm({ applicantId, brokerInfo }: ContactFormProps) {
-	const { watch } = useFormContext<IndividualFormSchema>();
+type ContactFormProps = SingleFormFieldsGeneratorProps &
+	Record<string, never>;
 
-	const currentClientResidence = watch(
-		`applicant.${applicantId}.countryOfResidence`
-    );
-    
-    const clientCountryCode = FormHelpers.getCodeFromFullCountryName( currentClientResidence ) || '';
+function ContactForm({
+	applicantId,
+	broker,
+	countryList,
+}: ContactFormProps )
+{
+	const { getValues } = useFormContext<IndividualFormSchema>();
 
-	const fields = useMemo(() =>
-		generateContactFields(
-			applicantId,
-			brokerInfo?.org_code || '',
-			clientCountryCode
-		), [ clientCountryCode,applicantId,brokerInfo ]
-	);
+	const currentClientResidence =
+		getValues(`applicant.${applicantId}.countryOfResidence`);
+
+	const clientCountryCode =
+		FormHelpers.getCodeFromFullCountryName(
+			currentClientResidence,
+			countryList
+		) ;
+
+	const aggregatorResult = useMemo(() => {
+		const aggregator = new FormFieldAggregator(contactFieldsModel).init(
+			broker.org_code,
+			{
+				index: applicantId,
+				countryList,
+			}
+        );
+        
+		aggregator.modifyFields('optional-contact', {
+			required: broker?.org_code === 'DATAB',
+		});
+
+		aggregator.modifyFields('residence-contact', {
+			remove: clientCountryCode !== 'GH' && broker?.org_code !== 'DATAB',
+			required: broker.org_code !== 'DATAB',
+		});
+
+		return aggregator.generate();
+	}, [clientCountryCode, applicantId, broker, countryList]);
 
 	return (
 		<>
-			{fields.map((f) => (
+			{aggregatorResult.fields.map((f) => (
 				<FormFactory
-                    key={ f.name as string }
+					key={f.name as string}
 					{...f}
 				/>
 			))}

@@ -1,36 +1,38 @@
-import type { FormFactoryProps } from '@/components/UIcomponents/FormFactory';
-import { sub } from 'date-fns';
+import type { FormFactoryProps } from '@/types/Components/formFactory';
+import { sub, add } from 'date-fns';
 import type { Country } from '@/types/forms/universal';
-import countries from '@/utils/vars/_formDefaults/countries.json';
-import { FormHelpers } from '@/utils/clientActions/formHelpers';
-import Image from 'next/image';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import OPTIONS from '@/utils/vars/_formDefaults/personal_multiple_choice.json';
-import { dynamicBioFields } from './dynamicFields/fieldsMap';
 
 const today = new Date();
 const minAgeDate = sub(today, { years: 18 });
 
-const base_bio_fields = (indexer: number): FormFactoryProps[] => [
+const bioFieldsModel = ({
+	index,
+	countryList,
+}: {
+	index: number;
+	countryList: Country[];
+}): FormFactoryProps[] => [
 	{
 		fieldType: 'radio',
-		name: `applicant.${indexer}.title.presets` as const,
+		name: `applicant.${index}.title.presets` as const,
 		label: 'Title',
 		rules: {
 			required: 'Please enter select title',
 		},
 		options: {
-			keySelector: (key: string) => key,
+			keySelector: (key) => key,
 			keys: OPTIONS.bio.title,
 		},
 		componentProps: {
 			className: 'grid grid-cols-5',
 		},
+		tags: ['AFRIN', 'DATAB'],
 	},
 	{
 		fieldType: 'text',
 		inline: true,
-		name: `applicant.${indexer}.firstName` as const,
+		name: `applicant.${index}.firstName` as const,
 		label: 'Full Name',
 		rules: {
 			required: 'Please enter first name',
@@ -41,14 +43,14 @@ const base_bio_fields = (indexer: number): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
 		inline: true,
-		name: `applicant.${indexer}.middleName` as const,
+		name: `applicant.${index}.middleName` as const,
 		label: '',
 		placeholder: 'Middle name(Optional)',
 	},
 	{
 		fieldType: 'text',
 		inline: true,
-		name: `applicant.${indexer}.lastName` as const,
+		name: `applicant.${index}.lastName` as const,
 		label: '',
 		rules: {
 			required: 'Please enter last name',
@@ -58,7 +60,7 @@ const base_bio_fields = (indexer: number): FormFactoryProps[] => [
 	},
 	{
 		fieldType: 'date',
-		name: `applicant.${indexer}.dateOfBirth` as const,
+		name: `applicant.${index}.dateOfBirth` as const,
 		label: 'Date of Birth',
 		rules: {
 			required: 'Select date of birth',
@@ -69,10 +71,29 @@ const base_bio_fields = (indexer: number): FormFactoryProps[] => [
 			defaultMonth: minAgeDate,
 			startMonth: sub(minAgeDate, { years: 100 }),
 		},
+		tags: ['AFRIN', 'DATAB'],
+	},
+	{
+		fieldType: 'text',
+		name: `applicant.${index}.mothersMaidenName`,
+		label: "Mother's maiden name",
+		rules: {
+			required: 'Please enter place of birth',
+			validate: (v: string) => v.length > 1 || 'entry is too short',
+		},
+		placeholder: 'Enter name',
+		tags: ['AFRIN', 'DATAB'],
+	},
+	{
+		fieldType: 'text',
+		name: `applicant.${index}.maidenName`,
+		label: 'Maiden name (Optional)',
+		placeholder: 'Enter name',
+		tags: ['DATAB'],
 	},
 	{
 		fieldType: 'radio',
-		name: `applicant.${indexer}.gender` as const,
+		name: `applicant.${index}.gender` as const,
 		label: 'Gender',
 		rules: {
 			required: 'Select gender',
@@ -84,10 +105,11 @@ const base_bio_fields = (indexer: number): FormFactoryProps[] => [
 		componentProps: {
 			className: 'grid grid-cols-2 gap-[4px]',
 		},
+		tags: ['AFRIN', 'DATAB'],
 	},
 	{
 		fieldType: 'radio',
-		name: `applicant.${indexer}.maritalStatus` as const,
+		name: `applicant.${index}.maritalStatus` as const,
 		label: 'Marital Status',
 		rules: {
 			required: 'Select marital status',
@@ -99,94 +121,188 @@ const base_bio_fields = (indexer: number): FormFactoryProps[] => [
 		componentProps: {
 			className: 'grid grid-cols-4 gap-[4px]',
 		},
+		tags: ['AFRIN', 'DATAB'],
 	},
 	{
 		fieldType: 'text',
-		name: `applicant.${indexer}.placeOfBirth`,
+		name: `applicant.${index}.placeOfBirth`,
 		label: 'Place of Birth',
 		rules: {
 			required: 'Please enter place of birth',
 			validate: (v: string) => v.length > 1 || 'entry is too short',
 		},
 		placeholder: 'Enter place of birth',
+		tags: ['DATAB'],
 	},
 	{
 		fieldType: 'dropdown',
-		name: `applicant.${indexer}.countryOfResidence` as const,
+		name: `applicant.${index}.countryOfResidence` as const,
 		label: 'Country of Residence',
 		rules: {
 			required: 'Select country of residence',
 		},
 		options: {
 			keySelector: (key: Country) => key.cty_name,
-            keys: countries.data,
-            priorityKeys: (keys: Country[]) =>
+			keys: countryList,
+			priorityKeys: (keys: Country[]) =>
 				keys.filter(
 					(k) =>
-						k.cty_code === 'GH' || k.cty_code === 'NG' || k.cty_code === 'KE'
+						k.cty_code === 'GH' ||
+						k.cty_code === 'NG' ||
+						k.cty_code === 'KE'
 				),
 		},
 		placeholder: 'Select country',
 	},
+
 	{
 		fieldType: 'dropdown',
-		name: `applicant.${indexer}.countryOfCitizenship` as const,
+		name: `applicant.${index}.countryOfCitizenship`,
 		label: 'Nationality/Country of Citizenship',
 		rules: {
 			required: 'Select nationality',
 		},
 		options: {
 			keySelector: (key: Country) => key.cty_name,
-            keys: countries.data,
-            priorityKeys: (keys: Country[]) =>
+			keys: countryList,
+			priorityKeys: (keys: Country[]) =>
 				keys.filter(
 					(k) =>
-						k.cty_code === 'GH' || k.cty_code === 'NG' || k.cty_code === 'KE'
+						k.cty_code === 'GH' ||
+						k.cty_code === 'NG' ||
+						k.cty_code === 'KE'
 				),
 		},
 		placeholder: 'Select country',
 	},
 	{
-		fieldType: 'dropdown',
-		name: `applicant.${indexer}.countryOfBirth` as const,
-		label: 'Country of Birth',
+		fieldType: 'text',
+		name: `applicant.${index}.stateOfOrigin`,
+		label: 'State of Origin',
+		placeholder: 'Enter state',
 		rules: {
-			required: 'Select country of birth',
+			required: 'Please enter state of origin',
+		},
+		tags: ['AFRIN','local']
+	},
+	{
+		fieldType: 'text',
+		name: `applicant.${index}.localGovernment`,
+		label: 'Local Government',
+		placeholder: 'Enter local government',
+		rules: {
+			required: 'Please enter local government',
+		},
+		tags: ['AFRIN','local']
+	},
+	{
+		fieldType: 'text',
+		name: `applicant.${index}.religion`,
+		label: 'Religion',
+		placeholder: 'Enter religion',
+		rules: {
+			required: 'Please enter religion',
+		},
+		tags: ['AFRIN','local']
+	},
+	// {
+	// 	fieldType: 'dropdown',
+	// 	name: `applicant.${index}.countryOfBirth` as const,
+	// 	label: 'Country of Birth',
+	// 	rules: {
+	// 		required: 'Select country of birth',
+	// 	},
+	// 	options: {
+	// 		keySelector: (key: Country) => key.cty_name,
+	// 		keys: countryList,
+	// 		priorityKeys: (keys: Country[]) =>
+	// 			keys.filter(
+	// 				(k) =>
+	// 					k.cty_code === 'GH' ||
+	// 					k.cty_code === 'NG' ||
+	// 					k.cty_code === 'KE'
+	// 			),
+	// 	},
+	// 	placeholder: 'Select country',
+	// },
+	{
+		name: `applicant.${index}.residence.status`,
+		fieldType: 'radio',
+		label: 'Residential Status',
+		rules: {
+			required: 'Select residential status',
 		},
 		options: {
-			keySelector: (key: Country) => key.cty_name,
-            keys: countries.data,
-            priorityKeys: (keys: Country[]) =>
-				keys.filter(
-					(k) =>
-						k.cty_code === 'GH' || k.cty_code === 'NG' || k.cty_code === 'KE'
-				),
+			keySelector: (key) => key,
+			keys: [
+				'Resident Ghanaian',
+				'Resident Foreigner',
+				'Non-Resident Ghanaian',
+				'Non-Resident Foreigner',
+			],
 		},
-		placeholder: 'Select country',
+		tags: ['DATAB']
 	},
 	{
 		fieldType: 'text',
-		name: `applicant.${indexer}.mothersMaidenName`,
-		label: "Mother's maiden name",
+		name: `applicant.${index}.residence.permitNumber`,
+		label: 'Residence Permit Number',
+		placeholder: 'Enter permit number',
 		rules: {
-			required: 'Please enter place of birth',
-			validate: (v: string) => v.length > 1 || 'entry is too short',
+			required: 'Please enter permit number',
 		},
-		placeholder: 'Enter name',
+		tags: ['AFRIN', 'DATAB','foreign']
+	},
+	{
+		fieldType: 'date',
+		name: `applicant.${index}.residence.permitIssueDate`,
+		label: 'Permit Issue Date',
+		placeholder: 'DD/MM/YYYY',
+		rules: {
+			required: 'Select date',
+		},
+		componentProps: {
+			startMonth: sub(today, { years: 100 }),
+			endMonth: today,
+			disabled: { after: today },
+			defaultMonth: today,
+		},
+		tags: ['DATAB','foreign']
 	},
 	{
 		fieldType: 'text',
-		name: `applicant.${indexer}.maidenName`,
-		label: "Mother's maiden name",
-		placeholder: 'Enter name',
+		name: `applicant.${index}.residence.permitIssuePlace`,
+		label: 'Place of Issue',
+		placeholder: 'Enter place of Issue',
+		rules: {
+			required: 'Please enter place of issue',
+		},
+        tags: ['DATAB','foreign']
+	},
+	{
+		fieldType: 'date',
+		name: `applicant.${index}.residence.permitExpiry`,
+		label: 'Permit Expiry Date',
+		placeholder: 'DD/MM/YYYY',
+		rules: {
+			required: 'Select date',
+		},
+		componentProps: {
+			startMonth: today,
+			endMonth: add(today, { years: 100 }),
+			disabled: { before: today },
+			defaultMonth: today,
+		},
+		tags: [ 'DATAB','foreign' ]
+	},
+
+	{
+		fieldType: 'text',
+		name: `applicant.${index}.licenseNumber`,
+		label: 'Professional License Number(Optional)',
+		placeholder: 'Enter professional license number',
+		tags: ['DATAB']
 	},
 ];
 
-const getBioFields = (indexer: number, ...identifiers: (string)[]) =>
-	identifiers.reduce<FormFactoryProps[]>((result, currentValue) => {
-		if (!dynamicBioFields.has(currentValue)) return result;
-
-		return result.concat(dynamicBioFields.get(currentValue)?.call(this, indexer) || []);
-	}, base_bio_fields(indexer));
-
-export { getBioFields };
+export { bioFieldsModel };

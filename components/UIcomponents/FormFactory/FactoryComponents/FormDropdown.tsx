@@ -1,15 +1,11 @@
-import type { FactoryComponentProps } from '..';
+import type { FactoryComponentProps } from '@/types/Components/formFactory';
 import {
 	FormItem,
 	FormControl,
-	FormError,
 	FormLabel,
 	FormMessage,
 } from '../../ui/form';
 import { useFormContext } from 'react-hook-form';
-import { CustomToggle } from '../../CompoundUI/CustomToggle';
-import type { Country } from '@/types/forms/universal';
-import { cn } from '@/lib/utils';
 import {
 	Select,
 	SelectContent,
@@ -29,22 +25,24 @@ export default function FormDropdown({
 	rules,
 	options,
 	defaultValue = '',
-	componentProps = {},
 }: FormDropdownProps) {
-	const { register, control, trigger } = useFormContext();
+	const { control } = useFormContext();
 
-    let priorityList = [];
-    let mainList = []
+	let priorityList = [];
+	let mainList = options!.keys;
 
 	if (options && options.priorityKeys) {
-        priorityList = options.priorityKeys( options.keys );
-    }
-    
-    if ( options && options.keys )
-    {
-        const priorityListKeys = priorityList.map( p => options.keySelector( p ) );
-        mainList = options.keys.filter( k => !priorityListKeys.includes( options.keySelector( k ) ) );
-    }
+		priorityList = options.priorityKeys(options.keys);
+	}
+
+	if (options && options.keys && priorityList.length > 0) {
+		const priorityListKeys = priorityList.map((p) =>
+			options.keySelector(p)
+		);
+		mainList = options.keys.filter(
+			(k) => !priorityListKeys.includes(options.keySelector(k))
+		);
+	}
 	return (
 		<Controller
 			control={control}
@@ -71,8 +69,7 @@ export default function FormDropdown({
 									{priorityList.map((o) => (
 										<SelectItem
 											key={options!.keySelector(o)}
-                                            value={ options!.keySelector( o ) }
-                                        >
+											value={options!.keySelector(o)}>
 											{options!.keySelector(o)}
 										</SelectItem>
 									))}
@@ -82,12 +79,12 @@ export default function FormDropdown({
 								)}
 								<SelectGroup>
 									{mainList.map((o) => (
-											<SelectItem
-												key={options.keySelector(o)}
-												value={options.keySelector(o)}>
-												{options.keySelector(o)}
-											</SelectItem>
-										))}
+										<SelectItem
+											key={options.keySelector(o)}
+											value={options.keySelector(o)}>
+											{options.keySelector(o)}
+										</SelectItem>
+									))}
 								</SelectGroup>
 							</SelectContent>
 						</Select>

@@ -33,7 +33,7 @@ export default function FormProgressSheet<T extends object>({
 				onEscapeKeyDown={(e) => e.preventDefault()}
 				onOpenAutoFocus={(e) => e.preventDefault()}
 				className='py-20 px-0'
-				aria-description='sheet content'>
+				>
                 <SheetHeader className='px-14'>
                     <SheetTitle></SheetTitle>
 					<SheetDescription></SheetDescription>

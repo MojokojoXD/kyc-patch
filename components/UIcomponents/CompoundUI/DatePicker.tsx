@@ -13,7 +13,7 @@ import 'react-day-picker/style.css';
 
 type DatePickerProps = ComponentProps<typeof DayPicker> & {
 	currentDate: string;
-	onChange: (...events: any[]) => void;
+	onChange: (...events: unknown[]) => void;
 };
 
 export default function DatePicker({

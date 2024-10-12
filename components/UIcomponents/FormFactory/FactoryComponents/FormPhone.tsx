@@ -1,31 +1,29 @@
-import type { FactoryComponentProps } from '..';
-import { FormItem, FormControl, FormLabel, FormMessage } from '../../ui/form';
+import type { FactoryComponentProps } from '@/types/Components/formFactory';
+import {
+	FormItem,
+	FormControl,
+	FormLabel,
+	FormMessage,
+} from '../../ui/form';
 import { useFormContext, useFieldArray } from 'react-hook-form';
-import { useFormState } from 'react-hook-form';
-import { CustomToggle } from '../../CompoundUI/CustomToggle';
-import { cn } from '@/lib/utils';
-import { useState,useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import { Controller } from 'react-hook-form';
 import { Input } from '../../ui/input';
 import PhoneInput from 'react-phone-number-input/input';
 import { X, CirclePlus } from 'lucide-react';
 import { Button } from '../../ui/button';
-import en from 'react-phone-number-input/flags';
 import {
 	Select,
 	SelectTrigger,
-	SelectValue,
 	SelectContent,
 	SelectGroup,
 	SelectItem,
-	SelectSeparator,
 } from '../../ui/select';
 import type { SelectProps } from '@radix-ui/react-select';
-import COUNTRIES from '@/utils/vars/_formDefaults/countries.json';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import type { CountryCode } from '@/types/forms/universal';
-import type { IndividualFormSchema } from '@/types/forms/individual';
 import Image from 'next/image';
+import type { Country } from '@/types/forms/universal';
 
 interface FormPhoneProps extends FactoryComponentProps {}
 
@@ -35,21 +33,23 @@ export default function FormPhone({
 	placeholder,
 	rules,
 	defaultValue = 'GH',
-    componentProps = {},
-}: FormPhoneProps )
-{
-    const { control, resetField, setValue, getValues } = useFormContext();
+    componentProps = { phoneMode: 'multi', maxPhoneCount: 2 },
+    options
+}: FormPhoneProps) {
+	const { control, resetField, setValue, getValues } =
+		useFormContext();
 
-    const metaDataPath = `_formMetadata.` as const + name ;
-    
-    const countryListMetadata = getValues( metaDataPath );
+	const metaDataPath = (`_formMetadata.` as const) + name;
 
-	const [country, setCountry] = useState<CountryCode[]>(countryListMetadata || []);
-    
+	const countryListMetadata = getValues(metaDataPath) as CountryCode[];
+
+	const [country, setCountry] = useState<CountryCode[]>(
+		countryListMetadata || []
+	);
 
 	const { fields, append, remove } = useFieldArray({
 		control,
-        name: name,
+		name: name,
 	});
 
 	const handleCountryChange = (v: CountryCode, index: number) => {
@@ -61,17 +61,17 @@ export default function FormPhone({
 
 	const handleRemovePhoneNumber = (index: number) => {
 		remove(index);
-		setCountry((prevCountryList) => [...country.filter((c, i) => i !== index)]);
-    };
+		setCountry((prevCountryList) => [
+			...prevCountryList.filter((c, i) => i !== index),
+		]);
+	};
 
-    useEffect( () =>
-    {
-        if ( fields.length === 0 )
-        {
-            setValue( name, [{ value: '' }] );
-        }
-        setValue( metaDataPath, country );
-    },[country,fields])
+	useEffect(() => {
+		if (fields.length === 0) {
+			setValue(name, [{ value: '' }]);
+		}
+		setValue(metaDataPath, country);
+	}, [country, fields, metaDataPath, name, setValue]);
 
 	return (
 		<>
@@ -94,7 +94,8 @@ export default function FormPhone({
 											className={
 												'flex has-[:focus]:border-primary-500 rounded-lg border border-neutral-200 text-neutral-700 bg-white paragraph2Regular grow relative items-center overflow-hidden'
 											}>
-											<CustomCountrySelect
+                                            <CustomCountrySelect
+                                                options={options}
 												onValueChange={(v: CountryCode) => {
 													resetField(field.name, { defaultValue: '' });
 													handleCountryChange(v, i);
@@ -102,15 +103,14 @@ export default function FormPhone({
 												defaultValue={country[i] || defaultValue}
 											/>
 											<PhoneInput
-                                                country={ country[ i ] || defaultValue }
-                                                international
+												country={country[i] || defaultValue}
+												international
 												className='border-none'
 												placeholder={placeholder}
-                                                { ...field }
-                                                inputComponent={ Input }
+												{...field}
+												inputComponent={Input}
 											/>
 											{i !== 0 && (
-                                                
 												<Button
 													type='button'
 													size={'icon'}
@@ -130,43 +130,58 @@ export default function FormPhone({
 						/>
 					))}
 				</div>
-				{componentProps.phoneMode === 'multi' && <Button
-					variant={'link'}
-					type='button'
-					className='text-primary-500 hover:bg-none hover:no-underline px-0 py-2 h-fit '
-					onClick={() => {
-						setCountry((prevCountryList) => [
-							...prevCountryList,
-							defaultValue as CountryCode,
-						]);
-						append({ value: '' });
-					}}>
-					<CirclePlus className='h-[20px] w-[20px] mr-1' />
-					Add another number
-				</Button>}
+				{componentProps.phoneMode === 'multi' && (
+					<Button
+						variant={'link'}
+                        type='button'
+                        disabled={ fields.length === componentProps.maxPhoneCount }
+						className='text-primary-500 hover:bg-none hover:no-underline px-0 py-2 h-fit '
+						onClick={() => {
+							setCountry((prevCountryList) => [
+								...prevCountryList,
+								defaultValue as CountryCode,
+							]);
+							append({ value: '' });
+						}}>
+						<CirclePlus className='h-[20px] w-[20px] mr-1' />
+						Add another number
+					</Button>
+				)}
 			</FormItem>
 		</>
 	);
 }
 
-interface CustomCountrySelectProps extends SelectProps {}
+type Options = Pick<FactoryComponentProps, 'options'>;
 
-const PRIORITY_COUNTRIES = ['GH', 'NG', 'KE'];
+type CustomCountrySelectProps = Options &
+	SelectProps & object;
 
 function CustomCountrySelect({
 	onValueChange,
 	defaultValue,
-}: CustomCountrySelectProps) {
-	const priorityCountries = COUNTRIES.data.filter((c) =>
-		PRIORITY_COUNTRIES.includes(c.cty_code)
-	);
-	const otherCountries = COUNTRIES.data.filter(
-		(c) => !PRIORITY_COUNTRIES.includes(c.cty_code)
-	);
+	options,
+}: CustomCountrySelectProps )
+{
+	let priorityList = [];
+	let mainList = options?.keys || [];
+
+	if (options && options.priorityKeys) {
+		priorityList = options.priorityKeys<Country>(options.keys);
+	}
+
+	if (options && options.keys && priorityList.length > 0) {
+		const priorityListKeys = priorityList.map((p) =>
+			options.keySelector(p)
+		);
+		mainList = options.keys.filter(
+			(k) => !priorityListKeys.includes(options.keySelector(k))
+		);
+	}
 
 	const flagURL = FormHelpers.getFlagURL(
 		defaultValue as string,
-		COUNTRIES.data
+		options?.keys 
 	);
 
 	return (
@@ -186,21 +201,21 @@ function CustomCountrySelect({
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>
-					{priorityCountries.map((c) => (
+					{priorityList.map((c) => (
 						<SelectItem
 							value={c.cty_code}
 							key={c.cty_code}>
-							{c.cty_name} ({ c.call_code })
+							{c.cty_name} ({c.call_code})
 						</SelectItem>
 					))}
 				</SelectGroup>
 				<hr className='my-2 border-neutral-200' />
 				<SelectGroup>
-					{otherCountries.map((c) => (
+					{mainList.map((c) => (
 						<SelectItem
 							value={c.cty_code}
 							key={c.cty_code}>
-							{c.cty_name} ({ c.call_code })
+							{c.cty_name} ({c.call_code})
 						</SelectItem>
 					))}
 				</SelectGroup>

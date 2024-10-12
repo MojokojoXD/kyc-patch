@@ -20,7 +20,6 @@ const DEFAULT_MAX_FILE_SIZE = 1048576;
 const SUPPORTED_FORMATS = [ 'jpg', 'jpeg', 'png' ] as const;
 
 
-
 const SignatureUploader = forwardRef<HTMLInputElement, SignatureUploaderProps>(
 	(
 		{

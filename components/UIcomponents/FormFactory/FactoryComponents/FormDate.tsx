@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { CalendarDays as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/UIcomponents/ui/button';
@@ -8,9 +7,7 @@ import {
 	PopoverTrigger,
 } from '@/components/UIcomponents/ui/popover';
 import { DayPicker } from 'react-day-picker';
-import { ComponentProps } from 'react';
 import type { FactoryComponentProps } from '..';
-import { Input } from '../../ui/input';
 import { FormItem, FormControl, FormError, FormLabel } from '../../ui/form';
 import { useFormContext } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
@@ -59,7 +56,7 @@ export default function FormDate({
 								<CalendarIcon className='h-5 w-5 text-neutral-700' />
 							</Button>
 						</PopoverTrigger>
-						<PopoverContent className='w-auto p-4' onCloseAutoFocus={ e => trigger(fieldName) }>
+						<PopoverContent className='w-auto p-4' onCloseAutoFocus={ () => trigger(fieldName) }>
 							<DayPicker
 								{...componentProps}
                                 showOutsideDays={ false }

@@ -17,7 +17,7 @@ import {
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individual';
-import { useMemo, useState, useEffect, useRef, useContext } from 'react';
+import { useMemo, useState, useEffect, useContext } from 'react';
 import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
 import { format } from 'date-fns';
 import SignatureUploader from '@/components/UIcomponents/CompoundUI/SignatureUploader';
@@ -33,7 +33,7 @@ export default function KestrelNominee() {
 
     const appWideData = useContext( UserContext );
 
-    let onboardingFacts = appWideData?.onboardingFacts;
+    const onboardingFacts = appWideData?.onboardingFacts;
 
     if ( !onboardingFacts )
     {
@@ -123,10 +123,10 @@ function KestrelNomineeForm({
 
 			if (img) {
 				setPreviewURL(img);
-				setSignatureStatus((status) => ({ error: false, processing: false }));
+				setSignatureStatus({ error: false, processing: false });
 				return;
 			}
-			setSignatureStatus((status) => ({ processing: false, error: true }));
+			setSignatureStatus({ processing: false, error: true });
 		};
 
 		if (signatureURL !== '') {
@@ -1256,10 +1256,10 @@ function KestrelNomineeForm({
 											});
 
 											if (!uploadURL) {
-												setSignatureStatus((status) => ({
+												setSignatureStatus({
 													processing: false,
 													error: true,
-												}));
+												});
 												return;
 											}
 

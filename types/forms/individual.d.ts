@@ -37,31 +37,31 @@ export interface ApplicantInfo extends BiographicalCore {
 	bank: BankInfo;
 	proofOfIdentity: ProofOfIdentity;
 	riskProfile: {
-		tolerance: string;
-		investmentObjective: string;
-		beneficialOwner: string;
-		investmentHorizon: string;
-		initialAmount: string;
-		topUpFrequency: {
+		tolerance?: string;
+		investmentObjective?: string;
+		beneficialOwner?: string;
+		investmentHorizon?: string;
+		initialInvestmentAmount?: string;
+		topUpActivity?: {
 			frequency: string;
 			other: string;
 		};
-		topUpAmount: string;
-		withdrawalFrequency: {
+		regularTopUpAmount?: string;
+		withdrawalActivity?: {
 			frequency: string;
 			other: string;
 		};
-		withdrawalAmount: string;
-		significantWithdrawalTimetable: string;
-		emergencyFunds: string;
-		investmentKnowledge: string;
+		regularTopUpAmount?: string;
+		significantWithdrawalTimetable?: string;
+		emergencyFunds?: string;
+		investmentKnowledge?: string;
 		sourceOfFunds: string[]; //Important! Do not change. Must be an array of strings;
-		statements: {
+		statements?: {
 			deliveryMode: string;
 			frequency: string;
 		};
-		reaction: string;
-		agreementOfTerms: string;
+		reaction?: string;
+		agreementOfTerms?: string;
 	};
 	nextOfKin: NextOfKinInfo;
 	disclosures: Disclosures;
@@ -93,15 +93,19 @@ type StudentEmployment = Pick<Employed, 'email' | 'phoneNumber'> & {
 };
 
 type BankInfo = Bank & {
-	accountDetails: BankAccount;
+    account: BankAccount;
+    statement?: {
+        modeOfDelivery: string;
+        deliveryFrequency: string;
+    } 
 };
 
 interface ProofOfIdentity {
 	idType: string;
 	idNumber: string;
-	issuedOn: string;
+	issueDate: string;
 	placeOfIssue: string;
-	expiry: string;
+	expiryDate: string;
 }
 
 interface BiographicalCore {
@@ -128,7 +132,7 @@ interface BiographicalCore {
         permitNumber: string;
         permitIssueDate: string;
         permitExpiry: string;
-        permitIssueDate
+        permitIssuePlace: string;
     }
 }
 

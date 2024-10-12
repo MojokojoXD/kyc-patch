@@ -45,7 +45,7 @@ export default async function handler(
 
         res.status(404).json({ message: imageRes.statusText });
 
-    } catch ( error: any )
+    } catch ( error )
     {
         
         console.log( error );

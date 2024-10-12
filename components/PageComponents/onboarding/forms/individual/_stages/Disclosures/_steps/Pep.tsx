@@ -96,7 +96,7 @@ function PepForm({ applicantId, countryList }: SingleCategoryForm) {
 		`applicant.${applicantId}.disclosures.pepInfo.isPep`
 	);
 
-	const { ref, name, onBlur, onChange } = register(
+	const { ref, name } = register(
 		`applicant.${applicantId}.disclosures.pepInfo.pepDetails.country`,
 		{
 			required: currentPepStatus === 'Yes' ? 'Select country' : false,
@@ -108,7 +108,7 @@ function PepForm({ applicantId, countryList }: SingleCategoryForm) {
 
 	const flagUrl = FormHelpers.getFlagURL(currentCountry, countryList);
 
-	const isErrored = (fieldName: any) =>
+	const isErrored = (fieldName) =>
 		getFieldState(fieldName).error !== undefined;
 
 	return (

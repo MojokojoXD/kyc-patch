@@ -1,27 +1,20 @@
 import { useForm } from 'react-hook-form';
-import { useEffect, useState, useCallback, useRef, useContext } from 'react';
+import { useState, useCallback, useRef, useContext } from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individual';
-import INDIVIDUAL_FORM_DEFAULTS from '@/utils/vars/_formDefaults/defaults_individual.json';
 import { Form } from '@/components/UIcomponents/ui/form';
-import IndividualFormIntro from '@/components/PageComponents/onboarding/forms/individual/_stages/IndividualFormIntro';
-import PersonalInformation from '@/components/PageComponents/onboarding/forms/individual/_stages/PersonalInfoForm';
-import NextOfKin from '@/components/PageComponents/onboarding/forms/individual/_stages/NextOfKin';
-import Disclosures from '@/components/PageComponents/onboarding/forms/individual/_stages/Disclosures';
+import { IndividualFormIntro } from '@/components/PageComponents/onboarding/forms/individual/_stages/IndividualFormIntro';
+import { PersonalInformation } from '@/components/PageComponents/onboarding/forms/individual/_stages/PersonalInfoForm';
+import { NextOfKin } from '@/components/PageComponents/onboarding/forms/individual/_stages/NextOfKin';
+import { Disclosures } from '@/components/PageComponents/onboarding/forms/individual/_stages/Disclosures';
 import FormProgressSheet, {
 	FormProgressSheetButton,
 } from '@/components/UIcomponents/CompoundUI/FormProgressSheet';
-import useHTTPRequest from '@/components/PageComponents/onboarding/forms/individual/_customHooks/useHTTPRequest';
 import Loading from '@/components/UIcomponents/Loading';
-import { BASE_URL } from '@/utils/vars/uri';
-import { Country } from '@/types/forms/universal';
 import { FormLayout } from '@/components/UIcomponents/FormLayout';
-import countries from '@/utils/vars/_formDefaults/countries.json';
 import { UserContext } from '@/Contexts/UserProfileProvider';
-import type { ClientType } from '@/types/forms/individual';
-
-//Fetch url constants
-const COUNTRY_LIST_URL = BASE_URL + '/kyc/lov/country';
-
+import { useAsyncAction } from '@/customHooks/useAsyncAction';
+import { useCloseTabWarning } from '@/customHooks/useCloseTabWarning';
+import { getCountryList } from '@/utils/vars/countries';
 //Enumerations
 
 export enum IndividualFormStages {
@@ -61,13 +54,14 @@ const individualFormMetadata = [
 	},
 ];
 
-export default function IndividualKycFormPage() {
+export default function KYCIndividualFormPage() {
+	//state management
 	const [currentFormStage, setCurrentFormStage] =
 		useState<IndividualFormStages>(IndividualFormStages.INTRO);
 
 	const userProgress = useRef<IndividualFormStages>(currentFormStage);
 
-	const form = useForm({
+	const form = useForm<IndividualFormSchema>({
 		defaultValues: {
 			_formMetadata: {
 				applicantCount: 1,
@@ -77,43 +71,24 @@ export default function IndividualKycFormPage() {
 						kestrelSignatureFileName: '',
 					},
 				],
-            },
+			},
 		},
 		mode: 'onChange',
 	});
 
-	const appWideData = useContext(UserContext);
-
-	// const [res, isLoading, error] = useHTTPRequest<{ data: Country[] } | null>(
-	// 	COUNTRY_LIST_URL
-	// );
-
 	const {
-		getValues,
-		reset,
+		watch,
 		formState: { isDirty },
 	} = form;
 
+	//variables used by stage steps
+	const applicantCount = watch(`_formMetadata.applicantCount`);
+	const appWideContext = useContext(UserContext);
 
-	// useApplicantAdjustor(currentClientType as ClientType, reset);
+	useCloseTabWarning(isDirty);
+	const [countryList, loading, error] = useAsyncAction(getCountryList);
 
-	useEffect(() => {
-		const warnOfDataLoss = (event: BeforeUnloadEvent) => {
-			event.preventDefault();
-			if (isDirty) {
-				const confirmationMsg =
-					'You will lose application progress, if you close this tab';
-				// ( event || event.returnValue) = confirmationMsg;
-				return confirmationMsg;
-			}
-
-			return null;
-		};
-		appWideData && window.addEventListener('beforeunload', warnOfDataLoss);
-
-		return () => window.removeEventListener('beforeunload', warnOfDataLoss);
-	}, [isDirty, appWideData]);
-
+	//Form navigation methods
 	const nextStage = useCallback(
 		async (step?: IndividualFormStages) => {
 			//make sure to not force stage past last maximum the user was on;
@@ -122,74 +97,65 @@ export default function IndividualKycFormPage() {
 				return;
 			}
 
-			currentFormStage === userProgress.current && userProgress.current++;
+			currentFormStage === userProgress.current &&
+				userProgress.current++;
 
 			setCurrentFormStage((prevStage) =>
-				prevStage !== IndividualFormStages.CHECKLIST ? prevStage + 1 : prevStage
+				prevStage !== IndividualFormStages.CHECKLIST
+					? prevStage + 1
+					: prevStage
 			);
 		},
 		[currentFormStage, userProgress]
 	);
-
 	const prevStage = useCallback(
 		() =>
 			setCurrentFormStage((prevStage) =>
-				prevStage !== IndividualFormStages.INTRO ? prevStage - 1 : prevStage
+				prevStage !== IndividualFormStages.INTRO
+					? prevStage - 1
+					: prevStage
 			),
 		[]
 	);
 
-	const getIndividualFormStage = (stage: IndividualFormStages) => {
+	//Form stage selector
+	const selectIndividualFormStage = (stage: IndividualFormStages) => {
 		switch (stage) {
 			case IndividualFormStages.INTRO:
-				return <IndividualFormIntro nextStage={nextStage} />;
+				return IndividualFormIntro;
 			case IndividualFormStages.PERSONAL:
-				return (
-					<PersonalInformation
-						nextStage={nextStage}
-						prevStage={prevStage}
-					/>
-				);
+				return PersonalInformation;
 			case IndividualFormStages.NEXT_OF_KIN:
-				return (
-					<NextOfKin
-						nextStage={nextStage}
-						prevStage={prevStage}
-						countryList={countries.data}
-					/>
-				);
+				return NextOfKin;
 			case IndividualFormStages.DISCLOSURES:
-				return (
-					<Disclosures
-						nextStage={nextStage}
-						prevStage={prevStage}
-						countryList={countries.data}
-					/>
-				);
+				return Disclosures;
 			case IndividualFormStages.CHECKLIST:
-				return (
-					<div className='p-10'>Disclosures ***Under construction****</div>
-				);
+				throw new Error('checklist not implemented');
 			default:
-				throw new Error('form stage ' + stage + ' is not supported');
+				throw new Error('stage ' + stage + ' is not supported');
 		}
 	};
+	const FormStage = selectIndividualFormStage(currentFormStage);
 
+	//Reporting and feedback
 	// if ( !appWideData || !appWideData.onboardingFacts )
 	// {
-	//     console.log(232221` 'missing client ID information' );
+	//     console.error(` 'missing client ID information' );
 	//     return <p className='p-10'>Something went wrong! Please contact system admin</p>
 	// }
 
-	// if (error) {
-	// 	console.log(error);
-	// 	return <p>Something went wrong! Please try again later</p>;
-	// }
-
-	// console.log(getValues());
+	if (error.flag) {
+		console.error(error.message);
+		return (
+			<p className='p-10'>
+				Something went wrong! Please try again later
+			</p>
+		);
+	}
 
 	return (
 		<FormLayout>
+			{loading && <Loading />}
 			<Form {...form}>
 				<form className='flex flex-col h-full bg-white'>
 					<FormProgressSheet
@@ -208,7 +174,23 @@ export default function IndividualKycFormPage() {
 						stepsCollection={individualFormMetadata}
 						reveal={true}
 					/>
-					{false ? <Loading /> : getIndividualFormStage(currentFormStage)}
+					{
+						<FormStage
+							nextStage={nextStage}
+							prevStage={prevStage}
+							renderStep={(step, FormStep) =>
+								FormStep ? (
+									<FormStep
+										applicantCount={applicantCount}
+										passCountryList={(pass) => (pass ? countryList : undefined)}
+										passBrokerInfo={(pass) =>
+											pass ? { org_code: 'KESTR', org_cty: 'KE' } : undefined
+										}
+									/>
+								) : null
+							}
+						/>
+					}
 				</form>
 			</Form>
 		</FormLayout>

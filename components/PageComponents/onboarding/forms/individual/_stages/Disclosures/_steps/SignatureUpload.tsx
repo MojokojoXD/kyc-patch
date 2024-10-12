@@ -24,20 +24,18 @@ import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
 import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { UserContext } from '@/Contexts/UserProfileProvider';
-import { useRouter } from 'next/router';
 
 interface SignatureUploadProps {}
 
 export default function SignatureUpload({}: SignatureUploadProps) {
 	const form = useFormContext<IndividualFormSchema>();
-	const router = useRouter();
 	const { watch } = form;
 
 	const appWideData = useContext(UserContext);
 
     const applicant = useMemo( () => watch( 'applicant' ), [ watch ] );
     
-    let onboardingFacts = appWideData?.onboardingFacts;
+    const onboardingFacts = appWideData?.onboardingFacts;
 
     if ( !onboardingFacts )
     {

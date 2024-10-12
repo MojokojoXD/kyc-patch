@@ -5,18 +5,18 @@ import {
 } from '@/components/UIcomponents/FormLayout';
 import { Button } from '@/components/UIcomponents/ui/button';
 import CustomProgress from '@/components/UIcomponents/CompoundUI/CustomProgress';
+import type { FormStage } from '@/types/Components/onboarding';
 
-interface IndividualFormIntroProps {
-	nextStage: () => void;
-}
 
-export default function IndividualFormIntro({
-	nextStage,
-}: IndividualFormIntroProps) {
+export const IndividualFormIntro: FormStage = ( { nextStage, renderStep } ) =>
+{
+    
+    
+
 	return (
         <>
+            {renderStep( { step: 1, finalStep: 1 }, null )}
             <div className='flex flex-col'>
-
                 <FormHeader>
                     <FormTitle>KYC Verification</FormTitle>
                 </FormHeader>
@@ -39,7 +39,7 @@ export default function IndividualFormIntro({
                     <div className='flex items-center justify-end space-x-2 h-32'>
                         <Button
                             type='button'
-                            onClick={() => nextStage()}>
+                            onClick={() => nextStage && nextStage()}>
                             Begin Process
                         </Button>
                     </div>

@@ -8,10 +8,14 @@ export interface BrokerFacts {
 
 export interface BrokerDetails {
 	broker_id: string;
-	org_code: string;
+	org_code: BrokerCode;
 	org_cty: string;
 	org_email: string;
 	org_con1_email: string;
 }
+
+
+
+export type BrokerCode = 'DATAB' | 'KESTR' | 'AFRIN' | 'MERIS' | 1
 
 

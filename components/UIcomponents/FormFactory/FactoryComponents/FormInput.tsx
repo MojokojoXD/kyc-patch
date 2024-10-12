@@ -1,9 +1,7 @@
-import type { FactoryComponentProps } from '..';
+import type { FactoryComponentProps } from '@/types/Components/formFactory';
 import { Input } from '../../ui/input';
-import { FormItem, FormControl, FormError, FormLabel,FormMessage } from '../../ui/form';
+import { FormItem, FormControl, FormLabel,FormMessage } from '../../ui/form';
 import { useFormContext } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
-import { useFormState } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 interface FormInputProps extends FactoryComponentProps {}

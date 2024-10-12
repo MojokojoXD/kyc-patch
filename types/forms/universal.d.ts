@@ -49,17 +49,18 @@ export interface FormMetaData {
 export interface Bank {
 	country: string;
 	name: string;
-	branch: string;
+    branch: string;
 }
 
 export interface BankAccount {
 	name: string;
 	number: string;
-	bvn: string;
-	type: string;
-	dateOpened: string;
-	swiftCode: string;
-	routingNumber: string;
+	bvn?: string;
+    type?: string;
+    kraPin?: string;
+	dateOpened?: string;
+	swiftCode?: string;
+	routingNumber?: string;
 }
 
 /* lifted this from the phone input library because imports aren't working for some reason */

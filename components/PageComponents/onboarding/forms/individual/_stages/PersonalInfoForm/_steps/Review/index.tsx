@@ -14,19 +14,14 @@ import {
 } from '@/components/UIcomponents/FormLayout';
 import { PersonalInformationSteps } from '@/utils/vars/enums';
 import { useMemo } from 'react';
+import type { FormStep } from '@/types/Components/onboarding';
 
-interface ReviewProps<TFormSteps> {
-	jumpToStep: (step?: TFormSteps, returnStep?: TFormSteps) => void;
-}
+export const Review: FormStep = () => {
+	const { watch, getValues } = useFormContext<IndividualFormSchema>();
 
-export default function Review({
-	jumpToStep,
-}: ReviewProps<PersonalInformationSteps>) {
-	const { watch,getValues } = useFormContext<IndividualFormSchema>();
+	const completedForm = useMemo(() => watch(), [watch]);
 
-    const completedForm = useMemo( () => watch(), [ watch ] )
-    
-    console.log( getValues() );
+	console.log(getValues());
 
 	return (
 		<>
@@ -184,4 +179,4 @@ export default function Review({
 			</FormContent>
 		</>
 	);
-}
+};

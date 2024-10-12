@@ -1,10 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { BASE_URL } from '@/utils/vars/uri';
 import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
 import formidable from 'formidable';
 import fs from 'node:fs/promises';
-import { Blob } from 'node:buffer';
 
 export const config = {
 	api: {
@@ -12,8 +10,6 @@ export const config = {
 	},
 };
 
-const SIGNATURE_UPLOAD_URL = BASE_URL + '/upload';
-const SIGNATURE_DOWNLOAD_URL = BASE_URL + '/download';
 
 export default async function handler(
     req: NextApiRequest,
@@ -28,7 +24,9 @@ export default async function handler(
 
 	const form = formidable();
 
-    const [ _,files ] = await form.parse( req );
+    const [ _, files ] = await form.parse( req );
+    
+    delete _;
     
     if ( !files.file  )
     {
@@ -57,7 +55,7 @@ export default async function handler(
 
         res.status(200).json({ url: signatureFileName as string });
 
-    } catch ( error: any )
+    } catch ( error )
     {
         
         console.log( error );
