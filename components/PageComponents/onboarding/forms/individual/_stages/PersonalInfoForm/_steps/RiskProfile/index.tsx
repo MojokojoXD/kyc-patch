@@ -76,7 +76,7 @@ function RiskProfileForm({
 	applicantId,
 	broker,
 }: RiskProfileFormProps) {
-	const { getValues } = useFormContext<IndividualFormSchema>();
+	// const { getValues } = useFormContext<IndividualFormSchema>();
 
 	const aggregatorResults = useMemo(() => {
 		const currency = BrokerCurrency[broker?.org_code];

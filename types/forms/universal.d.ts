@@ -1,5 +1,3 @@
-import { PersonalInformationSteps } from '@/utils/vars/enums';
-
 export interface Country {
 	call_code: string | null;
 	cty_code: string;
@@ -39,12 +37,6 @@ export interface ExpandedContact extends BaseContact {
 export type PhoneInfo = {
     value: string
 }[]
-
-export interface FormMetaData {
-	step_no: PersonalInformationSteps;
-	step_title: string;
-	step_desc?: string;
-}
 
 export interface Bank {
 	country: string;

@@ -1,65 +1,63 @@
 import { useForm } from 'react-hook-form';
-import { useState, useCallback, useRef, useContext } from 'react';
+import { useState, useCallback } from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individual';
 import { Form } from '@/components/UIcomponents/ui/form';
 import { IndividualFormIntro } from '@/components/PageComponents/onboarding/forms/individual/_stages/IndividualFormIntro';
 import { PersonalInformation } from '@/components/PageComponents/onboarding/forms/individual/_stages/PersonalInfoForm';
 import { NextOfKin } from '@/components/PageComponents/onboarding/forms/individual/_stages/NextOfKin';
 import { Disclosures } from '@/components/PageComponents/onboarding/forms/individual/_stages/Disclosures';
-import FormProgressSheet, {
-	FormProgressSheetButton,
-} from '@/components/UIcomponents/CompoundUI/FormProgressSheet';
+import FormProgressSheet from '@/components/UIcomponents/CompoundUI/FormProgressSheet';
 import Loading from '@/components/UIcomponents/Loading';
 import { FormLayout } from '@/components/UIcomponents/FormLayout';
-import { UserContext } from '@/Contexts/UserProfileProvider';
+// import { UserContext } from '@/Contexts/UserProfileProvider';
 import { useAsyncAction } from '@/customHooks/useAsyncAction';
 import { useCloseTabWarning } from '@/customHooks/useCloseTabWarning';
 import { getCountryList } from '@/utils/vars/countries';
-//Enumerations
-
-export enum IndividualFormStages {
-	INTRO = 1,
-	PERSONAL = 2,
-	NEXT_OF_KIN = 3,
-	DISCLOSURES = 4,
-	CHECKLIST = 5,
-}
+import { Button } from '@/components/UIcomponents/ui/button';
+// import { LoaderCircle } from 'lucide-react';
 
 //Form meta data for navigation components
 const individualFormMetadata = [
 	{
-		id: 0,
-		stageName: 'Introduction',
-		step_no: IndividualFormStages.INTRO,
+		name: 'Introduction',
+		steps: ['intro'],
 	},
 	{
-		id: 1,
-		stageName: 'Personal',
-		step_no: IndividualFormStages.PERSONAL,
+		name: 'Personal',
+		steps: [
+			'retail client',
+			'category of investment',
+			'personal information',
+			'contact details',
+			'employment information',
+			'settlement bank account',
+			'proof of identity',
+			'investment & risk profile',
+			'review',
+		],
 	},
 	{
-		id: 2,
-		stageName: 'Next of Kin',
-		step_no: IndividualFormStages.NEXT_OF_KIN,
+		name: 'Next of Kin',
+		steps: [],
 	},
 	{
-		id: 3,
-		stageName: 'Disclosures',
-		step_no: IndividualFormStages.DISCLOSURES,
+		name: 'Disclosures',
+		steps: [],
 	},
 	{
-		id: 4,
-		stageName: 'Document Checklist',
-		step_no: IndividualFormStages.CHECKLIST,
+		name: 'Document Checklist',
+		steps: [],
 	},
-];
+] as const;
+
+export type FormMetadata = (typeof individualFormMetadata)[number];
 
 export default function KYCIndividualFormPage() {
 	//state management
-	const [currentFormStage, setCurrentFormStage] =
-		useState<IndividualFormStages>(IndividualFormStages.INTRO);
+	const [currentStageIndex, setCurrentStageIndex] = useState(0);
+	const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-	const userProgress = useRef<IndividualFormStages>(currentFormStage);
+	// const userProgress = useRef<IndividualFormStages>(currentStageIndex);
 
 	const form = useForm<IndividualFormSchema>({
 		defaultValues: {
@@ -81,61 +79,78 @@ export default function KYCIndividualFormPage() {
 		formState: { isDirty },
 	} = form;
 
+	//will relocate later
+
 	//variables used by stage steps
 	const applicantCount = watch(`_formMetadata.applicantCount`);
-	const appWideContext = useContext(UserContext);
+	// const appWideContext = useContext(UserContext);
 
 	useCloseTabWarning(isDirty);
 	const [countryList, loading, error] = useAsyncAction(getCountryList);
 
 	//Form navigation methods
-	const nextStage = useCallback(
-		async (step?: IndividualFormStages) => {
-			//make sure to not force stage past last maximum the user was on;
-			if (step && step <= userProgress.current) {
-				setCurrentFormStage(step);
-				return;
-			}
+	const next = useCallback(async () => {
+		const stagesCount = individualFormMetadata.length;
+		const stepsCount =
+			individualFormMetadata[currentStageIndex].steps.length;
 
-			currentFormStage === userProgress.current &&
-				userProgress.current++;
+		if (
+			currentStageIndex < stagesCount - 1 &&
+			currentStepIndex < stepsCount - 1
+		) {
+			setCurrentStepIndex((prevStep) => prevStep + 1);
+			return;
+		}
 
-			setCurrentFormStage((prevStage) =>
-				prevStage !== IndividualFormStages.CHECKLIST
-					? prevStage + 1
-					: prevStage
-			);
-		},
-		[currentFormStage, userProgress]
-	);
-	const prevStage = useCallback(
-		() =>
-			setCurrentFormStage((prevStage) =>
-				prevStage !== IndividualFormStages.INTRO
-					? prevStage - 1
-					: prevStage
-			),
-		[]
-	);
+		setCurrentStageIndex((prevStage) => prevStage + 1);
+	}, [setCurrentStepIndex, currentStageIndex, currentStepIndex]);
+
+	const prev = useCallback(() => {
+		if (currentStepIndex > 0) {
+			setCurrentStepIndex((step) => step - 1);
+			return;
+		}
+
+		currentStageIndex !== 0 &&
+			setCurrentStageIndex((stage) => stage - 1);
+	}, [currentStepIndex, currentStageIndex]);
+
+	const jumpToStep = (stage: number, step: number) => {
+		if (stage < 0 || stage >= individualFormMetadata.length) {
+			throw new ('stage ' + stage + ' is out of range')();
+		}
+
+		if (
+			step < 0 ||
+			step >= individualFormMetadata[currentStageIndex].steps.length
+		) {
+			throw new ('step ' + step + ' is out of range')();
+		}
+
+		setCurrentStageIndex(stage);
+		setCurrentStepIndex(step);
+	};
 
 	//Form stage selector
-	const selectIndividualFormStage = (stage: IndividualFormStages) => {
-		switch (stage) {
-			case IndividualFormStages.INTRO:
+	const getFormStage = (stage: FormMetadata) => {
+		switch (stage.name) {
+			case 'Introduction':
 				return IndividualFormIntro;
-			case IndividualFormStages.PERSONAL:
+			case 'Personal':
 				return PersonalInformation;
-			case IndividualFormStages.NEXT_OF_KIN:
+			case 'Next of Kin':
 				return NextOfKin;
-			case IndividualFormStages.DISCLOSURES:
+			case 'Disclosures':
 				return Disclosures;
-			case IndividualFormStages.CHECKLIST:
+			case 'Document Checklist':
 				throw new Error('checklist not implemented');
 			default:
-				throw new Error('stage ' + stage + ' is not supported');
+				throw new Error('stage is not supported');
 		}
 	};
-	const FormStage = selectIndividualFormStage(currentFormStage);
+	const FormStage = getFormStage(
+		individualFormMetadata[currentStageIndex]
+	);
 
 	//Reporting and feedback
 	// if ( !appWideData || !appWideData.onboardingFacts )
@@ -159,38 +174,48 @@ export default function KYCIndividualFormPage() {
 			<Form {...form}>
 				<form className='flex flex-col h-full bg-white'>
 					<FormProgressSheet
-						renderProgressListing={(s) => (
-							<FormProgressSheetButton
-								onClick={() => nextStage(s.step_no)}
-								disabled={
-									s.step_no > currentFormStage &&
-									s.step_no > userProgress.current
-								}
-								active={s.step_no === currentFormStage}>
-								{s.stageName}
-							</FormProgressSheetButton>
-						)}
-						keyExtractor={(step) => step.id}
-						stepsCollection={individualFormMetadata}
+                        formStages={ individualFormMetadata }
+                        formAction={ jumpToStep }
+                        stageIndex={currentStageIndex}
 						reveal={true}
 					/>
-					{
-						<FormStage
-							nextStage={nextStage}
-							prevStage={prevStage}
-							renderStep={(step, FormStep) =>
-								FormStep ? (
-									<FormStep
-										applicantCount={applicantCount}
-										passCountryList={(pass) => (pass ? countryList : undefined)}
-										passBrokerInfo={(pass) =>
-											pass ? { org_code: 'KESTR', org_cty: 'KE' } : undefined
-										}
-									/>
-								) : null
-							}
-						/>
-					}
+					<FormStage
+						step={
+							individualFormMetadata[currentStageIndex].steps[
+								currentStepIndex
+							]
+						}
+						renderStep={ FormStep =>
+							FormStep ? (
+								<FormStep
+									applicantCount={applicantCount}
+									passCountryList={(pass) => (pass ? countryList : undefined)}
+									passBrokerInfo={(pass) =>
+										pass ? { org_code: 'KESTR', org_cty: 'KE' } : undefined
+									}
+								/>
+							) : null
+						}
+					/>
+					<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0 bg-white'>
+						{individualFormMetadata[currentStageIndex].name !==
+							'Introduction' && (
+							<Button
+								type='button'
+								variant={'outline'}
+								onClick={prev}>
+								Go Back
+							</Button>
+						)}
+						<Button
+							type='button'
+							onClick={next}>
+							{individualFormMetadata[currentStageIndex].name ===
+							'Introduction'
+								? 'Begin'
+								: 'Save & Continue'}
+						</Button>
+					</div>
 				</form>
 			</Form>
 		</FormLayout>

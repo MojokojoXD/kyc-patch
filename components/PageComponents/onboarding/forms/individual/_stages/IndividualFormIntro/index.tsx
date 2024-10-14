@@ -3,19 +3,14 @@ import {
 	FormHeader,
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
-import { Button } from '@/components/UIcomponents/ui/button';
 import CustomProgress from '@/components/UIcomponents/CompoundUI/CustomProgress';
 import type { FormStage } from '@/types/Components/onboarding';
 
-
-export const IndividualFormIntro: FormStage = ( { nextStage, renderStep } ) =>
-{
-    
-    
-
+export const IndividualFormIntro: FormStage = ( { renderStep } ) =>
+{   
 	return (
         <>
-            {renderStep( { step: 1, finalStep: 1 }, null )}
+            {renderStep( null )}
             <div className='flex flex-col'>
                 <FormHeader>
                     <FormTitle>KYC Verification</FormTitle>
@@ -35,13 +30,6 @@ export const IndividualFormIntro: FormStage = ( { nextStage, renderStep } ) =>
                             the same browser to complete your application and submit your
                             documents. See details of the application below:
                         </p>
-                    </div>
-                    <div className='flex items-center justify-end space-x-2 h-32'>
-                        <Button
-                            type='button'
-                            onClick={() => nextStage && nextStage()}>
-                            Begin Process
-                        </Button>
                     </div>
                 </FormContent>
             </div>

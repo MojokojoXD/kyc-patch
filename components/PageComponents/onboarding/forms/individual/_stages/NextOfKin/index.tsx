@@ -3,9 +3,7 @@ import { Button } from '@/components/UIcomponents/ui/button';
 import NextOfKinBio from './_steps/NextOfKin_Bio';
 import NextOfKinContacts from './_steps/NextOfKin_Contact';
 import NextOfKin_IdentityProof from './_steps/NextOfKin_IdentityProof';
-import NextofKin_Review from './_steps/Review';
 // import { NextOfKinSteps } from '@/utils/vars/enums';
-import nextOfKinStepsMetadata from './_steps/Review/stageReviewMetadata';
 import CustomProgress from '@/components/UIcomponents/CompoundUI/CustomProgress';
 import { useFormContext } from 'react-hook-form';
 import type { IndividualFormSchema } from '@/types/forms/individual';
@@ -22,9 +20,8 @@ const NextOfKinSteps = {
 type NextOfKinSteps = typeof NextOfKinSteps;
 
 export const NextOfKin: FormStage = ({
-	nextStage,
-    prevStage,
-    renderStep
+    renderStep,
+	currentStepIndex
 }) => {
 	const { getValues, trigger } =
 		useFormContext<IndividualFormSchema>();
@@ -111,7 +108,7 @@ export const NextOfKin: FormStage = ({
 			case NextOfKinSteps.PROOF_OF_IDENTITY:
 				return <NextOfKin_IdentityProof />;
 			case NextOfKinSteps.REVIEW:
-				return <NextofKin_Review jumpToStep={handleNextStep} />;
+				return <></>;
 			default:
 				throw new Error('step ' + step + ' is not supported');
 		}

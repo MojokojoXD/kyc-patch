@@ -64,7 +64,6 @@ export const IdentityProofInfo: FormStep = ({ applicantCount, passBrokerInfo }) 
 type IdentityFormProps = Omit<SingleFormFieldsGeneratorProps,'countryList'> & Record<string, never>
 
 function IdentityForm({ applicantId, broker }: IdentityFormProps) {
-	const { getValues } = useFormContext<IndividualFormSchema>();
 
 	const aggregatorResults = useMemo(() => {
 		const aggregator = new FormFieldAggregator(
@@ -85,7 +84,7 @@ function IdentityForm({ applicantId, broker }: IdentityFormProps) {
 		);
 
 		return aggregator.generate();
-	}, [applicantId]);
+	}, [applicantId,broker]);
 
 	return (
 		<>

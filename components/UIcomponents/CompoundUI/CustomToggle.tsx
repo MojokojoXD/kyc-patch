@@ -13,11 +13,11 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement>
 
 const CustomToggle = forwardRef<HTMLInputElement, InputProps>(
 	({ className,label,selected,type = 'radio', ...props }, ref) => {
-        const clx = 'border border-neutral-100 bg-white hover:bg-primary-50 hover:border-primary-500 hover:text-neutral-700 w-full rounded-lg transition-all';
+        const clx = 'border border-neutral-100 bg-white hover:bg-primary-50 hover:border-primary-500 hover:text-neutral-700 w-full rounded-xl transition-all block w-full transition-all scale-100 active:scale-[.99]';
         
         return (
-            <button type='button' title={label} className='block w-full'>
-                <div className={cn(clx, selected && "border-primary-500 bg-primary-50 hover:bg-primary-100")}>
+            <button type='button' title={label} className={cn(clx, selected && "border-primary-500 bg-primary-50")}>
+                <div >
                     <label className={ cn( 'paragraph2Regular p-[16px] w-full relative flex items-center justify-center text-neutral-700 text-left gap-[12px] capitalize', className ) }>
                         <div className='grow'>
                             <p className='w-full text-nowrap truncate'>{label}</p>

@@ -9,8 +9,6 @@ import KestrelNominee from './_steps/KestrelNominee';
 import AfrinvestEmailEndemnity from './_steps/AfrinvestEmailEndemnity';
 import AfrinvestPrivacyPolicy from './_steps/AfrinvestPrivacyPolicy';
 import Declarations from './_steps/Declarations';
-import DisclosuresReview from './_steps/Review';
-import disclosuresStepsMetadata from './_steps/Review/stageReviewMetadata';
 import CustomProgress from '@/components/UIcomponents/CompoundUI/CustomProgress';
 import { useFormContext } from 'react-hook-form';
 import type { IndividualFormSchema } from '@/types/forms/individual';
@@ -32,10 +30,9 @@ export const DisclosuresSteps = {
 
 type DisclosuresSteps = typeof DisclosuresSteps;
 
-export const Disclosures: FormStage<DisclosuresSteps> = ({
-	nextStage,
-	prevStage,
-	renderStep,
+export const Disclosures: FormStage = ({
+    renderStep,
+    currentStepIndex
 }) => {
 	const [currentStep, setCurrentStep] = useState<DisclosuresSteps>(
 		DisclosuresSteps.SIGNATURE_UPLOAD
@@ -132,7 +129,7 @@ export const Disclosures: FormStage<DisclosuresSteps> = ({
 			case DisclosuresSteps.AFRINVEST_PRIVACY_POLICY:
 				return <AfrinvestPrivacyPolicy />;
 			case DisclosuresSteps.REVIEW:
-				return <DisclosuresReview jumpToStep={handleNextStep} />;
+				return <></>;
 			default:
 				throw new Error('step ' + step + ' is not supported');
 		}

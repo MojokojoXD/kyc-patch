@@ -19,7 +19,6 @@ import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboardi
 import { useAsyncAction } from '@/customHooks/useAsyncAction';
 import Loading from '@/components/UIcomponents/Loading';
 import { getBankList } from '@/utils/vars/banks';
-import type { BankList } from '@/types/forms/universal';
 import { useMemo, useEffect } from 'react';
 import { FormFieldAggregator } from '@/components/PageComponents/onboarding/forms/utils/FormFieldAggregator';
 import { bankAccountModel } from './formBuilder/bankAccountFormFields';
