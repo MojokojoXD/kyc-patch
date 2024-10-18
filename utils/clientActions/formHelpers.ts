@@ -41,6 +41,7 @@ export class FormHelpers {
 
 		const accessors = path.split('.');
 
+        //@ts-expect-error target type is unknown
 		const value = target[accessors[0]];
 
 		if (typeof value === 'object') {

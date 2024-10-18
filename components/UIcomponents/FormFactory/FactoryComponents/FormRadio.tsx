@@ -35,7 +35,7 @@ export default function FormRadio({
                     </FormLabel>
                     <div className={cn('grid gap-[4px]', componentProps.className)}>
                         {options &&
-                            options.keys.map((o: string) => (
+                            options.keys.map((o) => (
                                 <CustomToggle
                                     key={options.keySelector(o)}
                                     { ...field}

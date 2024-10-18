@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form';
-import { useState, useCallback } from 'react';
+import { useCallback, useReducer } from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individual';
 import { Form } from '@/components/UIcomponents/ui/form';
 import { IndividualFormIntro } from '@/components/PageComponents/onboarding/forms/individual/_stages/IndividualFormIntro';
-import { PersonalInformation } from '@/components/PageComponents/onboarding/forms/individual/_stages/PersonalInfoForm';
-import { NextOfKin } from '@/components/PageComponents/onboarding/forms/individual/_stages/NextOfKin';
+import { PersonalInformation } from '@/components/PageComponents/onboarding/forms/individual/_stages/PersonalInfoStage';
+import { NextOfKinStage } from '@/components/PageComponents/onboarding/forms/individual/_stages/NextOfKinStage';
 import { Disclosures } from '@/components/PageComponents/onboarding/forms/individual/_stages/Disclosures';
 import FormProgressSheet from '@/components/UIcomponents/CompoundUI/FormProgressSheet';
 import Loading from '@/components/UIcomponents/Loading';
@@ -14,35 +14,44 @@ import { useAsyncAction } from '@/customHooks/useAsyncAction';
 import { useCloseTabWarning } from '@/customHooks/useCloseTabWarning';
 import { getCountryList } from '@/utils/vars/countries';
 import { Button } from '@/components/UIcomponents/ui/button';
+import {
+	FormReducerFn,
+	formReducer,
+} from '@/components/PageComponents/onboarding/forms/individual/utils/formReducer';
 // import { LoaderCircle } from 'lucide-react';
 
 //Form meta data for navigation components
 const individualFormMetadata = [
 	{
 		name: 'Introduction',
-		steps: ['intro'],
+		steps: ['Instructions'],
 	},
 	{
 		name: 'Personal',
 		steps: [
 			'retail client',
 			'category of investment',
-			'personal information',
-			'contact details',
+			'personal information_personal',
+			'contact details_personal',
 			'employment information',
 			'settlement bank account',
-			'proof of identity',
+			'proof of identity_personal',
 			'investment & risk profile',
-			'review',
+			'review_personal',
 		],
 	},
 	{
 		name: 'Next of Kin',
-		steps: [],
+		steps: [
+			'personal information_next of kin',
+			'contact details_next of kin',
+			'proof of identity_next of kin',
+			'review_next of kin',
+		],
 	},
 	{
 		name: 'Disclosures',
-		steps: [],
+		steps: ['Signature Upload','Customer Ratification','PEP','FATCA'],
 	},
 	{
 		name: 'Document Checklist',
@@ -50,14 +59,26 @@ const individualFormMetadata = [
 	},
 ] as const;
 
+export type IndividualFormStages = typeof individualFormMetadata;
+
 export type FormMetadata = (typeof individualFormMetadata)[number];
+
+type IndividualFormReducerFn = FormReducerFn<{
+	readonly stepIndex: number;
+	readonly stageIndex: number;
+	stages: IndividualFormStages;
+}>;
 
 export default function KYCIndividualFormPage() {
 	//state management
-	const [currentStageIndex, setCurrentStageIndex] = useState(0);
-	const [currentStepIndex, setCurrentStepIndex] = useState(0);
+	const [formControl, formControlDispatch] =
+		useReducer<IndividualFormReducerFn>(formReducer, {
+			stepIndex: 0,
+			stageIndex: 0,
+			stages: individualFormMetadata,
+		});
 
-	// const userProgress = useRef<IndividualFormStages>(currentStageIndex);
+	const { stepIndex, stageIndex, stages } = formControl;
 
 	const form = useForm<IndividualFormSchema>({
 		defaultValues: {
@@ -76,13 +97,14 @@ export default function KYCIndividualFormPage() {
 
 	const {
 		watch,
+		getValues,
+		trigger,
 		formState: { isDirty },
 	} = form;
 
-	//will relocate later
-
 	//variables used by stage steps
 	const applicantCount = watch(`_formMetadata.applicantCount`);
+
 	// const appWideContext = useContext(UserContext);
 
 	useCloseTabWarning(isDirty);
@@ -90,46 +112,16 @@ export default function KYCIndividualFormPage() {
 
 	//Form navigation methods
 	const next = useCallback(async () => {
-		const stagesCount = individualFormMetadata.length;
-		const stepsCount =
-			individualFormMetadata[currentStageIndex].steps.length;
+		const isStepValid = await trigger();
+		if (!isStepValid) return;
 
-		if (
-			currentStageIndex < stagesCount - 1 &&
-			currentStepIndex < stepsCount - 1
-		) {
-			setCurrentStepIndex((prevStep) => prevStep + 1);
-			return;
-		}
-
-		setCurrentStageIndex((prevStage) => prevStage + 1);
-	}, [setCurrentStepIndex, currentStageIndex, currentStepIndex]);
+		formControlDispatch({ type: 'next' });
+	}, [trigger]);
 
 	const prev = useCallback(() => {
-		if (currentStepIndex > 0) {
-			setCurrentStepIndex((step) => step - 1);
-			return;
-		}
-
-		currentStageIndex !== 0 &&
-			setCurrentStageIndex((stage) => stage - 1);
-	}, [currentStepIndex, currentStageIndex]);
-
-	const jumpToStep = (stage: number, step: number) => {
-		if (stage < 0 || stage >= individualFormMetadata.length) {
-			throw new ('stage ' + stage + ' is out of range')();
-		}
-
-		if (
-			step < 0 ||
-			step >= individualFormMetadata[currentStageIndex].steps.length
-		) {
-			throw new ('step ' + step + ' is out of range')();
-		}
-
-		setCurrentStageIndex(stage);
-		setCurrentStepIndex(step);
-	};
+		console.log(getValues());
+		formControlDispatch({ type: 'prev' });
+	}, [getValues]);
 
 	//Form stage selector
 	const getFormStage = (stage: FormMetadata) => {
@@ -139,7 +131,7 @@ export default function KYCIndividualFormPage() {
 			case 'Personal':
 				return PersonalInformation;
 			case 'Next of Kin':
-				return NextOfKin;
+				return NextOfKinStage;
 			case 'Disclosures':
 				return Disclosures;
 			case 'Document Checklist':
@@ -148,9 +140,7 @@ export default function KYCIndividualFormPage() {
 				throw new Error('stage is not supported');
 		}
 	};
-	const FormStage = getFormStage(
-		individualFormMetadata[currentStageIndex]
-	);
+	const FormStage = getFormStage(stages[stageIndex]);
 
 	//Reporting and feedback
 	// if ( !appWideData || !appWideData.onboardingFacts )
@@ -169,55 +159,51 @@ export default function KYCIndividualFormPage() {
 	}
 
 	return (
-		<FormLayout>
-			{loading && <Loading />}
-			<Form {...form}>
-				<form className='flex flex-col h-full bg-white'>
-					<FormProgressSheet
-                        formStages={ individualFormMetadata }
-                        formAction={ jumpToStep }
-                        stageIndex={currentStageIndex}
-						reveal={true}
-					/>
-					<FormStage
-						step={
-							individualFormMetadata[currentStageIndex].steps[
-								currentStepIndex
-							]
-						}
-						renderStep={ FormStep =>
-							FormStep ? (
-								<FormStep
-									applicantCount={applicantCount}
-									passCountryList={(pass) => (pass ? countryList : undefined)}
-									passBrokerInfo={(pass) =>
-										pass ? { org_code: 'KESTR', org_cty: 'KE' } : undefined
-									}
-								/>
-							) : null
-						}
-					/>
-					<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0 bg-white'>
-						{individualFormMetadata[currentStageIndex].name !==
-							'Introduction' && (
+		<>
+			<FormLayout>
+				{loading && <Loading />}
+				<Form {...form}>
+					<form className='flex flex-col h-full'>
+						<FormProgressSheet
+							formStages={stages}
+							formAction={formControlDispatch}
+							stageIndex={stageIndex}
+							stepIndex={stepIndex}
+							reveal={true}
+						/>
+						<FormStage
+							step={stages[stageIndex].steps[stepIndex]}
+							renderStep={(FormStep) =>
+								FormStep ? (
+									<FormStep
+										applicantCount={applicantCount}
+										formAction={formControlDispatch}
+										countryList={countryList}
+										broker={{ org_code: 'DATAB', org_cty: 'GH' }}
+									/>
+								) : null
+							}
+						/>
+						<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0 bg-white'>
+							{stages[stageIndex].name !== 'Introduction' && (
+								<Button
+									type='button'
+									variant={'outline'}
+									onClick={prev}>
+									Go Back
+								</Button>
+							)}
 							<Button
 								type='button'
-								variant={'outline'}
-								onClick={prev}>
-								Go Back
+								onClick={next}>
+								{stages[stageIndex].name === 'Introduction'
+									? 'Begin Process'
+									: 'Save & Continue'}
 							</Button>
-						)}
-						<Button
-							type='button'
-							onClick={next}>
-							{individualFormMetadata[currentStageIndex].name ===
-							'Introduction'
-								? 'Begin'
-								: 'Save & Continue'}
-						</Button>
-					</div>
-				</form>
-			</Form>
-		</FormLayout>
+						</div>
+					</form>
+				</Form>
+			</FormLayout>
+		</>
 	);
 }

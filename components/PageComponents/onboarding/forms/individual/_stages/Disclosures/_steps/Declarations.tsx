@@ -1,10 +1,4 @@
-import { useFormContext } from 'react-hook-form';
-import {
-	FormField,
-	FormItem,
-	FormMessage,
-	FormControl,
-} from '@/components/UIcomponents/ui/form';
+// import { useFormContext } from 'react-hook-form';
 import {
 	AccordionItem,
 	Accordion,
@@ -17,16 +11,12 @@ import {
 	FormSubHeader,
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
-import type { IndividualFormSchema } from '@/types/forms/individual';
-import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle';
-import { useMemo } from 'react';
-import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
+// import type { IndividualFormSchema } from '@/types/forms/individual';
 
 export default function Declarations() {
-	const form = useFormContext<IndividualFormSchema>();
-	const { watch} = form;
+	// const form = useFormContext<IndividualFormSchema>();
 
-	const applicant = useMemo(() => watch('applicant'), [watch]);
+	const applicant = [1];
 
 	return (
 		<>
@@ -121,18 +111,18 @@ export default function Declarations() {
 				<div className='space-y-10 py-10'>
 					{applicant.map((c, i) => (
 						<Accordion
-							key={c.id}
+							key={c}
 							type='single'
 							defaultValue='item-1'
 							collapsible>
-							<AccordionItem value={`item-${c.id}`}>
+							<AccordionItem value={`item-${i}`}>
 								<AccordionTrigger>
-									Applicant #{c.id}: {c.firstName} {c.lastName}
+									{/* Applicant #{c.id}: {c.firstName} {c.lastName} */}
 								</AccordionTrigger>
 								<AccordionContent
 									className='data-[state=closed]:hidden'
 									forceMount>
-									<DeclarationsForm applicantId={i} />
+									<DeclarationsForm />
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>
@@ -143,42 +133,12 @@ export default function Declarations() {
 	);
 }
 
-type DeclarationsFormProps = Pick<SingleCategoryForm, 'applicantId'>;
 
-function DeclarationsForm({ applicantId }: DeclarationsFormProps) {
-	const { control } = useFormContext<IndividualFormSchema>();
+function DeclarationsForm() {
 
 	return (
 		<div>
-			<div className='space-y-10'>
-				<div className='space-y-5'>
-					<FormField
-						control={control}
-						name={`applicant.${applicantId}.disclosures.declarations`}
-						rules={{
-							validate: (v) =>
-								v === 'true' ||
-								'Click on the button above to agree to the terms above to continue',
-						}}
-						render={({ field }) => (
-							<FormItem className='space-y-2'>
-								<FormControl>
-									<CustomToggle
-										label={'I/We agree to the above declarations.'}
-										{...field}
-										type={'checkbox'}
-										selected={field.value === 'true'}
-										onChange={(e) =>
-											field.onChange(e.target.checked.toString())
-										}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-			</div>
+			
 		</div>
 	);
 }

@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
 import formidable from 'formidable';
+import type { File as FormidableFile } from 'formidable';
 import fs from 'node:fs/promises';
 
 export const config = {
@@ -24,25 +25,27 @@ export default async function handler(
 
 	const form = formidable();
 
-    const [ _, files ] = await form.parse( req );
+    const parsedForm = await form.parse( req );
     
-    delete _;
+    const files = parsedForm.at( 1 );
     
-    if ( !files.file  )
+    if ( !files || !files.file  )
     {
         res.status( 400 ).send({url: ""});
         return;
     }
 
-    const buffer = await fs.readFile( files.file[ 0 ].filepath );
+    const parsedFile = files.file[ 0 ] as FormidableFile;
 
-	const file = new File([buffer], files.file[0].originalFilename as string, {
-		type: files.file[0].mimetype as string,
+    const buffer = await fs.readFile( parsedFile.filepath );
+
+	const file = new File([buffer], parsedFile.originalFilename as string, {
+		type: parsedFile.mimetype as string,
     } );
     
     try
     {   
-        const googleCloudURL = await SignatureProcessor.upload( file, clientId as string );
+        const googleCloudURL = await SignatureProcessor.upload( file as File, clientId as string );
 
         if ( !googleCloudURL )
         {

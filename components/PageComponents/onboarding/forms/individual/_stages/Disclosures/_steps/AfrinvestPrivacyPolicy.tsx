@@ -1,10 +1,3 @@
-import { useFormContext } from 'react-hook-form';
-import {
-	FormField,
-	FormItem,
-	FormMessage,
-	FormControl,
-} from '@/components/UIcomponents/ui/form';
 import {
 	AccordionItem,
 	Accordion,
@@ -17,16 +10,10 @@ import {
 	FormSubHeader,
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
-import type { IndividualFormSchema } from '@/types/forms/individual';
-import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle';
-import { useMemo } from 'react';
-import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
 
 export default function AfrinvestPrivacyPolicy() {
-	const form = useFormContext<IndividualFormSchema>();
-	const { watch } = form;
 
-	const applicant = useMemo(() => watch('applicant'), [watch]);
+    const applicant = [ 1 ];
 
 	return (
 		<>
@@ -50,18 +37,18 @@ export default function AfrinvestPrivacyPolicy() {
 				<div className='space-y-10 py-10'>
 					{applicant.map((c, i) => (
 						<Accordion
-							key={c.id}
+							key={c}
 							type='single'
 							defaultValue='item-1'
 							collapsible>
-							<AccordionItem value={`item-${c.id}`}>
+							<AccordionItem value={`item-${i}`}>
 								<AccordionTrigger>
-									Applicant #{c.id}: {c.firstName} {c.lastName}
+									{/* Applicant #{c.id}: {c.firstName} {c.lastName} */}
 								</AccordionTrigger>
 								<AccordionContent
 									className='data-[state=closed]:hidden'
 									forceMount>
-									<AfrinvestPrivacyPolicyForm applicantId={i} />
+									<AfrinvestPrivacyPolicyForm />
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>
@@ -72,46 +59,10 @@ export default function AfrinvestPrivacyPolicy() {
 	);
 }
 
-type AfrinvestPrivacyPolicyFormProps = Pick<SingleCategoryForm, 'applicantId'>;
 
-function AfrinvestPrivacyPolicyForm({
-	applicantId,
-}: AfrinvestPrivacyPolicyFormProps) {
-	const { control } = useFormContext<IndividualFormSchema>();
+function AfrinvestPrivacyPolicyForm() {
 
 	return (
-		<div>
-			<div className='space-y-10'>
-				<div>
-					<FormField
-						control={control}
-						name={`applicant.${applicantId}.disclosures.afrinvest.privacyPolicyAgreement`}
-						rules={{
-							validate: (v) =>
-								v === 'true' ||
-								'Click on the button above to agree to the terms above to continue',
-						}}
-						render={({ field }) => (
-							<FormItem className='space-y-2'>
-								<FormControl>
-									<CustomToggle
-										label={
-											'We can confirm that We have read, understood and hereby accept the above privacy statement and We expressly give our consent and authorise you to collect, process and use our personal data for the provision of financial services to us.'
-										}
-										{...field}
-										type={'checkbox'}
-										selected={field.value === 'true'}
-										onChange={(e) =>
-											field.onChange(e.target.checked.toString())
-										}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-			</div>
-		</div>
+		<></>
 	);
 }

@@ -64,11 +64,15 @@ export default function OnboardingPage({
 	const getUAPAgreementHandler = (decision: boolean) =>
 		setUAPDecided(decision);
 
-	useEffect(() => {
-		appWideData.current.getOnboardingFacts({
-			clientID,
-			broker,
-		});
+    useEffect( () =>
+    {
+        if ( appWideData && appWideData.current )
+        {
+            appWideData.current.getOnboardingFacts({
+                clientID,
+                broker,
+            });
+        }
 	}, [appWideData, clientID, broker]);
 
 	return (

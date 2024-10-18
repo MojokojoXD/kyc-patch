@@ -7,18 +7,17 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/UIcomponents/ui/popover';
-import { DayPicker } from 'react-day-picker';
-import { ComponentProps } from 'react';
+import { DayPicker, PropsBase } from 'react-day-picker';
 import 'react-day-picker/style.css';
 
-type DatePickerProps = ComponentProps<typeof DayPicker> & {
+type DatePickerProps = PropsBase & {
 	currentDate: string;
-	onChange: (...events: unknown[]) => void;
+	onDateChange: ( date: string ) => void;
 };
 
 export default function DatePicker({
 	currentDate,
-	onChange,
+	onDateChange,
 	...props
 }: DatePickerProps) {
 	return (
@@ -36,8 +35,8 @@ export default function DatePicker({
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className='w-auto p-4'>
-				<DayPicker
-					{...props}
+                <DayPicker
+                    {...props}
 					showOutsideDays={false}
 					required
 					classNames={{
@@ -58,10 +57,10 @@ export default function DatePicker({
 						),
 					}}
 					captionLayout={'dropdown'}
-					mode='single'
+                    mode='single'
 					selected={new Date(currentDate)}
 					onSelect={(date) =>
-						onChange(
+						onDateChange(
 							date.toLocaleDateString('en-GB', {
 								dateStyle: 'medium',
 							})

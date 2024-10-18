@@ -1,19 +1,11 @@
 import { useFormContext } from 'react-hook-form';
-import {
-	FormField,
-	FormItem,
-	FormControl,
-	FormLabel,
-	FormMessage,
-	FormError,
-} from '@/components/UIcomponents/ui/form';
+
 import {
 	AccordionItem,
 	Accordion,
 	AccordionContent,
 	AccordionTrigger,
 } from '@/components/UIcomponents/ui/accordion';
-import { Input } from '@/components/UIcomponents/ui/input';
 import { useMemo } from 'react';
 import {
 	FormHeader,
@@ -22,12 +14,7 @@ import {
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individual';
-import type { SingleCategoryForm } from '../../PersonalInfoForm/_steps/BiographicalInfo';
-import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle';
-import MULTI_CHOICE_RESPONSES from '@/utils/vars/_formDefaults/disclosures_multiple_choice.json';
 import type { Country } from '@/types/forms/universal';
-import { ErrorMessage } from '@hookform/error-message';
-import validator from 'validator';
 
 interface FatcaProps {
 	countryList: Country[];
@@ -38,19 +25,20 @@ export default function Fatca({ countryList }: FatcaProps) {
 	const { watch } = form;
 	const applicant = useMemo(() => watch('applicant'), [watch]);
 
+	console.log(countryList);
 	return (
 		<>
 			<FormHeader>
 				<FormTitle>Foreign Account Tax Compliance Act (FATCA)</FormTitle>
 				<FormSubHeader>
-					The following questions are designed to capture information for common
-					reporting standards as well as FATCA (Foreign Account Tax Compliance
-					Act)
+					The following questions are designed to capture information for
+					common reporting standards as well as FATCA (Foreign Account Tax
+					Compliance Act)
 				</FormSubHeader>
 			</FormHeader>
 			<FormContent>
 				<div className='space-y-10 py-5'>
-					{applicant.map((c, i) => (
+					{applicant.map((c) => (
 						<Accordion
 							key={c.id}
 							type='single'
@@ -60,11 +48,10 @@ export default function Fatca({ countryList }: FatcaProps) {
 								<AccordionTrigger>
 									Applicant #{c.id}: {c.firstName} {c.lastName}
 								</AccordionTrigger>
-								<AccordionContent className='data-[state=closed]:hidden' forceMount>
-									<FatcaForm
-										applicantId={i}
-										countryList={countryList}
-									/>
+								<AccordionContent
+									className='data-[state=closed]:hidden'
+									forceMount>
+									<FatcaForm />
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>
@@ -75,188 +62,6 @@ export default function Fatca({ countryList }: FatcaProps) {
 	);
 }
 
-function FatcaForm({ applicantId }: SingleCategoryForm) {
-	
-
-	return (
-		<>
-			{/* FATCA Status */}
-			<div>
-				<FormField
-					control={control}
-					name={`applicant.${applicantId}.disclosures.fatca.status`}
-					render={({ field }) => (
-						<FormItem className='space-y-2'>
-							<FormLabel>FATCA Status</FormLabel>
-							<div className='grid gap-y-3'>
-								{MULTI_CHOICE_RESPONSES.fatca.status.map((c) => (
-									<CustomToggle
-										key={c}
-										label={c}
-										{...field}
-										onChange={(e) => {
-											let update = [...field.value];
-											if (e.target.checked) {
-												update.push(e.target.value);
-												field.onChange(update);
-												return;
-											}
-
-											update = update.filter((v) => v !== e.target.value);
-
-											field.onChange(update);
-										}}
-										type={'checkbox'}
-										value={c}
-										checked={field.value.includes(c)}
-										selected={field.value.includes(c)}
-									/>
-								))}
-							</div>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-			</div>
-			{currentFatcaStatus.length > 0 && (
-				<div className='space-y-10'>
-					{/* Ownership */}
-					<div>
-						<FormItem className='space-y-2'>
-							<FormLabel
-								className={
-									isErrored(
-										`applicant.${applicantId}.disclosures.fatca.details.ownership`
-									)
-										? 'text-error-500'
-										: undefined
-								}>
-								Ownership(%)
-							</FormLabel>
-							<FormControl>
-								<Input
-									{...register(
-										`applicant.${applicantId}.disclosures.fatca.details.ownership`,
-										{
-											required: 'Please enter ownership',
-                                            validate: {
-                                                isNumeric: (v) =>
-                                                    validator.isNumeric( v ) || 'Must be a number',
-                                                lessThan100: ( v ) =>
-                                                {
-                                                    const value = parseInt( v );
-                                                    return (value > 0 && value <= 100) || "Please enter valid percentage amount" 
-                                                }
-                                            },
-										}
-									)}
-									placeholder='Enter Ownership'
-								/>
-							</FormControl>
-							<ErrorMessage
-								name={`applicant.${applicantId}.disclosures.fatca.details.ownership`}
-								errors={errors}
-								as={<FormError />}
-							/>
-						</FormItem>
-					</div>
-					{/* Foreign Residential Address */}
-					<div>
-						<FormItem className='space-y-2'>
-							<FormLabel
-								className={
-									isErrored(
-										`applicant.${applicantId}.disclosures.fatca.details.foreignResidentialAddress`
-									)
-										? 'text-error-500'
-										: undefined
-								}>
-								Foreign Residential Address
-							</FormLabel>
-							<FormControl>
-								<Input
-									{...register(
-										`applicant.${applicantId}.disclosures.fatca.details.foreignResidentialAddress`,
-										{
-											required: 'Please enter foreign residential address',
-										}
-									)}
-									placeholder='Enter Foreign Residential Address'
-								/>
-							</FormControl>
-							<ErrorMessage
-								name={`applicant.${applicantId}.disclosures.fatca.details.foreignResidentialAddress`}
-								errors={errors}
-								as={<FormError />}
-							/>
-						</FormItem>
-					</div>
-					{/* Foreign Mailing Address */}
-					<div>
-						<FormItem className='space-y-2'>
-                            <FormLabel
-                                className={
-									isErrored(
-										`applicant.${applicantId}.disclosures.fatca.details.foreignMailingAddress`
-									)
-										? 'text-error-500'
-										: undefined
-								}
-                            >Foreign Mailing Address</FormLabel>
-							<FormControl>
-								<Input
-									{...register(
-										`applicant.${applicantId}.disclosures.fatca.details.foreignMailingAddress`,
-										{
-											required: 'Please enter foreign mailing address',
-										}
-									)}
-									placeholder='Enter Foreign Mailing Address'
-								/>
-							</FormControl>
-							<ErrorMessage
-								name={`applicant.${applicantId}.disclosures.fatca.details.foreignMailingAddress`}
-								errors={errors}
-								as={<FormError />}
-							/>
-						</FormItem>
-					</div>
-					
-					{/* TIN */}
-					<div>
-						<FormItem className='space-y-2'>
-                            <FormLabel
-                                className={
-									isErrored(
-										`applicant.${applicantId}.disclosures.fatca.details.tin`
-									)
-										? 'text-error-500'
-										: undefined
-								}
-                            >
-								Foreign Tax Identification Number (TIN)/Social Security Number
-								(SSN)/National Identity Number(NIN)
-							</FormLabel>
-							<FormControl>
-								<Input
-									{...register(
-										`applicant.${applicantId}.disclosures.fatca.details.tin`,
-										{
-											required: 'Please enter tin',
-										}
-									)}
-									placeholder='Enter TIN/SSN/NIN'
-								/>
-							</FormControl>
-							<ErrorMessage
-								errors={errors}
-								name={`applicant.${applicantId}.disclosures.fatca.details.tin`}
-								as={<FormError />}
-							/>
-						</FormItem>
-					</div>
-				</div>
-			)}
-		</>
-	);
+function FatcaForm() {
+	return <></>;
 }

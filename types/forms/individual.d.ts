@@ -21,7 +21,8 @@ export interface IndividualFormSchema {
 	csdNumber: string;
 	catInvestment: string;
 	taxexempt: string;
-	applicant: ApplicantInfo[];
+    applicant: ApplicantInfo[];
+	nextOfKin: NextOfKinInfo[];
 }
 
 export interface ApplicantInfo extends BiographicalCore {
@@ -63,7 +64,6 @@ export interface ApplicantInfo extends BiographicalCore {
 		reaction?: string;
 		agreementOfTerms?: string;
 	};
-	nextOfKin: NextOfKinInfo;
 	disclosures: Disclosures;
 }
 
@@ -122,7 +122,7 @@ interface BiographicalCore {
 	countryOfBirth: string;
 	countryOfResidence: string;
 	countryOfCitizenship: string;
-    placeOfBirth: string;
+    placeOfBirth?: string;
     stateOfOrigin?: string;
 	localGovernment?: string;
     religion?: string;
@@ -136,11 +136,26 @@ interface BiographicalCore {
     }
 }
 
-type NextOfKinInfo = BiographicalCore & {
+export interface NextOfKinInfo
+{
+    title: {
+		presets: string;
+		other?: string;
+	};
+	firstName: string;
+	middleName: string;
+	lastName: string;
+	dateOfBirth: string;
+	gender: string;
+	maritalStatus: string;
+	countryOfBirth: string;
+	countryOfResidence: string;
+	countryOfCitizenship: string;
+    placeOfBirth?: string;
 	relationshipToApplicant: string;
-	percentageAllocation: string;
-	contacts: BaseContact;
-	proofOfIdentity: ProofOfIdentity;
+	percentageAllocation?: string;
+	contacts?: BaseContact;
+	proofOfIdentity?: ProofOfIdentity;
 };
 
 interface Disclosures {

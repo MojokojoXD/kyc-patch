@@ -1,4 +1,4 @@
-import type { FactoryComponentProps } from '@/types/Components/formFactory';
+import type { FactoryComponentProps,DropdownOption } from '@/types/Components/formFactory';
 import {
 	FormItem,
 	FormControl,
@@ -163,11 +163,11 @@ function CustomCountrySelect({
 	options,
 }: CustomCountrySelectProps )
 {
-	let priorityList = [];
+	let priorityList: DropdownOption[] = [];
 	let mainList = options?.keys || [];
 
 	if (options && options.priorityKeys) {
-		priorityList = options.priorityKeys<Country>(options.keys);
+		priorityList = options.priorityKeys(options.keys);
 	}
 
 	if (options && options.keys && priorityList.length > 0) {
@@ -181,7 +181,7 @@ function CustomCountrySelect({
 
 	const flagURL = FormHelpers.getFlagURL(
 		defaultValue as string,
-		options?.keys 
+		options?.keys as Country[]
 	);
 
 	return (
@@ -203,9 +203,9 @@ function CustomCountrySelect({
 				<SelectGroup>
 					{priorityList.map((c) => (
 						<SelectItem
-							value={c.cty_code}
-							key={c.cty_code}>
-							{c.cty_name} ({c.call_code})
+							value={(c as Country).cty_code}
+							key={(c as Country).cty_code}>
+							{(c as Country).cty_name} ({(c as Country).call_code})
 						</SelectItem>
 					))}
 				</SelectGroup>
@@ -213,9 +213,9 @@ function CustomCountrySelect({
 				<SelectGroup>
 					{mainList.map((c) => (
 						<SelectItem
-							value={c.cty_code}
-							key={c.cty_code}>
-							{c.cty_name} ({c.call_code})
+							value={(c as Country).cty_code}
+							key={(c as Country).cty_code}>
+							{(c as Country).cty_name} ({(c as Country).call_code})
 						</SelectItem>
 					))}
 				</SelectGroup>

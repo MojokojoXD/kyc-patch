@@ -32,8 +32,9 @@ import type { Country } from '@/types/forms/universal';
 import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { useMemo } from 'react';
-import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
 import { ErrorMessage } from '@hookform/error-message';
+import type { Path } from 'react-hook-form';
+import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
 
 interface PepProps {
 	countryList: Country[];
@@ -81,7 +82,9 @@ export default function Pep({ countryList }: PepProps) {
 	);
 }
 
-function PepForm({ applicantId, countryList }: SingleCategoryForm) {
+function PepForm( { applicantId, countryList: clist }: SingleFormFieldsGeneratorProps )
+{
+    const countryList = clist as Country[];
 	const {
 		control,
 		watch,
@@ -106,9 +109,9 @@ function PepForm({ applicantId, countryList }: SingleCategoryForm) {
 
 	const currentCountry = watch(name);
 
-	const flagUrl = FormHelpers.getFlagURL(currentCountry, countryList);
+	const flagUrl = FormHelpers.getFlagURL(currentCountry, countryList as Country[]);
 
-	const isErrored = (fieldName) =>
+	const isErrored = (fieldName: Path<IndividualFormSchema>) =>
 		getFieldState(fieldName).error !== undefined;
 
 	return (

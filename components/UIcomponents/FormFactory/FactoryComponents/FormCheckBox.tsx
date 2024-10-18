@@ -20,7 +20,7 @@ export default function FormCheckBox({
 	componentProps = { className: '', toggleStyles: '' },
 }: FormCheckBoxProps) {
 	const { control } = useFormContext();
-	
+
 	return (
 		<Controller
 			name={name}
@@ -41,7 +41,7 @@ export default function FormCheckBox({
 										key={options.keySelector(o)}
 										{...field}
 										onChange={(e) => {
-											let temp: typeof o = [];
+											let temp = [];
 
 											if (e.target.checked) {
 												temp = [...field.value, e.target.value];
@@ -49,7 +49,7 @@ export default function FormCheckBox({
 												return;
 											}
 
-											temp = field.value.filter((v) => v !== e.target.value);
+											temp = (field.value as string[]).filter((v) => v !== e.target.value);
 
 											field.onChange(temp);
 										}}

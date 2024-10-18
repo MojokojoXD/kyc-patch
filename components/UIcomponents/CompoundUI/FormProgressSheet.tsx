@@ -7,24 +7,27 @@ import {
 } from '@/components/UIcomponents/ui/sheet';
 import {
 	Accordion,
-	// AccordionContent,
+	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from '../ui/accordion';
-// import { Button } from '../ui/button';
+import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
-import { useState,useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import type { Dispatch } from 'react';
+import type { FormReducerAction } from '@/components/PageComponents/onboarding/forms/individual/utils/formReducer';
 
 type Stage = {
-	name: string;
-	steps: string[];
+	readonly name: string;
+	readonly steps: readonly string[];
 };
 
 interface FormProgressSheetProps<TSteps> {
 	reveal: boolean;
-	formStages: TSteps[];
-	formAction: (stage: number, step: number) => void;
+	formStages: readonly TSteps[];
+	formAction: Dispatch<FormReducerAction>;
 	stageIndex: number;
+	stepIndex: number;
 }
 
 export default function FormProgressSheet<T extends Stage>({
@@ -32,15 +35,18 @@ export default function FormProgressSheet<T extends Stage>({
 	formStages,
 	formAction,
 	stageIndex,
-}: FormProgressSheetProps<T> )
-{
-    const [ currentStage, setCurrentStage ] = useState( stageIndex );
+	stepIndex,
+}: FormProgressSheetProps<T>) {
+	const dispatch = useState(formStages[stageIndex].name);
 
-    useEffect( () =>
-    {   
-        setCurrentStage( stageIndex );
-        
-    },[ stageIndex ])
+	const progress = useRef(new Set<string>());
+
+	progress.current.add(formStages[stageIndex].name);
+	progress.current.add(formStages[stageIndex].steps[stepIndex]);
+
+	useEffect(() => {
+		dispatch[1](formStages[stageIndex].name);
+	}, [stageIndex, formStages, dispatch]);
 
 	return (
 		<Sheet
@@ -51,44 +57,65 @@ export default function FormProgressSheet<T extends Stage>({
 				onInteractOutside={(e) => e.preventDefault()}
 				onEscapeKeyDown={(e) => e.preventDefault()}
 				onOpenAutoFocus={(e) => e.preventDefault()}
-				className='py-20 px-0'>
-				<SheetHeader className='px-14'>
+				className='py-10 px-0 border-none'>
+				<SheetHeader>
 					<SheetTitle></SheetTitle>
 					<SheetDescription></SheetDescription>
 				</SheetHeader>
-				<div className='py-8 w-full'>
-					<ul className='list-disc font-normal text-neutral-700/95 list-inside'>
-						<Accordion type={'single'} collapsible>
+				<div className='py-8 w-full px-5'>
+					<ul className='font-normal text-neutral-700/95 list-inside'>
+						<Accordion
+							type={'single'}
+							collapsible
+							value={formStages[stageIndex].name}
+							onValueChange={dispatch[1]}>
 							{formStages.map((stage, i) => (
 								<AccordionItem
 									key={stage.name}
-                                    value={ stage.name }
-                                    className={cn(
-                                        'w-full outline-none focus-visible:outline-none focus-visible-ring-none hover:no-underline heading1Regular border-none bg-transparent py-0 h-fit',
-                                        currentStage === i &&
-                                            'bg-neutral-100 text-neutral-500 hover:bg-neutral-100 shadow-inner'
-                                    )}
-                                >
+									value={stage.name}
+									className={cn(
+										'w-full outline-none focus-visible:outline-none focus-visible-ring-none hover:no-underline heading1Regular border-none bg-transparent py-0 h-fit border-none'
+									)}>
 									<AccordionTrigger
-                                        onClick={ formAction.bind( this, i, 0 ) }
-                                        className='border-none data-[state=closed]:rounded-none data-[state=open]:rounded-none bg-transparent font-medium px-5'
-										>
+										onClick={() => {
+											if (i === stageIndex) return;
+											formAction({
+												type: 'jump_to_form_location',
+												toStage: i,
+												toStep: 0,
+											});
+										}}
+										disabled={!progress.current.has(stage.name)}
+										className='border-none data-[state=closed]:rounded-none data-[state=open]:rounded-none bg-transparent font-bold px-5 text-base'>
 										<li>{stage.name}</li>
 									</AccordionTrigger>
-									{/* <AccordionContent className='data-[state=closed]:hidden ring py-0' forceMount>
-										<ol className='list-[upper-roman] list-inside'>
-											{formStages[currentStage].steps.map((step, i) => (
+									<AccordionContent className={'py-0 border-none'}>
+										<ol className='relative list-inside h-fit space-y-2'>
+											<div className='absolute h-full border-neutral-100 border-l  -z-10'></div>
+											{stage.steps.map((step, j) => (
 												<Button
-                                                    key={ step }
-                                                    variant={ 'link' }
-                                                    size={ 'sm' }
-                                                    className='text-sm capitalize h-fit py-1.5 text-[14px] font-normal'
-													onClick={formAction.bind(this, currentStage, i)}>
-													<li>{step}</li>
+													key={step}
+													variant={'link'}
+													disabled={!progress.current.has(stage.steps[j])}
+													onClick={() =>
+														formAction({
+															type: 'jump_to_form_location',
+															toStage: i,
+															toStep: j,
+														})
+													}
+													size={'sm'}
+													className={cn(
+														'text-sm capitalize h-fit py-0 text-[14px] font-normal text-neutral-700 block hover:no-underline hover:text-neutral-700/75 transition-text ease-in-out duration-100 rounded-none py-1 border-s border-neutral-100 hover:border-neutral-300 w-full text-left transition-all',
+														j === stepIndex &&
+															i === stageIndex &&
+															'border-l border-primary-400 hover:border-primary-400 text-primary-500 hover:text-primary-500 font-medium'
+													)}>
+													<li>{step.split('_').at(0)}</li>
 												</Button>
 											))}
 										</ol>
-									</AccordionContent> */}
+									</AccordionContent>
 								</AccordionItem>
 							))}
 						</Accordion>

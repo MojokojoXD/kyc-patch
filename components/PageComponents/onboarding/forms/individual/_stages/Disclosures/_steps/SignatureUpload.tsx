@@ -21,9 +21,9 @@ import {
 import type { IndividualFormSchema } from '@/types/forms/individual';
 import { useMemo, useState, useEffect, useContext } from 'react';
 import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
-import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { UserContext } from '@/Contexts/UserProfileProvider';
+import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
 
 interface SignatureUploadProps {}
 
@@ -77,7 +77,7 @@ export default function SignatureUpload({}: SignatureUploadProps) {
 	);
 }
 
-type SignatureUploadFormProps = Pick<SingleCategoryForm, 'applicantId'> & {
+type SignatureUploadFormProps = SingleFormFieldsGeneratorProps & {
 	clientID: string;
 };
 

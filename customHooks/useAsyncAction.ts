@@ -11,8 +11,8 @@ type LoadingState = boolean;
 
 export function useAsyncAction<T>(
 	action: AsyncAction<T>
-): [T, LoadingState, AsyncError] {
-	const [data, setData] = useState<Awaited<T>>();
+): [Awaited<T> | undefined, LoadingState, AsyncError] {
+	const [data, setData] = useState<Awaited<T> | undefined>();
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<AsyncError>({
 		flag: false,

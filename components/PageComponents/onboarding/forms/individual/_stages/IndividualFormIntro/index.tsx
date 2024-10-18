@@ -3,7 +3,6 @@ import {
 	FormHeader,
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
-import CustomProgress from '@/components/UIcomponents/CompoundUI/CustomProgress';
 import type { FormStage } from '@/types/Components/onboarding';
 
 export const IndividualFormIntro: FormStage = ( { renderStep } ) =>
@@ -16,7 +15,6 @@ export const IndividualFormIntro: FormStage = ( { renderStep } ) =>
                     <FormTitle>KYC Verification</FormTitle>
                 </FormHeader>
                 <FormContent >
-                    <CustomProgress disable maxSteps={1} currentStep={0}/>
                     <div className='max-w-prose paragraph2Medium text-neutral-700 grow space-y-1.5'>
                         <p>
                             Kindly comply with regulations and help us secure our platform and

@@ -1,4 +1,4 @@
-import type { FactoryComponentProps } from '@/types/Components/formFactory';
+import type { FactoryComponentProps,DropdownOption } from '@/types/Components/formFactory';
 import {
 	FormItem,
 	FormControl,
@@ -23,12 +23,12 @@ export default function FormDropdown({
 	name,
 	placeholder,
 	rules,
-	options,
+	options = { keySelector: () => '',keys: [] },
 	defaultValue = '',
 }: FormDropdownProps) {
 	const { control } = useFormContext();
 
-	let priorityList = [];
+	let priorityList: DropdownOption[] = [];
 	let mainList = options!.keys;
 
 	if (options && options.priorityKeys) {

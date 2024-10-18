@@ -19,7 +19,7 @@ import {
 import type { IndividualFormSchema } from '@/types/forms/individual';
 import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle';
 import { useMemo } from 'react';
-import type { SingleCategoryForm } from '../../NextOfKin/_steps/NextOfKin_Bio';
+import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
 
 export default function KestrelTerms() {
 	const form = useFormContext<IndividualFormSchema>();
@@ -1710,7 +1710,7 @@ export default function KestrelTerms() {
 	);
 }
 
-type KestrelTermsFormProps = Pick<SingleCategoryForm, 'applicantId'>;
+type KestrelTermsFormProps = SingleFormFieldsGeneratorProps & Record<string,unknown>;
 
 function KestrelTermsForm({ applicantId }: KestrelTermsFormProps) {
 	const { control } = useFormContext<IndividualFormSchema>();

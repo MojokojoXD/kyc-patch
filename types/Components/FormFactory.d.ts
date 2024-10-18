@@ -1,19 +1,22 @@
-import type { DayPickerProps } from 'react-day-picker';
-import type { Country, Bank } from '../forms/universal';
+import type { PropsBase } from 'react-day-picker';
+import type { Country, BankList } from '../forms/universal';
 import type { InputProps } from '@/components/UIcomponents/ui/input';
 import type { RegisterOptions } from 'react-hook-form';
 import type { BrokerCode } from '../forms/broker';
 
-type DropdownOption = Country | Bank | string;
+type DropdownOption = Country | BankList | string;
 
 type Tag =
 	| BrokerCode
+	| 'NG'
+	| 'GH'
+	| 'KE'
 	| 'local'
 	| 'foreign'
 	| 'optional-contact'
-    | 'residence-contact'
-    | 'remove-all-except'
-    | 'control-employment'
+	| 'residence-contact'
+	| 'remove-all-except'
+	| 'control-employment';
 
 type FactoryFieldType =
 	| 'text'
@@ -35,19 +38,19 @@ export type FactoryComponentProps = {
 	readonly name: string;
 	componentProps?: Partial<
 		Omit<InputProps, 'disabled'> &
-			DayPickerProps & {
+			PropsBase & {
 				phoneMode?: 'single' | 'multi';
-            maxPhoneCount?: number;
-            toggleStyles?: string;
+				maxPhoneCount?: number;
+				toggleStyles?: string;
 			}
 	>;
 	rules?: RegisterOptions;
 	placeholder?: string;
 	defaultValue?: string;
 	options?: {
-		keySelector: <TOption = string>(key: TOption) => string;
-		keys: string[] | object[];
-		priorityKeys?: <TOption = string>(keys: TOption[]) => TOption[];
+		keySelector(key: DropdownOption): string;
+		keys: DropdownOption[];
+		priorityKeys?: (keys: DropdownOption[]) => DropdownOption[];
 	};
 	tags?: Tag[];
 };
