@@ -86,7 +86,7 @@ function FormLayout( { children }: FormLayoutProps )
 	return (
 		<div className='h-screen w-full grid grid-cols-3'>
 			<div className='flex items-center col-start-2 col-span-full'>
-				<div className='w-full max-w-[712px] h-[90vh] bg-white'>
+				<div className='w-full max-w-[716px] h-[90vh] bg-white'>
 					{children}
 				</div>
 			</div>

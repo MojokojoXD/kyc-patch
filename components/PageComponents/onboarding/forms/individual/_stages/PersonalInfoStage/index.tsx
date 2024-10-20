@@ -16,8 +16,8 @@ export const PersonalInformation: FormStage = ({
 	step,
 	renderStep,
 }) => {
-	const getStageStep = (stepName: typeof step) => {
-		switch (stepName) {
+	const getStageStep = () => {
+		switch (step) {
 			case 'retail client':
 				return RetailClient;
 			case 'category of investment':
@@ -41,7 +41,7 @@ export const PersonalInformation: FormStage = ({
 		}
 	};
 
-	const StepComponent = getStageStep(step);
+	const StepComponent = getStageStep();
 
 	return (
 		<>

@@ -9,6 +9,8 @@ import {
 import type { FormStep } from '@/types/Components/onboarding';
 import { ReviewerSection } from '@/components/UIcomponents/FormReviewer/ReviewerComponents/ReviewerSection';
 import { NOK_bioFieldsModel } from '../NextOfKin_Bio/formBuilder/NOK_biofieldsModel';
+import { NOK_contactFieldsModel } from '../NextOfKin_Contact/formBuilder/NOK_contactFieldModel';
+import { NOK_identifyProofFieldsModel } from '../NextOfKin_IdentityProof/formBuilder/NOK_identityProofFieldModel';
 
 export const NextOfKinReview: FormStep = ( { formAction } ) => {
 	const { getValues } = useFormContext<IndividualFormSchema>();
@@ -22,7 +24,11 @@ export const NextOfKinReview: FormStep = ( { formAction } ) => {
 			toStep: step,
         } );
     
-    console.log( nextOfKinCount )
+    const accordionTitle = ( index: number ) => ( {
+        firstName: `nextOfKin.${ index }.firstName`,
+        lastName: `nextOfKin.${ index }.lastName`,
+        titlePrefix: 'Next of Kin',
+    })
 
 	return (
 		<>
@@ -39,24 +45,23 @@ export const NextOfKinReview: FormStep = ( { formAction } ) => {
 						applicantCount={nextOfKinCount}
 						editAction={editStep.bind(this, 0)}
                         fieldModel={ NOK_bioFieldsModel }
-                        accordionTitle={ ( index ) => ( {
-                            firstName: `nextOfKin.${ index }.firstName`,
-                            lastName: `nextOfKin.${ index }.lastName`,
-                            titlePrefix: 'Next of Kin',
-                        })}
-					/>
-					{/* <ReviewerSection
-						sectionName='Category of Investment'
-						accordionTitle='Category of Investment'
-						editAction={editStep.bind(this, 1)}
-						fieldModel={investmentCatergoryFields}
+                        accordionTitle={ accordionTitle }
 					/>
 					<ReviewerSection
-						sectionName='Personal Information'
+						sectionName='Next of Kin - Contact Details'
+						applicantCount={nextOfKinCount}
+						editAction={editStep.bind(this, 1)}
+                        fieldModel={ NOK_contactFieldsModel}
+                        accordionTitle={ accordionTitle }
+					/>
+					<ReviewerSection
+						sectionName='Next of Kin - Proof of Identity'
+						applicantCount={nextOfKinCount}
 						editAction={editStep.bind(this, 2)}
-						applicantCount={applicantCount}
-						fieldModel={bioFieldsModel}
-					/> */}
+                        fieldModel={ NOK_identifyProofFieldsModel}
+                        accordionTitle={ accordionTitle }
+					/>
+					
 				</div>
 			</FormContent>
 		</>

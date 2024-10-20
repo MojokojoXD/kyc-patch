@@ -22,7 +22,6 @@ import { FormFieldAggregator } from '@/components/PageComponents/onboarding/form
 
 export const Contacts: FormStep = ({
 	applicantCount,
-	broker,
 	countryList,
 }) => {
 	const { getValues } = useFormContext<IndividualFormSchema>();
@@ -54,7 +53,6 @@ export const Contacts: FormStep = ({
 										forceMount>
 										<ContactForm
 											applicantId={i}
-											broker={broker}
 											countryList={countryList}
 										/>
 									</AccordionContent>

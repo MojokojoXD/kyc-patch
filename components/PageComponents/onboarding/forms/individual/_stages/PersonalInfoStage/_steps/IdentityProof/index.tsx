@@ -21,7 +21,6 @@ import FormFactory from '@/components/UIcomponents/FormFactory';
 
 export const IdentityProofInfo: FormStep = ({
 	applicantCount,
-	broker,
 }) => {
 	const { getValues } = useFormContext<IndividualFormSchema>();
 
@@ -52,7 +51,6 @@ export const IdentityProofInfo: FormStep = ({
 										forceMount>
 										<IdentityForm
 											applicantId={i}
-											broker={broker}
 										/>
 									</AccordionContent>
 								</AccordionItem>

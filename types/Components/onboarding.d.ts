@@ -10,7 +10,7 @@ type Steps = Pick<FormMetadata, 'steps'>['steps'][number];
 export interface FormStepProps {
 	applicantCount?: number;
 	countryList?: Country[];
-	broker?: Partial<BrokerDetails>;
+    clientID?: string;
 	formAction: Dispatch<FormReducerAction>;
 }
 
@@ -25,6 +25,5 @@ export type FormStage<TSteps = Steps> = FC<FormStageProps<TSteps>>;
 
 export interface SingleFormFieldsGeneratorProps {
 	applicantId: number;
-	broker?: Partial<BrokerDetails>;
 	countryList?: Country[];
 }

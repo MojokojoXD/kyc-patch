@@ -63,7 +63,9 @@ export default function FormProgressSheet<T extends Stage>({
 					<SheetDescription></SheetDescription>
 				</SheetHeader>
 				<div className='py-8 w-full px-5'>
-					<ul className='font-normal text-neutral-700/95 list-inside'>
+                    <ul className='font-normal text-neutral-700/95 list-inside overflow-auto max-h-[40rem]' style={ {
+                        scrollbarWidth: 'thin'
+                    }}>
 						<Accordion
 							type={'single'}
 							collapsible
@@ -74,7 +76,7 @@ export default function FormProgressSheet<T extends Stage>({
 									key={stage.name}
 									value={stage.name}
 									className={cn(
-										'w-full outline-none focus-visible:outline-none focus-visible-ring-none hover:no-underline heading1Regular border-none bg-transparent py-0 h-fit border-none'
+										'w-full outline-none focus-visible:outline-none focus-visible-ring-none hover:no-underline border-none bg-transparent py-0 h-fit border-none'
 									)}>
 									<AccordionTrigger
 										onClick={() => {
@@ -86,7 +88,7 @@ export default function FormProgressSheet<T extends Stage>({
 											});
 										}}
 										disabled={!progress.current.has(stage.name)}
-										className='border-none data-[state=closed]:rounded-none data-[state=open]:rounded-none bg-transparent font-bold px-5 text-base'>
+										className='border-none data-[state=closed]:rounded-none data-[state=open]:rounded-none bg-transparent px-5 leading-relaxed font-medium text-sm text-neutral-800 capitalize'>
 										<li>{stage.name}</li>
 									</AccordionTrigger>
 									<AccordionContent className={'py-0 border-none'}>
@@ -106,7 +108,7 @@ export default function FormProgressSheet<T extends Stage>({
 													}
 													size={'sm'}
 													className={cn(
-														'text-sm capitalize h-fit py-0 text-[14px] font-normal text-neutral-700 block hover:no-underline hover:text-neutral-700/75 transition-text ease-in-out duration-100 rounded-none py-1 border-s border-neutral-100 hover:border-neutral-300 w-full text-left transition-all',
+														'text-sm capitalize h-fit py-0 font-normal text-neutral-700 block hover:no-underline hover:text-neutral-700/75 transition-text ease-in-out duration-100 rounded-none py-1 border-s border-neutral-100 hover:border-neutral-300 w-full text-left transition-all',
 														j === stepIndex &&
 															i === stageIndex &&
 															'border-l border-primary-400 hover:border-primary-400 text-primary-500 hover:text-primary-500 font-medium'

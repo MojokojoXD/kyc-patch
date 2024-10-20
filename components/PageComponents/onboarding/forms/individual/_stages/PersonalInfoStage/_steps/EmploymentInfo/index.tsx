@@ -23,7 +23,6 @@ import { BrokerCurrency } from '@/utils/vars/brokers';
 export const EmploymentInfo: FormStep = ({
 	applicantCount,
 	countryList,
-	broker,
 }) => {
 	const { getValues } = useFormContext<IndividualFormSchema>();
 
@@ -54,7 +53,6 @@ export const EmploymentInfo: FormStep = ({
 										<EmploymentForm
 											applicantId={i}
 											countryList={countryList}
-											broker={broker}
 										/>
 									</AccordionContent>
 								</AccordionItem>

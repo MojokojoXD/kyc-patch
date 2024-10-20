@@ -5,65 +5,75 @@ import Image from 'next/image';
 import { LoaderCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface SignatureUploaderProps extends InputProps {
-	onFileUpload: (file: File | null) => void;
+interface SignatureUploaderProps extends InputProps
+{
+    id: string;
 	isLoading: boolean;
 	previewURL: string | undefined | null;
-    fileSize?: number /* size in bytes */;
-    fileName: string;
+	fileSize?: number /* size in bytes */;
+	fileName: string;
+	onUploadError: (error?: string) => void;
+	onFileUpload: (file: File | null) => void;
 }
 
-type SupportedFileTypes = "jpg" | "jpeg" | "png";
+type SupportedFileTypes = 'jpg' | 'jpeg' | 'png';
 
 //File constants
 const DEFAULT_MAX_FILE_SIZE = 1048576;
-const SUPPORTED_FORMATS = [ 'jpg', 'jpeg', 'png' ] as const;
+const SUPPORTED_FORMATS = ['jpg', 'jpeg', 'png'] as const;
 
-
-const SignatureUploader = forwardRef<HTMLInputElement, SignatureUploaderProps>(
+const SignatureUploader = forwardRef<
+	HTMLInputElement,
+	SignatureUploaderProps
+>(
 	(
-		{
+        {
+            id,
 			onFileUpload,
 			fileSize = DEFAULT_MAX_FILE_SIZE,
+			onUploadError,
 			previewURL,
-            isLoading = false,
-            fileName,
+			isLoading = false,
+			fileName = '',
 			...props
 		},
 		ref
-    ) =>
-    {
-        const [ currentFileName, setCurrentFileName ] = useState<string>( fileName );
-		const [error, setError] = useState<string>('');
+	) => {
+		const [currentFileName, setCurrentFileName] =
+			useState(fileName);
 
 		const validateImgFile = (newFile: File) => {
+			let isValid = true;
+
 			if (newFile.size > fileSize) {
-				setError('Upload a file below ' + returnFileSize(fileSize));
-				return false;
+				onUploadError('Upload a file below ' + returnFileSize(fileSize));
+				isValid = false;
 			}
 
 			const newFileFormat = newFile.name.split('.').pop();
 
-			if (!SUPPORTED_FORMATS.includes(newFileFormat as SupportedFileTypes)) {
-				setError('Only .jpeg, .jpg and .png files can be uploaded');
-				return false;
-			}
-
-			setError('');
-			return true;
+			if (
+				!SUPPORTED_FORMATS.includes(newFileFormat as SupportedFileTypes)
+			) {
+				onUploadError('Only .jpeg, .jpg and .png files can be uploaded');
+				isValid = false;
+            }
+            
+			return isValid;
 		};
-        
+
 		return (
-			<div className='bg-neutral-50 p-[24px] rounded-lg border border-neutral-200 space-y-3.5'>
-                <Label asChild>
-                    <h2>Upload Your Signature</h2>
-                </Label>
+			<div className='space-y-3.5'>
 				<div className='bg-white border border-neutral-200 p-[16px] rounded-lg'>
 					{(isLoading || previewURL) && (
 						<div className='relative h-[130px] bg-neutral-50 rounded-lg mb-2 overflow-hidden'>
-								<div className={cn('absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm -z-10 transition-all', isLoading && "z-0")}>
-									<LoaderCircle className='h-1/4 animate-spin text-primary-500' />
-								</div>
+							<div
+								className={cn(
+									'absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm -z-10 transition-all',
+									isLoading && 'z-0'
+								)}>
+								<LoaderCircle className='h-1/4 animate-spin text-primary-500' />
+							</div>
 							{previewURL && (
 								<Image
 									src={previewURL}
@@ -78,42 +88,41 @@ const SignatureUploader = forwardRef<HTMLInputElement, SignatureUploaderProps>(
 
 					<div className='flex justify-between items-center'>
 						<Label
-							htmlFor={props.name}
+							htmlFor={id}
 							className='order-2 text-primary-500 text-sm cursor-pointer text-nowrap'>
 							Choose File
 						</Label>
 						<Input
-							type={'file'}
 							{...props}
-							id={props.name}
-							className='hidden'
-							accept='.png,.jpg,.jpeg placeholder:text-neutral-100'
+							type={'file'}
+							id={id}
+							className='hidden placeholder:text-neutral-100'
+							accept='.png,.jpg,.jpeg'
 							size={fileSize}
 							onChange={(e) => {
 								const imgFile = e.target.files?.item(0);
 
-                                if ( !imgFile ) return;
-                                
-                                const isValidFile = validateImgFile( imgFile );
-                                setCurrentFileName( imgFile.name );
+								if (!imgFile) return;
+
+								const isValidFile = validateImgFile(imgFile);
+								setCurrentFileName(imgFile.name);
 								onFileUpload(isValidFile ? imgFile : null);
 							}}
 							ref={ref}
-                        />
-                        <p className={cn("text-neutral-700 text-base", !currentFileName && "text-neutral-300")}>
-                            {currentFileName ? currentFileName : "Nothing selected"}
-                        </p>
+						/>
+						<p
+							className={cn(
+								'text-neutral-700 text-base',
+								!currentFileName && 'text-neutral-300'
+							)}>
+							{currentFileName ? currentFileName : 'Nothing selected'}
+						</p>
 					</div>
 				</div>
 				<div>
-					{error && (
-						<p className='font-normal text-sm text-error-500'>{error}</p>
-					)}
-				</div>
-				<div>
-					<small>
-						Only <strong>JPGs,JPEGS and PNGs</strong> are allowed <br /> Maximum{' '}
-						<strong>{returnFileSize(fileSize)}</strong>
+					<small className='text-neutral-700'>
+						Only <strong>JPGs,JPEGS and PNGs</strong> are allowed <br />{' '}
+						Maximum <strong>{returnFileSize(fileSize)}</strong>
 					</small>
 				</div>
 			</div>

@@ -30,10 +30,10 @@ export function ArrayFieldReviewer({
 
 	return (
 		<div className='space-y-[8px]'>
-			{label && <h2 className='paragraph2Medium'>{label}</h2>}
+			{label && <h2 className='paragraph2Medium text-neutra-700'>{label}</h2>}
 			<div>
 				{temp.map((v) => (
-					<p key={v} className='paragraph2Book text-neutral-500'>
+					<p key={v} className='paragraph2Regular text-neutral-500 capitalize'>
 						{v || 'n/a'}
 					</p>
 				))}

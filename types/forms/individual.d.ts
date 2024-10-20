@@ -6,23 +6,37 @@ import type {
 	BankAccount,
 } from './universal';
 
-export type ClientType = 'Individual' | 'Joint Account'
+export type ClientType = 'Individual' | 'Joint Account';
 
 export interface IndividualFormSchema {
-    _formMetadata: {
-        applicantCount: number;
+	_formMetadata: {
+		applicantCount: number;
 		applicant: {
 			signatureFileName: string;
-            kestrelSignatureFileName: string;
+			kestrelSignatureFileName: string;
 		}[];
 	};
 	clientType: ClientType;
 	clientStatus: string;
 	csdNumber: string;
 	catInvestment: string;
-	taxexempt: string;
-    applicant: ApplicantInfo[];
+    taxexempt: string;
+    signatureMandate?: string;
+	applicant: ApplicantInfo[];
 	nextOfKin: NextOfKinInfo[];
+	agreements: {
+		kestrel: {
+			termsAndConditions: Agreement;
+			nomineeAgreement: {
+				signatureURL: string;
+			};
+		};
+		afrinvest: {
+			emailIndemnity: Agreement;
+			privacyPolicy: Agreement;
+        };
+	    declarations: Agreement;    
+	};
 }
 
 export interface ApplicantInfo extends BiographicalCore {
@@ -93,11 +107,11 @@ type StudentEmployment = Pick<Employed, 'email' | 'phoneNumber'> & {
 };
 
 type BankInfo = Bank & {
-    account: BankAccount;
-    statement?: {
-        modeOfDelivery: string;
-        deliveryFrequency: string;
-    } 
+	account: BankAccount;
+	statement?: {
+		modeOfDelivery: string;
+		deliveryFrequency: string;
+	};
 };
 
 interface ProofOfIdentity {
@@ -122,23 +136,23 @@ interface BiographicalCore {
 	countryOfBirth: string;
 	countryOfResidence: string;
 	countryOfCitizenship: string;
-    placeOfBirth?: string;
-    stateOfOrigin?: string;
+	placeOfBirth?: string;
+	stateOfOrigin?: string;
 	localGovernment?: string;
-    religion?: string;
-    licenseNumber?; string;
-    residence?: {
-        status: string;
-        permitNumber: string;
-        permitIssueDate: string;
-        permitExpiry: string;
-        permitIssuePlace: string;
-    }
+	religion?: string;
+	licenseNumber?;
+	string;
+	residence?: {
+		status: string;
+		permitNumber: string;
+		permitIssueDate: string;
+		permitExpiry: string;
+		permitIssuePlace: string;
+	};
 }
 
-export interface NextOfKinInfo
-{
-    title: {
+export interface NextOfKinInfo {
+	title: {
 		presets: string;
 		other?: string;
 	};
@@ -151,12 +165,12 @@ export interface NextOfKinInfo
 	countryOfBirth: string;
 	countryOfResidence: string;
 	countryOfCitizenship: string;
-    placeOfBirth?: string;
+	placeOfBirth?: string;
 	relationshipToApplicant: string;
 	percentageAllocation?: string;
 	contacts?: BaseContact;
 	proofOfIdentity?: ProofOfIdentity;
-};
+}
 
 interface Disclosures {
 	signatureURL: string;
@@ -176,6 +190,9 @@ interface Disclosures {
 		details?:
 			| {
 					ownership: string;
+					firstName: string;
+					middleName: string;
+					lastName: string;
 					foreignResidentialAddress: string;
 					foreignMailingAddress: string;
 					phoneNumber: PhoneInfo;
@@ -184,15 +201,14 @@ interface Disclosures {
 			| object;
 	};
 	kestrel: {
-		termsAndConditions: string;
 		nomineeAgreement: {
 			signatureURL: string;
 		};
 	};
-	afrinvest: {
-		indemnityAgreement: string;
-		privacyPolicyAgreement: string;
-	};
-	declarations: string;
 }
 
+type Agreement = {
+	agreed: boolean;
+	timestamp: string;
+	version: string;
+};

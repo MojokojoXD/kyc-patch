@@ -56,7 +56,7 @@ export function ReviewerSection({
 		<div className='bg-white p-[40px] space-y-[40px]'>
 			<div className='flex justify-between items-center'>
 				<div>
-					<h2 className='heading5Bold text-neutral-700'>{sectionName}</h2>
+					<h2 className='heading5Bold text-neutral-800'>{sectionName}</h2>
 				</div>
 				<div>
 					<Button
@@ -76,8 +76,10 @@ export function ReviewerSection({
 					let lastName = '';
 					let titlePrefix = '';
 					if (typeof accordionTitle !== 'string' && accordionTitle) {
-						firstName = getValues(accordionTitle(af.id).firstName);
-						lastName = getValues(accordionTitle(af.id).lastName);
+						firstName =
+							getValues(accordionTitle(af.id).firstName) || firstName;
+						lastName =
+							getValues(accordionTitle(af.id).lastName) || lastName;
 						titlePrefix = accordionTitle(af.id).titlePrefix;
 					}
 

@@ -13,10 +13,12 @@ export interface FormReducerFn<TState> {
 export type FormReducerAction =
 	| { type: 'next' }
 	| { type: 'prev' }
-	| { type: 'next_step' }
-	| { type: 'prev_step' }
-	| { type: 'prev_stage' }
-	| { type: 'next_stage' }
+	| {
+			type: 'remove_step';
+			stage: IndividualFormStages[number]['name'];
+			step: IndividualFormStages[number]['steps'][number];
+	  }
+	| { type: 'reset'; stages: IndividualFormStages }
 	| {
 			type: 'jump_to_form_location';
 			toStage?: number;
@@ -72,34 +74,27 @@ export function formReducer<TState extends FormReducerState>(
 						: nextStep,
 			};
 		}
-		case 'next_stage': {
+        case 'remove_step': {
+            
+            const stageIndexToEdit = clonedStages.findIndex( s => s.name === action.stage );
+
+            const editedSteps = clonedStages[ stageIndexToEdit ].steps.filter( s => s !== action.step );
+
+            clonedStages[ stageIndexToEdit ] = {
+                ...clonedStages[ stageIndexToEdit ],
+                steps: [...editedSteps]
+            }
+
+            return {
+                ...state,
+                stages: clonedStages,
+            }
+		}
+		case 'reset':
 			return {
 				...state,
-				stages: clonedStages,
-				stageIndex: stageIndex + 1,
+				stages: action.stages,
 			};
-		}
-		case 'prev_stage': {
-			return {
-				...state,
-				stages: clonedStages,
-				stageIndex: stageIndex - 1,
-			};
-		}
-		case 'next_step': {
-			return {
-				...state,
-				stages: clonedStages,
-				stepIndex: stepIndex + 1,
-			};
-		}
-		case 'prev_step': {
-			return {
-				...state,
-				stages: clonedStages,
-				stepIndex: stepIndex - 1,
-			};
-		}
 		case 'jump_to_form_location': {
 			const nextStage = action.toStage ?? stageIndex;
 			const nextStep = action.toStep ?? stepIndex;

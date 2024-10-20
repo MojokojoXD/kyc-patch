@@ -28,7 +28,6 @@ import type { Path } from 'react-hook-form';
 export const BankAccountInfo: FormStep = ({
 	applicantCount,
 	countryList,
-	broker,
 }) => {
 	const { getValues } = useFormContext<IndividualFormSchema>();
 	const [bankList, loading, error] = useAsyncAction(getBankList);
@@ -74,7 +73,6 @@ export const BankAccountInfo: FormStep = ({
 											applicantId={c}
 											countryList={countryList}
 											bankList={bankList || []}
-											broker={broker}
 										/>
 									</AccordionContent>
 								</AccordionItem>

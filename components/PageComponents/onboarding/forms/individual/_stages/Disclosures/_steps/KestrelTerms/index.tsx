@@ -1,31 +1,14 @@
-import { useFormContext } from 'react-hook-form';
-import {
-	FormField,
-	FormItem,
-    FormMessage,
-    FormControl
-} from '@/components/UIcomponents/ui/form';
-import {
-	AccordionItem,
-	Accordion,
-	AccordionContent,
-	AccordionTrigger,
-} from '@/components/UIcomponents/ui/accordion';
 import {
 	FormHeader,
 	FormTitle,
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
-import type { IndividualFormSchema } from '@/types/forms/individual';
-import { CustomToggle } from '@/components/UIcomponents/CompoundUI/CustomToggle';
-import { useMemo } from 'react';
-import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
+import type { FormStep } from '@/types/Components/onboarding';
+import { kestrelTermsFields } from './formBuilder/kestrelTermsFields';
+import FormFactory from '@/components/UIcomponents/FormFactory';
 
-export default function KestrelTerms() {
-	const form = useFormContext<IndividualFormSchema>();
-	const { watch } = form;
+export const KestrelTerms: FormStep = () => {
 
-	const applicant = useMemo(() => watch('applicant'), [watch]);
 
 	return (
 		<>
@@ -33,9 +16,9 @@ export default function KestrelTerms() {
 				<FormTitle>Terms and Conditions - Kestrel Capital</FormTitle>
 			</FormHeader>
 			<FormContent>
-				<div className='text-base font-normal leading-relaxed px-6 py-10 bg-neutral-50 rounded-md border border-neutral-100 space-y-8 h-3/4 max-h-[28rem] overflow-auto max-w-prose'>
+				<div className='paragraph2Regular px-6 py-10 bg-neutral-50 rounded-md border border-neutral-100 space-y-8 h-3/4 max-h-[28rem] overflow-auto max-w-prose [&>h2]:heading6Medium [&>h3]:paragraph2Medium text-neutral-700'>
 					<h2>Part A: Preliminary</h2>
-					<h3>1 Purpose and basis of these terms</h3>
+					<h3>1. Purpose and basis of these terms</h3>
 					<p>
 						1.1 These terms and conditions of business (&quot;Terms&quot;) set out the
 						terms and conditions on which Kestrel Capital (East Africa) Limited
@@ -61,7 +44,7 @@ export default function KestrelTerms() {
 						signature of the Client Account Opening Form or on the date when we
 						first provide you with Services, whichever is earlier.
 					</p>
-					<h3>2 Definitions and construction</h3>
+					<h3>2. Definitions and construction</h3>
 					<p>
 						2.2 A reference to a person shall include a natural person,
 						corporate or unincorporated body (whether or not having separate
@@ -109,7 +92,7 @@ export default function KestrelTerms() {
 						or &apos;your&apos; shall refer to the Client.
 					</p>
 					<h2>Part B: The Services</h2>
-					<h3>3 Description of Services</h3>
+					<h3>3. Description of Services</h3>
 					<p>
 						3.1 We shall provide you with any of the following services provided
 						that such service may be legally provided by us:
@@ -223,7 +206,7 @@ export default function KestrelTerms() {
 						information you provide to us to, or through, any country in the
 						world, as we deem necessary or appropriate.
 					</p>
-					<h3>4 Instructions</h3>
+					<h3>4. Instructions</h3>
 					<h4>General</h4>
 					<ol className='list-none space-y-5'>
 						<li>
@@ -363,7 +346,7 @@ export default function KestrelTerms() {
 						4.13 These Terms shall be applicable to and binding upon any
 						Authorized Person appointed by you.
 					</p>
-					<h3>5 Local and Foreign Dealings</h3>
+					<h3>5. Local and Foreign Dealings</h3>
 					<p>
 						5.1 We shall be entitled to carry out all transactions in accordance
 						with Market Regulations of the relevant market, exchange and/or
@@ -467,7 +450,7 @@ export default function KestrelTerms() {
 						the best market price when in our opinion it is in your best
 						interests to do so.
 					</p>
-					<h3>6 Payments and Settlement</h3>
+					<h3>6. Payments and Settlement</h3>
 					<p>
 						6.1 You shall take all action necessary to enable us to effect
 						settlement and delivery of instructions and transactions as they
@@ -726,7 +709,7 @@ export default function KestrelTerms() {
 						rate. This condition also recognizes the fact that client money is
 						generally held in non-interest bearing call accounts at banks.
 					</p>
-					<h3>11 Powers on default </h3>
+					<h3>11. Powers on default </h3>
 					<p>
 						11.1 You must ensure that, when purchasing an investment, you have
 						sufficient funds available to pay in full for the investment on the
@@ -773,7 +756,7 @@ export default function KestrelTerms() {
 						reversed.
 					</p>
 					<h3>
-						12 Right of Set-off, Default and Realisation of Client&apos;s assets
+						12. Right of Set-off, Default and Realisation of Client&apos;s assets
 					</h3>
 					<p>
 						12.1 Any sums due to us or any third party in respect of
@@ -834,9 +817,9 @@ export default function KestrelTerms() {
 						12.5 If you control or are a beneficiary of more than one trading
 						Account with us, we shall have the right to set off any amounts due
 						to us or third parties from the credit on another. part D:
-						Conflicts, Risks and Disclosures <br />
-						13 Conflicts of interest <br />
-						13.1 In relation to any advice we give or transaction we execute or
+						Conflicts, Risks and Disclosures </p> <br />
+						<h3>13. Conflicts of interest</h3>
+						<p>13.1 In relation to any advice we give or transaction we execute or
 						arrange with or for you, we or any of our affiliates may have an
 						interest, relationship, arrangement or duty which may give rise to a
 						conflict of interest with your interest(s) in relation to the
@@ -898,8 +881,8 @@ export default function KestrelTerms() {
 						monetary benefits and confirm that we shall not be required to
 						account for them.
 					</p>
+					<h3>14. Risks associated with the Services </h3>	
 					<p>
-						14 Risks associated with the Services <br />
 						14.1 All investment is subject to risk and the degree of risk is a
 						matter of judgment and cannot be accurately pre-determined. We give
 						no warranty or assurance as to the performance or profitability of
@@ -1018,7 +1001,7 @@ export default function KestrelTerms() {
 						you to engage in a particular strategy or course of action. part E:
 						Liability, Indemnity and Client Warranties
 					</p>
-					<h3>15 Liability and indemnity</h3>
+					<h3>15. Liability and indemnity</h3>
 					<p>
 						15.1 By instructing us you warrant and acknowledge that you are
 						aware of the risks inherent in local and foreign investments and you
@@ -1087,7 +1070,7 @@ export default function KestrelTerms() {
 						research to you. We will not be liable for any losses which you
 						might incur if you rely on such information.
 					</p>
-					<h4>indemnity</h4>
+					<h3>Indemnity</h3>
 					<p>
 						15.9 You undertake to, on demand, keep us, our directors, our agents
 						and our employees fully and effectively indemnified against all
@@ -1203,8 +1186,8 @@ export default function KestrelTerms() {
 						liens, charges or other encumbr/ances and that no liens, charges or
 						other encumbrances shall arise from your acts or omissions.
 					</p>
+					<h3>17. Anti-money laundering</h3> 
 					<p>
-						17 Anti-money laundering <br />
 						17.1 You shall not deposit or accept funds received from unknown or
 						suspicious sources into the Trading account. You will use the
 						Trading Account solely in your personal capacity (except where
@@ -1277,7 +1260,7 @@ export default function KestrelTerms() {
 						information related to the complaint. part G: Notices, Amendments
 						and Termination
 					</p>
-					<p>21 Notices, instructions and other communications</p>
+					<h3>21. Notices, instructions and other communications</h3>
 					<p>
 						21.1 We shall provide you with information relating to your
 						Securities or cash held by us by sending periodic statements of
@@ -1309,7 +1292,7 @@ export default function KestrelTerms() {
 						documents and other information provided by us to you in connection
 						with our Services hereunder shall be in English.
 					</p>
-					<h3>22 Amendments</h3>
+					<h3>22. Amendments</h3>
 					<p>
 						22.1 We may change, amend, supplement or delete any part of this
 						Agreement and, in particular but without limitation, we may:
@@ -1447,7 +1430,7 @@ export default function KestrelTerms() {
 						outstanding obligations which shall be promptly and fully paid to us
 						by you. part H: General
 					</p>
-					<h3>24 Confidentiality</h3>
+					<h3>24. Confidentiality</h3>
 					<p>
 						24.1 We shall be under no duty to disclose to you or in making any
 						decision or taking any action in connection with the provision of
@@ -1554,7 +1537,7 @@ export default function KestrelTerms() {
 						societies and other forms of association are individually and
 						jointly liable for money owed to us.
 					</p>
-					<h3>27 Governing Law and Dispute Resolution</h3>
+					<h3>27. Governing Law and Dispute Resolution</h3>
 					<p>
 						27.1 This Agreement shall be governed by and construed in accordance
 						with Kenya law.
@@ -1598,7 +1581,7 @@ export default function KestrelTerms() {
 						performance shall be enforceable in any jurisdiction in which either
 						of the parties has assets.
 					</p>
-					<h3>28 Miscellaneous</h3>
+					<h3>28. Miscellaneous</h3>
 					<p>
 						28.1 Our appointment under this Agreement is given by you on behalf
 						of your successors in title as well as yourself. Accordingly, if you
@@ -1647,7 +1630,7 @@ export default function KestrelTerms() {
 						enforceability of the remainder of this Agreement shall not be
 						affected thereby.
 					</p>
-					<h3>29 Rights of Client</h3>
+					<h3>29. Rights of Client</h3>
 					<p>
 						The client retains the following basic rights. <br />
 						29.1 The right to receive title for any securities purchased and
@@ -1688,60 +1671,13 @@ export default function KestrelTerms() {
 					</p>
 				</div>
 				<div className='space-y-10 py-5'>
-					{applicant.map((c, i) => (
-						<Accordion
-							key={c.id}
-							type='single'
-							defaultValue='item-1'
-							collapsible>
-							<AccordionItem value={`item-${c.id}`}>
-								<AccordionTrigger>
-									Applicant #{c.id}: {c.firstName} {c.lastName}
-								</AccordionTrigger>
-								<AccordionContent className='data-[state=closed]:hidden' forceMount>
-									<KestrelTermsForm applicantId={i} />
-								</AccordionContent>
-							</AccordionItem>
-						</Accordion>
-					))}
+                    {
+                        kestrelTermsFields.map( f => (
+                            <FormFactory key={f.name} { ...f }/>
+                        ))
+                    }
 				</div>
 			</FormContent>
 		</>
-	);
-}
-
-type KestrelTermsFormProps = SingleFormFieldsGeneratorProps & Record<string,unknown>;
-
-function KestrelTermsForm({ applicantId }: KestrelTermsFormProps) {
-	const { control } = useFormContext<IndividualFormSchema>();
-
-	return (
-		<div>
-			<div className='space-y-10'>
-				<div>
-					<FormField
-						control={control}
-                        name={ `applicant.${ applicantId }.disclosures.kestrel.termsAndConditions` }
-                        rules={ {
-                            validate: v => v === "true" || "Click on the button above to agree to the terms above to continue"
-                        }}
-						render={({ field }) => (
-							<FormItem  className='space-y-2'>
-								<FormControl>
-									<CustomToggle
-										label={'I/We agree to the above Terms and Conditions'}
-										{...field}
-										type={'checkbox'}
-										selected={field.value === 'true'}
-                                        onChange={e => field.onChange(e.target.checked.toString())}
-									/>
-								</FormControl>
-                                <FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-			</div>
-		</div>
 	);
 }

@@ -20,7 +20,7 @@ import { riskProfileFieldModel } from './FormBuilder/riskProfileFields';
 import { FormFieldAggregator } from '@/components/PageComponents/onboarding/forms/individual/utils/FormFieldAggregator';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 
-export const RiskProfile: FormStep = ({ applicantCount, broker }) => {
+export const RiskProfile: FormStep = ({ applicantCount}) => {
 	const { getValues } = useFormContext<IndividualFormSchema>();
 
 	return (
@@ -51,7 +51,6 @@ export const RiskProfile: FormStep = ({ applicantCount, broker }) => {
 										forceMount>
 										<RiskProfileForm
 											applicantId={c}
-											broker={broker}
 										/>
 									</AccordionContent>
 								</AccordionItem>

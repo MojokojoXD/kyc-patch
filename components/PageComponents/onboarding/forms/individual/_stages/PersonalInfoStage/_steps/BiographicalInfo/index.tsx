@@ -25,7 +25,6 @@ import type {
 export const BiographicalInfo: FormStep = ({
 	applicantCount,
 	countryList,
-	broker,
 }) => {
 	const { watch } = useFormContext<IndividualFormSchema>();
 
@@ -59,7 +58,6 @@ export const BiographicalInfo: FormStep = ({
 										forceMount>
 										<BiographicalForm
 											applicantId={i}
-											broker={broker}
 											countryList={countryList}
 										/>
 									</AccordionContent>

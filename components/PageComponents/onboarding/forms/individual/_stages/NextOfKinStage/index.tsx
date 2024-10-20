@@ -9,8 +9,8 @@ export const NextOfKinStage: FormStage = ({
 	step,
 	renderStep,
 }) => {
-	const getStageStep = (stepName: typeof step) => {
-		switch (stepName) {
+	const getStageStep = () => {
+		switch (step) {
 			case 'personal information_next of kin':
 				return NextOfKinBio;
 			case 'contact details_next of kin':
@@ -24,7 +24,7 @@ export const NextOfKinStage: FormStage = ({
 		}
 	};
 
-	const StepComponent = getStageStep(step);
+	const StepComponent = getStageStep();
 
 	return (
 		<>

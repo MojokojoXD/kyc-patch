@@ -1,5 +1,10 @@
 import { useForm } from 'react-hook-form';
-import { useCallback, useReducer } from 'react';
+import {
+	useCallback,
+	useReducer,
+	useEffect,
+	useContext,
+} from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individual';
 import { Form } from '@/components/UIcomponents/ui/form';
 import { IndividualFormIntro } from '@/components/PageComponents/onboarding/forms/individual/_stages/IndividualFormIntro';
@@ -9,7 +14,7 @@ import { Disclosures } from '@/components/PageComponents/onboarding/forms/indivi
 import FormProgressSheet from '@/components/UIcomponents/CompoundUI/FormProgressSheet';
 import Loading from '@/components/UIcomponents/Loading';
 import { FormLayout } from '@/components/UIcomponents/FormLayout';
-// import { UserContext } from '@/Contexts/UserProfileProvider';
+import { UserContext } from '@/Contexts/UserProfileProvider';
 import { useAsyncAction } from '@/customHooks/useAsyncAction';
 import { useCloseTabWarning } from '@/customHooks/useCloseTabWarning';
 import { getCountryList } from '@/utils/vars/countries';
@@ -23,11 +28,11 @@ import {
 //Form meta data for navigation components
 const individualFormMetadata = [
 	{
-		name: 'Introduction',
+		name: 'introduction',
 		steps: ['Instructions'],
 	},
 	{
-		name: 'Personal',
+		name: 'personal',
 		steps: [
 			'retail client',
 			'category of investment',
@@ -41,7 +46,7 @@ const individualFormMetadata = [
 		],
 	},
 	{
-		name: 'Next of Kin',
+		name: 'next of kin',
 		steps: [
 			'personal information_next of kin',
 			'contact details_next of kin',
@@ -50,11 +55,23 @@ const individualFormMetadata = [
 		],
 	},
 	{
-		name: 'Disclosures',
-		steps: ['Signature Upload','Customer Ratification','PEP','FATCA'],
+		name: 'disclosures',
+		steps: [
+			'signature upload',
+			'customer ratification',
+			'pep',
+			'fatca',
+			'kestrel capital - terms',
+			'kestrel capital - nominee',
+			'afrinvest - email indemnity',
+			'declarations',
+			'signature mandate',
+			'afrinvest - privacy policy',
+			'review_disclosures',
+		],
 	},
 	{
-		name: 'Document Checklist',
+		name: 'document checklist',
 		steps: [],
 	},
 ] as const;
@@ -73,8 +90,8 @@ export default function KYCIndividualFormPage() {
 	//state management
 	const [formControl, formControlDispatch] =
 		useReducer<IndividualFormReducerFn>(formReducer, {
-			stepIndex: 0,
 			stageIndex: 0,
+			stepIndex: 0,
 			stages: individualFormMetadata,
 		});
 
@@ -97,7 +114,6 @@ export default function KYCIndividualFormPage() {
 
 	const {
 		watch,
-		getValues,
 		trigger,
 		formState: { isDirty },
 	} = form;
@@ -105,7 +121,7 @@ export default function KYCIndividualFormPage() {
 	//variables used by stage steps
 	const applicantCount = watch(`_formMetadata.applicantCount`);
 
-	// const appWideContext = useContext(UserContext);
+	const appWideContext = useContext(UserContext);
 
 	useCloseTabWarning(isDirty);
 	const [countryList, loading, error] = useAsyncAction(getCountryList);
@@ -119,22 +135,21 @@ export default function KYCIndividualFormPage() {
 	}, [trigger]);
 
 	const prev = useCallback(() => {
-		console.log(getValues());
 		formControlDispatch({ type: 'prev' });
-	}, [getValues]);
+	}, []);
 
 	//Form stage selector
 	const getFormStage = (stage: FormMetadata) => {
 		switch (stage.name) {
-			case 'Introduction':
+			case 'introduction':
 				return IndividualFormIntro;
-			case 'Personal':
+			case 'personal':
 				return PersonalInformation;
-			case 'Next of Kin':
+			case 'next of kin':
 				return NextOfKinStage;
-			case 'Disclosures':
+			case 'disclosures':
 				return Disclosures;
-			case 'Document Checklist':
+			case 'document checklist':
 				throw new Error('checklist not implemented');
 			default:
 				throw new Error('stage is not supported');
@@ -142,15 +157,33 @@ export default function KYCIndividualFormPage() {
 	};
 	const FormStage = getFormStage(stages[stageIndex]);
 
+	useEffect(() => {
+		if (applicantCount === 1) {
+			formControlDispatch({
+				type: 'remove_step',
+				stage: 'disclosures',
+				step: 'signature mandate',
+			});
+		} else
+			formControlDispatch({
+				type: 'reset',
+				stages: individualFormMetadata,
+			});
+	}, [applicantCount]);
+
 	//Reporting and feedback
-	// if ( !appWideData || !appWideData.onboardingFacts )
-	// {
-	//     console.error(` 'missing client ID information' );
-	//     return <p className='p-10'>Something went wrong! Please contact system admin</p>
-	// }
+	if (!appWideContext || !appWideContext.onboardingFacts) {
+		console.error('missing client ID information');
+		return (
+			<p className='p-10'>
+				Something went wrong! Please contact system admin
+			</p>
+		);
+	}
 
 	if (error.flag) {
 		console.error(error.message);
+
 		return (
 			<p className='p-10'>
 				Something went wrong! Please try again later
@@ -179,13 +212,13 @@ export default function KYCIndividualFormPage() {
 										applicantCount={applicantCount}
 										formAction={formControlDispatch}
 										countryList={countryList}
-										broker={{ org_code: 'DATAB', org_cty: 'GH' }}
+										clientID={appWideContext?.onboardingFacts?.clientID}
 									/>
 								) : null
 							}
 						/>
 						<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0 bg-white'>
-							{stages[stageIndex].name !== 'Introduction' && (
+							{stages[stageIndex].name !== 'introduction' && (
 								<Button
 									type='button'
 									variant={'outline'}
@@ -196,7 +229,7 @@ export default function KYCIndividualFormPage() {
 							<Button
 								type='button'
 								onClick={next}>
-								{stages[stageIndex].name === 'Introduction'
+								{stages[stageIndex].name === 'introduction'
 									? 'Begin Process'
 									: 'Save & Continue'}
 							</Button>

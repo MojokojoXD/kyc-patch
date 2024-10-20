@@ -3,6 +3,8 @@ import type { Country, BankList } from '../forms/universal';
 import type { InputProps } from '@/components/UIcomponents/ui/input';
 import type { RegisterOptions } from 'react-hook-form';
 import type { BrokerCode } from '../forms/broker';
+import type { Path } from 'react-hook-form';
+import type { IndividualFormSchema } from '../forms/individual';
 
 type DropdownOption = Country | BankList | string;
 
@@ -19,34 +21,36 @@ type Tag =
 	| 'control-employment';
 
 type FactoryFieldType =
-	| 'text'
-	| 'date'
-	| 'radio'
-	| 'checkbox'
-	| 'dropdown'
-	| 'phone';
+    | 'text'
+    | 'date'
+    | 'radio'
+    | 'checkbox'
+    | 'dropdown'
+    | 'phone'
+    | 'signature'
+    | 'agreement';
 
 export interface FormFactoryProps extends FactoryComponentProps {
 	fieldType: FactoryFieldType;
 }
 
-type ComponentPropsRecord = 'phoneMode' | 'className';
-
 export type FactoryComponentProps = {
 	label: string;
 	inline?: boolean;
-	readonly name: string;
+	readonly name: Path<IndividualFormSchema> | string;
 	componentProps?: Partial<
 		Omit<InputProps, 'disabled'> &
 			PropsBase & {
 				phoneMode?: 'single' | 'multi';
 				maxPhoneCount?: number;
 				toggleStyles?: string;
+            clientID?: string;
+            agreementVersion?: string;
 			}
 	>;
 	rules?: RegisterOptions;
 	placeholder?: string;
-	defaultValue?: string;
+	defaultValue?: string | boolean;
 	options?: {
 		keySelector(key: DropdownOption): string;
 		keys: DropdownOption[];

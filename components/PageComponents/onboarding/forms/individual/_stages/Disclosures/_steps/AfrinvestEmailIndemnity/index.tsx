@@ -1,22 +1,13 @@
-// import { useFormContext } from 'react-hook-form';
-import {
-	AccordionItem,
-	Accordion,
-	AccordionContent,
-	AccordionTrigger,
-} from '@/components/UIcomponents/ui/accordion';
 import {
 	FormHeader,
 	FormTitle,
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
-// import type { IndividualFormSchema } from '@/types/forms/individual';
+import type { FormStep } from '@/types/Components/onboarding';
+import { afrinvestEmailIndemnityFields } from './formBuilder/afrinvestEmailIndemnityFields';
+import FormFactory from '@/components/UIcomponents/FormFactory';
 
-
-export default function AfrinvestEmailEndemnity() {
-	// const form = useFormContext<IndividualFormSchema>();
-
-	const applicant = [ 1 ];
+export const AfrinvestEmailIndemnity:FormStep = () => {
 
 	return (
 		<>
@@ -24,7 +15,7 @@ export default function AfrinvestEmailEndemnity() {
 				<FormTitle>Email Indemnity - Afrinvest</FormTitle>
 			</FormHeader>
 			<FormContent>
-				<div className='text-base font-normal leading-relaxed px-6 py-10 bg-neutral-50 rounded-md border border-neutral-100 space-y-6 max-w-prose '>
+				<div className='paragraph2Regular px-6 py-10 bg-neutral-50 rounded-md border border-neutral-100 space-y-6 max-w-prose text-neutral-700'>
 					<p>
 						In consideration of Afrinvest Securities Limited (the “Company)
 						agreeing to accept and honour electronic mail instructions from
@@ -50,35 +41,14 @@ export default function AfrinvestEmailEndemnity() {
 						respect thereof.
 					</p>
 				</div>
-				<div className='space-y-10 py-10'>
-					{applicant.map((c, i) => (
-						<Accordion
-							key={c}
-							type='single'
-							defaultValue='item-1'
-							collapsible>
-							<AccordionItem value={`item-${i}`}>
-								<AccordionTrigger>
-									{/* Applicant #{c.id}: {c.firstName} {c.lastName} */}
-								</AccordionTrigger>
-								<AccordionContent
-									className='data-[state=closed]:hidden'
-									forceMount>
-									<AfrinvestEndemnityForm  />
-								</AccordionContent>
-							</AccordionItem>
-						</Accordion>
-					))}
+				<div className=''>
+                    {
+                        afrinvestEmailIndemnityFields.map( f => (
+                            <FormFactory key={f.name} {...f}/>
+                        ))
+                    }
 				</div>
 			</FormContent>
 		</>
-	);
-}
-
-
-function AfrinvestEndemnityForm() {
-
-	return (
-		<></>
 	);
 }

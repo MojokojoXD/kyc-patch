@@ -4,6 +4,7 @@ import type {
 } from '@/types/Components/formFactory';
 import { PrimitiveFieldReviewer } from './ReviewerComponents/PrimitiveFieldReviewer';
 import { ArrayFieldReviewer } from './ReviewerComponents/ArrayFieldReviewer';
+import { SignatureFieldReviewer } from './ReviewerComponents/SignatureFieldReviewer';
 
 interface FieldReviewerProps extends FormFactoryProps {}
 
@@ -16,6 +17,7 @@ export function FieldReviewer({
 			case 'date':
 			case 'dropdown':
 			case 'radio':
+			case 'agreement':
 			case 'text':
 				return (
 					<PrimitiveFieldReviewer
@@ -28,6 +30,13 @@ export function FieldReviewer({
 				return (
 					<ArrayFieldReviewer
 						fieldType={fieldType}
+						name={props.name}
+						label={props.label}
+					/>
+				);
+			case 'signature':
+				return (
+					<SignatureFieldReviewer
 						name={props.name}
 						label={props.label}
 					/>
