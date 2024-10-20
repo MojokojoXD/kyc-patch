@@ -38,7 +38,8 @@ export default function FormRadio({
                             options.keys.map((o) => (
                                 <CustomToggle
                                     key={options.keySelector(o)}
-                                    { ...field}
+                                    { ...field }
+                                    ref={field.ref}
                                     value={ options.keySelector( o ) }
                                     className={ componentProps.toggleStyles }
                                     label={options.keySelector(o)}

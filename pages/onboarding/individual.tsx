@@ -128,7 +128,7 @@ export default function KYCIndividualFormPage() {
 
 	//Form navigation methods
 	const next = useCallback(async () => {
-		const isStepValid = await trigger();
+        const isStepValid = await trigger( undefined, { shouldFocus: true } );
 		if (!isStepValid) return;
 
 		formControlDispatch({ type: 'next' });
