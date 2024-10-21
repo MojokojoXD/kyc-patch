@@ -20,9 +20,7 @@ export const IndividualFormIntro: FormStage = ( { renderStep } ) =>
                         Please comply with regulations and help us secure our application and users with our simple verification process. Some questions are jurisdiction specific and may not apply to you, if so, enter &apos;<strong>NA</strong>&apos; and proceed to the next question.
                         </p>
                         <p>
-                            Since SecondSTAX doesn&apos;t keep your data, please ensure you use
-                            the same browser to complete your application and submit your
-                            documents. See details of the application below:
+                        Since SecondSTAX doesn&apos;t keep your data, please ensure you use the same browser to complete your application and submit your documents. The progress bar on the left will guide you through the application process. When you’re ready, click “Begin Process” to start.
                         </p>
                     </div>
                 </FormContent>
