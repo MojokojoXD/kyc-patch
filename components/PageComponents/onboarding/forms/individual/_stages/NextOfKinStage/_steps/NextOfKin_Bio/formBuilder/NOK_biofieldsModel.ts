@@ -1,6 +1,6 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 import type { Country } from '@/types/forms/universal';
-import validator from 'validator';
+// import validator from 'validator';
 
 const today = new Date();
 
@@ -180,9 +180,6 @@ const NOK_bioFieldsModel = ({
             name: `nextOfKin.${ index }.percentageAllocation`,
             label: 'Percentage Allocation (Optional)',
             placeholder: 'Enter number',
-            rules: {
-                validate: v => validator.isNumeric(v) || 'Allocation must be a number'
-            }
         }
 ];
 

@@ -57,37 +57,39 @@ export default function FormDropdown({
 						className={fieldState.error ? 'text-error-500' : undefined}>
 						{label}
 					</FormLabel>
-					<FormControl>
-						<Select
-							onValueChange={(v) => field.onChange(v)}
-							defaultValue={field.value}>
-							<SelectTrigger ref={field.ref}>
-								<SelectValue placeholder={placeholder} />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-									{priorityList.map((o) => (
-										<SelectItem
-											key={options!.keySelector(o)}
-											value={options!.keySelector(o)}>
-											{options!.keySelector(o)}
-										</SelectItem>
-									))}
-								</SelectGroup>
-								{priorityList.length > 0 && (
-									<hr className='my-2 border-neutral-200' />
-								)}
-								<SelectGroup>
-									{mainList.map((o) => (
-										<SelectItem
-											key={options.keySelector(o)}
-											value={options.keySelector(o)}>
-											{options.keySelector(o)}
-										</SelectItem>
-									))}
-								</SelectGroup>
-							</SelectContent>
-						</Select>
+                    <FormControl>
+                        <div ref={field.ref}>
+                            <Select
+                                onValueChange={(v) => field.onChange(v)}
+                                defaultValue={field.value}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder={placeholder} />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        {priorityList.map((o) => (
+                                            <SelectItem
+                                                key={options!.keySelector(o)}
+                                                value={options!.keySelector(o)}>
+                                                {options!.keySelector(o)}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                    {priorityList.length > 0 && (
+                                        <hr className='my-2 border-neutral-200' />
+                                    )}
+                                    <SelectGroup>
+                                        {mainList.map((o) => (
+                                            <SelectItem
+                                                key={options.keySelector(o)}
+                                                value={options.keySelector(o)}>
+                                                {options.keySelector(o)}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </div>
 					</FormControl>
 					<FormMessage>{fieldState.error?.message}</FormMessage>
 				</FormItem>

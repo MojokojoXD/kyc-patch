@@ -17,11 +17,7 @@ export const IndividualFormIntro: FormStage = ( { renderStep } ) =>
                 <FormContent >
                     <div className='max-w-prose paragraph2Medium text-neutral-700 grow space-y-1.5'>
                         <p>
-                            Kindly comply with regulations and help us secure our platform and
-                            users with our quick and easy verification process. Some questions
-                            may be jurisdiction specific and may not apply to you, if so, please
-                            enter <strong>&apos;NA&apos;</strong> and proceed to the next
-                            question.
+                        Please comply with regulations and help us secure our application and users with our simple verification process. Some questions are jurisdiction specific and may not apply to you, if so, enter &apos;<strong>NA</strong>&apos; and proceed to the next question.
                         </p>
                         <p>
                             Since SecondSTAX doesn&apos;t keep your data, please ensure you use
