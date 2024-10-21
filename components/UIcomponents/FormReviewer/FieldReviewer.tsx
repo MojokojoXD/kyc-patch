@@ -5,6 +5,7 @@ import type {
 import { PrimitiveFieldReviewer } from './ReviewerComponents/PrimitiveFieldReviewer';
 import { ArrayFieldReviewer } from './ReviewerComponents/ArrayFieldReviewer';
 import { SignatureFieldReviewer } from './ReviewerComponents/SignatureFieldReviewer';
+import { FileUploadReviewer } from './ReviewerComponents/FileUploadReviewer';
 
 interface FieldReviewerProps extends FormFactoryProps {}
 
@@ -37,6 +38,13 @@ export function FieldReviewer({
 			case 'signature':
 				return (
 					<SignatureFieldReviewer
+						name={props.name}
+						label={props.label}
+					/>
+				);
+			case 'file-upload':
+				return (
+					<FileUploadReviewer
 						name={props.name}
 						label={props.label}
 					/>

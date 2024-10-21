@@ -78,7 +78,8 @@ export interface ApplicantInfo extends BiographicalCore {
 		reaction?: string;
 		agreementOfTerms?: string;
 	};
-	disclosures: Disclosures;
+    disclosures: Disclosures;
+    fileUploads: FileUploads;
 }
 
 export interface Employed {
@@ -212,3 +213,15 @@ type Agreement = {
 	timestamp: string;
 	version: string;
 };
+
+
+interface FileUploads {
+    [ index: string ]: FileUploadInfo;
+};
+
+
+type FileUploadInfo = {
+    documentFileName: string;
+}
+
+

@@ -10,7 +10,7 @@ type Steps = Pick<FormMetadata, 'steps'>['steps'][number];
 export interface FormStepProps {
 	applicantCount?: number;
 	countryList?: Country[];
-    clientID?: string;
+	clientID?: string;
 	formAction: Dispatch<FormReducerAction>;
 }
 

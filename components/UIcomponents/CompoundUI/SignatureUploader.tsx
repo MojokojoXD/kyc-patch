@@ -4,12 +4,13 @@ import { forwardRef, useState } from 'react';
 import Image from 'next/image';
 import { LoaderCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ImagePreviewer } from './ImagePreviewer';
 
 interface SignatureUploaderProps extends InputProps
 {
     id: string;
 	isLoading: boolean;
-	previewURL: string | undefined | null;
+	previewURL: string | undefined;
 	fileSize?: number /* size in bytes */;
 	fileName: string;
 	onUploadError: (error?: string) => void;
@@ -65,25 +66,27 @@ const SignatureUploader = forwardRef<
 		return (
 			<div className='space-y-3.5'>
 				<div className='bg-white border border-neutral-200 p-[16px] rounded-lg'>
-					{(isLoading || previewURL) && (
-						<div className='relative h-[130px] bg-neutral-50 rounded-lg mb-2 overflow-hidden'>
-							<div
-								className={cn(
-									'absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm -z-10 transition-all',
-									isLoading && 'z-0'
-								)}>
-								<LoaderCircle className='h-1/4 animate-spin text-primary-500' />
-							</div>
-							{previewURL && (
-								<Image
-									src={previewURL}
-									width={200}
-									height={150}
-									className='h-full w-auto aspect-squart mx-auto'
-									alt='signature preview'
-								/>
-							)}
-						</div>
+                    { ( isLoading || previewURL ) && (
+                        <ImagePreviewer imageURL={ previewURL }>
+                            <div className='relative h-[130px] bg-neutral-50 rounded-lg mb-2 overflow-hidden'>
+                                <div
+                                    className={cn(
+                                        'absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm -z-10 transition-all',
+                                        isLoading && 'z-0'
+                                    )}>
+                                    <LoaderCircle className='h-1/4 animate-spin text-primary-500' />
+                                </div>
+                                {previewURL && (
+                                    <Image
+                                        src={previewURL}
+                                        width={200}
+                                        height={150}
+                                        className='h-full w-auto aspect-squart mx-auto'
+                                        alt='signature preview'
+                                    />
+                                )}
+                            </div>
+                        </ImagePreviewer>
 					)}
 
 					<div className='flex justify-between items-center'>

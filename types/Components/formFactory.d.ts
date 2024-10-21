@@ -21,14 +21,15 @@ type Tag =
 	| 'control-employment';
 
 type FactoryFieldType =
-    | 'text'
-    | 'date'
-    | 'radio'
-    | 'checkbox'
-    | 'dropdown'
-    | 'phone'
-    | 'signature'
-    | 'agreement';
+	| 'text'
+	| 'date'
+	| 'radio'
+	| 'checkbox'
+	| 'dropdown'
+	| 'phone'
+	| 'signature'
+    | 'agreement'
+    | 'file-upload';
 
 export interface FormFactoryProps extends FactoryComponentProps {
 	fieldType: FactoryFieldType;
@@ -44,8 +45,9 @@ export type FactoryComponentProps = {
 				phoneMode?: 'single' | 'multi';
 				maxPhoneCount?: number;
 				toggleStyles?: string;
-            clientID?: string;
-            agreementVersion?: string;
+				clientID?: string;
+				agreementVersion?: string;
+				fileFieldName?: string;
 			}
 	>;
 	rules?: RegisterOptions;

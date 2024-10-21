@@ -1,92 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FormHelpers } from '@/utils/clientActions/formHelpers';
-import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
 import type { FactoryComponentProps } from '@/types/Components/formFactory';
-import SignatureUploader from '../../CompoundUI/SignatureUploader';
 import { Controller } from 'react-hook-form';
 import {
 	FormItem,
+	FormLabel,
 	FormControl,
 	FormMessage,
-	FormLabel,
 } from '../../ui/form';
+import { FileUploader } from '../../CompoundUI/FileUploader';
+import { FileHelpers } from '@/utils/clientActions/fileHelpers';
 
 interface FormFileUploadProps extends FactoryComponentProps {}
 
 export default function FormFileUpload({
 	name,
-	componentProps = { clientID: '' },
+	label,
 	defaultValue = '',
 	rules,
+	componentProps = { clientID: '', fileFieldName: '' },
 }: FormFileUploadProps) {
+	const { control, getValues, setError, resetField, setValue } =
+		useFormContext();
 	const [isLoading, setIsLoading] = useState(false);
-	const [previewURL, setPreviewURL] = useState('');
-	const { control, setError, setValue, getValues, resetField } =
-        useFormContext();
-    
-	const metaFileName = getValues('_formMetadata' + name) || '';
-	const currentDownloadURL = getValues(name);
 
-	const handleFileUpload = async (file: File | null) => {
-		if (!file || !componentProps.clientID) return;
-
-		try {
-			const formData = {
-				file: file,
-			};
-
-			const cloudRes = await FormHelpers.statelessRequest<
-				typeof formData,
-				{ url: string }
-			>('/api/onboarding/uploads?clientId=' + componentProps.clientID, {
-				data: formData,
-				method: 'POST',
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			});
-
-			if (!cloudRes) {
-				return;
-			}
-			const imageURL = await SignatureProcessor.download(cloudRes.url);
-
-			if (!imageURL) {
-				return;
-			}
-
-			return {
-				cloudURL: cloudRes.url,
-				previewURL: imageURL,
-			};
-		} catch (error) {
-			setIsLoading(false);
-			console.log(error);
-		}
+	const currentCloudURL = getValues(name) || '';
+	const { filename, objectURL } = (getValues(
+		`_formMetadata.` + name
+	) as { filename: string; objectURL: string }) || {
+		filename: '',
+		objectURL: '',
 	};
-
-	useEffect(() => {
-		const getPreviewURL = async () => {
-			const res = await SignatureProcessor.download(currentDownloadURL);
-
-			if (res) {
-				setPreviewURL(res);
-				return;
-			}
-
-			setError(name, {
-				type: 'network',
-				message: 'Something went wrong! Please try again later.',
-			});
-		};
-
-		if (currentDownloadURL) {
-			setIsLoading(true);
-			getPreviewURL();
-			setIsLoading(false);
-		}
-	}, [currentDownloadURL,name,setError]);
 
 	return (
 		<Controller
@@ -95,45 +39,63 @@ export default function FormFileUpload({
 			defaultValue={defaultValue}
 			rules={rules}
 			render={({ field, fieldState }) => (
-				<FormItem className='bg-neutral-50 p-[24px] rounded-lg border border-neutral-200 space-y-2.5 text-neutral-700'>
-					<FormLabel>Upload Your Signature</FormLabel>
+				<FormItem>
+					<FormLabel>{label}</FormLabel>
 					<FormControl>
-						<SignatureUploader
-							ref={field.ref}
+						<FileUploader
+							id={field.name}
+							previewURL={objectURL}
 							isLoading={isLoading}
-							id={name}
-							previewURL={previewURL}
-							fileName={metaFileName}
-							onUploadError={(error) =>
-								error &&
-								setError(field.name, { type: 'validate', message: error })
+							fileName={filename}
+							onUploadError={(e) =>
+								setError(name, { type: 'upload-error', message: e })
 							}
 							onFileUpload={async (file) => {
-								if (currentDownloadURL) {
-									resetField(field.name, {
-										defaultValue: '',
-										keepError: true,
-									});
-									setPreviewURL('');
+								if (currentCloudURL) {
+									resetField(name, { defaultValue: '', keepError: true });
+									setValue('_formMetadata.' + field.name + '.filename', '');
+									setValue('_formMetadata.' + field.name + '.objectURL', '');
 								}
+
+								if (!file) return;
 
 								setIsLoading(true);
 
-								const result = await handleFileUpload(file);
+								const renamedFile = FileHelpers.modifyFileName(
+									file,
+									componentProps.clientID as string,
+									{
+										fileType: 'file',
+										fieldName: componentProps?.fileFieldName,
+									}
+								);
 
+								const result = await FileHelpers.uploadFileAndDownload(
+									renamedFile
+                                );
+                                
 								setIsLoading(false);
 
-								if (!result) {
+
+								if (result) {
+									field.onChange(result.cloudURL);
+									setValue('_formMetadata.' + field.name, {
+										filename: file.name,
+										objectURL: result.previewURL,
+									});
+
 									return;
 								}
 
-								field.onChange(result.cloudURL);
-								setValue(`_formMetadata` + field.name, file!.name);
-								setPreviewURL(result.previewURL);
+								setError(field.name, {
+									type: 'upload-error',
+									message: 'Something went wrong!, Please try again later.',
+								});
+
 							}}
 						/>
 					</FormControl>
-					<FormMessage className='relative'>{fieldState.error?.message}</FormMessage>
+					<FormMessage>{fieldState.error?.message}</FormMessage>
 				</FormItem>
 			)}
 		/>

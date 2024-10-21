@@ -4,8 +4,9 @@ import FormRadio from './FactoryComponents/FormRadio';
 import FormCheckBox from './FactoryComponents/FormCheckBox';
 import FormDropdown from './FactoryComponents/FormDropdown';
 import FormPhone from './FactoryComponents/FormPhone';
-import FormFileUpload from './FactoryComponents/FormFileUpload';
+import FormSignatureUpload from './FactoryComponents/FormSignatureUpload';
 import FormAgreement from './FactoryComponents/FormAgreement';
+import FormFileUpload from './FactoryComponents/FormFileUpload';
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 
 export default function FormFactory({
@@ -26,11 +27,13 @@ export default function FormFactory({
 			case 'dropdown':
 				return <FormDropdown {...fieldProps} />;
 			case 'phone':
-                return <FormPhone { ...fieldProps } />;
-            case 'signature':
-                return <FormFileUpload { ...fieldProps } />
-            case 'agreement':
-                return <FormAgreement {...fieldProps}/>
+				return <FormPhone {...fieldProps} />;
+			case 'signature':
+				return <FormSignatureUpload {...fieldProps} />;
+			case 'agreement':
+				return <FormAgreement {...fieldProps} />;
+			case 'file-upload':
+				return <FormFileUpload {...fieldProps} />;
 			default:
 				return null; // if component is not supported
 		}

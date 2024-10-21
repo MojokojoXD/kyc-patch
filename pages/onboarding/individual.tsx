@@ -11,6 +11,7 @@ import { IndividualFormIntro } from '@/components/PageComponents/onboarding/form
 import { PersonalInformation } from '@/components/PageComponents/onboarding/forms/individual/_stages/PersonalInfoStage';
 import { NextOfKinStage } from '@/components/PageComponents/onboarding/forms/individual/_stages/NextOfKinStage';
 import { Disclosures } from '@/components/PageComponents/onboarding/forms/individual/_stages/Disclosures';
+import { DocumentUpload } from '@/components/PageComponents/onboarding/forms/individual/_stages/DocumentUpload';
 import FormProgressSheet from '@/components/UIcomponents/CompoundUI/FormProgressSheet';
 import Loading from '@/components/UIcomponents/Loading';
 import { FormLayout } from '@/components/UIcomponents/FormLayout';
@@ -71,8 +72,8 @@ const individualFormMetadata = [
 		],
 	},
 	{
-		name: 'document checklist',
-		steps: [],
+		name: 'document upload',
+		steps: ['checklist', 'review_document upload', 'submit'],
 	},
 ] as const;
 
@@ -128,7 +129,7 @@ export default function KYCIndividualFormPage() {
 
 	//Form navigation methods
 	const next = useCallback(async () => {
-        const isStepValid = await trigger( undefined, { shouldFocus: true } );
+		const isStepValid = await trigger(undefined, { shouldFocus: true });
 		if (!isStepValid) return;
 
 		formControlDispatch({ type: 'next' });
@@ -139,8 +140,8 @@ export default function KYCIndividualFormPage() {
 	}, []);
 
 	//Form stage selector
-	const getFormStage = (stage: FormMetadata) => {
-		switch (stage.name) {
+	const getFormStage = () => {
+		switch (stages[stageIndex].name) {
 			case 'introduction':
 				return IndividualFormIntro;
 			case 'personal':
@@ -149,13 +150,13 @@ export default function KYCIndividualFormPage() {
 				return NextOfKinStage;
 			case 'disclosures':
 				return Disclosures;
-			case 'document checklist':
-				throw new Error('checklist not implemented');
+			case 'document upload':
+				return DocumentUpload;
 			default:
 				throw new Error('stage is not supported');
 		}
 	};
-	const FormStage = getFormStage(stages[stageIndex]);
+	const FormStage = getFormStage();
 
 	useEffect(() => {
 		if (applicantCount === 1) {

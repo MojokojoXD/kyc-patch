@@ -21,7 +21,7 @@ function FormHeader({ children,...props }: FormHeaderProps) {
 
 
 	return (
-		<div className='row-span-4 bg-white overflow-hidden z-[60]'>
+		<div className='row-span-4 bg-white overflow-hidden'>
 			<div className='h-[98px] bg-neutral-100 flex justify-center items-center'>
 				<div className='h-[98px] w-[149px] relative'>
 					<Image

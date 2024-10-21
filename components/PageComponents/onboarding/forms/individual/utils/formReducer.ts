@@ -51,13 +51,20 @@ export function formReducer<TState extends FormReducerState>(
 		case 'next': {
 			const stepsCount = state.stages[stageIndex].steps.length;
 			const stagesCount = state.stages.length;
-			const nextStep = (stepIndex + 1) % stepsCount;
+            const nextStep = ( stepIndex + 1 ) % stepsCount;
+            
+
+			if (stageIndex === stagesCount - 1  && stepIndex === stepsCount - 1)
+				return state;
 
 			return {
 				...state,
 				stages: clonedStages,
-				stageIndex: nextStep === 0 ? stageIndex + 1 : stageIndex,
-				stepIndex: stageIndex < stagesCount ? nextStep : stagesCount - 1,
+				stageIndex:
+					nextStep === 0 && stageIndex < stagesCount
+						? stageIndex + 1
+						: stageIndex,
+				stepIndex: stageIndex < stagesCount ? nextStep : stepIndex,
 			};
 		}
 		case 'prev': {
@@ -74,21 +81,24 @@ export function formReducer<TState extends FormReducerState>(
 						: nextStep,
 			};
 		}
-        case 'remove_step': {
-            
-            const stageIndexToEdit = clonedStages.findIndex( s => s.name === action.stage );
+		case 'remove_step': {
+			const stageIndexToEdit = clonedStages.findIndex(
+				(s) => s.name === action.stage
+			);
 
-            const editedSteps = clonedStages[ stageIndexToEdit ].steps.filter( s => s !== action.step );
+			const editedSteps = clonedStages[stageIndexToEdit].steps.filter(
+				(s) => s !== action.step
+			);
 
-            clonedStages[ stageIndexToEdit ] = {
-                ...clonedStages[ stageIndexToEdit ],
-                steps: [...editedSteps]
-            }
+			clonedStages[stageIndexToEdit] = {
+				...clonedStages[stageIndexToEdit],
+				steps: [...editedSteps],
+			};
 
-            return {
-                ...state,
-                stages: clonedStages,
-            }
+			return {
+				...state,
+				stages: clonedStages,
+			};
 		}
 		case 'reset':
 			return {

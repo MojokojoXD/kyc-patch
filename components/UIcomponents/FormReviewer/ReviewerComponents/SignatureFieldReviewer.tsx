@@ -1,8 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useFormContext,Path } from 'react-hook-form';
-import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
+import { useFormContext } from 'react-hook-form';
 import Image from 'next/image';
-import type { IndividualFormSchema } from '@/types/forms/individual';
 
 interface SignatureFieldReviewerProps {
 	name: string;
@@ -13,42 +10,26 @@ export function SignatureFieldReviewer({
 	name,
 	label,
 }: SignatureFieldReviewerProps) {
-	const { getValues } = useFormContext<IndividualFormSchema>();
-	const [imageURL, setImageURL] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState('');
+	const { getValues } = useFormContext();
 
-	const cloudURL = getValues(name as Path<IndividualFormSchema>) as string;
-
-	useEffect(() => {
-		const getImageURL = async () => {
-			const res = await SignatureProcessor.download(cloudURL);
-
-			if (res) setImageURL(res);
-			setError('Failed to load resource');
-		};
-
-		if (cloudURL) {
-			setIsLoading(true);
-			getImageURL();
-			setIsLoading(false);
-		}
-	}, [cloudURL]);
+	const cloudURL = getValues(
+		`_formMetadata.` + name + '.objectURL'
+	) as string;
 
 	return (
 		<div className='space-y-[16px]'>
-			{label && <h2 className='paragraph2Medium text-neutral-700'>{label}</h2>}
-			{isLoading ? (
-				<span>Loading...</span>
-			) : imageURL ? (
+			{label && (
+				<h2 className='paragraph2Medium text-neutral-700'>{label}</h2>
+			)}
+			{cloudURL ? (
 				<Image
-					src={imageURL}
+					src={cloudURL}
 					width={200}
-                        height={ 133 }
-                        alt='upload review image'
+					height={133}
+					alt='upload review image'
 				/>
 			) : (
-				<span className='text-error-500'>{error}</span>
+				<span className='text-error-500'>Resource is not available</span>
 			)}
 		</div>
 	);

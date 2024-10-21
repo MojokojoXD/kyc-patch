@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { SignatureProcessor } from '@/utils/clientActions/signatureHelpers';
+import { FileHelpers } from '@/utils/clientActions/fileHelpers';
 import formidable from 'formidable';
 import type { File as FormidableFile } from 'formidable';
 import fs from 'node:fs/promises';
@@ -20,8 +20,6 @@ export default async function handler(
 		res.status(400);
 		return;
 	}
-
-    const { clientId } = req.query;
 
 	const form = formidable();
 
@@ -45,7 +43,7 @@ export default async function handler(
     
     try
     {   
-        const googleCloudURL = await SignatureProcessor.upload( file as File, clientId as string );
+        const googleCloudURL = await FileHelpers.upload( file as File);
 
         if ( !googleCloudURL )
         {

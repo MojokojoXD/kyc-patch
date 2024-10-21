@@ -68,8 +68,11 @@ export const Fatca: FormStep = ({ applicantCount, countryList }) => {
 
 interface FatcaFormProps extends SingleFormFieldsGeneratorProps {}
 
-function FatcaForm({ applicantId, countryList }: FatcaFormProps) {
-	const { getValues } = useFormContext<IndividualFormSchema>();
+function FatcaForm( { applicantId, countryList }: FatcaFormProps )
+{
+    const { watch } = useFormContext<IndividualFormSchema>();
+
+    const currentFatcaStatus = watch( `applicant.${ applicantId }.disclosures.fatca.status` );
 
 	const aggregatorResults = useMemo(() => {
 		const rawFields = fatcaFieldsModel({
@@ -77,19 +80,17 @@ function FatcaForm({ applicantId, countryList }: FatcaFormProps) {
 			countryList,
 		});
 
-        const aggregator = new FormFieldAggregator( rawFields );
-        
-		const currentFatcaStatus =
-			getValues(`applicant.${applicantId}.disclosures.fatca.status`) ||
-			[];
+		const aggregator = new FormFieldAggregator(rawFields);
 
 		aggregator.modifyFields('remove-all-except', {
-			removeAllExcept: currentFatcaStatus.length === 0,
+			removeAllExcept: !currentFatcaStatus || currentFatcaStatus.length === 0 ,
 		});
 
 		return aggregator.generate();
-	}, [applicantId, countryList, getValues]);
+	}, [applicantId, countryList, currentFatcaStatus]);
 
+
+    console.log( currentFatcaStatus )
 	return (
 		<>
 			{aggregatorResults.fields.map((f) => (

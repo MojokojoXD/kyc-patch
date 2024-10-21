@@ -1,5 +1,7 @@
 export type Currency = 'NGN' | 'KES' | 'GHS' | 'SSX';
 
+export type ClientID = string;
+
 export interface BrokerFacts {
 	[index: string]: {
 		readonly currency: Currency;
