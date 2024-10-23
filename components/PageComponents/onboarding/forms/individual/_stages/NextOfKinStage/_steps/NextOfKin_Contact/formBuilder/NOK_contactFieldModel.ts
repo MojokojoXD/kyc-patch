@@ -1,7 +1,6 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 import type { Country } from '@/types/forms/universal';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
-import validator from 'validator';
 
 const NOK_contactFieldsModel = ({
 	index,
