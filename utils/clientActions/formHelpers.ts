@@ -77,10 +77,10 @@ export class FormHelpers {
 		}
 	}
 
-    static currencyInputFormatter( value: string | undefined ): string
+    static currencyInputFormatter( value: string ): string
     {
         const formatter = new Intl.NumberFormat( 'en-GB', { useGrouping: 'always' })
         
-        return formatter.format(value)
+        return formatter.format( parseInt(value) )
     }
 }

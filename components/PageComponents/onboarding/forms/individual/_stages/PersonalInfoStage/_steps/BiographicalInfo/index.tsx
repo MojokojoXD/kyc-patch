@@ -125,7 +125,7 @@ function BiographicalForm({
 				`applicant.${applicantId}.residence.status`,
 				residenceStatus
 			),
-		[residenceStatus]
+		[residenceStatus, applicantId, setValue]
 	);
 	return (
 		<>

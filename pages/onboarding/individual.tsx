@@ -21,21 +21,17 @@ import { useCloseTabWarning } from '@/customHooks/useCloseTabWarning';
 import { getCountryList } from '@/utils/vars/countries';
 import { Button } from '@/components/UIcomponents/ui/button';
 import {
-    FormReducerFn,
-    individualFormMetadata,
+	individualFormMetadata,
 	formReducer,
 } from '@/components/PageComponents/onboarding/forms/individual/utils/formReducer';
 
-
-
 export default function KYCIndividualFormPage() {
 	//state management
-	const [formControl, formControlDispatch] =
-		useReducer(formReducer, {
-            currentStage: 'personal',
-            currentStep: 'investment & risk profile',
-			allStages: individualFormMetadata,
-		});
+	const [formControl, formControlDispatch] = useReducer(formReducer, {
+		currentStage: 'introduction',
+		currentStep: 'instructions',
+		allStages: individualFormMetadata,
+	});
 
 	const { currentStage, currentStep, allStages } = formControl;
 
@@ -55,8 +51,7 @@ export default function KYCIndividualFormPage() {
 	});
 
 	const {
-        watch,
-        getValues,
+		watch,
 		trigger,
 		formState: { isDirty },
 	} = form;
@@ -72,10 +67,9 @@ export default function KYCIndividualFormPage() {
 	//Form navigation methods
 	const next = useCallback(async () => {
 		const isStepValid = await trigger(undefined, { shouldFocus: true });
-		if (!isStepValid) console.log('hey');
-        console.log(getValues())
+		if (!isStepValid) return;
 		formControlDispatch({ type: 'next' });
-	}, [trigger,getValues]);
+	}, [trigger]);
 
 	const prev = useCallback(() => {
 		formControlDispatch({ type: 'prev' });
@@ -114,15 +108,15 @@ export default function KYCIndividualFormPage() {
 			});
 	}, [applicantCount]);
 
-	//Reporting and feedback
-	// if (!appWideContext || !appWideContext.onboardingFacts) {
-	// 	console.error('missing client ID information');
-	// 	return (
-	// 		<p className='p-10'>
-	// 			Something went wrong! Please contact system admin
-	// 		</p>
-	// 	);
-	// }
+	// Reporting and feedback
+	if (!appWideContext || !appWideContext.onboardingFacts) {
+		console.error('missing client ID information');
+		return (
+			<p className='p-10'>
+				Something went wrong! Please contact system admin
+			</p>
+		);
+	}
 
 	if (error.flag) {
 		console.error(error.message);

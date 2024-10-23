@@ -6,7 +6,7 @@ account with the Company, I hereby unconditionally and irrevocably
 indemnify the Company against all claims which may be made against
 it in consequence thereof and to pay to it on demand, all payments,
 losses, costs and expenses made, suffered or incurred by the Company
-in consequence thereof or arising therefrom.
+in consequence thereof or arising there from.
 
 I also agree to pay the Company on demand, any further charges and
 interest which may arise in the event of any claim being made

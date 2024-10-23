@@ -1,4 +1,7 @@
-import type { FactoryComponentProps,DropdownOption } from '@/types/Components/formFactory';
+import type {
+	FactoryComponentProps,
+	DropdownOption,
+} from '@/types/Components/formFactory';
 import {
 	FormItem,
 	FormControl,
@@ -6,7 +9,7 @@ import {
 	FormMessage,
 } from '../../ui/form';
 import { useFormContext, useFieldArray } from 'react-hook-form';
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { Input } from '../../ui/input';
 import PhoneInput from 'react-phone-number-input/input';
@@ -24,6 +27,7 @@ import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import type { CountryCode } from '@/types/forms/universal';
 import Image from 'next/image';
 import type { Country } from '@/types/forms/universal';
+import { cn } from '@/lib/utils';
 
 interface FormPhoneProps extends FactoryComponentProps {}
 
@@ -33,8 +37,8 @@ export default function FormPhone({
 	placeholder,
 	rules,
 	defaultValue = 'GH',
-    componentProps = { phoneMode: 'multi', maxPhoneCount: 2 },
-    options
+	componentProps = { phoneMode: 'multi', maxPhoneCount: 2 },
+	options,
 }: FormPhoneProps) {
 	const { control, resetField, setValue, getValues } =
 		useFormContext();
@@ -91,11 +95,14 @@ export default function FormPhone({
 								<div>
 									<FormControl>
 										<div
-											className={
-												'flex has-[:focus]:border-primary-500 rounded-lg border border-neutral-200 text-neutral-700 bg-white paragraph2Regular grow relative items-center overflow-hidden'
-											}>
-                                            <CustomCountrySelect
-                                                options={options}
+											className={cn(
+												'focus:border-primary-500 flex has-[:focus]:border-primary-500 rounded-lg border border-neutral-200 text-neutral-700 bg-white paragraph2Regular grow relative items-center overflow-hidden',
+												!fieldState.invalid &&
+													fieldState.isDirty &&
+													'border-success-500 focus:border-success-500 hover:border-success-500'
+											)}>
+											<CustomCountrySelect
+												options={options}
 												onValueChange={(v: CountryCode) => {
 													resetField(field.name, { defaultValue: '' });
 													handleCountryChange(v, i);
@@ -133,8 +140,8 @@ export default function FormPhone({
 				{componentProps.phoneMode === 'multi' && (
 					<Button
 						variant={'link'}
-                        type='button'
-                        disabled={ fields.length === componentProps.maxPhoneCount }
+						type='button'
+						disabled={fields.length === componentProps.maxPhoneCount}
 						className='text-primary-500 hover:bg-none hover:no-underline px-0 py-2 h-fit '
 						onClick={() => {
 							setCountry((prevCountryList) => [
@@ -154,15 +161,13 @@ export default function FormPhone({
 
 type Options = Pick<FactoryComponentProps, 'options'>;
 
-type CustomCountrySelectProps = Options &
-	SelectProps & object;
+type CustomCountrySelectProps = Options & SelectProps & object;
 
 function CustomCountrySelect({
 	onValueChange,
 	defaultValue,
 	options,
-}: CustomCountrySelectProps )
-{
+}: CustomCountrySelectProps) {
 	let priorityList: DropdownOption[] = [];
 	let mainList = options?.keys || [];
 

@@ -2,10 +2,9 @@
 
 interface StackClass<T>
 {
-    stack: T[];
     push( value: T ): void;
-    pop(): T | null;
-    peek(): T | null;
+    pop(): T | undefined;
+    peek(): T | undefined;
     size(): number;
     clear(): void;
 }
@@ -25,16 +24,16 @@ export class Stack<T> implements StackClass<T>
         this.stack.push( value );
     }
 
-    pop(): T | null
+    pop(): T | undefined
     {
-        if ( this.stack.length === 0 ) return null;
+        if ( this.stack.length === 0 ) return;
 
         return this.stack.pop();
     }
 
-    peek(): T | null
+    peek(): T | undefined
     {
-        if ( this.stack.length === 0 ) return null;
+        if ( this.stack.length === 0 ) return;
 
         return this.stack[ this.stack.length - 1 ];
     }

@@ -66,15 +66,13 @@ interface IdentityFormProps extends SingleFormFieldsGeneratorProps {}
 
 function IdentityForm( { applicantId }: IdentityFormProps )
 {
-    const { watch } = useFormContext<IndividualFormSchema>();
 
-    const currentIDType = watch( `applicant.${ applicantId }.proofOfIdentity.idType` );
 
 	const fields = useMemo(() => {
 		return proofOfIdentityFieldsModel({
 			index: applicantId,
 		});
-	}, [applicantId, currentIDType]);
+	}, [applicantId]);
 
 	return (
 		<>

@@ -6,7 +6,6 @@ import {
 	FormControl,
 } from '../../ui/form';
 import { useFormContext } from 'react-hook-form';
-import type { IndividualFormSchema } from '@/types/forms/individual';
 import { CustomToggle } from '../../CompoundUI/CustomToggle';
 import { cn } from '@/lib/utils';
 import { Controller } from 'react-hook-form';
@@ -31,7 +30,7 @@ export default function FormRadio({
 	},
 }: FormRadioProps) {
 	const { control, watch, resetField } =
-		useFormContext<IndividualFormSchema>();
+		useFormContext();
 
 	const otherFieldName = useRef<string>('');
 
@@ -52,7 +51,7 @@ export default function FormRadio({
 			resetField(otherFieldName.current, { defaultValue: '' });
 			otherFieldName.current = '';
 		}
-	}, [currentValue, otherFieldName, resetField]);
+	}, [currentValue, otherFieldName, resetField,isOther]);
 
 	return (
 		<div className='space-y-[16px]'>
@@ -60,7 +59,7 @@ export default function FormRadio({
 				control={control}
 				name={name}
 				defaultValue={defaultValue}
-				rules={rules}
+				rules={{...rules}}
 				render={({ field, fieldState }) => (
 					<FormItem className='space-y-2'>
 						<FormLabel

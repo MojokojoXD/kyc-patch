@@ -14,14 +14,13 @@ import {
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { useState, useEffect, useRef } from 'react';
-import type { Dispatch } from 'react';
 import type {
 	FormAction,
 	Stage,
 	Step,
 } from '@/components/PageComponents/onboarding/forms/individual/utils/formReducer';
 
-type Stage = {
+type ProgressStage = {
 	readonly name: string;
 	readonly steps: readonly string[];
 };
@@ -33,13 +32,13 @@ interface FormProgressSheetProps<TSteps> {
 	step: Step;
 }
 
-export default function FormProgressSheet<T extends Stage>({
+export default function FormProgressSheet<T extends ProgressStage>({
 	formStages,
 	formAction,
 	stage,
 	step,
 }: FormProgressSheetProps<T>) {
-	const [currentStage, setCurrentStage] = useState<Stage>(stage);
+	const [currentStage, setCurrentStage] = useState<string>(stage);
 
 	const progress = useRef(new Set<string>());
 
@@ -75,9 +74,9 @@ export default function FormProgressSheet<T extends Stage>({
 						<Accordion
 							type={'single'}
 							collapsible
-							value={stage}
+							value={stage || currentStage}
 							onValueChange={setCurrentStage}>
-							{formStages.map((_stage, i) => (
+							{formStages.map((_stage) => (
 								<AccordionItem
 									key={_stage.name}
 									value={_stage.name}
@@ -86,10 +85,10 @@ export default function FormProgressSheet<T extends Stage>({
 									)}>
 									<AccordionTrigger
 										onClick={() => {
-											if (_stage.name === stage.name) return;
+											if (_stage.name === stage) return;
 											formAction({
 												type: 'jump_to_form_location',
-												toStage: _stage.name,
+												toStage: _stage.name as Stage,
 											});
 										}}
 										disabled={!progress.current.has(_stage.name)}
@@ -99,7 +98,7 @@ export default function FormProgressSheet<T extends Stage>({
 									<AccordionContent className={'py-0 border-none'}>
 										<ol className='relative list-inside h-fit space-y-2'>
 											<div className='absolute h-full border-neutral-100 border-l  -z-10'></div>
-											{_stage.steps.map((_step, j) => (
+											{_stage.steps.map((_step) => (
 												<Button
 													key={_step}
 													variant={'link'}
@@ -107,8 +106,8 @@ export default function FormProgressSheet<T extends Stage>({
 													onClick={() =>
 														formAction({
 															type: 'jump_to_form_location',
-															toStage: _stage.name,
-															toStep: _step,
+															toStage: _stage.name as Stage,
+															toStep: _step as Step,
 														})
 													}
 													size={'sm'}

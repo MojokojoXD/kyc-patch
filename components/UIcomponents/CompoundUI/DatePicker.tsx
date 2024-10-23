@@ -28,7 +28,7 @@ export default function DatePicker({
 		<Popover
 			onOpenChange={setPopoverOpenStatus}
 			open={popoverOpenStatus}>
-			<PopoverTrigger asChild className={ cn }>
+			<PopoverTrigger asChild>
 				<Button
 					variant={'secondary'}
 					size={'lg'}

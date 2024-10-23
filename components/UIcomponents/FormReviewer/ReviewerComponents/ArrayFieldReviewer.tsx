@@ -33,7 +33,7 @@ export function ArrayFieldReviewer({
 			{label && <h2 className='paragraph2Medium text-neutra-700'>{label}</h2>}
 			<div>
 				{temp.map((v) => (
-					<p key={v} className='paragraph2Regular text-neutral-500 capitalize'>
+					<p key={v} className='paragraph2Regular text-neutral-500 first-letter:uppercase'>
 						{v || 'n/a'}
 					</p>
 				))}

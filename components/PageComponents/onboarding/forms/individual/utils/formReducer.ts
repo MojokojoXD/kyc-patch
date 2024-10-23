@@ -60,7 +60,10 @@ export type Step = IndividualFormStages[number]['steps'][number];
 export interface FormReducerState {
 	readonly currentStage: Stage;
 	readonly currentStep: Step;
-	allStages: IndividualFormStages;
+    allStages: readonly {
+        readonly name: Stage;
+        readonly steps: readonly Step[];
+    }[];
 }
 
 // use this to generate more reducer function for other forms
@@ -93,20 +96,22 @@ export function formReducer(
 	state: FormReducerState,
 	action: FormReducerAction
 ): FormReducerState {
-	const { currentStage, currentStep, allStages } = state;
+    const { currentStage, currentStep, allStages } = state;
+    
+    console.log( currentStage, currentStep )
 
 	const currentStageIndex = allStages.findIndex(
-		(s) => s.name === currentStage
+		(s) =>  s.name === currentStage
 	);
 	const currentSteps = allStages[currentStageIndex].steps;
 	const currentStepIndex = currentSteps.findIndex(
 		(s) => s === currentStep
 	);
 
-	// const clonedStages = state.stages.map((s) => ({
-	// 	...s,
-	// 	steps: Array.from(s.steps),
-	// }));
+	const clonedStages = state.allStages.map((s) => ({
+		...s,
+		steps: Array.from(s.steps),
+	}));
 
 	switch (action.type) {
 		case 'next': {
@@ -145,27 +150,25 @@ export function formReducer(
 			};
 		}
 		case 'remove_step': {
-			const clonedStages = [...allStages];
+			// const clonedStages = [...allStages];
 
 			const stageIndexToEdit = clonedStages.findIndex(
 				(s) => s.name === action.stage
 			);
 
-			const editedSteps = clonedStages[stageIndexToEdit].steps.filter(
-				(s) => s !== action.step
-			);
-
 			if (stageIndexToEdit === -1)
-				throw new Error('Stage ' + stage + ' is not supported');
+                throw new Error( 'Stage ' + currentStage + ' is not supported' );
+            
+            const editedSteps = clonedStages[ stageIndexToEdit ].steps.filter( ( s ) => s !== action.step )
 
 			clonedStages[stageIndexToEdit] = {
 				...clonedStages[stageIndexToEdit],
 				steps: [...editedSteps],
-			};
-
+            };
+            
 			return {
 				...state,
-				allStages: clonedStages,
+				allStages: clonedStages
 			};
 		}
 		case 'reset':

@@ -95,7 +95,6 @@ function NextOfKin_IdentityProofForm({
 		[applicantId, currentNOKidType]
 	);
 
-    console.log(currentNOKidType)
 	return (
 		<>
 			{aggregatorResults.fields.map((f) => (

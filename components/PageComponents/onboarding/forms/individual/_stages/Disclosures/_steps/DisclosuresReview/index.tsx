@@ -99,7 +99,7 @@ export const DisclosuresReview: FormStep = ( { applicantCount,formAction } ) => 
                         fieldModel={declarationsFields}
                         accordionTitle={ accordionTitle }
 					/>
-					{ applicantCount > 1 && <ReviewerSection
+					{ ( applicantCount && applicantCount > 1)&& <ReviewerSection
 						sectionName='Signature Mandate'
 						applicantCount={applicantCount}
 						editAction={editStep.bind(this, 'signature mandate')}

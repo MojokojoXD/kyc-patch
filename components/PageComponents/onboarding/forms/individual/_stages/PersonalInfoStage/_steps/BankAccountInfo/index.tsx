@@ -137,18 +137,24 @@ function BankForm({
 						},
 					};
 				}
-            );
-        
-        aggregator.modifyFields( 'KE', {
-            required: currentResidence === 'KENYA'
-        } )
-        
-        aggregator.modifyFields( 'NG', {
-            required: currentResidence === 'NIGERIA'
-        })
+			);
+
+		aggregator.modifyFields('KE', {
+			required: currentResidence === 'KENYA',
+		});
+
+		aggregator.modifyFields('NG', {
+			required: currentResidence === 'NIGERIA',
+		});
 
 		return aggregator.generate();
-	}, [applicantId, countryList, bankList, currentResidence]);
+	}, [
+		applicantId,
+		countryList,
+		bankList,
+		currentResidence,
+		currentBankCountryCode,
+	]);
 
 	useEffect(() => {
 		resetField(bankFieldName, { defaultValue: '' });
