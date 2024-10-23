@@ -84,10 +84,10 @@ export const NextOfKinBio: FormStep = ({ countryList }) => {
 									collapsible>
 									<AccordionItem value={`item-${i}`}>
 										<AccordionTrigger
-											className={cn('relative', i > 0 && 'pl-12')}>
+											className={cn('relative', i > 0 && 'pl-12')} type='button'>
 											<div className='absolute left-[16px]'>
 												{i > 0 && (
-													<span
+                                                    <span
 														className='text-primary-500 hover:bg-none hover:no-underline px-0 py-2 h-fit '
 														onClick={() => remove(i)}>
 														<Trash2 className='h-[20px] w-[20px] mr-1' />
@@ -116,7 +116,7 @@ export const NextOfKinBio: FormStep = ({ countryList }) => {
 							disabled={fields.length === MAX_NUMBER_OF_KINS}
 							className='text-primary-500 hover:bg-none hover:no-underline px-0 py-2 h-fit '
 							onClick={() => {
-								append(defaultNextOfKinValues);
+								append(defaultNextOfKinValues, {  });
 							}}>
 							<CirclePlus className='h-[20px] w-[20px] mr-1' />
 							Add a next of kin

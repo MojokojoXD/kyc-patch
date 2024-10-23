@@ -58,11 +58,6 @@ const NOK_contactFieldsModel = ({
             name: `nextOfKin.${index}.contacts.email`,
             label: 'Email Address (Optional)',
             placeholder: 'Enter email',
-            rules: {
-                validate: (v) =>
-                    validator.isEmail(v) ||
-                    'Email must be of the format: name@example.com',
-            },
         },
 ];
 
