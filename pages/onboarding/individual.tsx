@@ -28,7 +28,7 @@ import {
 export default function KYCIndividualFormPage() {
 	//state management
 	const [formControl, formControlDispatch] = useReducer(formReducer, {
-		currentStage: 'introduction',
+        currentStage: 'introduction',
 		currentStep: 'instructions',
 		allStages: individualFormMetadata,
 	});
@@ -67,7 +67,7 @@ export default function KYCIndividualFormPage() {
 	//Form navigation methods
 	const next = useCallback(async () => {
 		const isStepValid = await trigger(undefined, { shouldFocus: true });
-		if (!isStepValid) return;
+        if ( !isStepValid ) return;
 		formControlDispatch({ type: 'next' });
 	}, [trigger]);
 

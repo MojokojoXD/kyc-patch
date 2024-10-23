@@ -1,4 +1,4 @@
-import { useMemo,useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import {
 	AccordionItem,
@@ -35,30 +35,30 @@ const defaultNextOfKinValues: NextOfKinInfo = {
 	dateOfBirth: '',
 	relationshipToApplicant: '',
 	gender: '',
-    maritalStatus: '',
-    countryOfBirth: '',
-    placeOfBirth: '',
-    countryOfResidence: '',
-    countryOfCitizenship: '',
-    percentageAllocation: ''
+	maritalStatus: '',
+	countryOfBirth: '',
+	placeOfBirth: '',
+	countryOfResidence: '',
+	countryOfCitizenship: '',
+	percentageAllocation: '',
 };
 
 export const NextOfKinBio: FormStep = ({ countryList }) => {
-	const { watch, control, setValue } = useFormContext<IndividualFormSchema>();
+	const { watch, control, setValue } =
+		useFormContext<IndividualFormSchema>();
 
 	const { fields, append, remove } = useFieldArray({
 		control,
 		name: 'nextOfKin',
 	});
 
-    useEffect( () =>
-    {
-        if ( fields.length === 0 )
-        {
-            setValue( 'nextOfKin', [ defaultNextOfKinValues ] );
-        }
-    }, [fields,setValue])
-
+	useEffect(() => {
+		if (fields.length === 0) {
+			setValue('nextOfKin', [defaultNextOfKinValues], {
+				shouldTouch: false,
+			});
+		}
+	}, [fields, setValue]);
 
 	return (
 		<>
@@ -70,8 +70,7 @@ export const NextOfKinBio: FormStep = ({ countryList }) => {
 			</FormHeader>
 			<FormContent>
 				<div className='space-y-[8px] py-5'>
-                    { fields.map( ( f, i ) =>
-                    {
+					{fields.map((f, i) => {
 						const kinFirstName = watch(`nextOfKin.${i}.firstName`);
 						const kinLastName = watch(`nextOfKin.${i}.lastName`);
 						return (
@@ -117,7 +116,7 @@ export const NextOfKinBio: FormStep = ({ countryList }) => {
 							disabled={fields.length === MAX_NUMBER_OF_KINS}
 							className='text-primary-500 hover:bg-none hover:no-underline px-0 py-2 h-fit '
 							onClick={() => {
-                                append(defaultNextOfKinValues);
+								append(defaultNextOfKinValues);
 							}}>
 							<CirclePlus className='h-[20px] w-[20px] mr-1' />
 							Add a next of kin
