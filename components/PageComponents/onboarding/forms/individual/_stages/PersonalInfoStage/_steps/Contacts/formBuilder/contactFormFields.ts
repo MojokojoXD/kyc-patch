@@ -140,11 +140,6 @@ const contactFieldsModel = ({
 		name: `applicant.${index}.contacts.faxNumber`,
 		label: 'Fax Number',
 		placeholder: 'Enter Fax Number',
-		rules: {
-			required: 'Please enter fax number',
-			validate: (v) =>
-				isPossiblePhoneNumber(v) || 'Please enter valid phone number',
-		},
 		options: {
 			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList,
@@ -164,7 +159,7 @@ const contactFieldsModel = ({
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.contacts.digitalAddress`,
-		label: 'Digital Address(GhanaPost GPS)',
+		label: 'Digital Address (GhanaPost GPS)',
 		placeholder: 'Enter address',
 		tags: ['AFRIN', 'DATAB', 'KESTR', 'residence-contact'],
 	},

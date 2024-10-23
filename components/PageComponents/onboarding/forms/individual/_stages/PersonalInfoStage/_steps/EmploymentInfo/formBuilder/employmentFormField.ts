@@ -247,9 +247,6 @@ const employmentFieldsModel = ({
 		name: `applicant.${index}.employment.statusDetails.tin`,
 		label: 'TIN',
 		placeholder: 'Enter TIN',
-		rules: {
-			required: 'Please enter TIN',
-		},
 		tags: ['DATAB'],
 	},
 	{
@@ -280,8 +277,8 @@ const employmentFieldsModel = ({
 			keySelector: (key:string) => key as string,
 			keys: [
 				'Below 1,000',
-				'Above 1,000-5,000',
-				'Above 5,000-10,000',
+				'1,000-5,000',
+				'5,000-10,000',
 				'Above 10,000',
 			],
 		},

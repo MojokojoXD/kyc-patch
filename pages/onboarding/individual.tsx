@@ -21,82 +21,23 @@ import { useCloseTabWarning } from '@/customHooks/useCloseTabWarning';
 import { getCountryList } from '@/utils/vars/countries';
 import { Button } from '@/components/UIcomponents/ui/button';
 import {
-	FormReducerFn,
+    FormReducerFn,
+    individualFormMetadata,
 	formReducer,
 } from '@/components/PageComponents/onboarding/forms/individual/utils/formReducer';
-// import { LoaderCircle } from 'lucide-react';
 
-//Form meta data for navigation components
-const individualFormMetadata = [
-	{
-		name: 'introduction',
-		steps: ['Instructions'],
-	},
-	{
-		name: 'personal',
-		steps: [
-			'retail client',
-			'category of investment',
-			'personal information_personal',
-			'contact details_personal',
-			'employment information',
-			'settlement bank account',
-			'proof of identity_personal',
-			'investment & risk profile',
-			'review_personal',
-		],
-	},
-	{
-		name: 'next of kin',
-		steps: [
-			'personal information_next of kin',
-			'contact details_next of kin',
-			'proof of identity_next of kin',
-			'review_next of kin',
-		],
-	},
-	{
-		name: 'disclosures',
-		steps: [
-			'signature upload',
-			'customer ratification',
-			'pep',
-			'fatca',
-			'kestrel capital - terms',
-			'kestrel capital - nominee',
-			'afrinvest - email indemnity',
-			'declarations',
-			'signature mandate',
-			'afrinvest - privacy policy',
-			'review_disclosures',
-		],
-	},
-	{
-		name: 'document upload',
-		steps: ['checklist', 'review_document upload', 'submit'],
-	},
-] as const;
 
-export type IndividualFormStages = typeof individualFormMetadata;
-
-export type FormMetadata = (typeof individualFormMetadata)[number];
-
-type IndividualFormReducerFn = FormReducerFn<{
-	readonly stepIndex: number;
-	readonly stageIndex: number;
-	stages: IndividualFormStages;
-}>;
 
 export default function KYCIndividualFormPage() {
 	//state management
 	const [formControl, formControlDispatch] =
-		useReducer<IndividualFormReducerFn>(formReducer, {
-			stageIndex: 0,
-			stepIndex: 0,
-			stages: individualFormMetadata,
+		useReducer(formReducer, {
+            currentStage: 'personal',
+            currentStep: 'investment & risk profile',
+			allStages: individualFormMetadata,
 		});
 
-	const { stepIndex, stageIndex, stages } = formControl;
+	const { currentStage, currentStep, allStages } = formControl;
 
 	const form = useForm<IndividualFormSchema>({
 		defaultValues: {
@@ -114,7 +55,8 @@ export default function KYCIndividualFormPage() {
 	});
 
 	const {
-		watch,
+        watch,
+        getValues,
 		trigger,
 		formState: { isDirty },
 	} = form;
@@ -130,10 +72,10 @@ export default function KYCIndividualFormPage() {
 	//Form navigation methods
 	const next = useCallback(async () => {
 		const isStepValid = await trigger(undefined, { shouldFocus: true });
-		if (!isStepValid) return;
-
+		if (!isStepValid) console.log('hey');
+        console.log(getValues())
 		formControlDispatch({ type: 'next' });
-	}, [trigger]);
+	}, [trigger,getValues]);
 
 	const prev = useCallback(() => {
 		formControlDispatch({ type: 'prev' });
@@ -141,7 +83,7 @@ export default function KYCIndividualFormPage() {
 
 	//Form stage selector
 	const getFormStage = () => {
-		switch (stages[stageIndex].name) {
+		switch (currentStage) {
 			case 'introduction':
 				return IndividualFormIntro;
 			case 'personal':
@@ -173,14 +115,14 @@ export default function KYCIndividualFormPage() {
 	}, [applicantCount]);
 
 	//Reporting and feedback
-	if (!appWideContext || !appWideContext.onboardingFacts) {
-		console.error('missing client ID information');
-		return (
-			<p className='p-10'>
-				Something went wrong! Please contact system admin
-			</p>
-		);
-	}
+	// if (!appWideContext || !appWideContext.onboardingFacts) {
+	// 	console.error('missing client ID information');
+	// 	return (
+	// 		<p className='p-10'>
+	// 			Something went wrong! Please contact system admin
+	// 		</p>
+	// 	);
+	// }
 
 	if (error.flag) {
 		console.error(error.message);
@@ -199,14 +141,13 @@ export default function KYCIndividualFormPage() {
 				<Form {...form}>
 					<form className='flex flex-col h-full'>
 						<FormProgressSheet
-							formStages={stages}
+							formStages={allStages}
 							formAction={formControlDispatch}
-							stageIndex={stageIndex}
-							stepIndex={stepIndex}
-							reveal={true}
+							stage={currentStage}
+							step={currentStep}
 						/>
 						<FormStage
-							step={stages[stageIndex].steps[stepIndex]}
+							step={currentStep}
 							renderStep={(FormStep) =>
 								FormStep ? (
 									<FormStep
@@ -219,7 +160,7 @@ export default function KYCIndividualFormPage() {
 							}
 						/>
 						<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0 bg-white'>
-							{stages[stageIndex].name !== 'introduction' && (
+							{currentStage !== 'introduction' && (
 								<Button
 									type='button'
 									variant={'outline'}
@@ -230,7 +171,7 @@ export default function KYCIndividualFormPage() {
 							<Button
 								type='button'
 								onClick={next}>
-								{stages[stageIndex].name === 'introduction'
+								{currentStage === 'introduction'
 									? 'Begin Process'
 									: 'Save & Continue'}
 							</Button>

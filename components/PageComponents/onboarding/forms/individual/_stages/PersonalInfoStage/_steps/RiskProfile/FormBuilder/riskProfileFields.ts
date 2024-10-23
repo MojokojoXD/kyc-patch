@@ -4,7 +4,10 @@ import validator from 'validator';
 const riskProfileFieldModel = ({
 	index,
 	currency = '',
-}: { index: number, currency?: string }): FormFactoryProps[] => [
+}: {
+	index: number;
+	currency?: string;
+}): FormFactoryProps[] => [
 	{
 		fieldType: 'radio',
 		name: `applicant.${index}.riskProfile.tolerance`,
@@ -84,30 +87,11 @@ const riskProfileFieldModel = ({
 		options: {
 			keySelector: (key) => key as string,
 			keys: ['Limited', 'Moderate', 'Extensive'],
-        },
-        componentProps: {
-            className: 'grid grid-cols-3 gap-[4px]'
-        },
+		},
+		componentProps: {
+			className: 'grid grid-cols-3 gap-[4px]',
+		},
 		tags: ['DATAB', 'KESTR'],
-	},
-	{
-		fieldType: 'radio',
-		name: `applicant.${index}.riskProfile.riskAffinity`,
-		label: 'How much of a risk taker are you with investing',
-		rules: {
-			required: 'Select option',
-		},
-		options: {
-			keySelector: (key) => key as string,
-			keys: [
-				'Lower',
-				'Lower to Medium',
-				'Medium',
-				'Medium to High',
-				'High',
-			],
-		},
-		tags: ['DATAB'],
 	},
 	{
 		fieldType: 'radio',
@@ -119,10 +103,10 @@ const riskProfileFieldModel = ({
 		options: {
 			keySelector: (key) => key as string,
 			keys: ['Less than a year', '1 to 2 years', 'More than 2 years'],
-        },
-        componentProps: {
-          toggleStyles: 'normal-case'  
-        },
+		},
+		componentProps: {
+			toggleStyles: 'normal-case',
+		},
 		tags: ['KESTR'],
 	},
 	{
@@ -165,6 +149,21 @@ const riskProfileFieldModel = ({
 		},
 	},
 	{
+		fieldType: 'text',
+		name: `applicant.${index}.riskProfile.initialInvestmentAmount`,
+		label: `Initial Investment Amount (${currency})`,
+		placeholder: 'Enter initial investment amount',
+		rules: {
+			required: 'Please enter amount',
+			validate: (v) =>
+				validator.isCurrency(v) || 'Amount must be a number',
+        },
+        componentProps: {
+            isCurrency: true,
+        },
+		tags: ['DATAB'],
+	},
+	{
 		fieldType: 'radio',
 		name: `applicant.${index}.riskProfile.topUpActivity.frequency`,
 		label: 'Anticipated Top Up Activity',
@@ -173,13 +172,34 @@ const riskProfileFieldModel = ({
 		},
 		options: {
 			keySelector: (key) => key as string,
-			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually'],
+			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually','Other'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-2',
+            className: 'grid grid-cols-2',
+            otherProps: {
+                label: 'Other? Specify',
+                placeholder: 'Enter other top up frequency'
+            }
+		},
+		tags: ['DATAB', 'KESTR'],
         },
-        tags: ['DATAB','KESTR']
-	},
+        {
+            fieldType: 'text',
+            name: `applicant.${index}.riskProfile.regularTopUpAmount`,
+            label: `Expected Regular Top-up Amount ${
+                currency && '(' + currency + ')'
+            }`,
+            placeholder: 'Enter regular top-up amount',
+            rules: {
+                required: 'Please enter amount',
+                validate: (v) =>
+                    validator.isCurrency(v) || 'Amount must be a number',
+            },
+            componentProps: {
+                isCurrency: true
+            },
+            tags: ['DATAB'],
+        },
 	{
 		fieldType: 'radio',
 		name: `applicant.${index}.riskProfile.withdrawalActivity.frequency`,
@@ -189,47 +209,70 @@ const riskProfileFieldModel = ({
 		},
 		options: {
 			keySelector: (key) => key as string,
-			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually'],
-        },
-        tags: [ 'DATAB' ]
-	},
-	{
-		fieldType: 'text',
-		name: `applicant.${index}.riskProfile.initialInvestmentAmount`,
-		label: `Initial Investment Amount (${currency})`,
-		placeholder: 'Enter initial investment amount',
-		rules: {
-			required: 'Please enter amount',
-			validate: (v) =>
-				validator.isNumeric(v) || 'Amount must be a number',
+			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually','Other'],
+		},
+		componentProps: {
+            className: 'grid grid-cols-2',
+            otherProps: {
+                label: 'Other? Specify',
+                placeholder: 'Enter other withdrawal frequency'
+            }
 		},
 		tags: ['DATAB'],
 	},
-	{
-		fieldType: 'text',
-		name: `applicant.${index}.riskProfile.regularTopUpAmount`,
-		label: `Expected Regular Top-up Amount ${currency && '(' + currency +')'}`,
-		placeholder: 'Enter regular top-up amount',
-		rules: {
-			required: 'Please enter amount',
-			validate: (v) =>
-				validator.isNumeric(v) || 'Amount must be a number',
-		},
-		tags: ['DATAB'],
-	},
+
+	
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.riskProfile.regularWithdrawalAmount`,
-		label: `Expected Regular Withdrawal Amount ${currency && '(' + currency +')'}`,
-		placeholder: 'Enter regular Withdrawal amount',
+		label: `Expected Regular Withdrawal Amount ${
+			currency && '(' + currency + ')'
+		}`,
+		placeholder: 'Enter regular withdrawal amount',
 		rules: {
 			required: 'Please enter amount',
 			validate: (v) =>
-				validator.isNumeric(v) || 'Amount must be a number',
+				validator.isCurrency(v) || 'Amount must be a number',
+        },
+        componentProps: {
+            isCurrency: true,
+        },
+		tags: ['DATAB'],
+	},
+	{
+		fieldType: 'radio',
+		name: `applicant.${index}.riskProfile.statements.deliveryMode`,
+		label: 'Mode of Statement Delivery',
+		rules: {
+			required: 'Select mode of delivery',
+		},
+		options: {
+			keys: ['Email', 'Online', 'Collection at Branch'],
+			keySelector: (key) => key as string,
+		},
+		componentProps: {
+			className: 'grid grid-cols-3 gap-[4px]',
+			toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap',
+		},
+		tags: ['DATAB'],
+	},
+	{
+		fieldType: 'radio',
+		name: `applicant.${index}.riskProfile.statement.frequency`,
+		label: 'Statement Frequency',
+		rules: {
+			required: 'Select statement frequency',
+		},
+		options: {
+			keys: ['Semi-Annual', 'Annual', 'Monthly'],
+			keySelector: (key) => key as string,
+		},
+		componentProps: {
+			className: 'grid grid-cols-3 gap-[4px]',
+			toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap',
 		},
 		tags: ['DATAB'],
 	},
 ];
 
-
-export { riskProfileFieldModel }
+export { riskProfileFieldModel };

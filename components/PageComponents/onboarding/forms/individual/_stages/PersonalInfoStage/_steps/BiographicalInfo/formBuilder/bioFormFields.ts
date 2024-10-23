@@ -22,10 +22,14 @@ const bioFieldsModel = ({
 		},
 		options: {
 			keySelector: (key: string) => key,
-			keys: OPTIONS.bio.title,
+			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr', 'Other'],
 		},
 		componentProps: {
 			className: 'grid grid-cols-5',
+			otherProps: {
+				label: 'Other? Specify',
+				placeholder: 'Enter title',
+			},
 		},
 	},
 	{
@@ -129,7 +133,7 @@ const bioFieldsModel = ({
 	},
 	{
 		fieldType: 'dropdown',
-		name: `applicant.${index}.countryOfResidence` as const,
+		name: `applicant.${index}.countryOfResidence`,
 		label: 'Country of Residence',
 		rules: {
 			required: 'Select country of residence',
@@ -169,34 +173,104 @@ const bioFieldsModel = ({
 		placeholder: 'Select country',
 	},
 	{
+		name: `applicant.${index}.residence.status`,
+		fieldType: 'radio',
+        label: 'Residential Status',
+        rules: {
+            deps: [ `applicant.${index}.countryOfCitizenship`, `applicant.${index}.countryOfResidence` ]
+        },
+		options: {
+			keySelector: (key) => key as string,
+			keys: [
+				'Resident Ghanaian',
+				'Resident Foreigner',
+				'Non-Resident Ghanaian',
+				'Non-Resident Foreigner',
+			],
+        },
+        componentProps: {
+            toggleStyles: 'pointer-events-none'
+        },
+		tags: ['GH', 'foreign'],
+	},
+	{
+		fieldType: 'text',
+		name: `applicant.${index}.residence.permitNumber`,
+		label: 'Residence Permit Number',
+		placeholder: 'Enter permit number',
+		rules: {
+			required: 'Please enter permit number',
+		},
+		tags: ['GH'],
+	},
+	{
+		fieldType: 'date',
+		name: `applicant.${index}.residence.permitIssueDate`,
+		label: 'Permit Issue Date',
+		placeholder: 'DD/MM/YYYY',
+		rules: {
+			required: 'Select date',
+		},
+		componentProps: {
+			startMonth: sub(today, { years: 100 }),
+			endMonth: today,
+			disabled: { after: today },
+			defaultMonth: today,
+		},
+		tags: ['GH'],
+	},
+	{
+		fieldType: 'text',
+		name: `applicant.${index}.residence.permitIssuePlace`,
+		label: 'Place of Issue',
+		placeholder: 'Enter place of Issue',
+		rules: {
+			required: 'Please enter place of issue',
+		},
+		tags: ['GH'],
+	},
+	{
+		fieldType: 'date',
+		name: `applicant.${index}.residence.permitExpiry`,
+		label: 'Permit Expiry Date',
+		placeholder: 'DD/MM/YYYY',
+		rules: {
+			required: 'Select date',
+		},
+		componentProps: {
+			startMonth: today,
+			endMonth: add(today, { years: 100 }),
+			disabled: { before: today },
+			defaultMonth: today,
+		},
+		tags: ['GH'],
+	},
+	{
+		fieldType: 'text',
+		name: `applicant.${index}.licenseNumber`,
+		label: 'Professional License Number (Optional)',
+		placeholder: 'Enter professional license number',
+	},
+	{
 		fieldType: 'text',
 		name: `applicant.${index}.stateOfOrigin`,
 		label: 'State of Origin',
 		placeholder: 'Enter state',
-		rules: {
-			required: 'Please enter state of origin',
-		},
-		tags: ['NG', 'local'],
+		tags: ['NG'],
 	},
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.localGovernment`,
 		label: 'Local Government',
 		placeholder: 'Enter local government',
-		rules: {
-			required: 'Please enter local government',
-		},
-		tags: ['NG', 'local'],
+		tags: ['NG'],
 	},
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.religion`,
 		label: 'Religion',
 		placeholder: 'Enter religion',
-		rules: {
-			required: 'Please enter religion',
-		},
-		tags: ['NG', 'local'],
+		tags: ['NG'],
 	},
 	// {
 	// 	fieldType: 'dropdown',
@@ -218,79 +292,6 @@ const bioFieldsModel = ({
 	// 	},
 	// 	placeholder: 'Select country',
 	// },
-	{
-		name: `applicant.${index}.residence.status`,
-		fieldType: 'radio',
-		label: 'Residential Status',
-		options: {
-			keySelector: (key) => key as string,
-			keys: [
-				'Resident Ghanaian',
-				'Resident Foreigner',
-				'Non-Resident Ghanaian',
-				'Non-Resident Foreigner',
-			],
-		},
-		tags: ['GH', 'foreign'],
-	},
-	{
-		fieldType: 'text',
-		name: `applicant.${index}.residence.permitNumber`,
-		label: 'Residence Permit Number',
-		placeholder: 'Enter permit number',
-		rules: {
-			required: 'Please enter permit number',
-		},
-		tags: ['GH', 'NG', 'foreign'],
-	},
-	{
-		fieldType: 'date',
-		name: `applicant.${index}.residence.permitIssueDate`,
-		label: 'Permit Issue Date',
-		placeholder: 'DD/MM/YYYY',
-		rules: {
-			required: 'Select date',
-		},
-		componentProps: {
-			startMonth: sub(today, { years: 100 }),
-			endMonth: today,
-			disabled: { after: today },
-			defaultMonth: today,
-		},
-		tags: ['GH', 'foreign'],
-	},
-	{
-		fieldType: 'text',
-		name: `applicant.${index}.residence.permitIssuePlace`,
-		label: 'Place of Issue',
-		placeholder: 'Enter place of Issue',
-		rules: {
-			required: 'Please enter place of issue',
-		},
-		tags: ['GH', 'foreign'],
-	},
-	{
-		fieldType: 'date',
-		name: `applicant.${index}.residence.permitExpiry`,
-		label: 'Permit Expiry Date',
-		placeholder: 'DD/MM/YYYY',
-		rules: {
-			required: 'Select date',
-		},
-		componentProps: {
-			startMonth: today,
-			endMonth: add(today, { years: 100 }),
-			disabled: { before: today },
-			defaultMonth: today,
-		},
-		tags: ['GH', 'foreign'],
-	},
-	{
-		fieldType: 'text',
-		name: `applicant.${index}.licenseNumber`,
-		label: 'Professional License Number(Optional)',
-		placeholder: 'Enter professional license number',
-	},
 ];
 
 export { bioFieldsModel };

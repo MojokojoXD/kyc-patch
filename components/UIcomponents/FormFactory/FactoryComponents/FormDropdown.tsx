@@ -1,4 +1,7 @@
-import type { FactoryComponentProps,DropdownOption } from '@/types/Components/formFactory';
+import type {
+	FactoryComponentProps,
+	DropdownOption,
+} from '@/types/Components/formFactory';
 import {
 	FormItem,
 	FormControl,
@@ -15,6 +18,7 @@ import {
 	SelectGroup,
 } from '../../ui/select';
 import { Controller } from 'react-hook-form';
+import { cn } from '@/lib/utils';
 
 interface FormDropdownProps extends FactoryComponentProps {}
 
@@ -23,7 +27,7 @@ export default function FormDropdown({
 	name,
 	placeholder,
 	rules,
-	options = { keySelector: () => '',keys: [] },
+	options = { keySelector: () => '', keys: [] },
 	defaultValue = '',
 }: FormDropdownProps) {
 	const { control } = useFormContext();
@@ -57,39 +61,45 @@ export default function FormDropdown({
 						className={fieldState.error ? 'text-error-500' : undefined}>
 						{label}
 					</FormLabel>
-                    <FormControl>
-                        <div ref={field.ref}>
-                            <Select
-                                onValueChange={(v) => field.onChange(v)}
-                                defaultValue={field.value}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder={placeholder} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        {priorityList.map((o) => (
-                                            <SelectItem
-                                                key={options!.keySelector(o)}
-                                                value={options!.keySelector(o)}>
-                                                {options!.keySelector(o)}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                    {priorityList.length > 0 && (
-                                        <hr className='my-2 border-neutral-200' />
-                                    )}
-                                    <SelectGroup>
-                                        {mainList.map((o) => (
-                                            <SelectItem
-                                                key={options.keySelector(o)}
-                                                value={options.keySelector(o)}>
-                                                {options.keySelector(o)}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </div>
+					<FormControl>
+						<div ref={field.ref}>
+							<Select
+								onValueChange={(v) => field.onChange(v)}
+								defaultValue={field.value}>
+								<SelectTrigger
+									className={cn(
+										'focus:border-primary-500',
+										!fieldState.invalid &&
+											fieldState.isDirty &&
+											'border-success-500 focus:border-success-500 hover:border-success-500'
+									)}>
+									<SelectValue placeholder={placeholder} />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										{priorityList.map((o) => (
+											<SelectItem
+												key={options!.keySelector(o)}
+												value={options!.keySelector(o)}>
+												{options!.keySelector(o)}
+											</SelectItem>
+										))}
+									</SelectGroup>
+									{priorityList.length > 0 && (
+										<hr className='my-2 border-neutral-200' />
+									)}
+									<SelectGroup>
+										{mainList.map((o) => (
+											<SelectItem
+												key={options.keySelector(o)}
+												value={options.keySelector(o)}>
+												{options.keySelector(o)}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						</div>
 					</FormControl>
 					<FormMessage>{fieldState.error?.message}</FormMessage>
 				</FormItem>

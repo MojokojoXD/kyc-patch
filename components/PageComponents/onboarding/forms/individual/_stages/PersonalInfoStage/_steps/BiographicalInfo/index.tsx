@@ -12,8 +12,7 @@ import {
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individual';
-import { FormHelpers } from '@/utils/clientActions/formHelpers';
-import { useMemo, Fragment } from 'react';
+import { useMemo, useEffect } from 'react';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 import { FormFieldAggregator } from '@/components/PageComponents/onboarding/forms/individual/utils/FormFieldAggregator';
 import { bioFieldsModel } from './formBuilder/bioFormFields';
@@ -78,7 +77,7 @@ function BiographicalForm({
 	applicantId,
 	countryList = [],
 }: BiographicalFormProps) {
-	const { watch } = useFormContext();
+	const { watch, setValue } = useFormContext();
 
 	const currentResidence = watch(
 		`applicant.${applicantId}.countryOfResidence`
@@ -87,17 +86,18 @@ function BiographicalForm({
 		`applicant.${applicantId}.countryOfCitizenship`
 	);
 
-	/*Get country code of client's nationality to determine nationality 
-    specific field*/
-	const citizenshipCode = FormHelpers.getCodeFromFullCountryName(
-		citizenship,
-		countryList
-	);
-	const residenceCountryCode =
-		FormHelpers.getCodeFromFullCountryName(
-			currentResidence,
-			countryList
-		) || '';
+	const isGhanaResident = currentResidence === 'GHANA';
+	const isGhanaCitizen = citizenship === 'GHANA';
+	const isNigeriaResident = currentResidence === 'NIGERIA';
+
+	const residenceStatus =
+		isGhanaResident && isGhanaCitizen
+			? 'Resident Ghanaian'
+			: isGhanaResident && !isGhanaCitizen
+			? 'Resident Foreigner'
+			: isGhanaCitizen && !isGhanaResident
+			? 'Non-Resident Ghanaian'
+			: 'Non-Resident Foreigner';
 
 	const aggregatorResults = useMemo(() => {
 		const rawfields = bioFieldsModel({
@@ -106,23 +106,27 @@ function BiographicalForm({
 		});
 		const aggregator = new FormFieldAggregator(rawfields);
 
-		const isLocal = citizenshipCode === residenceCountryCode;
-
-		aggregator.modifyFields('local', {
-			required: isLocal && residenceCountryCode === 'NG',
+		aggregator.modifyFields('GH', {
+			required:
+				residenceStatus === 'Resident Foreigner' ||
+				residenceStatus === 'Non-Resident Foreigner',
 		});
-		aggregator.modifyFields('foreign', {
-			required: citizenshipCode !== residenceCountryCode,
+
+		aggregator.modifyFields('NG', {
+			required: isNigeriaResident,
 		});
 
 		return aggregator.generate();
-	}, [
-		citizenshipCode,
-		applicantId,
-		countryList,
-		residenceCountryCode,
-	]);
+	}, [applicantId, countryList, residenceStatus, isNigeriaResident]);
 
+	useEffect(
+		() =>
+			setValue(
+				`applicant.${applicantId}.residence.status`,
+				residenceStatus
+			),
+		[residenceStatus]
+	);
 	return (
 		<>
 			{aggregatorResults.fields.map((f) => (

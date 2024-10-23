@@ -79,7 +79,7 @@ const bankAccountModel = ({
 		name: `applicant.${index}.bank.account.bvn`,
 		label: 'BVN Number',
 		placeholder: 'Enter account bvn number',
-		tags: [ 'AFRIN', 'local'],
+		tags: [ 'NG'],
 	},
 	{
 		fieldType: 'text',
@@ -114,14 +114,14 @@ const bankAccountModel = ({
 		rules: {
 			required: 'Please enter SWIFT code',
 		},
-		tags: ['KESTR'],
+		tags: ['KE'],
 	},
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.bank.account.kraPin`,
 		label: 'KRA PIN Number',
 		placeholder: 'Enter KRA PIN number',
-		tags: ['KESTR'],
+		tags: ['KE'],
 	},
 	{
 		fieldType: 'text',
@@ -131,41 +131,7 @@ const bankAccountModel = ({
 		rules: {
 			required: 'Please enter routing number',
 		},
-		tags: ['KESTR'],
-	},
-	{
-        fieldType: 'radio',
-		name: `applicant.${index}.bank.statement.modeOfDelivery`,
-		label: 'Mode of Statement Delivery',
-		rules: {
-			required: 'Select mode of delivery',
-		},
-		options: {
-			keys: ['Email', 'Online', 'Collection at Branch'],
-			keySelector: (key) => key as string,
-        },
-        componentProps: {
-            className: 'grid grid-cols-3 gap-[4px]',
-            toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap'
-        },
-		tags: ['DATAB'],
-	},
-	{
-		fieldType: 'radio',
-		name: `applicant.${index}.bank.statement.deliveryFrequency`,
-		label: 'Statement Frequency',
-		rules: {
-			required: 'Select statement frequency',
-		},
-		options: {
-			keys: ['Semi-Annual', 'Annual', 'Monthly'],
-			keySelector: (key) => key as string,
-        },
-        componentProps: {
-            className: 'grid grid-cols-3 gap-[4px]',
-            toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap'
-        },
-		tags: ['DATAB'],
+		tags: ['KE'],
 	},
 ];
 

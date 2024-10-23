@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { CalendarDays as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/UIcomponents/ui/button';
@@ -12,31 +12,37 @@ import 'react-day-picker/style.css';
 
 type DatePickerProps = PropsBase & {
 	currentDate: string;
-	onDateChange: ( date: string ) => void;
+    onDateChange: ( date: string ) => void;
+    isReady?: boolean;
 };
 
 export default function DatePicker({
 	currentDate,
-	onDateChange,
+    onDateChange,
+    isReady = false,
 	...props
 }: DatePickerProps) {
+	const [popoverOpenStatus, setPopoverOpenStatus] = useState(false);
+
 	return (
-		<Popover>
-			<PopoverTrigger asChild>
+		<Popover
+			onOpenChange={setPopoverOpenStatus}
+			open={popoverOpenStatus}>
+			<PopoverTrigger asChild className={ cn }>
 				<Button
 					variant={'secondary'}
 					size={'lg'}
 					className={cn(
-						'w-full justify-between text-left text-base px-4 py-6',
-						!currentDate && 'text-neutral-300'
+						'w-full justify-between text-left text-base px-4 py-6 ',
+						!currentDate && 'text-neutral-300', isReady && 'border-success-500 focus:border-success-500 hover:border-success-500'
 					)}>
 					{currentDate ? currentDate : <span>Select date</span>}
-					<CalendarIcon className='h-5 w-5 text-neutral-700' />
+					<CalendarIcon className={cn('h-5 w-5 text-neutral-700')} />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className='w-auto p-4'>
-                <DayPicker
-                    {...props}
+				<DayPicker
+					{...props}
 					showOutsideDays={false}
 					required
 					classNames={{
@@ -57,15 +63,16 @@ export default function DatePicker({
 						),
 					}}
 					captionLayout={'dropdown'}
-                    mode='single'
+					mode='single'
 					selected={new Date(currentDate)}
-					onSelect={(date) =>
+					onSelect={(date) => {
+						setPopoverOpenStatus(false);
 						onDateChange(
 							date.toLocaleDateString('en-GB', {
 								dateStyle: 'medium',
 							})
-						)
-					}
+						);
+					}}
 				/>
 			</PopoverContent>
 		</Popover>

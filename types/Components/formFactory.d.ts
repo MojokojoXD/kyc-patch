@@ -18,7 +18,8 @@ type Tag =
 	| 'optional-contact'
 	| 'residence-contact'
 	| 'remove-all-except'
-	| 'control-employment';
+	| 'control-employment'
+	| 'deps';
 
 type FactoryFieldType =
 	| 'text'
@@ -28,8 +29,10 @@ type FactoryFieldType =
 	| 'dropdown'
 	| 'phone'
 	| 'signature'
-    | 'agreement'
-    | 'file-upload';
+	| 'agreement'
+	| 'file-upload';
+
+type test = Extract<FactoryFieldType, 'checkbox'>;
 
 export interface FormFactoryProps extends FactoryComponentProps {
 	fieldType: FactoryFieldType;
@@ -47,7 +50,12 @@ export type FactoryComponentProps = {
 				toggleStyles?: string;
 				clientID?: string;
 				agreementVersion?: string;
-				fileFieldName?: string;
+            fileFieldName?: string;
+            isCurrency?: boolean;
+				otherProps?: {
+					label: string;
+					placeholder: string;
+				};
 			}
 	>;
 	rules?: RegisterOptions;

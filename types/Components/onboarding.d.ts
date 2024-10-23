@@ -2,8 +2,7 @@ import type { Country } from '../forms/universal';
 import type { FC, JSX } from 'react';
 import type { BrokerDetails } from '../forms/broker';
 import type { FormMetadata } from '@/pages/onboarding/individual';
-import type { Dispatch } from 'react';
-import type { FormReducerAction } from '@/components/PageComponents/onboarding/forms/individual/utils/formReducer';
+import type { FormAction } from '@/components/PageComponents/onboarding/forms/individual/utils/formReducer';
 
 type Steps = Pick<FormMetadata, 'steps'>['steps'][number];
 
@@ -11,7 +10,7 @@ export interface FormStepProps {
 	applicantCount?: number;
 	countryList?: Country[];
 	clientID?: string;
-	formAction: Dispatch<FormReducerAction>;
+	formAction: FormAction;
 }
 
 export type FormStep = FC<FormStepProps>;

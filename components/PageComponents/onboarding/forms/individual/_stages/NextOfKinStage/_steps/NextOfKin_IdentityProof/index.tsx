@@ -17,6 +17,7 @@ import type { IndividualFormSchema } from '@/types/forms/individual';
 import type { FormStep } from '@/types/Components/onboarding';
 import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
 import { NOK_identifyProofFieldsModel } from './formBuilder/NOK_identityProofFieldModel';
+import { FormFieldAggregator } from '../../../../utils/FormFieldAggregator';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 
 export const NextOfKin_IdentityProof: FormStep = ({ formAction }) => {
@@ -70,18 +71,34 @@ interface NextOfKin_IdentityProofFormProps
 
 function NextOfKin_IdentityProofForm({
 	applicantId,
-}: NextOfKin_IdentityProofFormProps) {
-	const fields = useMemo(
+}: NextOfKin_IdentityProofFormProps )
+{
+    const { watch } = useFormContext<IndividualFormSchema>()
+    
+    const currentNOKidType = watch( `nextOfKin.${applicantId}.proofOfIdentity.idType` )
+
+	const aggregatorResults = useMemo(
 		() =>
-			NOK_identifyProofFieldsModel({
+        {
+            const rawFields = NOK_identifyProofFieldsModel( {
 				index: applicantId,
-			}),
-		[applicantId]
+            } ); 
+
+            const aggregator = new FormFieldAggregator( rawFields );
+
+            aggregator.modifyFields( 'deps', {
+                required: currentNOKidType !== 'Birth Certificate (If under 18 years old)'
+            })
+
+            return aggregator.generate() 
+        },
+		[applicantId, currentNOKidType]
 	);
 
+    console.log(currentNOKidType)
 	return (
 		<>
-			{fields.map((f) => (
+			{aggregatorResults.fields.map((f) => (
 				<FormFactory
 					key={f.name}
 					{...f}

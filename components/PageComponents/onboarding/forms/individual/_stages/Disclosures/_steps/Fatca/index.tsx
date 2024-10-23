@@ -90,7 +90,6 @@ function FatcaForm( { applicantId, countryList }: FatcaFormProps )
 	}, [applicantId, countryList, currentFatcaStatus]);
 
 
-    console.log( currentFatcaStatus )
 	return (
 		<>
 			{aggregatorResults.fields.map((f) => (

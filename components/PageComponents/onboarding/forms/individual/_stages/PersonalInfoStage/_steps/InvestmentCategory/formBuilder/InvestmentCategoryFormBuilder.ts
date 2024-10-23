@@ -8,7 +8,7 @@ const investmentCatergoryFields: FormFactoryProps[] = [
 		placeholder: 'Enter CSD number',
 	},
 	{
-		fieldType: 'radio',
+		fieldType: 'checkbox',
 		name: 'catInvestment',
 		label: 'Category of Investment',
 		options: {

@@ -7,13 +7,14 @@ import {
 import type { FormStep } from '@/types/Components/onboarding';
 import { ReviewerSection } from '@/components/UIcomponents/FormReviewer/ReviewerComponents/ReviewerSection';
 import { fileUploadsFieldsModel } from '../FileUploads/formBuilder/fileUploadsFieldsModel';
+import type { Step } from '../../../../utils/formReducer';
 
 export const DocumentUploadReview: FormStep = ( { applicantCount,formAction } ) => {
 
-	const editStep = (step: number) =>
+	const editStep = (step: Step) =>
 		formAction({
 			type: 'jump_to_form_location',
-			toStage: 4,
+			toStage: 'document upload',
 			toStep: step,
         } );
     
@@ -36,7 +37,7 @@ export const DocumentUploadReview: FormStep = ( { applicantCount,formAction } ) 
 					<ReviewerSection
 						sectionName='Document Checklist'
 						applicantCount={ applicantCount }
-						editAction={editStep.bind(this, 0)}
+						editAction={editStep.bind(this, 'checklist')}
                         fieldModel={ fileUploadsFieldsModel }
                         accordionTitle={ accordionTitle }
 					/>

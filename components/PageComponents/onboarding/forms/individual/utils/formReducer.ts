@@ -1,87 +1,152 @@
-import type { IndividualFormStages } from '@/pages/onboarding/individual';
+import { Stack } from '@/utils/dataStructures/stack';
+import type { Dispatch } from 'react';
+
+//Form meta data for navigation components
+export const individualFormMetadata = [
+	{
+		name: 'introduction',
+		steps: ['instructions'],
+	},
+	{
+		name: 'personal',
+		steps: [
+			'retail client',
+			'category of investment',
+			'personal information_personal',
+			'contact details_personal',
+			'employment information',
+			'settlement bank account',
+			'proof of identity_personal',
+			'investment & risk profile',
+			'review_personal',
+		],
+	},
+	{
+		name: 'next of kin',
+		steps: [
+			'personal information_next of kin',
+			'contact details_next of kin',
+			'proof of identity_next of kin',
+			'review_next of kin',
+		],
+	},
+	{
+		name: 'disclosures',
+		steps: [
+			'signature upload',
+			'customer ratification',
+			'pep',
+			'fatca',
+			'kestrel capital - terms',
+			'kestrel capital - nominee',
+			'afrinvest - email indemnity',
+			'declarations',
+			'signature mandate',
+			'afrinvest - privacy policy',
+			'review_disclosures',
+		],
+	},
+	{
+		name: 'document upload',
+		steps: ['checklist', 'review_document upload', 'submit'],
+	},
+] as const;
+
+export type IndividualFormStages = typeof individualFormMetadata;
+
+export type Stage = IndividualFormStages[number]['name'];
+export type Step = IndividualFormStages[number]['steps'][number];
 
 export interface FormReducerState {
-	readonly stageIndex: number;
-	readonly stepIndex: number;
-	stages: IndividualFormStages;
+	readonly currentStage: Stage;
+	readonly currentStep: Step;
+	allStages: IndividualFormStages;
 }
 
+// use this to generate more reducer function for other forms
 export interface FormReducerFn<TState> {
 	(state: TState, action: FormReducerAction): TState;
 }
 
-export type FormReducerAction =
+export type IndividualReducerFn = FormReducerFn<FormReducerState>;
+
+type FormReducerAction =
 	| { type: 'next' }
 	| { type: 'prev' }
 	| {
 			type: 'remove_step';
-			stage: IndividualFormStages[number]['name'];
-			step: IndividualFormStages[number]['steps'][number];
+			stage: Stage;
+			step: Step;
 	  }
 	| { type: 'reset'; stages: IndividualFormStages }
 	| {
 			type: 'jump_to_form_location';
-			toStage?: number;
-			toStep?: number;
+			toStage: Stage;
+			toStep?: Step;
 	  };
 
-const isValidIndex = <T>(
-	index: number | undefined,
-	collection: readonly T[] | undefined
-) =>
-	(index && collection && typeof collection.at(index)) !== 'undefined';
+export type FormAction = Dispatch<FormReducerAction>;
 
-export function formReducer<TState extends FormReducerState>(
-	state: TState,
+const historyStack = new Stack<{ stage: Stage; step: Step }>();
+
+export function formReducer(
+	state: FormReducerState,
 	action: FormReducerAction
-): TState {
-	const { stageIndex, stepIndex } = state;
+): FormReducerState {
+	const { currentStage, currentStep, allStages } = state;
 
-	if (!isValidIndex(stageIndex, state.stages)) return state;
+	const currentStageIndex = allStages.findIndex(
+		(s) => s.name === currentStage
+	);
+	const currentSteps = allStages[currentStageIndex].steps;
+	const currentStepIndex = currentSteps.findIndex(
+		(s) => s === currentStep
+	);
 
-	if (!isValidIndex(stepIndex, state.stages[stageIndex].steps))
-		return state;
-
-	const clonedStages = state.stages.map((s) => ({
-		...s,
-		steps: Array.from(s.steps),
-	}));
+	// const clonedStages = state.stages.map((s) => ({
+	// 	...s,
+	// 	steps: Array.from(s.steps),
+	// }));
 
 	switch (action.type) {
 		case 'next': {
-			const stepsCount = state.stages[stageIndex].steps.length;
-			const stagesCount = state.stages.length;
-            const nextStep = ( stepIndex + 1 ) % stepsCount;
-            
-
-			if (stageIndex === stagesCount - 1  && stepIndex === stepsCount - 1)
+			if (
+				currentStageIndex === allStages.length - 1 &&
+				currentStepIndex === currentSteps.length - 1
+			)
 				return state;
+
+			historyStack.push({ stage: currentStage, step: currentStep });
+
+			const nextStageIndex =
+				currentStepIndex === currentSteps.length - 1
+					? currentStageIndex + 1
+					: currentStageIndex;
+			const nextStepIndex =
+				currentStepIndex === currentSteps.length - 1
+					? 0
+					: currentStepIndex + 1;
 
 			return {
 				...state,
-				stages: clonedStages,
-				stageIndex:
-					nextStep === 0 && stageIndex < stagesCount
-						? stageIndex + 1
-						: stageIndex,
-				stepIndex: stageIndex < stagesCount ? nextStep : stepIndex,
+				currentStage: allStages[nextStageIndex].name,
+				currentStep: allStages[nextStageIndex].steps[nextStepIndex],
 			};
 		}
 		case 'prev': {
-			const stepsCount = state.stages[stageIndex].steps.length;
-			const nextStep = (stepIndex - 1) % stepsCount;
+			if (historyStack.size() === 0) return state;
+
+			const prevProgress = historyStack.pop();
 
 			return {
 				...state,
-				stages: clonedStages,
-				stageIndex: nextStep < 0 ? stageIndex - 1 : stageIndex,
-				stepIndex:
-					nextStep < 0
-						? state.stages[stageIndex - 1].steps.length - 1
-						: nextStep,
+				currentStage: prevProgress!.stage,
+				currentStep: prevProgress!.step,
 			};
 		}
 		case 'remove_step': {
+			const clonedStages = [...allStages];
+
 			const stageIndexToEdit = clonedStages.findIndex(
 				(s) => s.name === action.stage
 			);
@@ -90,6 +155,9 @@ export function formReducer<TState extends FormReducerState>(
 				(s) => s !== action.step
 			);
 
+			if (stageIndexToEdit === -1)
+				throw new Error('Stage ' + stage + ' is not supported');
+
 			clonedStages[stageIndexToEdit] = {
 				...clonedStages[stageIndexToEdit],
 				steps: [...editedSteps],
@@ -97,30 +165,35 @@ export function formReducer<TState extends FormReducerState>(
 
 			return {
 				...state,
-				stages: clonedStages,
+				allStages: clonedStages,
 			};
 		}
 		case 'reset':
 			return {
 				...state,
-				stages: action.stages,
+				allStages: action.stages,
 			};
 		case 'jump_to_form_location': {
-			const nextStage = action.toStage ?? stageIndex;
-			const nextStep = action.toStep ?? stepIndex;
+			const nextStageName = action.toStage ?? currentStage;
+			const nextStage = allStages.find((s) => s.name === nextStageName);
+			const nextStepName = action.toStep ?? nextStage?.steps.at(0);
 
 			if (
-				!isValidIndex(nextStage, state.stages) ||
-				!isValidIndex(nextStep, state.stages.at(nextStage)?.steps)
+				!allStages.some((s) => s.name === nextStageName) ||
+				!nextStepName
 			) {
 				return state;
 			}
 
+			historyStack.push({
+				stage: currentStage,
+				step: currentStep,
+			});
+
 			return {
 				...state,
-				stages: clonedStages,
-				stageIndex: nextStage,
-				stepIndex: nextStep,
+				currentStage: nextStageName,
+				currentStep: nextStepName,
 			};
 		}
 		default:

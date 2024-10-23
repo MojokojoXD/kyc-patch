@@ -17,16 +17,17 @@ import { employmentFieldsModel } from '../EmploymentInfo/formBuilder/employmentF
 import { bankAccountModel } from '../BankAccountInfo/formBuilder/bankAccountFormFields';
 import { proofOfIdentityFieldsModel } from '../IdentityProof/formBuild/proofOfIdentityFields';
 import { riskProfileFieldModel } from '../RiskProfile/FormBuilder/riskProfileFields';
+import type { Step } from '../../../../utils/formReducer';
 
 export const Review: FormStep = ({ formAction }) => {
 	const { getValues } = useFormContext<IndividualFormSchema>();
 
 	const applicantCount = getValues(`_formMetadata.applicantCount`);
 
-	const editStep = (step: number) =>
+	const editStep = (step: Step) =>
 		formAction({
 			type: 'jump_to_form_location',
-			toStage: 1,
+			toStage: 'personal',
 			toStep: step,
         } );
     
@@ -51,53 +52,53 @@ export const Review: FormStep = ({ formAction }) => {
 					<ReviewerSection
 						sectionName='Retail Client'
 						accordionTitle='Retail Client'
-						editAction={editStep.bind(this, 0)}
+						editAction={editStep.bind(this, 'retail client')}
 						fieldModel={retailClientFields}
 					/>
 					<ReviewerSection
 						sectionName='Category of Investment'
 						accordionTitle='Category of Investment'
-						editAction={editStep.bind(this, 1)}
+						editAction={editStep.bind(this, 'category of investment')}
 						fieldModel={investmentCatergoryFields}
 					/>
 					<ReviewerSection
 						sectionName='Personal Information'
-						editAction={editStep.bind(this, 2)}
+						editAction={editStep.bind(this, 'personal information_personal')}
 						applicantCount={applicantCount}
                         fieldModel={ bioFieldsModel }
                         accordionTitle={accordionTitle}
 					/>
 					<ReviewerSection
 						sectionName='Contact Information'
-						editAction={editStep.bind(this, 3)}
+						editAction={editStep.bind(this, 'contact details_personal')}
 						applicantCount={applicantCount}
                         fieldModel={ contactFieldsModel }
                         accordionTitle={accordionTitle}
 					/>
 					<ReviewerSection
 						sectionName='Employment Information'
-						editAction={editStep.bind(this, 4)}
+						editAction={editStep.bind(this, 'employment information')}
 						applicantCount={applicantCount}
                         fieldModel={ employmentFieldsModel }
                         accordionTitle={ accordionTitle}
 					/>
 					<ReviewerSection
 						sectionName='Settlement Bank Account'
-						editAction={editStep.bind(this, 5)}
+						editAction={editStep.bind(this, 'settlement bank account')}
 						applicantCount={applicantCount}
                         fieldModel={ bankAccountModel }
                         accordionTitle={accordionTitle}
 					/>
 					<ReviewerSection
 						sectionName='Proof of Identity'
-						editAction={editStep.bind(this, 6)}
+						editAction={editStep.bind(this, 'proof of identity_personal')}
 						applicantCount={applicantCount}
                         fieldModel={ proofOfIdentityFieldsModel }
                         accordionTitle={accordionTitle}
 					/>
 					<ReviewerSection
 						sectionName='Investment & Risk Profile'
-						editAction={editStep.bind(this, 7)}
+						editAction={editStep.bind(this, 'investment & risk profile')}
 						applicantCount={applicantCount}
                         fieldModel={ riskProfileFieldModel }
                         accordionTitle={ accordionTitle }

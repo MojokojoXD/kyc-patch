@@ -99,9 +99,9 @@ function BankForm({
 	const currentBankCountry = watch(
 		`applicant.${applicantId}.bank.country`
 	);
-	// const currentNationality = getValues(
-	// 	`applicant.${applicantId}.countryOfCitizenship`
-	// );
+	const currentResidence = watch(
+		`applicant.${applicantId}.countryOfResidence`
+	);
 
 	const bankFieldName =
 		`applicant.${applicantId}.bank.name` as Path<IndividualFormSchema>;
@@ -111,11 +111,6 @@ function BankForm({
 			currentBankCountry,
 			countryList
 		) ?? '';
-	// const currentNationalityCode =
-	// 	FormHelpers.getCodeFromFullCountryName(
-	// 		currentNationality,
-	// 		countryList
-	// 	);
 
 	const aggregatorResults = useMemo(() => {
 		const rawFields = bankAccountModel({
@@ -142,10 +137,18 @@ function BankForm({
 						},
 					};
 				}
-			);
+            );
+        
+        aggregator.modifyFields( 'KE', {
+            required: currentResidence === 'KENYA'
+        } )
+        
+        aggregator.modifyFields( 'NG', {
+            required: currentResidence === 'NIGERIA'
+        })
 
 		return aggregator.generate();
-	}, [applicantId, countryList, bankList, currentBankCountryCode]);
+	}, [applicantId, countryList, bankList, currentResidence]);
 
 	useEffect(() => {
 		resetField(bankFieldName, { defaultValue: '' });

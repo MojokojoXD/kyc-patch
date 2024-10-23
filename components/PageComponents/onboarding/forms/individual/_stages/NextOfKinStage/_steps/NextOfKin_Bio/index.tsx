@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo,useEffect } from 'react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import {
 	AccordionItem,
@@ -44,17 +44,20 @@ const defaultNextOfKinValues: NextOfKinInfo = {
 };
 
 export const NextOfKinBio: FormStep = ({ countryList }) => {
-	const { watch, control } = useFormContext<IndividualFormSchema>();
+	const { watch, control, setValue } = useFormContext<IndividualFormSchema>();
 
 	const { fields, append, remove } = useFieldArray({
 		control,
 		name: 'nextOfKin',
 	});
 
-	if (fields.length === 0) {
-		append(defaultNextOfKinValues);
-    }
-    
+    useEffect( () =>
+    {
+        if ( fields.length === 0 )
+        {
+            setValue( 'nextOfKin', [ defaultNextOfKinValues ] );
+        }
+    }, [fields,setValue])
 
 
 	return (

@@ -9,7 +9,6 @@ import { Button } from '@/components/UIcomponents/ui/button';
 import {
 	FormHeader,
 	FormTitle,
-	FormSubHeader,
 	FormContent,
 } from '@/components/UIcomponents/FormLayout';
 import { Input } from '@/components/UIcomponents/ui/input';
@@ -34,7 +33,6 @@ export const BlindDisabledRatification: FormStep = ({
 						Skip
 					</Button>
 				</div>
-				<FormSubHeader>Please select which one applies.</FormSubHeader>
 			</FormHeader>
 			<FormContent>
 				<div className='space-y-[8px] py-5'>

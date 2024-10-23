@@ -66,7 +66,7 @@ const NOK_bioFieldsModel = ({
 		componentProps: {
 			disabled: { after: today },
 			defaultMonth: today,
-			startMonth: today,
+			endMonth: today,
 		},
         },
         {

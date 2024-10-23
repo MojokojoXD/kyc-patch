@@ -64,7 +64,8 @@ const proofOfIdentityFieldsModel = ({
 			startMonth: today,
 			endMonth: add(today, { years: 50 }),
 			disabled: { before: today },
-		},
+        },
+        tags: [ 'deps' ]
 	},
 ];
 

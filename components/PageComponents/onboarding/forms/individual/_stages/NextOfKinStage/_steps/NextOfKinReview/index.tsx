@@ -11,16 +11,17 @@ import { ReviewerSection } from '@/components/UIcomponents/FormReviewer/Reviewer
 import { NOK_bioFieldsModel } from '../NextOfKin_Bio/formBuilder/NOK_biofieldsModel';
 import { NOK_contactFieldsModel } from '../NextOfKin_Contact/formBuilder/NOK_contactFieldModel';
 import { NOK_identifyProofFieldsModel } from '../NextOfKin_IdentityProof/formBuilder/NOK_identityProofFieldModel';
+import type { Step } from '../../../../utils/formReducer';
 
 export const NextOfKinReview: FormStep = ( { formAction } ) => {
 	const { getValues } = useFormContext<IndividualFormSchema>();
 
 	const nextOfKinCount = getValues(`nextOfKin`).length;
 
-	const editStep = (step: number) =>
+	const editStep = (step: Step) =>
 		formAction({
 			type: 'jump_to_form_location',
-			toStage: 2,
+			toStage: 'next of kin',
 			toStep: step,
         } );
     
@@ -33,7 +34,7 @@ export const NextOfKinReview: FormStep = ( { formAction } ) => {
 	return (
 		<>
 			<FormHeader>
-				<FormTitle>Application Summary</FormTitle>
+				<FormTitle>Next of Kin Summary</FormTitle>
 				<FormSubHeader>
 					Review your submissions for any inaccuracies
 				</FormSubHeader>
@@ -43,21 +44,21 @@ export const NextOfKinReview: FormStep = ( { formAction } ) => {
 					<ReviewerSection
 						sectionName='Next of Kin - Personal Information'
 						applicantCount={nextOfKinCount}
-						editAction={editStep.bind(this, 0)}
+						editAction={editStep.bind(this, 'personal information_next of kin')}
                         fieldModel={ NOK_bioFieldsModel }
                         accordionTitle={ accordionTitle }
 					/>
 					<ReviewerSection
 						sectionName='Next of Kin - Contact Details'
 						applicantCount={nextOfKinCount}
-						editAction={editStep.bind(this, 1)}
+						editAction={editStep.bind(this, 'contact details_next of kin')}
                         fieldModel={ NOK_contactFieldsModel}
                         accordionTitle={ accordionTitle }
 					/>
 					<ReviewerSection
 						sectionName='Next of Kin - Proof of Identity'
 						applicantCount={nextOfKinCount}
-						editAction={editStep.bind(this, 2)}
+						editAction={editStep.bind(this, 'proof of identity_next of kin')}
                         fieldModel={ NOK_identifyProofFieldsModel}
                         accordionTitle={ accordionTitle }
 					/>

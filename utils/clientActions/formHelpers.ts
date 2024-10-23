@@ -77,38 +77,10 @@ export class FormHelpers {
 		}
 	}
 
-	static generateAllStepFields = <TFormSteps>(
-		stepFields: ReviewStepMetadata<TFormSteps> | undefined,
-		currentNumberOfApplicants: number
-	) => {
-		if (!stepFields) return [];
-
-		const temp: (string | string[])[] = [];
-		let allFieldNames: string[] = [];
-
-		for (let i = 0; i < currentNumberOfApplicants; i++) {
-			for (let j = 0; j < stepFields.field.length; j++) {
-				const { path } = stepFields.field[j];
-
-				if (typeof path === 'function') {
-					const value = path(i);
-					temp.push(value);
-					continue;
-				}
-
-				temp.push(path);
-			}
-		}
-
-		for (let i = 0; i < temp.length; i++) {
-			if (Array.isArray(temp[i])) {
-				allFieldNames = allFieldNames.concat(...temp[i]);
-				continue;
-			}
-
-			allFieldNames.push(temp[i] as string);
-		}
-
-		return [...new Set(allFieldNames).values()];
-	};
+    static currencyInputFormatter( value: string | undefined ): string
+    {
+        const formatter = new Intl.NumberFormat( 'en-GB', { useGrouping: 'always' })
+        
+        return formatter.format(value)
+    }
 }

@@ -10,7 +10,7 @@ const NOK_identifyProofFieldsModel = ({
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'radio',
-		name: `nextOfKin.${index}.proofOfIdentify.idType`,
+		name: `nextOfKin.${index}.proofOfIdentity.idType`,
 		label: 'ID Type',
 		rules: {
 			required: 'Select ID type',
@@ -59,13 +59,14 @@ const NOK_identifyProofFieldsModel = ({
 	{
 		fieldType: 'date',
 		name: `nextOfKin.${index}.proofOfIdentity.expiryDate`,
-		label: 'Expiry Date (Optional)',
+		label: 'Expiry Date',
 		placeholder: 'Select date',
 		componentProps: {
 			startMonth: today,
 			endMonth: add(today, { years: 50 }),
 			disabled: { before: today },
-		},
+        },
+        tags: ['deps']
 	},
 ];
 

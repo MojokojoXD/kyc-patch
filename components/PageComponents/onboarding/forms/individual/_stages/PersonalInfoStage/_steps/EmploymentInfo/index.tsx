@@ -91,11 +91,11 @@ function EmploymentForm({
 		aggregator.modifyFields('control-employment', {
 			removeAllExcept:
 				currentEmploymentStatus === 'Retired' ||
-				currentEmploymentStatus === 'Unemployed',
+				currentEmploymentStatus === 'Unemployed' || !currentEmploymentStatus,
 		});
 
 		aggregator.modifyFields('remove-all-except', {
-			removeAllExcept: currentEmploymentStatus === 'Student',
+			removeAllExcept: currentEmploymentStatus === 'Student', 
 		});
 
 		return aggregator.generate();

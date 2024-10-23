@@ -19,7 +19,7 @@ export interface IndividualFormSchema {
 	clientType: ClientType;
 	clientStatus: string;
 	csdNumber: string;
-	catInvestment: string;
+	catInvestment: string[];
     taxexempt: string;
     signatureMandate?: string;
 	applicant: ApplicantInfo[];
@@ -27,9 +27,6 @@ export interface IndividualFormSchema {
 	agreements: {
 		kestrel: {
 			termsAndConditions: Agreement;
-			nomineeAgreement: {
-				signatureURL: string;
-			};
 		};
 		afrinvest: {
 			emailIndemnity: Agreement;
@@ -70,7 +67,7 @@ export interface ApplicantInfo extends BiographicalCore {
 		significantWithdrawalTimetable?: string;
 		emergencyFunds?: string;
 		investmentKnowledge?: string;
-		sourceOfFunds: string[]; //Important! Do not change. Must be an array of strings;
+		sourceOfFunds: string[]; 
 		statements?: {
 			deliveryMode: string;
 			frequency: string;

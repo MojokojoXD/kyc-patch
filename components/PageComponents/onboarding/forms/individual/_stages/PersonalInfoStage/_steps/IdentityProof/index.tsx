@@ -15,7 +15,6 @@ import {
 import type { IndividualFormSchema } from '@/types/forms/individual';
 import type { FormStep } from '@/types/Components/onboarding';
 import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
-import { FormFieldAggregator } from '@/components/PageComponents/onboarding/forms/individual/utils/FormFieldAggregator';
 import { proofOfIdentityFieldsModel } from './formBuild/proofOfIdentityFields';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 
@@ -65,19 +64,21 @@ export const IdentityProofInfo: FormStep = ({
 
 interface IdentityFormProps extends SingleFormFieldsGeneratorProps {}
 
-function IdentityForm({ applicantId }: IdentityFormProps) {
-	const aggregatorResults = useMemo(() => {
-		const rawFields = proofOfIdentityFieldsModel({
+function IdentityForm( { applicantId }: IdentityFormProps )
+{
+    const { watch } = useFormContext<IndividualFormSchema>();
+
+    const currentIDType = watch( `applicant.${ applicantId }.proofOfIdentity.idType` );
+
+	const fields = useMemo(() => {
+		return proofOfIdentityFieldsModel({
 			index: applicantId,
 		});
-		const aggregator = new FormFieldAggregator(rawFields);
-
-		return aggregator.generate();
-	}, [applicantId]);
+	}, [applicantId, currentIDType]);
 
 	return (
 		<>
-			{aggregatorResults.fields.map((f) => (
+			{fields.map((f) => (
 				<FormFactory
 					key={f.name}
 					{...f}

@@ -37,7 +37,8 @@ export default function FormDate({
                     <FormControl>
                         <div ref={ field.ref }>
                             <DatePicker
-                                { ...componentProps } 
+                                { ...componentProps }
+                                isReady={ !fieldState.invalid && fieldState.isDirty }
                                 mode={ 'single' }
                                 onDateChange={ d => field.onChange( d ) }
                                 currentDate={ field.value }
