@@ -1,17 +1,12 @@
 import { useForm } from 'react-hook-form';
-import {
-	useCallback,
-	useReducer,
-	useEffect,
-	useContext,
-} from 'react';
+import { useReducer, useEffect, useContext } from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individual';
 import { Form } from '@/components/UIcomponents/ui/form';
-import { IndividualFormIntro } from '@/components/PageComponents/onboarding/forms/individual/_stages/IndividualFormIntro';
-import { PersonalInformation } from '@/components/PageComponents/onboarding/forms/individual/_stages/PersonalInfoStage';
-import { NextOfKinStage } from '@/components/PageComponents/onboarding/forms/individual/_stages/NextOfKinStage';
-import { Disclosures } from '@/components/PageComponents/onboarding/forms/individual/_stages/Disclosures';
-import { DocumentUpload } from '@/components/PageComponents/onboarding/forms/individual/_stages/DocumentUpload';
+import { FormsIntro } from '@/components/pages/onboarding/forms/preface/FormsIntro';
+import { PersonalInformation } from '@/components/pages/onboarding/forms/individual/stages/PersonalInfoStage';
+import { NextOfKinStage } from '@/components/pages/onboarding/forms/individual/stages/NextOfKinStage';
+import { Disclosures } from '@/components/pages/onboarding/forms/individual/stages/Disclosures';
+import { DocumentUpload } from '@/components/pages/onboarding/forms/individual/stages/DocumentUpload';
 import FormProgressSheet from '@/components/UIcomponents/CompoundUI/FormProgressSheet';
 import Loading from '@/components/UIcomponents/Loading';
 import { FormLayout } from '@/components/UIcomponents/FormLayout';
@@ -19,19 +14,20 @@ import { UserContext } from '@/Contexts/UserProfileProvider';
 import { useAsyncAction } from '@/customHooks/useAsyncAction';
 import { useCloseTabWarning } from '@/customHooks/useCloseTabWarning';
 import { getCountryList } from '@/utils/vars/countries';
-import { Button } from '@/components/UIcomponents/ui/button';
-import {
-	individualFormMetadata,
-	formReducer,
-} from '@/components/PageComponents/onboarding/forms/individual/utils/formReducer';
+import { formReducer } from '@/components/pages/onboarding/forms/utils/formReducer';
+import { individualFormMetadata } from '@/components/pages/onboarding/forms/individual/_stageMetadata/stages';
+import { IndividualReducerFn } from '@/components/pages/onboarding/forms/individual/_stageMetadata/stages';
 
 export default function KYCIndividualFormPage() {
 	//state management
-	const [formControl, formControlDispatch] = useReducer(formReducer, {
-        currentStage: 'introduction',
-		currentStep: 'instructions',
-		allStages: individualFormMetadata,
-	});
+	const [formControl, formControlDispatch] = useReducer(
+		formReducer as IndividualReducerFn,
+		{
+			currentStage: 'introduction',
+			currentStep: 'instructions',
+			allStages: individualFormMetadata,
+		}
+	);
 
 	const { currentStage, currentStep, allStages } = formControl;
 
@@ -52,7 +48,6 @@ export default function KYCIndividualFormPage() {
 
 	const {
 		watch,
-		trigger,
 		formState: { isDirty },
 	} = form;
 
@@ -64,22 +59,11 @@ export default function KYCIndividualFormPage() {
 	useCloseTabWarning(isDirty);
 	const [countryList, loading, error] = useAsyncAction(getCountryList);
 
-	//Form navigation methods
-	const next = useCallback(async () => {
-		const isStepValid = await trigger(undefined, { shouldFocus: true });
-        if ( !isStepValid ) return;
-		formControlDispatch({ type: 'next' });
-	}, [trigger]);
-
-	const prev = useCallback(() => {
-		formControlDispatch({ type: 'prev' });
-	}, []);
-
 	//Form stage selector
 	const getFormStage = () => {
 		switch (currentStage) {
 			case 'introduction':
-				return IndividualFormIntro;
+				return FormsIntro;
 			case 'personal':
 				return PersonalInformation;
 			case 'next of kin':
@@ -112,20 +96,14 @@ export default function KYCIndividualFormPage() {
 	if (!appWideContext || !appWideContext.onboardingFacts) {
 		console.error('missing client ID information');
 		return (
-			<p className='p-10'>
-				Something went wrong! Please contact system admin
-			</p>
+			<p className='p-10'>Something went wrong! Please contact system admin</p>
 		);
 	}
 
 	if (error.flag) {
 		console.error(error.message);
 
-		return (
-			<p className='p-10'>
-				Something went wrong! Please try again later
-			</p>
-		);
+		return <p className='p-10'>Something went wrong! Please try again later</p>;
 	}
 
 	return (
@@ -133,7 +111,7 @@ export default function KYCIndividualFormPage() {
 			<FormLayout>
 				{loading && <Loading />}
 				<Form {...form}>
-					<form className='flex flex-col h-full'>
+					<form>
 						<FormProgressSheet
 							formStages={allStages}
 							formAction={formControlDispatch}
@@ -142,34 +120,15 @@ export default function KYCIndividualFormPage() {
 						/>
 						<FormStage
 							step={currentStep}
-							renderStep={(FormStep) =>
-								FormStep ? (
-									<FormStep
-										applicantCount={applicantCount}
-										formAction={formControlDispatch}
-										countryList={countryList}
-										clientID={appWideContext?.onboardingFacts?.clientID}
-									/>
-								) : null
-							}
-						/>
-						<div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 grow-0 bg-white'>
-							{currentStage !== 'introduction' && (
-								<Button
-									type='button'
-									variant={'outline'}
-									onClick={prev}>
-									Go Back
-								</Button>
+							renderStep={(FormStep) => (
+								<FormStep
+									applicantCount={applicantCount}
+									formAction={formControlDispatch}
+									countryList={countryList}
+									clientID={appWideContext?.onboardingFacts?.clientID}
+								/>
 							)}
-							<Button
-								type='button'
-								onClick={next}>
-								{currentStage === 'introduction'
-									? 'Begin Process'
-									: 'Save & Continue'}
-							</Button>
-						</div>
+						/>
 					</form>
 				</Form>
 			</FormLayout>

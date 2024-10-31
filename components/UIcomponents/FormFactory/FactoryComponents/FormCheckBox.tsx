@@ -15,7 +15,8 @@ interface FormCheckBoxProps extends FactoryComponentProps {}
 export default function FormCheckBox({
 	label,
 	name,
-	options,
+    options,
+    readonly,
 	rules,
 	componentProps = { className: '', toggleStyles: '' },
 }: FormCheckBoxProps) {
@@ -55,7 +56,8 @@ export default function FormCheckBox({
 										}}
 										className={componentProps.toggleStyles}
 										value={options.keySelector(o)}
-										type={'checkbox'}
+                                        type={ 'checkbox' }
+                                        readonly={readonly}
 										label={options.keySelector(o)}
 										selected={field.value.includes(options.keySelector(o))}
 									/>

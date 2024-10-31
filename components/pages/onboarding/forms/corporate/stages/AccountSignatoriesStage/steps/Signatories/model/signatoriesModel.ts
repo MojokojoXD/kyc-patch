@@ -1,0 +1,475 @@
+import type { FormFactoryProps } from '@/types/Components/formFactory';
+import type { Country } from '@/types/forms/common';
+import validator from 'validator';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
+import { sub } from 'date-fns';
+
+const today = new Date();
+const MIN_AGE_DATE = sub(today, { years: 18 });
+
+export const signatoriesModel = ({
+	index,
+	clientID = '',
+	countryList = [],
+}: {
+	index: number;
+	clientID?: string;
+	countryList?: Country[];
+}): FormFactoryProps[] => [
+	{
+		fieldType: 'checkbox',
+		name: `accountSignatories.signatories.${index}.role`,
+		label: 'Do any of the roles apply to the signatory? (Optional)',
+		rules: {
+			required: 'Select option',
+		},
+		options: {
+			keys: ['Director', 'Beneficial Owner', 'Executive/Trustee/Admin'],
+			keySelector(key) {
+				return key as string;
+			},
+		},
+	},
+	{
+		fieldType: 'radio',
+		name: `accountSignatories.signatories.${index}.title.presets`,
+		label: 'Title',
+		rules: {
+			required: 'Select title',
+		},
+		options: {
+			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr', 'Other'],
+			keySelector(key) {
+				return key as string;
+			},
+		},
+		componentProps: {
+			className: 'grid-cols-5',
+			otherProps: {
+				label: 'Other? Specify',
+				placeholder: 'Specify',
+			},
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.firstName`,
+		inline: true,
+		label: 'Full Name',
+		placeholder: 'First name',
+		rules: {
+			required: 'Please enter first name',
+			validate: (v) => (v as string).length > 2 || 'Entry too short',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.middleName`,
+		inline: true,
+		label: '',
+		placeholder: 'Middle name',
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.lastName`,
+		inline: true,
+		label: '',
+		placeholder: 'Last name',
+		rules: {
+			required: 'Please enter last name',
+			validate: (v) => (v as string).length > 2 || 'Entry too short',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.address.email`,
+		label: 'Email Address',
+		placeholder: 'Enter email address',
+		rules: {
+			required: 'Please enter email address',
+			validate: (v) =>
+				validator.isEmail(v as string) ||
+				'Email must be of the format: name@example.com',
+		},
+	},
+	{
+		fieldType: 'date',
+		name: `accountSignatories.signatories.${index}.dateOfBirth`,
+		label: 'Date of Birth',
+		placeholder: 'Select date',
+		rules: {
+			required: 'Please select date',
+		},
+		componentProps: {
+			disabled: { after: MIN_AGE_DATE },
+			endMonth: MIN_AGE_DATE,
+		},
+	},
+	{
+		fieldType: 'radio',
+		name: `accountSignatories.signatories.${index}.gender`,
+		label: 'Gender',
+		rules: {
+			required: 'Select gender',
+		},
+		options: {
+			keys: ['Male', 'Female'],
+			keySelector(key) {
+				return key as string;
+			},
+		},
+		componentProps: {
+			className: 'grid-cols-2',
+		},
+	},
+	{
+		fieldType: 'radio',
+		name: `accountSignatories.signatories.${index}.maritalStatus`,
+		label: 'Marital Status',
+		rules: {
+			required: 'Select option',
+		},
+		options: {
+			keys: ['Single', 'Married', 'Separated', 'Divorced'],
+			keySelector(key) {
+				return key as string;
+			},
+		},
+		componentProps: {
+			className: 'grid-cols-4',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.placeOfBirth`,
+		label: 'Place of Birth',
+		placeholder: 'Place of birth',
+		rules: {
+			required: 'Please enter place of birth',
+		},
+	},
+	{
+		fieldType: 'dropdown',
+		name: `accountSignatories.signatories.${index}.countryOfBirth`,
+		label: 'Country of Birth',
+		placeholder: 'Select country',
+		options: {
+			keys: countryList,
+			keySelector(key) {
+				return (key as Country).cty_name;
+			},
+			priorityKeys: (keys) =>
+				(keys as Country[]).filter(
+					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
+				),
+		},
+	},
+	{
+		fieldType: 'dropdown',
+		name: `accountSignatories.signatories.${index}.citizenship`,
+		label: 'Citizenship',
+		placeholder: 'Select country',
+		options: {
+			keys: countryList,
+			keySelector(key) {
+				return (key as Country).cty_name;
+			},
+			priorityKeys: (keys) =>
+				(keys as Country[]).filter(
+					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
+				),
+		},
+	},
+	{
+		fieldType: 'dropdown',
+		name: `accountSignatories.signatories.${index}.countryOfResidence`,
+		label: 'Country of Residence',
+		placeholder: 'Select country',
+		options: {
+			keys: countryList,
+			keySelector(key) {
+				return (key as Country).cty_name;
+			},
+			priorityKeys: (keys) =>
+				(keys as Country[]).filter(
+					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
+				),
+		},
+	},
+	{
+		fieldType: 'radio',
+		name: `accountSignatories.signatories.${index}.residenceStatus`,
+		label: 'Residence Status',
+		options: {
+			keys: [
+				'Resident Ghanaian',
+				'Resident Foreigner',
+				'Non-Resident Ghanaian',
+				'Non-Resident Foreigner',
+			],
+			keySelector(key) {
+				return key as string;
+			},
+		},
+		componentProps: {
+			toggleStyles: 'pointer-events-none',
+		},
+	},
+	{
+		fieldType: 'phone',
+		name: `accountSignatories.signatories.${index}.address.phoneNumber`,
+		label: 'Phone/Mobile Number(s)',
+		placeholder: 'Enter phone/mobile number',
+		rules: {
+			required: 'Please enter phone number',
+			validate: (v) =>
+				isPossiblePhoneNumber(v as string) || 'Please enter valid phone number',
+		},
+		options: {
+			keys: countryList,
+			keySelector(key) {
+				return (key as Country).cty_name;
+			},
+			priorityKeys: (keys) =>
+				(keys as Country[]).filter(
+					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
+				),
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.address.residentialAddress`,
+		label: 'Residential Address (Not a P.O. Box)',
+		placeholder: 'Enter residential address',
+		rules: {
+			required: 'Please enter residential address',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.address.city`,
+		label: 'City/Town',
+		placeholder: 'Enter city/town',
+		rules: {
+			required: 'Please enter city/town',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.profession`,
+		label: 'Profession',
+		placeholder: 'Enter profession',
+		rules: {
+			required: 'Please enter profession',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.occupation`,
+		label: 'Occupation',
+		placeholder: 'Enter occupation',
+		rules: {
+			required: 'Please enter occupation',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.jobTitle`,
+		label: 'Job Title',
+		placeholder: 'Enter job title',
+		rules: {
+			required: 'Please enter job title',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.tin`,
+		label: 'Tax Identification Number',
+		placeholder: 'Enter TIN',
+		rules: {
+			required: 'Please enter TIN',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.address.postalAddress`,
+		label: 'Postal Address',
+		placeholder: 'Enter postal address',
+		rules: {
+			required: 'Please enter postal Address',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.address.digitalAddress`,
+		label: 'Digital Address',
+		placeholder: 'Enter digital Address',
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.address.nearestLandmark`,
+		label: 'Nearest Landmark',
+		placeholder: 'Enter landmark',
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.professionalLicenseNo`,
+		label: 'Professional License Number (If Applicable)',
+		placeholder: 'Enter number',
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.emergencyContact.contactName`,
+		label: 'Emergency Contact',
+		placeholder: 'Contact name',
+		rules: {
+			required: 'Please enter contact name',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.emergencyContact.relation`,
+		label: '',
+		placeholder: 'Relation to client',
+		rules: {
+			required: 'Please enter relation to client',
+		},
+	},
+	{
+		fieldType: 'phone',
+		name: `accountSignatories.signatories.${index}.emergencyContact.phoneNumber`,
+		label: '',
+		placeholder: 'Contact phone number',
+		rules: {
+			required: 'Please enter contact phone number',
+			validate: (v) =>
+				isPossiblePhoneNumber(v as string) || 'Please enter valid phone number',
+		},
+		options: {
+			keys: countryList,
+			keySelector(key) {
+				return (key as Country).cty_name;
+			},
+			priorityKeys: (keys) =>
+				(keys as Country[]).filter(
+					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
+				),
+		},
+		componentProps: {
+			phoneMode: 'single',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.mothersMaidenName`,
+		label: "Mother's Maiden Name",
+		placeholder: 'Enter mothers maiden name',
+		rules: {
+			required: 'Please enter mothers maiden name',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.maidenName`,
+		label: 'Maiden Name (Optional)',
+		placeholder: 'Enter maiden name',
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.religion`,
+		label: 'Religion',
+		placeholder: 'Enter religion',
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.stateOfOrigin`,
+		label: 'State of Origin',
+		placeholder: 'Enter state of origin',
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.localGovernment`,
+		label: 'Local Government',
+		placeholder: 'Enter local government',
+	},
+	{
+		fieldType: 'radio',
+		name: `accountSignatories.signatories.${index}.signatureMandate`,
+		label: 'Signature Mandate',
+		rules: {
+			required: 'Select option',
+		},
+		options: {
+			keys: ['A', 'B'],
+			keySelector(key) {
+				return key as string;
+			},
+		},
+		componentProps: {
+			className: 'grid-cols-2',
+		},
+	},
+	{
+		fieldType: 'signature',
+		name: `accountSignatories.signatories.${index}.signatureResource`,
+		label: 'Upload Your Signature',
+		componentProps: {
+			clientID,
+		},
+		rules: {
+			required: 'Please upload a signature',
+		},
+	},
+];
+
+export const signatoriesDefaultValues = {
+	id: '',
+	role: [],
+	address: {
+		phoneNumber: [
+			{
+				value: '',
+			},
+		],
+		residentialAddress: '',
+		postalAddress: '',
+		digitalAddress: '',
+		nearestLandmark: '',
+		emergencyContact: {
+			contactName: '',
+			relation: '',
+			phoneNumber: [
+				{
+					value: '',
+				},
+			],
+		},
+	},
+	signatureMandate: 'A',
+	signatureResource: '',
+	title: {
+		presets: 'Mr',
+		other: '',
+	},
+	firstName: '',
+	middleName: '',
+	lastName: '',
+	dateOfBirth: '',
+	gender: 'Male',
+	maritalStatus: 'Single',
+	placeOfBirth: '',
+	countryOfBirth: '',
+	citizenship: '',
+	countryOfResidence: '',
+	residenceStatus: 'Resident Ghanaian',
+	profession: '',
+	occupation: '',
+	jobTitle: '',
+	mothersMaidenName: '',
+	maidenName: '',
+	professionalLicenseNo: '',
+	tin: '',
+	religion: '',
+	stateOfOrigin: '',
+	localGovernment: '',
+};

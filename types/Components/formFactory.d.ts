@@ -1,5 +1,5 @@
 import type { PropsBase } from 'react-day-picker';
-import type { Country, BankList } from '../forms/universal';
+import type { Country, BankList } from '../forms/common';
 import type { InputProps } from '@/components/UIcomponents/ui/input';
 import type { RegisterOptions } from 'react-hook-form';
 import type { BrokerCode } from '../forms/broker';
@@ -12,9 +12,9 @@ type Tag =
 	| BrokerCode
 	| 'NG'
 	| 'GH'
-	| 'KE'
-	| 'local'
-	| 'foreign'
+    | 'KE'
+    | 'read-only'
+    | 'remove'
 	| 'optional-contact'
 	| 'residence-contact'
 	| 'remove-all-except'
@@ -32,7 +32,6 @@ type FactoryFieldType =
 	| 'agreement'
 	| 'file-upload';
 
-type test = Extract<FactoryFieldType, 'checkbox'>;
 
 export interface FormFactoryProps extends FactoryComponentProps {
 	fieldType: FactoryFieldType;
@@ -41,7 +40,8 @@ export interface FormFactoryProps extends FactoryComponentProps {
 export type FactoryComponentProps = {
 	label: string;
 	inline?: boolean;
-	readonly name: Path<IndividualFormSchema> | string;
+    readonly name: Path<IndividualFormSchema> | string;
+    readonly?: boolean;
 	componentProps?: Partial<
 		Omit<InputProps, 'disabled'> &
 			PropsBase & {
@@ -50,8 +50,8 @@ export type FactoryComponentProps = {
 				toggleStyles?: string;
 				clientID?: string;
 				agreementVersion?: string;
-            fileFieldName?: string;
-            isCurrency?: boolean;
+				fileFieldName?: string;
+				isCurrency?: boolean;
 				otherProps?: {
 					label: string;
 					placeholder: string;
@@ -66,5 +66,10 @@ export type FactoryComponentProps = {
 		keys: DropdownOption[];
 		priorityKeys?: (keys: DropdownOption[]) => DropdownOption[];
 	};
-	tags?: Tag[];
+    tags?: Tag[];
+    reviewerOverride?: {
+        name?: string;
+        type?: FactoryFieldType;
+        label?: string;
+    };
 };

@@ -13,13 +13,13 @@ import 'react-day-picker/style.css';
 type DatePickerProps = PropsBase & {
 	currentDate: string;
     onDateChange: ( date: string ) => void;
-    isReady?: boolean;
+    readonly?: boolean;
 };
 
 export default function DatePicker({
 	currentDate,
     onDateChange,
-    isReady = false,
+    readonly = false,
 	...props
 }: DatePickerProps) {
 	const [popoverOpenStatus, setPopoverOpenStatus] = useState(false);
@@ -30,12 +30,12 @@ export default function DatePicker({
 			open={popoverOpenStatus}>
 			<PopoverTrigger asChild>
 				<Button
-					variant={'secondary'}
+                    variant={ 'secondary' }
+                    disabled={ readonly }
 					size={'lg'}
 					className={cn(
-						'w-full justify-between text-left text-base px-4 py-6 ',
-						!currentDate && 'text-neutral-300', isReady && 'border-success-500 focus:border-success-500 hover:border-success-500'
-					)}>
+						'w-full justify-between text-left text-base px-4 py-6 disabled:opacity-70',
+						!currentDate && 'text-neutral-300')}>
 					{currentDate ? currentDate : <span>Select date</span>}
 					<CalendarIcon className={cn('h-5 w-5 text-neutral-700')} />
 				</Button>

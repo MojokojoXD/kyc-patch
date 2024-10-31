@@ -4,7 +4,11 @@ import type {
 	PhoneInfo,
 	Bank,
 	BankAccount,
-} from './universal';
+	InvestmentCategory,
+	ProofOfIdentity,
+    PepInfo,
+    Agreement
+} from './common';
 
 export type ClientType = 'Individual' | 'Joint Account';
 
@@ -19,9 +23,9 @@ export interface IndividualFormSchema {
 	clientType: ClientType;
 	clientStatus: string;
 	csdNumber: string;
-	catInvestment: string[];
-    taxexempt: string;
-    signatureMandate?: string;
+	catInvestment: InvestmentCategory[];
+	taxexempt: string;
+	signatureMandate?: string;
 	applicant: ApplicantInfo[];
 	nextOfKin: NextOfKinInfo[];
 	agreements: {
@@ -31,8 +35,8 @@ export interface IndividualFormSchema {
 		afrinvest: {
 			emailIndemnity: Agreement;
 			privacyPolicy: Agreement;
-        };
-	    declarations: Agreement;    
+		};
+		declarations: Agreement;
 	};
 }
 
@@ -67,7 +71,7 @@ export interface ApplicantInfo extends BiographicalCore {
 		significantWithdrawalTimetable?: string;
 		emergencyFunds?: string;
 		investmentKnowledge?: string;
-		sourceOfFunds: string[]; 
+		sourceOfFunds: string[];
 		statements?: {
 			deliveryMode: string;
 			frequency: string;
@@ -75,8 +79,8 @@ export interface ApplicantInfo extends BiographicalCore {
 		reaction?: string;
 		agreementOfTerms?: string;
 	};
-    disclosures: Disclosures;
-    fileUploads: FileUploads;
+	disclosures: Disclosures;
+	fileUploads: FileUploads;
 }
 
 export interface Employed {
@@ -176,13 +180,7 @@ interface Disclosures {
 		nameOfDeclarant: string;
 		languageOfUnderstanding: string;
 	};
-	pepInfo: {
-		isPep: string;
-		pepDetails?: {
-			desc: string;
-			country: string;
-		};
-	};
+	pepInfo: PepInfo;
 	fatca: {
 		status: string[];
 		details?:
@@ -205,20 +203,12 @@ interface Disclosures {
 	};
 }
 
-type Agreement = {
-	agreed: boolean;
-	timestamp: string;
-	version: string;
-};
 
 
 interface FileUploads {
-    [ index: string ]: FileUploadInfo;
-};
-
-
-type FileUploadInfo = {
-    documentFileName: string;
+	[index: string]: FileUploadInfo;
 }
 
-
+type FileUploadInfo = {
+	documentFileName: string;
+};

@@ -14,11 +14,8 @@ import {
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { useState, useEffect, useRef } from 'react';
-import type {
-	FormAction,
-	Stage,
-	Step,
-} from '@/components/PageComponents/onboarding/forms/individual/utils/formReducer';
+import type { FormAction } from '@/components/pages/onboarding/forms/utils/formReducer';
+
 
 type ProgressStage = {
 	readonly name: string;
@@ -28,8 +25,8 @@ type ProgressStage = {
 interface FormProgressSheetProps<TSteps> {
 	formStages: readonly TSteps[];
 	formAction: FormAction;
-	stage: Stage;
-	step: Step;
+	stage: string;
+	step: string;
 }
 
 export default function FormProgressSheet<T extends ProgressStage>({
@@ -88,7 +85,7 @@ export default function FormProgressSheet<T extends ProgressStage>({
 											if (_stage.name === stage) return;
 											formAction({
 												type: 'jump_to_form_location',
-												toStage: _stage.name as Stage,
+												toStage: _stage.name,
 											});
 										}}
 										disabled={!progress.current.has(_stage.name)}
@@ -106,8 +103,8 @@ export default function FormProgressSheet<T extends ProgressStage>({
 													onClick={() =>
 														formAction({
 															type: 'jump_to_form_location',
-															toStage: _stage.name as Stage,
-															toStep: _step as Step,
+															toStage: _stage.name,
+															toStep: _step,
 														})
 													}
 													size={'sm'}

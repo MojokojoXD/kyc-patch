@@ -16,25 +16,37 @@ export function ArrayFieldReviewer({
 }: ArrayFieldReviewerProps) {
 	const { getValues } = useFormContext<IndividualFormSchema>();
 
-	const fieldValues = getValues(name as Path<IndividualFormSchema>) || [];
+	const fieldValues =
+		getValues(name as Path<IndividualFormSchema>) || [];
 
 	let temp: string[] = [];
 
-	if (fieldType === 'phone') {
-		(fieldValues as { value: string }[]).forEach((p) => {
+	if (fieldType === 'checkbox') {
+		temp = [...(fieldValues as string[])];
+		
+    } else
+    {
+        (fieldValues as { value: string }[]).forEach((p) => {
 			temp.push(p.value);
 		});
-	} else {
-		temp = [...(fieldValues as string[])];
 	}
 
 	return (
 		<div className='space-y-[8px]'>
-			{label && <h2 className='paragraph2Medium text-neutra-700'>{label}</h2>}
+			{label && (
+				<h2 className='paragraph2Medium text-neutra-700'>{label}</h2>
+			)}
 			<div>
-				{temp.map((v) => (
-					<p key={v} className='paragraph2Regular text-neutral-500 first-letter:uppercase'>
-						{v || 'n/a'}
+				{temp.length === 0 && (
+					<p className='paragraph2Regular text-neutral-500 first-letter:uppercase'>
+						n/a
+					</p>
+				)}
+				{temp.map((v,i) => (
+					<p
+						key={v}
+						className='paragraph2Regular text-neutral-500 first-letter:uppercase'>
+                    #{ i + 1 } {v || 'n/a'}
 					</p>
 				))}
 			</div>

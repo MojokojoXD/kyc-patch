@@ -4,10 +4,11 @@ import Head from 'next/head';
 import UserContextProvider from '@/Contexts/UserProfileProvider';
 import localFont from 'next/font/local'
 
-const circular = localFont({
+const circular = localFont( {
+    preload: false,
     src: [
       {
-        path: '../public/fonts/Circular_Pro_Black.ttf',
+            path: '../public/fonts/Circular_Pro_Black.ttf',
         weight: '900',
             style: 'normal',
       },

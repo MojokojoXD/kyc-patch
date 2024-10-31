@@ -18,14 +18,14 @@ import {
 	SelectGroup,
 } from '../../ui/select';
 import { Controller } from 'react-hook-form';
-import { cn } from '@/lib/utils';
 
 interface FormDropdownProps extends FactoryComponentProps {}
 
 export default function FormDropdown({
 	label,
 	name,
-	placeholder,
+    placeholder,
+    readonly = false,
 	rules,
 	options = { keySelector: () => '', keys: [] },
 	defaultValue = '',
@@ -66,13 +66,7 @@ export default function FormDropdown({
 							<Select
 								onValueChange={(v) => field.onChange(v)}
 								defaultValue={field.value}>
-								<SelectTrigger
-									className={cn(
-										'focus:border-primary-500',
-										!fieldState.invalid &&
-											fieldState.isDirty &&
-											'border-success-500 focus:border-success-500 hover:border-success-500'
-									)}>
+								<SelectTrigger disabled={ readonly }>
 									<SelectValue placeholder={placeholder} />
 								</SelectTrigger>
 								<SelectContent>

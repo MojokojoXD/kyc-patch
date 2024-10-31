@@ -1,47 +1,46 @@
-import type { Country } from '@/types/forms/universal';
+import type { Country } from '@/types/forms/common';
 import axios from 'axios';
 import type { AxiosRequestConfig } from 'axios';
-import type { ReviewStepMetadata } from '@/types/forms';
+
+type Markdowns =
+    | 'pep'
+    | 'kestrelTerms'
+    | 'kestrelNominee'
+    | 'databankEmailIndemnity'
+    | 'afrinvestEmailIndemnity'
+    | 'declarations/databank'
+    | 'declarations/kestrel';
 
 export class FormHelpers {
 	static getFlagURL = (country: string, countryList: Country[]) =>
-		!country
+		!country || countryList.length === 0
 			? ''
-			: (
-					countryList.filter((c) => c.cty_code == country).at(0) as Country
-            ).cty_flag_name;
-    
+			: (countryList.filter((c) => c.cty_code == country).at(0) as Country)
+					.cty_flag_name;
+
 	static getCodeFromFullCountryName(
 		country: string,
 		countryList: Country[] = []
 	) {
-		const target = countryList
-			.filter((c) => c.cty_name === country)
-			.at(0);
+		const target = countryList.filter((c) => c.cty_name === country).at(0);
 
 		if (!target) return;
 
 		return target.cty_code;
 	}
 
-	static getCountryAreaCode = (
-		country: string,
-		countryList: Country[]
-	) =>
+	static getCountryAreaCode = (country: string, countryList: Country[]) =>
 		!country
 			? ''
-			: (
-					countryList
-						.filter((c) => c.cty_name === country)
-						.at(0) as Country
-			  ).call_code;
+			: (countryList.filter((c) => c.cty_name === country).at(0) as Country)
+					.call_code;
 
 	static recursiveFormSearch(path: string, target: unknown): unknown {
 		if (path === '') return target;
 
 		const accessors = path.split('.');
 
-        //@ts-expect-error target type is unknown
+		//@ts-expect-error target type is unknown
 		const value = target[accessors[0]];
 
 		if (typeof value === 'object') {
@@ -52,10 +51,7 @@ export class FormHelpers {
 		return value;
 	}
 
-	static async statelessRequest<
-		TRequest = unknown,
-		TResponse = unknown
-	>(
+	static async statelessRequest<TRequest = unknown, TResponse = unknown>(
 		url: string,
 		options: AxiosRequestConfig<TRequest> = {
 			method: 'GET',
@@ -69,18 +65,33 @@ export class FormHelpers {
 				return res.data;
 			}
 
-			throw new Error(
-				'Status: ' + res.status + ', Message: ' + res.statusText
-			);
+			throw new Error('Status: ' + res.status + ', Message: ' + res.statusText);
 		} catch (error) {
 			throw error;
 		}
 	}
 
-    static currencyInputFormatter( value: string ): string
-    {
-        const formatter = new Intl.NumberFormat( 'en-GB', { useGrouping: 'always' })
-        
-        return formatter.format( parseInt(value) )
-    }
+	static currencyInputFormatter(value: string): string {
+		const formatter = new Intl.NumberFormat('en-GB', {
+			useGrouping: 'always',
+		});
+
+		return formatter.format(parseInt(value));
+	}
+
+	static generateUniqueIdentifier() {
+		return Math.random().toString(36).substr(2, 7);
+	}
+
+	static async fetchMarkdown(name: Markdowns) {
+		try {
+			const res = await axios.get<string>(`/markdown/${name}.md`);
+			if (res.status === 200) {
+				return res.data;
+			}
+			return;
+		} catch (error) {
+			console.log(error);
+		}
+	}
 }

@@ -17,7 +17,6 @@ export interface BrokerDetails {
 }
 
 
-
 export type BrokerCode = 'DATAB' | 'KESTR' | 'AFRIN' | 'MERIS' | 1
 
 

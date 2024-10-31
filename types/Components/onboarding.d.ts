@@ -1,26 +1,22 @@
-import type { Country } from '../forms/universal';
+import type { Country } from '../forms/common';
 import type { FC, JSX } from 'react';
-import type { BrokerDetails } from '../forms/broker';
-import type { FormMetadata } from '@/pages/onboarding/individual';
-import type { FormAction } from '@/components/PageComponents/onboarding/forms/individual/utils/formReducer';
-
-type Steps = Pick<FormMetadata, 'steps'>['steps'][number];
+import type { FormAction } from '@/components/pages/onboarding/forms/utils/formReducer';
 
 export interface FormStepProps {
 	applicantCount?: number;
 	countryList?: Country[];
 	clientID?: string;
-	formAction: FormAction;
+	formAction?: FormAction;
 }
 
 export type FormStep = FC<FormStepProps>;
 
 export interface FormStageProps<TSteps> {
-	renderStep: (tStepComponent: FormStep | null) => JSX.Element | null;
+	renderStep: (StepComponent: FormStep) => JSX.Element;
 	step: TSteps;
 }
 
-export type FormStage<TSteps = Steps> = FC<FormStageProps<TSteps>>;
+export type FormStage<TSteps = string> = FC<FormStageProps<TSteps>>;
 
 export interface SingleFormFieldsGeneratorProps {
 	applicantId: number;

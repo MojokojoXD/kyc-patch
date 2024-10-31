@@ -13,8 +13,15 @@ export function FieldReviewer({
 	fieldType,
 	...props
 }: FieldReviewerProps) {
-	const getReviewComponent = (field: FactoryFieldType) => {
-		switch (field) {
+    const getReviewComponent = ( field: FactoryFieldType ) =>
+    {
+        const reviewFieldConfig = {
+            field: props.reviewerOverride?.type ?? field,
+            name: props.reviewerOverride?.name ?? props.name,
+            label: props.reviewerOverride?.label ?? props.label
+        };
+
+		switch (reviewFieldConfig.field) {
 			case 'date':
 			case 'dropdown':
 			case 'radio':
@@ -22,8 +29,8 @@ export function FieldReviewer({
 			case 'text':
 				return (
 					<PrimitiveFieldReviewer
-						name={props.name}
-						label={props.label}
+						name={reviewFieldConfig.name}
+						label={reviewFieldConfig.label}
 					/>
 				);
 			case 'phone':
@@ -31,22 +38,22 @@ export function FieldReviewer({
 				return (
 					<ArrayFieldReviewer
 						fieldType={fieldType}
-						name={props.name}
-						label={props.label}
+						name={reviewFieldConfig.name}
+						label={reviewFieldConfig.label}
 					/>
 				);
 			case 'signature':
 				return (
 					<SignatureFieldReviewer
-						name={props.name}
-						label={props.label}
+						name={reviewFieldConfig.name}
+						label={reviewFieldConfig.label}
 					/>
 				);
 			case 'file-upload':
 				return (
 					<FileUploadReviewer
-						name={props.name}
-						label={props.label}
+						name={reviewFieldConfig.name}
+						label={reviewFieldConfig.label}
 					/>
 				);
 			default:

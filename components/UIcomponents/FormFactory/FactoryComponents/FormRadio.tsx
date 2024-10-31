@@ -1,10 +1,5 @@
 import type { FactoryComponentProps } from '@/types/Components/formFactory';
-import {
-	FormItem,
-	FormLabel,
-	FormMessage,
-	FormControl,
-} from '../../ui/form';
+import { FormItem, FormLabel, FormMessage, FormControl } from '../../ui/form';
 import { useFormContext } from 'react-hook-form';
 import { CustomToggle } from '../../CompoundUI/CustomToggle';
 import { cn } from '@/lib/utils';
@@ -19,18 +14,18 @@ export default function FormRadio({
 	name,
 	rules,
 	options,
-	defaultValue = '',
+    defaultValue = '',
+    readonly,
 	componentProps = {
 		toggleStyles: 'text-nowrap truncate',
 		className: '',
 		otherProps: {
-			label: '',
-			placeholder: '',
+			label: 'Other? Specify',
+			placeholder: 'Specify',
 		},
 	},
 }: FormRadioProps) {
-	const { control, watch, resetField } =
-		useFormContext();
+	const { control, watch, resetField } = useFormContext();
 
 	const otherFieldName = useRef<string>('');
 
@@ -51,7 +46,7 @@ export default function FormRadio({
 			resetField(otherFieldName.current, { defaultValue: '' });
 			otherFieldName.current = '';
 		}
-	}, [currentValue, otherFieldName, resetField,isOther]);
+	}, [currentValue, otherFieldName, resetField, isOther]);
 
 	return (
 		<div className='space-y-[16px]'>
@@ -59,18 +54,18 @@ export default function FormRadio({
 				control={control}
 				name={name}
 				defaultValue={defaultValue}
-				rules={{...rules}}
+				rules={{ ...rules }}
 				render={({ field, fieldState }) => (
 					<FormItem className='space-y-2'>
-						<FormLabel
-							className={fieldState.error ? 'text-error-500' : undefined}>
+						<FormLabel className={fieldState.error ? 'text-error-500' : undefined}>
 							{label}
 						</FormLabel>
 						<div className={cn('grid gap-[4px]', componentProps.className)}>
 							{options &&
 								options.keys.map((o) => (
 									<CustomToggle
-										key={options.keySelector(o)}
+                                        key={ options.keySelector( o ) }
+                                        readonly={ readonly }
 										{...field}
 										value={options.keySelector(o)}
 										className={componentProps.toggleStyles}
@@ -98,12 +93,6 @@ export default function FormRadio({
 								<Input
 									{...field}
 									placeholder={componentProps.otherProps?.placeholder}
-									className={cn(
-										'focus-visible:border-primary-500',
-										!fieldState.invalid &&
-											fieldState.isDirty &&
-											'border-success-500 focus-visible:border-success-500 hover:border-success-500'
-									)}
 								/>
 							</FormControl>
 							<FormMessage>{fieldState.error?.message}</FormMessage>

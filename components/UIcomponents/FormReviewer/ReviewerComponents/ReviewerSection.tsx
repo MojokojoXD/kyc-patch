@@ -28,7 +28,7 @@ interface ReviewerSectionProps {
 
 export function ReviewerSection({
 	sectionName,
-	applicantCount,
+	applicantCount = 1,
 	accordionTitle,
 	editAction,
 	fieldModel,
@@ -93,7 +93,11 @@ export function ReviewerSection({
 							defaultValue='item-0'>
 							<AccordionItem value={`item-${af.id}`}>
 								<AccordionTrigger>
-									{typeof accordionTitle === 'string' ? accordionTitle : title}
+									{!accordionTitle
+										? sectionName
+										: typeof accordionTitle === 'string'
+										? accordionTitle
+										: title}
 								</AccordionTrigger>
 								<AccordionContent>
 									{af.fields.map((f) => (

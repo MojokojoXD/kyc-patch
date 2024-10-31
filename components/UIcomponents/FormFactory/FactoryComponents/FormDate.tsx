@@ -14,7 +14,8 @@ export interface FormDateProps extends FactoryComponentProps {}
 export default function FormDate({
     label,
 	name,
-	defaultValue = '',
+    defaultValue = '',
+    readonly,
 	rules,
 	componentProps = {},
 }: FormDateProps) {
@@ -38,7 +39,7 @@ export default function FormDate({
                         <div ref={ field.ref }>
                             <DatePicker
                                 { ...componentProps }
-                                isReady={ !fieldState.invalid && fieldState.isDirty }
+                                readonly={readonly}
                                 mode={ 'single' }
                                 onDateChange={ d => field.onChange( d ) }
                                 currentDate={ field.value }
