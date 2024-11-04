@@ -1,36 +1,35 @@
-// import CustomProgress from '@/components/UIcomponents/CompoundUI/CustomProgress';
-import { FormStage } from '@/types/Components/onboarding';
-import { NextOfKinBio } from './_steps/NextOfKin_Bio';
-import { NextOfKinContacts } from './_steps/NextOfKin_Contact';
-import { NextOfKin_IdentityProof } from './_steps/NextOfKin_IdentityProof';
-import { NextOfKinReview } from './_steps/NextOfKinReview';
+import { Personal$NOK$Individual } from './steps/Personal$NOK$Individual';
+import { Contact$NOK$Individual } from './steps/Contact$NOK$Individual';
+import { ProofOfIdentity$NOK$Individual } from './steps/ProofOfIdentity$NOK$Individual';
+import { Review$NOK$Individual } from './steps/Review$NOK$Individual';
+import type { FormComponentDict } from '../../../utils/formReducer';
+import type { IndividualFormStep } from '../../config/individualFormMetadata';
+import type { IndividualFormMetadata } from '../../config/individualFormMetadata';
+import { useKYCFormContext } from '../../../utils/formController';
+import { getCountryList } from '@/utils/vars/countries';
+import { useAsyncAction } from '@/components/pages/onboarding/forms/utils/customHooks/useAsyncAction';
+import Loading from '@/components/UIcomponents/Loading';
 
-export const NextOfKinStage: FormStage = ({
-	step,
-	renderStep,
-}) => {
-	const getStageStep = () => {
-		switch (step) {
-			case 'personal information_next of kin':
-				return NextOfKinBio;
-			case 'contact details_next of kin':
-				return NextOfKinContacts;
-			case 'proof of identity_next of kin':
-				return NextOfKin_IdentityProof;
-			case 'review_next of kin':
-				return NextOfKinReview;
-			default:
-				throw new Error('step ' + step + ' is not supported');
-		}
+export const NextOfKinStage = () => {
+	const { formNav } = useKYCFormContext<object, IndividualFormMetadata>();
+
+	const [countryList, isloading] = useAsyncAction(getCountryList);
+
+	const NOKStepDict: FormComponentDict<IndividualFormStep> = {
+		'personal information_next of kin': (
+			<Personal$NOK$Individual countryList={countryList} />
+		),
+		'contact details_next of kin': (
+			<Contact$NOK$Individual countryList={countryList} />
+		),
+		'proof of identity_next of kin': <ProofOfIdentity$NOK$Individual />,
+		'review_next of kin': <Review$NOK$Individual />,
 	};
-
-	const StepComponent = getStageStep();
 
 	return (
 		<>
-			<div className='flex flex-col grow'>
-				{renderStep(StepComponent)}
-			</div>
+			<Loading reveal={isloading} />
+			{NOKStepDict[formNav.currentStep]}
 		</>
 	);
 };

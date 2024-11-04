@@ -1,8 +1,8 @@
 import type { FormStep } from '@/types/Components/onboarding';
 import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
-import { contactDetailsModel } from '../ContactDetails/model/contactDetailsFields';
+import { contactDetailsModel$Corporate } from '../ContactDetails$Corporate/model/contactDetailsModel$Corporate';
 import { contactPersonModel } from '../ContactPerson/model/contactPersonModel';
-import { proofOfIdentityModel$Contacts } from '../ProofOfIdentity/model/proofOfIdentityModel_contact';
+import { proofOfIdentityModel$Contacts } from '../ProofOfIdentity$Corporate/model/proofOfIdentityModel_contact';
 import { ReviewerSection } from '@/components/UIcomponents/FormReviewer/ReviewerComponents/ReviewerSection';
 import {
 	FormHeader,
@@ -39,7 +39,7 @@ export const Review$Contacts: FormStep = () => {
 					<ReviewerSection
 						sectionName='Contact Details'
 						editAction={editStep.bind(this, 'address')}
-						fieldModel={contactDetailsModel}
+						fieldModel={contactDetailsModel$Corporate}
 					/>
 					<ReviewerSection
 						sectionName='Proof of Identity'

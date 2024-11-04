@@ -1,9 +1,8 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country } from '@/types/forms/common';
+import type { Country,CountryList } from '@/types/forms/common';
 import type { BeneficialOwner } from '@/types/forms/corporateSchema';
 import { sub } from 'date-fns';
 import validator from 'validator';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
 const today = new Date();
 const MIN_AGE = sub(today, { years: 18 });
@@ -13,7 +12,7 @@ export const beneficialOwnersModel = ({
 	countryList = [],
 }: {
 	index: number;
-	countryList?: Country[];
+	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
@@ -67,21 +66,14 @@ export const beneficialOwnersModel = ({
 		name: `accountSignatories.beneficialOwners.${index}.phoneNumber`,
 		label: 'Phone/Mobile Number(s)',
 		placeholder: 'Enter phone/mobile number',
-		rules: {
-			required: 'Please enter phone number',
-			validate: (v) =>
-				isPossiblePhoneNumber(v as string) || 'Please enter valid phone number',
-		},
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
-				),
-		},
+			priorityKeys: countryList[0],
+        },
+        tags: ['read-only']
 	},
 	{
 		fieldType: 'text',
@@ -106,23 +98,6 @@ export const beneficialOwnersModel = ({
 			endMonth: MIN_AGE,
 		},
 		tags: ['read-only'],
-	},
-	{
-		fieldType: 'radio',
-		name: `accountSignatories.beneficialOwners.${index}.status`,
-		label: 'Status',
-		rules: {
-			required: 'Please select status',
-		},
-		options: {
-			keys: ['Executive', 'Non-Executive'],
-			keySelector(key) {
-				return key as string;
-			},
-		},
-		componentProps: {
-			className: 'grid-cols-2',
-		},
 	},
 	{
 		fieldType: 'radio',
@@ -161,15 +136,11 @@ export const beneficialOwnersModel = ({
 			required: 'Select option',
 		},
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) =>
-						(c.cty_code === 'GH') || (c.cty_code === 'KE') || (c.cty_code === 'NG')
-				),
+			priorityKeys: countryList[0],
 		},
 		tags: ['remove', 'read-only'],
 	},
@@ -199,7 +170,8 @@ export const beneficialOwnersDefaultValues: BeneficialOwner = {
 	idNumber: '',
 	phoneNumber: [
 		{
-			value: '',
+            value: '',
+            countryCode: 'GH'
 		},
 	],
 	pepInfo: {
@@ -213,5 +185,4 @@ export const beneficialOwnersDefaultValues: BeneficialOwner = {
 	residentialAddress: '',
 	ownership: '',
     isPrefill: false,
-    status: 'non-Executive'
 };

@@ -1,10 +1,10 @@
 import type { CorporateStepDict } from '../../config/corporateFormConfigs';
 //steps import
 import { ContactPerson } from './steps/ContactPerson';
-import { ContactDetails } from './steps/ContactDetails';
-import { ProofOfIdentity$Contacts } from './steps/ProofOfIdentity';
+import { ContactDetails$Corporate } from './steps/ContactDetails$Corporate';
+import { ProofOfIdentity$Corporate } from './steps/ProofOfIdentity$Corporate';
 import { Review$Contacts } from './steps/Review$Contacts';
-import { useAsyncAction } from '@/customHooks/useAsyncAction';
+import { useAsyncAction } from '@/components/pages/onboarding/forms/utils/customHooks/useAsyncAction';
 import { getCountryList } from '@/utils/vars/countries';
 import Loading from '@/components/UIcomponents/Loading';
 import { useKYCFormContext } from '../../../utils/formController';
@@ -18,13 +18,13 @@ export const ContactsStage = () => {
 	const [countryList, isLoading] = useAsyncAction(getCountryList);
 
 	const contactStepDict: CorporateStepDict = {
-        'contact person': <ContactPerson countryList={ countryList } />,
-        'address': <ContactDetails countryList={ countryList } />,
-        'proof of identity_contacts': <ProofOfIdentity$Contacts />,
-        'review_contacts': <Review$Contacts/>
+		'contact person': <ContactPerson countryList={countryList} />,
+		address: <ContactDetails$Corporate countryList={countryList} />,
+		'proof of identity_contacts': <ProofOfIdentity$Corporate />,
+		review_contacts: <Review$Contacts />,
 	};
 
-	if (isLoading) return <Loading />;
+    if ( isLoading ) return <Loading reveal={ isLoading } />;
 
 	return <>{contactStepDict[currentStep as CorporateStep]}</>;
 };

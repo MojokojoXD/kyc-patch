@@ -19,7 +19,7 @@ export const Incorporation: FormStep = ({ countryList }) => {
 					Enter the required proof of incorporation/registration below
 				</FormSubHeader>
 			</FormHeader>
-			<FormContent>
+			<FormContent className='space-y-[46px]'>
 				{rawFields.map((f) => (
 					<FormFactory
 						key={f.name}

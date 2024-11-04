@@ -20,7 +20,8 @@ export const CompanyDetails: FormStep = ( { countryList } ) =>
 					Enter details about your company/business
 				</FormSubHeader>
 			</FormHeader>
-			<FormContent>
+            <FormContent className='space-y-[46px]'>
+                
 				{rawFields.map((f) => (
 					<FormFactory
 						key={f.name}

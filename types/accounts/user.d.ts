@@ -9,7 +9,7 @@ export interface Profile
     user_country: string;
     user_org_name: string;
     broker_id: string;
-    user_date_created: Date | string;
+    user_date_created: string;
     user_address: string;
     user_country: string;
     user_postcode: string;

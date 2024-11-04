@@ -1,4 +1,4 @@
-import { useEffect,useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
 import {
 	signatoriesModel,
@@ -22,29 +22,37 @@ import { useFieldArray } from 'react-hook-form';
 import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { FormStep } from '@/types/Components/onboarding';
+import type { Signatory } from '@/types/forms/corporateSchema';
+import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
+import Loading from '@/components/UIcomponents/Loading';
 
 const MAX_SIGNATORIES = 4;
 
 export const Signatories: FormStep = ({ countryList }) => {
 	const { form } = useKYCFormContext();
-	const { control, setValue } = form;
+	const { control, setValue, getValues } = form;
 
 	const { fields, append, remove } = useFieldArray({
 		name: 'accountSignatories.signatories',
 		control,
 	});
 
+	const currentSignatories = getValues(
+		'accountSignatories.signatories'
+	) as Signatory[];
+
 	useEffect(() => {
-		if (fields.length === 0) {
+		if (!currentSignatories || currentSignatories.length === 0) {
 			setValue(`accountSignatories.signatories`, [
 				{ ...signatoriesDefaultValues, id: FormHelpers.generateUniqueIdentifier() },
 			]);
 		}
-    }, [] );
-
+    }, [ currentSignatories ] );
     
+
 	return (
-		<>
+        <>
+            <Loading reveal={fields.length === 0}/>
 			<FormHeader>
 				<FormTitle>Account Signatories</FormTitle>
 			</FormHeader>
@@ -70,12 +78,12 @@ export const Signatories: FormStep = ({ countryList }) => {
 														<Trash2 className='h-5 w-5' />
 													</span>
 												)}
-												<p className='inline-block'>
-													Signatory #{i + 1}
-												</p>
+												<p className='inline-block'>Signatory #{i + 1}</p>
 											</div>
 										</AccordionTrigger>
-										<AccordionContent className='data-[state=closed]:hidden pb-16' forceMount>
+										<AccordionContent
+											className='data-[state=closed]:hidden pb-16'
+											forceMount>
 											<SignatoryForm
 												applicantId={i}
 												countryList={countryList}
@@ -87,8 +95,8 @@ export const Signatories: FormStep = ({ countryList }) => {
 						);
 					})}
 					<li>
-                        <Button
-                            type='button'
+						<Button
+							type='button'
 							size={'sm'}
 							variant={'ghost'}
 							disabled={fields.length >= MAX_SIGNATORIES}
@@ -116,44 +124,36 @@ interface SignatoryFormProps extends SingleFormFieldsGeneratorProps {}
 const GHANA = 'GHANA';
 
 function SignatoryForm({ applicantId, countryList }: SignatoryFormProps) {
-	const { form } = useKYCFormContext();
-	const { setValue,getValues } = form;
+	const { form } = useKYCFormContext<CorporateFormSchema>();
+	const { setValue, watch } = form;
 
-	const residenceCountry = getValues(
-		`accountSignatories.signatories.${applicantId}.countryOfResidence`
-	) as string;
-	const citizenshipCountry = getValues(
-		`accountSignatories.signatories.${applicantId}.citizenship`
-    ) as string;
-    
-    const residenceStatus =
-        residenceCountry === GHANA && citizenshipCountry === GHANA
-            ? 'Resident Ghanaian'
-            : residenceCountry === GHANA && citizenshipCountry !== GHANA
-            ? 'Resident Foreigner'
-            : residenceCountry !== GHANA && citizenshipCountry === GHANA
-            ? 'Non-Resident Ghanaian'
-                    : 'Non-Resident Foreigner';
-    
-    const fields = useMemo( () =>
-    {
-    
-        return signatoriesModel({
-            index: applicantId,
-            countryList,
-        });
-        
-    },[ countryList,applicantId])
+	const [signatoryResidence, signatoryCitizenship] = watch([
+		`accountSignatories.signatories.${applicantId}.countryOfResidence`,
+		`accountSignatories.signatories.${applicantId}.citizenship`,
+	]);
 
+	const fields = useMemo(() => {
+		return signatoriesModel({
+			index: applicantId,
+			countryList,
+		});
+	}, [countryList, applicantId]);
 
-	useEffect(
-        () =>
-			setValue(
-				`accountSignatories.signatories.${applicantId}.residenceStatus`,
-				residenceStatus
-			),
-		[residenceStatus, applicantId, setValue]
-	);
+	useEffect(() => {
+		const residenceStatus =
+			signatoryResidence === GHANA && signatoryCitizenship === GHANA
+				? 'Resident Ghanaian'
+				: signatoryResidence === GHANA && signatoryCitizenship !== GHANA
+				? 'Resident Foreigner'
+				: signatoryResidence !== GHANA && signatoryCitizenship === GHANA
+				? 'Non-Resident Ghanaian'
+				: 'Non-Resident Foreigner';
+
+		setValue(
+			`accountSignatories.signatories.${applicantId}.residenceStatus`,
+			residenceStatus
+		);
+	}, [signatoryCitizenship, signatoryResidence, applicantId, setValue]);
 
 	return (
 		<>

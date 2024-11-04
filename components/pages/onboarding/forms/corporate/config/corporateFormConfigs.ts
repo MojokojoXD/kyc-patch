@@ -65,6 +65,8 @@ export const corporateStages = [
 	},
 ] as const;
 
+export type CorporateFormMetadata = typeof corporateStages;
+
 //literal types for the stages
 export type CorporateStage = (typeof corporateStages)[number]['name'];
 

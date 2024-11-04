@@ -5,7 +5,7 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'plus.unsplash.com',
+            hostname: 'storage.googleapis.com',
           },
           {
             protocol: 'https',

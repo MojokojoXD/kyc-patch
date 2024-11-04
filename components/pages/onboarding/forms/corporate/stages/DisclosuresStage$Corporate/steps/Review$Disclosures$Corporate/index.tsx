@@ -4,7 +4,7 @@ import { kestrelTermsModel$Corporate } from '../KestrelTerms$Corporate/model/kes
 import { kestrelNomineeModel$Corporate } from '../KestrelNominee$Corporate/model/kestrelNomineeModel$Corporate';
 import { databankIndemnityModel$Corporate } from '../DatabankIndemnity$Corporate/model/databankIndemnityModel$Corporate';
 import { afrinvestIndemnityModel$Corporate } from '../AfrinvestIndemity$Corporate/model/afrinvestIndemnityModel$Corporate';
-import { signatureMandateModel$Corporate } from '../SignatureMandate/model/signatureMandateModel$Corporate';
+import { signatureMandateModel$Corporate } from '../SignatureMandate$Corporate/model/signatureMandateModel$Corporate';
 import { declarationsModel$Corporate } from '../Declarations$Corporate/model/declarationsModel$Corporate';
 import { fatcaModel$Corporate } from '../Fatca$Corporate/model/fatcaModel$Corporate';
 import { ReviewerSection } from '@/components/UIcomponents/FormReviewer/ReviewerComponents/ReviewerSection';

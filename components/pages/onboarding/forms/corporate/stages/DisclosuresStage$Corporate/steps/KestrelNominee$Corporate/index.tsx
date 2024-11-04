@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
 	AccordionItem,
 	Accordion,
@@ -13,33 +12,31 @@ import {
 } from '@/components/UIcomponents/FormLayout';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 import type { FormStep } from '@/types/Components/onboarding';
+import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import Markdown from 'react-markdown';
-import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { kestrelNomineeModel$Corporate } from './model/kestrelNomineeModel$Corporate';
 import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
-import type { Signatory } from '@/types/forms/corporateSchema';
+import { Ellipsis } from 'lucide-react';
+import { useFetchMarkdown } from '@/components/pages/onboarding/forms/utils/customHooks/useFetchMarkdown';
+import { format } from 'date-fns';
+
+const today = format(new Date(), 'M/d/yy');
 
 export const KestrelNorminee$Corporate: FormStep = () => {
-	const [termsText, setTermsText] = useState('');
-	const [isFetching, setIsFetching] = useState(false);
-
-	const { form, clientID } = useKYCFormContext();
+	const { form, clientID } = useKYCFormContext<CorporateFormSchema>();
 	const { getValues } = form;
 
-	const signatories = (getValues(
-		'accountSignatories.signatories'
-	) as Signatory[]) || [{ firstName: 'john', lastName: 'doe' }];
+	const [kestrelNomineeText, isLoading, error] =
+		useFetchMarkdown('kestrelNominee');
 
-	useEffect(() => {
-		const fetchText = async () => {
-			setIsFetching(true);
-			const result = await FormHelpers.fetchMarkdown('kestrelNominee');
-			result && setTermsText(result);
-			setIsFetching(false);
-		};
+	const signatories = getValues('accountSignatories.signatories') || [{}];
 
-		fetchText();
-	}, []);
+	if (error) {
+		console.error(error);
+		return (
+			<p className='p-10'>Failed to load resource. Please try again later!</p>
+		);
+	}
 
 	return (
 		<>
@@ -50,12 +47,12 @@ export const KestrelNorminee$Corporate: FormStep = () => {
 			</FormHeader>
 			<FormContent>
 				{signatories.map((s, i) => {
-					const signatoryFirstName = s.firstName ?? 'John';
-					const signatoryLastName = s.lastName ?? 'Doe';
+					const signatoryFirstName = s.firstName ?? '';
+					const signatoryLastName = s.lastName ?? '';
 					const signatoryMiddleName = s.middleName ?? '';
 					const signatoryIDNumber = s.proofOfIdentity?.idNumber ?? '';
-					const signatoryAddress = s.address?.residentialAddress ?? 'some address';
-					const signatoryCity = s.address?.city ?? 'some city';
+					const signatoryAddress = s.address?.residentialAddress ?? '';
+					const signatoryCity = s.address?.city ?? '';
 
 					const signatoryGist = `
 Name: ${signatoryFirstName} ${signatoryMiddleName} ${signatoryLastName}\\
@@ -67,7 +64,7 @@ City: ${signatoryCity}
 					return (
 						<Accordion
 							collapsible
-							key={i}
+							key={s.id}
 							type={'single'}
 							defaultValue='item-0'>
 							<AccordionItem value={`item-${i}`}>
@@ -79,11 +76,15 @@ City: ${signatoryCity}
 									forceMount>
 									<>
 										<FormText className=' [&_ol]:list-[decimal] [&_h2]:paragraph2Medium [&_h3]:paragraph2Medium space-y-[16px] [&_ol_ul]:space-y-[16px] max-h-[424px] overflow-auto [&_li>ul]:list-disc [&_li>ul]:list-outside'>
-											<Markdown skipHtml>
-												{isFetching
-													? '...loading'
-													: termsText.replace('{{signatoryGist}}', signatoryGist)}
-											</Markdown>
+											{isLoading ? (
+												<Ellipsis className='w-5 h-5 animate-pulse' />
+											) : (
+												<Markdown skipHtml>
+													{(kestrelNomineeText as string)
+														.replace('{{applicantGist}}', signatoryGist)
+														.replace('{{date}}', today)}
+												</Markdown>
+											)}
 										</FormText>
 										{kestrelNomineeModel$Corporate({ index: i, clientID }).map((f) => (
 											<FormFactory

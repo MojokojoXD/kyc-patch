@@ -4,29 +4,28 @@ import { KestrelTerms$Corporate } from './steps/KestrelTerms$Corporate';
 import { KestrelNorminee$Corporate } from './steps/KestrelNominee$Corporate';
 import { DatabankEmailIndemnity$Corporate } from './steps/DatabankIndemnity$Corporate';
 import { AfrinvestIndemnity$Corporate } from './steps/AfrinvestIndemity$Corporate';
-import { SignatureMandate$Corporate } from './steps/SignatureMandate';
+import { SignatureMandate$Corporate } from './steps/SignatureMandate$Corporate';
 import { Declarations$Corporate } from './steps/Declarations$Corporate';
 import { Review$Disclosures$Corporate } from './steps/Review$Disclosures$Corporate';
 import { Fatca$Corporate } from './steps/Fatca$Corporate';
 import { useKYCFormContext } from '../../../utils/formController';
-import type { CorporateStep } from '../../config/corporateFormConfigs';
+import type { CorporateFormMetadata } from '../../config/corporateFormConfigs';
 
 export const DisclosuresStage$Corporate = () => {
-    const {
+	const {
 		formNav: { currentStep },
-	} = useKYCFormContext();
+	} = useKYCFormContext<object, CorporateFormMetadata>();
 
 	const contactStepDict: CorporateStepDict = {
-        'kestrel - terms': <KestrelTerms$Corporate />,
-        'kestrel - nominee': <KestrelNorminee$Corporate />,
-        'databank - indemnity': <DatabankEmailIndemnity$Corporate />,
-        'afrinvest - indemnity': <AfrinvestIndemnity$Corporate />,
-        'signature mandate': <SignatureMandate$Corporate />,
-        'declarations': <Declarations$Corporate />,
-        'fatca': <Fatca$Corporate />,
-        'review_disclosures': <Review$Disclosures$Corporate/>
-    };
-    
+		'kestrel - terms': <KestrelTerms$Corporate />,
+		'kestrel - nominee': <KestrelNorminee$Corporate />,
+		'databank - indemnity': <DatabankEmailIndemnity$Corporate />,
+		'afrinvest - indemnity': <AfrinvestIndemnity$Corporate />,
+		'signature mandate': <SignatureMandate$Corporate />,
+		declarations: <Declarations$Corporate />,
+		fatca: <Fatca$Corporate />,
+		review_disclosures: <Review$Disclosures$Corporate />,
+	};
 
-	return <>{contactStepDict[currentStep as CorporateStep]}</>;
+	return <>{contactStepDict[currentStep]}</>;
 };

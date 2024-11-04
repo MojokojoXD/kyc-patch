@@ -14,7 +14,7 @@ function FormHeader({ children, ...props }: FormHeaderProps) {
 	const contentRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
-		contentRef.current?.scrollIntoView({ behavior: 'instant' });
+		contentRef.current?.scrollIntoView({ behavior: 'smooth' });
 	}, [props.content]);
 
 	return (
@@ -101,7 +101,8 @@ function FormNavButtons() {
 
 type FormTextProps = FormHeaderProps & Record<string, unknown>;
 
-function FormText({ children, className }: FormTextProps) {
+function FormText( { children, className }: FormTextProps )
+{
 	return (
 		<div
 			className={cn(
@@ -117,8 +118,8 @@ function FormLayout({ children }: FormLayoutProps) {
 	return (
 		<div className='h-screen w-full grid grid-cols-3'>
 			<div className='flex items-center col-start-2 col-span-full'>
-				<div className='w-full max-w-[716px] h-[90vh] bg-white'>
-					<div className='rounded-xl overflow-hidden'>{children}</div>
+				<div className='w-full max-w-[716px] bg-white '>
+					<div className='rounded-xl overflow-hidden relative'>{children}</div>
 				</div>
 			</div>
 		</div>

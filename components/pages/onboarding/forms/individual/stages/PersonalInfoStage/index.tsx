@@ -1,53 +1,46 @@
-import { RetailClient } from './_steps/RetailClient';
-import { InvestmentCategory } from './_steps/InvestmentCategory';
-import { BiographicalInfo } from './_steps/BiographicalInfo';
-import { Contacts } from './_steps/Contacts';
-import { EmploymentInfo } from './_steps/EmploymentInfo';
-import { BankAccountInfo } from './_steps/BankAccountInfo';
-import { IdentityProofInfo } from './_steps/IdentityProof';
-import { RiskProfile } from './_steps/RiskProfile';
-import { Review } from './_steps/Review';
-// import CustomProgress from '@/components/UIcomponents/CompoundUI/CustomProgress';
-import { FormStage } from '@/types/Components/onboarding';
+import { RetailClient } from './steps/RetailClient';
+import { InvestmentCategory } from './steps/InvestmentCategory';
+import { BiographicalInfo } from './steps/BiographicalInfo';
+import { ContactDetail$Individual } from './steps/ContactDetails$Individual';
+import { EmploymentInfo } from './steps/EmploymentInfo';
+import { BankDetails$Individual } from './steps/BankDetails$Individual';
+import { ProofOfIdentity$Individual } from './steps/ProofOfIdentity$Individual';
+import { RiskProfile$Individual } from './steps/RiskProfile$Individual';
+import { Review$Personal$Individual } from './steps/Review$Personal$Individual';
+import { useKYCFormContext } from '../../../utils/formController';
+import { useAsyncAction } from '@/components/pages/onboarding/forms/utils/customHooks/useAsyncAction';
+import { getCountryList } from '@/utils/vars/countries';
+import Loading from '@/components/UIcomponents/Loading';
+import type { IndividualFormMetadata,IndividualFormStep } from '../../config/individualFormMetadata';
+import type { FormComponentDict } from '../../../utils/formReducer';
 
+export const PersonalInfoStage = () => {
+	const { formNav } = useKYCFormContext<object, IndividualFormMetadata>();
 
+	const [countryList, isLoading] = useAsyncAction(getCountryList);
 
-export const PersonalInformation: FormStage = ({
-	step,
-	renderStep,
-}) => {
-	const getStageStep = () => {
-		switch (step) {
-			case 'retail client':
-				return RetailClient;
-			case 'category of investment':
-				return InvestmentCategory;
-			case 'personal information_personal':
-				return BiographicalInfo;
-			case 'contact details_personal':
-				return Contacts;
-			case 'employment information':
-				return EmploymentInfo;
-			case 'settlement bank account':
-				return BankAccountInfo;
-			case 'proof of identity_personal':
-				return IdentityProofInfo;
-			case 'investment & risk profile':
-				return RiskProfile;
-			case 'review_personal':
-				return Review;
-			default:
-				throw new Error('step ' + step + ' is not supported');
-		}
+	const personalStepDict: FormComponentDict<IndividualFormStep> = {
+		'retail client': <RetailClient />,
+		'category of investment': <InvestmentCategory />,
+		'personal information_personal': (
+			<BiographicalInfo countryList={countryList} />
+		),
+		'contact details_personal': (
+			<ContactDetail$Individual countryList={countryList} />
+		),
+		'employment information': <EmploymentInfo countryList={countryList} />,
+		'settlement bank account': (
+			<BankDetails$Individual countryList={countryList} />
+		),
+		'proof of identity_personal': <ProofOfIdentity$Individual />,
+		'investment & risk profile': <RiskProfile$Individual />,
+		review_personal: <Review$Personal$Individual />,
 	};
-
-	const StepComponent = getStageStep();
 
 	return (
 		<>
-			<div className='flex flex-col grow'>
-				{renderStep(StepComponent)}
-			</div>
+			<Loading reveal={isLoading} />
+			{personalStepDict[formNav.currentStep]}
 		</>
 	);
 };

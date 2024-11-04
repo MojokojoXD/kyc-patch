@@ -11,7 +11,7 @@ import {
 } from '@/components/UIcomponents/FormLayout';
 import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import * as Stages from '@/components/pages/onboarding/forms/corporate/stages/stagesComponents';
-import { useCloseTabWarning } from '@/customHooks/useCloseTabWarning';
+import { useCloseTabWarning } from '@/components/pages/onboarding/forms/utils/customHooks/useCloseTabWarning';
 import {
 	KYCContext,
 	useKYCForm,
@@ -52,7 +52,8 @@ export default function CorporateForm() {
 		);
 	}
 
-	return (
+    return (
+        //@ts-expect-error will fix type between context types
 		<KYCContext.Provider value={KYCForm}>
 			<Form {...form}>
 				<FormLayout>

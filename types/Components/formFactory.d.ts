@@ -4,7 +4,7 @@ import type { InputProps } from '@/components/UIcomponents/ui/input';
 import type { RegisterOptions } from 'react-hook-form';
 import type { BrokerCode } from '../forms/broker';
 import type { Path } from 'react-hook-form';
-import type { IndividualFormSchema } from '../forms/individual';
+import type { IndividualFormSchema } from '../forms/individualSchema';
 
 type DropdownOption = Country | BankList | string;
 
@@ -63,8 +63,8 @@ export type FactoryComponentProps = {
 	defaultValue?: string | boolean;
 	options?: {
 		keySelector(key: DropdownOption): string;
-		keys: DropdownOption[];
-		priorityKeys?: (keys: DropdownOption[]) => DropdownOption[];
+		keys: DropdownOption[] | undefined;
+		priorityKeys?: DropdownOption[];
 	};
     tags?: Tag[];
     reviewerOverride?: {

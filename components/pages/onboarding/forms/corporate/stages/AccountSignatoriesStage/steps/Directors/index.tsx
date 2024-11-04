@@ -26,36 +26,36 @@ import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 
 const MAX_INDIVIDUALS = 2;
 
-const collateDirectorsFromSignatories = ( signatories: Signatory[] ): Director[] => {
-    const collationResult: Director[] = [];
+const collateDirectorsFromSignatories = (
+	signatories: Signatory[]
+): Director[] => {
+	const collationResult: Director[] = [];
 
-    signatories.forEach((s) => {
-        if (!s.role.includes('Director')) return;
+	signatories.forEach((s) => {
+		if (!s.role.includes('Director')) return;
 
-        collationResult.push({
-            id: s.id,
-            firstName: s.firstName,
-            middleName: s.middleName ?? '',
-            lastName: s.lastName,
-            idType: s.proofOfIdentity?.idType || '',
-            idNumber: s.proofOfIdentity?.idNumber || '',
-            residentialAddress: s.address.residentialAddress,
-            phoneNumber: [{ value: '' }],
-            dateOfBirth: s.dateOfBirth,
-            ownership: '',
-            status: 'non-Executive',
-            pepInfo: {
-                isPep: s.pepInfo?.isPep || 'No',
-                pepDetails: {
-                    desc: s.pepInfo?.pepDetails?.desc || '',
-                    country: s.pepInfo?.pepDetails?.country || '',
-                },
-            },
-            isPrefill: true,
-        });
-    });
+		collationResult.push({
+			id: s.id,
+			firstName: s.firstName ?? '',
+			middleName: s.middleName ?? '',
+			lastName: s.lastName ?? '',
+			idType: s.proofOfIdentity?.idType || '',
+			idNumber: s.proofOfIdentity?.idNumber || '',
+			phoneNumber: [...s.address.phoneNumber],
+			ownership: '',
+			status: undefined,
+			pepInfo: {
+				isPep: s.pepInfo?.isPep || undefined,
+				pepDetails: {
+					desc: s.pepInfo?.pepDetails?.desc || '',
+					country: s.pepInfo?.pepDetails?.country || '',
+				},
+			},
+			isPrefill: true,
+		});
+	});
 
-    return collationResult;
+	return collationResult;
 };
 
 export const Directors: FormStep = ({ countryList }) => {
@@ -66,15 +66,12 @@ export const Directors: FormStep = ({ countryList }) => {
 		control,
 	});
 
-	const signatories = getValues('accountSignatories.signatories') as Signatory[];
+	const signatories = getValues('accountSignatories.signatories');
 
-	const currentDirectors = getValues(
-		'accountSignatories.directors'
-	) as Director[];
-
+	const currentDirectors = getValues('accountSignatories.directors');
 
 	useEffect(() => {
-		let directorsFromSignatory = collateDirectorsFromSignatories( signatories );
+		let directorsFromSignatory = collateDirectorsFromSignatories(signatories);
 
 		const directorsInit =
 			directorsFromSignatory.length > 0
@@ -106,9 +103,7 @@ export const Directors: FormStep = ({ countryList }) => {
 					middleName: existingDirectorFromSignatory[0].middleName,
 					idType: existingDirectorFromSignatory[0].idType,
 					idNumber: existingDirectorFromSignatory[0].idNumber,
-					phoneNumber: [...d.phoneNumber],
-					residentialAddress: existingDirectorFromSignatory[0].residentialAddress,
-					dateOfBirth: existingDirectorFromSignatory[0].dateOfBirth,
+					phoneNumber: [...existingDirectorFromSignatory[0].phoneNumber],
 					status: d.status,
 					pepInfo: { ...existingDirectorFromSignatory[0].pepInfo },
 					ownership: d.ownership,
@@ -129,12 +124,12 @@ export const Directors: FormStep = ({ countryList }) => {
 			...directorsFromSignatory,
 			...result,
 		]);
-    }, [] );
-    
+	}, []);
+
 	return (
 		<>
 			<FormHeader>
-				<FormTitle>Directors</FormTitle>
+				<FormTitle>Directors/Executive/Trustee/Admin</FormTitle>
 			</FormHeader>
 			<FormContent>
 				<ul className='space-y-[8px]'>

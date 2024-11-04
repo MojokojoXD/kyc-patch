@@ -1,6 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country } from '@/types/forms/common';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
+import type { Country, CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 const TURN_OVER_AMOUNTS = [
@@ -10,11 +9,11 @@ const TURN_OVER_AMOUNTS = [
 	'Above 10 million',
 ];
 
-export const companyDetailsFields = ( {
+export const companyDetailsFields = ({
 	countryList = [],
 }: {
-        index?: number;
-	countryList?: Country[];
+	index?: number;
+	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
@@ -46,8 +45,7 @@ export const companyDetailsFields = ( {
 	{
 		fieldType: 'text',
 		name: 'businessInfo.details.physicalAddress',
-		label:
-			'Principal Place of Business/Physical Address (not a P.O. Box)',
+		label: 'Principal Place of Business/Physical Address (not a P.O. Box)',
 		placeholder: 'Enter physical address',
 		rules: {
 			required: 'please enter physical address',
@@ -76,23 +74,12 @@ export const companyDetailsFields = ( {
 		name: 'businessInfo.details.phoneNumber',
 		label: 'Phone/Mobile Number(s)',
 		placeholder: 'Enter phone/mobile number',
-		rules: {
-			required: 'please enter phone/mobile number',
-			validate: (v) =>
-				isPossiblePhoneNumber(v) || 'Please enter valid phone number',
-		},
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) =>
-						c.cty_code === 'GH' ||
-						c.cty_code === 'KE' ||
-						c.cty_code === 'NG'
-				),
+			priorityKeys: countryList[0],
 		},
 	},
 	{
@@ -103,8 +90,7 @@ export const companyDetailsFields = ( {
 		rules: {
 			required: 'Please enter email address',
 			validate: (v) =>
-				validator.isEmail(v) ||
-				'Email must be of format: name@example.com',
+				validator.isEmail(v) || 'Email must be of format: name@example.com',
 		},
 	},
 	{
@@ -116,17 +102,11 @@ export const companyDetailsFields = ( {
 			required: 'Select country',
 		},
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) =>
-						c.cty_code === 'GH' ||
-						c.cty_code === 'KE' ||
-						c.cty_code === 'NG'
-				),
+			priorityKeys: countryList[0],
 		},
 	},
 	{

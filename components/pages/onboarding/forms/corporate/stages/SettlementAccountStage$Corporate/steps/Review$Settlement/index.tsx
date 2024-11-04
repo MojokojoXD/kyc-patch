@@ -8,7 +8,7 @@ import {
 	FormSubHeader,
 } from '@/components/UIcomponents/FormLayout';
 import type { CorporateStep } from '../../../../config/corporateFormConfigs';
-import { accountDetailsModel$Corporate } from '../AccountDetails$Corporate/model/accountDetailsModel$Corporate';
+import { accountDetailsModel$Corporate } from '../BankDetails$Corporate/model/accountDetailsModel$Corporate';
 import { accountActivityModel } from '../AccountActivity/model/accountActivityModel';
 import { riskProfileModel$Corporate } from '../RiskProfile$Corporate/model/riskProfileModel$Corporate';
 import { statementsModel } from '../Statements/model/statementsModel';

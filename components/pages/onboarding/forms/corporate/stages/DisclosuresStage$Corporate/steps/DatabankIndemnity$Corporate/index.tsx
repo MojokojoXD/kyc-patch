@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
 	AccordionItem,
 	Accordion,
@@ -11,35 +10,33 @@ import {
 	FormContent,
 	FormText,
 } from '@/components/UIcomponents/FormLayout';
+import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 import type { FormStep } from '@/types/Components/onboarding';
 import Markdown from 'react-markdown';
-import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
-import type { Signatory } from '@/types/forms/corporateSchema';
 import { databankIndemnityModel$Corporate } from './model/databankIndemnityModel$Corporate';
+import { useFetchMarkdown } from '@/components/pages/onboarding/forms/utils/customHooks/useFetchMarkdown';
+import { Ellipsis } from 'lucide-react';
 
 export const DatabankEmailIndemnity$Corporate: FormStep = () => {
-	const [termsText, setTermsText] = useState('');
-	const [isFetching, setIsFetching] = useState(false);
+	const {
+		form: { getValues },
+		clientID,
+	} = useKYCFormContext<CorporateFormSchema>();
 
-	const { form, clientID } = useKYCFormContext();
-	const { getValues } = form;
+	const [termsText, isLoading, error] = useFetchMarkdown(
+		'databankEmailIndemnity'
+	);
 
-	const signatories = (getValues(
-		'accountSignatories.signatories'
-	) as Signatory[]) || [{ firstName: 'john', lastName: 'doe' }];
+	const signatories = getValues('accountSignatories.signatories') || [{}];
 
-	useEffect(() => {
-		const fetchText = async () => {
-			setIsFetching(true);
-			const result = await FormHelpers.fetchMarkdown('databankEmailIndemnity');
-			result && setTermsText(result);
-			setIsFetching(false);
-		};
-
-		fetchText();
-	}, []);
+	if (error) {
+		console.error(error);
+		return (
+			<p className='p-10'>Failed to load resource. Please try again later!</p>
+		);
+	}
 
 	return (
 		<>
@@ -48,13 +45,13 @@ export const DatabankEmailIndemnity$Corporate: FormStep = () => {
 			</FormHeader>
 			<FormContent>
 				{signatories.map((s, i) => {
-					const signatoryFirstName = s.firstName ?? 'John';
-					const signatoryLastName = s.lastName ?? 'Doe';
+					const signatoryFirstName = s.firstName ?? '';
+					const signatoryLastName = s.lastName ?? '';
 
 					return (
 						<Accordion
 							collapsible
-							key={i}
+							key={s.id}
 							type={'single'}
 							defaultValue='item-0'>
 							<AccordionItem value={`item-${i}`}>
@@ -66,7 +63,11 @@ export const DatabankEmailIndemnity$Corporate: FormStep = () => {
 									forceMount>
 									<>
 										<FormText className=' [&_ol]:list-[decimal] [&_h2]:paragraph2Medium [&_h3]:paragraph2Medium space-y-[16px] [&_ol_ul]:space-y-[16px] [&_li>ul]:list-disc [&_li>ul]:list-outside'>
-											<Markdown skipHtml>{isFetching ? '...loading' : termsText}</Markdown>
+											{isLoading ? (
+												<Ellipsis className='h-5 w-5 animate-pulse' />
+											) : (
+												<Markdown skipHtml>{termsText as string}</Markdown>
+											)}
 										</FormText>
 										{databankIndemnityModel$Corporate({ index: i, clientID }).map((f) => (
 											<FormFactory

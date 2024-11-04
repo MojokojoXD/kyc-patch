@@ -1,11 +1,10 @@
-This **AGREEMENT** is made on 10/30/2024 between:
+This **AGREEMENT** is made on {{date}} between:
 
 1. **KESTREL CAPITAL NOMINEES SERVICES LIMITED**, a company incorporated in the
-   Republic of Kenya of
-   Post Office Box Number 40005 -00100 Nairobi,
-   Kenya(hereinafter called “the Nominee”);
-   and
-2. {{signatoryGist}}
+   Republic of Kenya of Post Office Box Number 40005 -00100 Nairobi, Kenya(hereinafter
+   called “the Nominee”); and
+
+2. {{applicantGist}}
 
 ## WHEREAS
 

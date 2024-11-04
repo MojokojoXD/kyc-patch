@@ -1,13 +1,13 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country } from '@/types/forms/common';
+import type { Country, CountryList } from '@/types/forms/common';
 
 const today = new Date();
 
 export const contactPersonModel = ({
 	countryList = [],
 }: {
-    index?: number,
-	countryList?: Country[];
+	index?: number;
+	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'radio',
@@ -47,10 +47,6 @@ export const contactPersonModel = ({
 		inline: true,
 		label: '',
 		placeholder: 'Middle name',
-		rules: {
-			required: 'Please enter Middle name',
-			validate: (v) => (v as string).length > 2 || 'Entry too short',
-		},
 	},
 	{
 		fieldType: 'text',
@@ -125,15 +121,11 @@ export const contactPersonModel = ({
 		label: 'Country of Birth',
 		placeholder: 'Select country',
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) =>
-						(c.cty_code === 'GH') || (c.cty_code === 'KE') || (c.cty_code === 'NG')
-				),
+			priorityKeys: countryList[0],
 		},
 	},
 	{
@@ -142,15 +134,11 @@ export const contactPersonModel = ({
 		label: 'Citizenship',
 		placeholder: 'Select country',
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) =>
-						(c.cty_code === 'GH') || (c.cty_code === 'KE') || (c.cty_code === 'NG')
-				),
+			priorityKeys: countryList[0],
 		},
 	},
 	{
@@ -159,20 +147,17 @@ export const contactPersonModel = ({
 		label: 'Country of Residence',
 		placeholder: 'Select country',
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) =>
-						(c.cty_code === 'GH') || (c.cty_code === 'KE') || (c.cty_code === 'NG')
-				),
+			priorityKeys: countryList[0],
 		},
 	},
 	{
 		fieldType: 'radio',
-		name: 'contacts.contactPerson.residenceStatus',
+        name: 'contacts.contactPerson.residenceStatus',
+        readonly: true,
 		label: 'Residence Status',
 		options: {
 			keys: [
@@ -184,9 +169,6 @@ export const contactPersonModel = ({
 			keySelector(key) {
 				return key as string;
 			},
-		},
-		componentProps: {
-			toggleStyles: 'pointer-events-none',
 		},
 	},
 	{

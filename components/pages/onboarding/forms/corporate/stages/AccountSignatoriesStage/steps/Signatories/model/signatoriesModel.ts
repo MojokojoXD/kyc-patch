@@ -1,8 +1,8 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country } from '@/types/forms/common';
+import type { Country, CountryList } from '@/types/forms/common';
 import validator from 'validator';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import { sub } from 'date-fns';
+import type { Signatory } from '@/types/forms/corporateSchema';
 
 const today = new Date();
 const MIN_AGE_DATE = sub(today, { years: 18 });
@@ -14,7 +14,7 @@ export const signatoriesModel = ({
 }: {
 	index: number;
 	clientID?: string;
-	countryList?: Country[];
+	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'checkbox',
@@ -152,53 +152,54 @@ export const signatoriesModel = ({
 		fieldType: 'dropdown',
 		name: `accountSignatories.signatories.${index}.countryOfBirth`,
 		label: 'Country of Birth',
-		placeholder: 'Select country',
+        placeholder: 'Select country',
+        rules: {
+            required: 'Please select country'
+        },
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
-				),
+			priorityKeys: countryList[0],
 		},
 	},
 	{
 		fieldType: 'dropdown',
 		name: `accountSignatories.signatories.${index}.citizenship`,
 		label: 'Citizenship',
-		placeholder: 'Select country',
+        placeholder: 'Select country',
+        rules: {
+            required: 'Please select country'
+        },
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
-				),
+			priorityKeys: countryList[0],
 		},
 	},
 	{
 		fieldType: 'dropdown',
 		name: `accountSignatories.signatories.${index}.countryOfResidence`,
 		label: 'Country of Residence',
-		placeholder: 'Select country',
+        placeholder: 'Select country',
+        rules: {
+            required: 'Please select country'
+        },
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
-				),
+			priorityKeys: countryList[0],
 		},
 	},
 	{
 		fieldType: 'radio',
-		name: `accountSignatories.signatories.${index}.residenceStatus`,
+        name: `accountSignatories.signatories.${ index }.residenceStatus`,
+        readonly: true,
 		label: 'Residence Status',
 		options: {
 			keys: [
@@ -211,29 +212,18 @@ export const signatoriesModel = ({
 				return key as string;
 			},
 		},
-		componentProps: {
-			toggleStyles: 'pointer-events-none',
-		},
 	},
 	{
 		fieldType: 'phone',
 		name: `accountSignatories.signatories.${index}.address.phoneNumber`,
 		label: 'Phone/Mobile Number(s)',
 		placeholder: 'Enter phone/mobile number',
-		rules: {
-			required: 'Please enter phone number',
-			validate: (v) =>
-				isPossiblePhoneNumber(v as string) || 'Please enter valid phone number',
-		},
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
-				),
+			priorityKeys: countryList[0],
 		},
 	},
 	{
@@ -340,20 +330,12 @@ export const signatoriesModel = ({
 		name: `accountSignatories.signatories.${index}.emergencyContact.phoneNumber`,
 		label: '',
 		placeholder: 'Contact phone number',
-		rules: {
-			required: 'Please enter contact phone number',
-			validate: (v) =>
-				isPossiblePhoneNumber(v as string) || 'Please enter valid phone number',
-		},
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
-				),
+			priorityKeys: countryList[0],
 		},
 		componentProps: {
 			phoneMode: 'single',
@@ -422,16 +404,19 @@ export const signatoriesModel = ({
 	},
 ];
 
-export const signatoriesDefaultValues = {
+export const signatoriesDefaultValues: Signatory = {
 	id: '',
-	role: [],
+    role: [],
 	address: {
 		phoneNumber: [
 			{
-				value: '',
+                value: '',
+                countryCode: 'GH'
 			},
 		],
-		residentialAddress: '',
+        residentialAddress: '',
+        email: '',
+        city: '',
 		postalAddress: '',
 		digitalAddress: '',
 		nearestLandmark: '',
@@ -440,28 +425,57 @@ export const signatoriesDefaultValues = {
 			relation: '',
 			phoneNumber: [
 				{
-					value: '',
+                    value: '',
+                    countryCode: 'GH'
 				},
 			],
 		},
-	},
-	signatureMandate: 'A',
+    },
+    pepInfo: {
+        isPep: 'No',
+    },
+    proofOfIdentity: {
+        idNumber: '',
+        idType: '',
+        issueDate: '',
+        expiryDate: '',
+        placeOfIssue: ''
+    },
+    disclosures: {
+        fatca: {
+            status: [],
+            ownership: ''
+        },
+        dataBank: {
+            emailIndemnity: {
+                address: '',
+                signatureResource: ''
+            },
+        },
+        kestrel: {
+            nomineeAgreement: {
+                signatureResource: '',
+            },
+        },
+    },
+    documentChecklist: {},
+	signatureMandate: undefined,
 	signatureResource: '',
 	title: {
-		presets: 'Mr',
+		presets: undefined,
 		other: '',
 	},
 	firstName: '',
 	middleName: '',
 	lastName: '',
 	dateOfBirth: '',
-	gender: 'Male',
-	maritalStatus: 'Single',
+	gender: undefined,
+	maritalStatus: undefined,
 	placeOfBirth: '',
 	countryOfBirth: '',
 	citizenship: '',
 	countryOfResidence: '',
-	residenceStatus: 'Resident Ghanaian',
+	residenceStatus: undefined,
 	profession: '',
 	occupation: '',
 	jobTitle: '',

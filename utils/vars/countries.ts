@@ -1,9 +1,15 @@
-import type { Country } from '@/types/forms/common';
+import type { CountryList, Country } from '@/types/forms/common';
 import rawCountriesData from '@/utils/vars/_formDefaults/countries.json';
 
-const priorityCountries = ['GH', 'NG', 'KE'];
+export const priorityCountries = ['GH', 'NG', 'KE'];
 
-const getCountryList = async (): Promise<Country[]> =>
-	rawCountriesData.data;
+export const getCountryList = async (): Promise<CountryList> => {
+	const priorityList: Country[] = rawCountriesData.data.filter((c) =>
+		priorityCountries.includes(c.cty_code)
+	);
+	const mainList: Country[] = rawCountriesData.data.filter(
+		(c) => !priorityCountries.includes(c.cty_code)
+	);
 
-export { priorityCountries, getCountryList };
+	return [priorityList, mainList];
+};

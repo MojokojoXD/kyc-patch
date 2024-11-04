@@ -37,16 +37,15 @@ const collateBeneficalOwnersFromSignatories = ( signatories: Signatory[] ): Bene
 
         collationResult.push({
             id: s.id,
-            firstName: s.firstName,
+            firstName: s.firstName ?? '',
             middleName: s.middleName ?? '',
-            lastName: s.lastName,
+            lastName: s.lastName ?? '',
             idType: s.proofOfIdentity?.idType || '',
             idNumber: s.proofOfIdentity?.idNumber || '',
             residentialAddress: s.address.residentialAddress,
-            phoneNumber: [{ value: '' }],
-            dateOfBirth: s.dateOfBirth,
+            phoneNumber: [...s.address.phoneNumber],
+            dateOfBirth: s.dateOfBirth ?? '',
             ownership: '',
-            status: 'non-Executive',
             pepInfo: {
                 isPep: s.pepInfo?.isPep || 'No',
                 pepDetails: {
@@ -109,10 +108,9 @@ export const BeneficialOwners: FormStep = ({ countryList }) => {
 					middleName: existingBownerFromSignatory[0].middleName,
 					idType: existingBownerFromSignatory[0].idType,
 					idNumber: existingBownerFromSignatory[0].idNumber,
-					phoneNumber: [...b.phoneNumber],
+					phoneNumber: [...existingBownerFromSignatory[0].phoneNumber],
 					residentialAddress: existingBownerFromSignatory[0].residentialAddress,
 					dateOfBirth: existingBownerFromSignatory[0].dateOfBirth,
-					status: b.status,
 					pepInfo: { ...existingBownerFromSignatory[0].pepInfo },
 					ownership: b.ownership,
 					isPrefill: existingBownerFromSignatory[0].isPrefill,

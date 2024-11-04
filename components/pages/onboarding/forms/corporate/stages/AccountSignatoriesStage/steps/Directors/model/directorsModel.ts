@@ -1,19 +1,15 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country } from '@/types/forms/common';
+import type { Country,CountryList } from '@/types/forms/common';
 import type { Director } from '@/types/forms/corporateSchema';
-import { sub } from 'date-fns';
 import validator from 'validator';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
 
-const today = new Date();
-const MIN_AGE = sub(today, { years: 18 });
 
 export const directorsModel = ({
 	index,
 	countryList = [],
 }: {
 	index: number;
-	countryList?: Country[];
+	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
@@ -67,45 +63,14 @@ export const directorsModel = ({
 		name: `accountSignatories.directors.${index}.phoneNumber`,
 		label: 'Phone/Mobile Number(s)',
 		placeholder: 'Enter phone/mobile number',
-		rules: {
-			required: 'Please enter phone number',
-			validate: (v) =>
-				isPossiblePhoneNumber(v as string) || 'Please enter valid phone number',
-		},
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) => c.cty_code === 'GH' || c.cty_code === 'KE' || c.cty_code === 'NG'
-				),
-		},
-	},
-	{
-		fieldType: 'text',
-		name: `accountSignatories.directors.${index}.residentialAddress`,
-		label: 'Home Address',
-		placeholder: 'Enter home address',
-		rules: {
-			required: 'Please enter home address',
-		},
-		tags: ['read-only'],
-	},
-	{
-		fieldType: 'date',
-		name: `accountSignatories.directors.${index}.dateOfBirth`,
-		label: 'Date of Birth',
-		placeholder: 'Select date',
-		rules: {
-			required: 'Please select date',
-		},
-		componentProps: {
-			disabled: { after: MIN_AGE },
-			endMonth: MIN_AGE,
-		},
-		tags: ['read-only'],
+			priorityKeys: countryList[0],
+        },
+        tags: [ 'read-only' ]
 	},
 	{
 		fieldType: 'radio',
@@ -161,15 +126,11 @@ export const directorsModel = ({
 			required: 'Select option',
 		},
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) =>
-						(c.cty_code === 'GH') || (c.cty_code === 'KE') || (c.cty_code === 'NG')
-				),
+			priorityKeys: countryList[0],
 		},
 		tags: ['remove', 'read-only'],
 	},
@@ -196,22 +157,21 @@ export const directorsDefaultValues: Director = {
 	middleName: '',
     lastName: '',
     idType: '',
-    status: 'non-Executive',
+    status: undefined,
 	idNumber: '',
 	phoneNumber: [
 		{
-			value: '',
+            value: '',
+            countryCode: 'GH'
 		},
 	],
 	pepInfo: {
-		isPep: 'No',
+		isPep: undefined,
 		pepDetails: {
 			desc: '',
 			country: '',
 		},
 	},
-	dateOfBirth: '',
-	residentialAddress: '',
 	ownership: '',
 	isPrefill: false,
 };

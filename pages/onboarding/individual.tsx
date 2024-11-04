@@ -1,137 +1,79 @@
 import { useForm } from 'react-hook-form';
-import { useReducer, useEffect, useContext } from 'react';
-import type { IndividualFormSchema } from '@/types/forms/individual';
+import { useEffect } from 'react';
+import type { IndividualFormSchema } from '@/types/forms/individualSchema';
+import type { FormComponentDict } from '@/components/pages/onboarding/forms/utils/formReducer';
+import type { IndividualFormStage } from '@/components/pages/onboarding/forms/individual/config/individualFormMetadata';
 import { Form } from '@/components/UIcomponents/ui/form';
-import { FormsIntro } from '@/components/pages/onboarding/forms/preface/FormsIntro';
-import { PersonalInformation } from '@/components/pages/onboarding/forms/individual/stages/PersonalInfoStage';
-import { NextOfKinStage } from '@/components/pages/onboarding/forms/individual/stages/NextOfKinStage';
-import { Disclosures } from '@/components/pages/onboarding/forms/individual/stages/Disclosures';
-import { DocumentUpload } from '@/components/pages/onboarding/forms/individual/stages/DocumentUpload';
-import FormProgressSheet from '@/components/UIcomponents/CompoundUI/FormProgressSheet';
-import Loading from '@/components/UIcomponents/Loading';
-import { FormLayout } from '@/components/UIcomponents/FormLayout';
-import { UserContext } from '@/Contexts/UserProfileProvider';
-import { useAsyncAction } from '@/customHooks/useAsyncAction';
-import { useCloseTabWarning } from '@/customHooks/useCloseTabWarning';
-import { getCountryList } from '@/utils/vars/countries';
-import { formReducer } from '@/components/pages/onboarding/forms/utils/formReducer';
-import { individualFormMetadata } from '@/components/pages/onboarding/forms/individual/_stageMetadata/stages';
-import { IndividualReducerFn } from '@/components/pages/onboarding/forms/individual/_stageMetadata/stages';
+import * as Stages from '@/components/pages/onboarding/forms/individual/stages/stagesDictionary';
+import {
+	FormLayout,
+	FormNav,
+	FormNavButtons,
+} from '@/components/UIcomponents/FormLayout';
+import { useCloseTabWarning } from '@/components/pages/onboarding/forms/utils/customHooks/useCloseTabWarning';
+import { individualFormMetadata } from '@/components/pages/onboarding/forms/individual/config/individualFormMetadata';
+import {
+	useKYCForm,
+	KYCContext,
+} from '@/components/pages/onboarding/forms/utils/formController';
 
-export default function KYCIndividualFormPage() {
-	//state management
-	const [formControl, formControlDispatch] = useReducer(
-		formReducer as IndividualReducerFn,
-		{
-			currentStage: 'introduction',
-			currentStep: 'instructions',
-			allStages: individualFormMetadata,
-		}
-	);
-
-	const { currentStage, currentStep, allStages } = formControl;
-
+export default function IndividualForm() {
 	const form = useForm<IndividualFormSchema>({
-		defaultValues: {
-			_formMetadata: {
-				applicantCount: 1,
-				applicant: [
-					{
-						signatureFileName: '',
-						kestrelSignatureFileName: '',
-					},
-				],
-			},
-		},
 		mode: 'onChange',
 	});
 
+	const KYCForm = useKYCForm(individualFormMetadata, form);
+
 	const {
-		watch,
 		formState: { isDirty },
-	} = form;
-
-	//variables used by stage steps
-	const applicantCount = watch(`_formMetadata.applicantCount`);
-
-	const appWideContext = useContext(UserContext);
+	} = KYCForm.form;
 
 	useCloseTabWarning(isDirty);
-	const [countryList, loading, error] = useAsyncAction(getCountryList);
 
-	//Form stage selector
-	const getFormStage = () => {
-		switch (currentStage) {
-			case 'introduction':
-				return FormsIntro;
-			case 'personal':
-				return PersonalInformation;
-			case 'next of kin':
-				return NextOfKinStage;
-			case 'disclosures':
-				return Disclosures;
-			case 'document upload':
-				return DocumentUpload;
-			default:
-				throw new Error('stage is not supported');
-		}
+	const individualStages: FormComponentDict<IndividualFormStage> = {
+		introduction: <Stages.FormsIntro />,
+		personal: <Stages.PersonalInfoStage />,
+		'next of kin': <Stages.NextOfKinStage />,
+		disclosures: <Stages.DisclosuresStage$Individual />,
+		'document checklist': <Stages.DocumentChecklistStage$Individual />,
 	};
-	const FormStage = getFormStage();
+
+	const clientType = form.watch('clientType');
 
 	useEffect(() => {
-		if (applicantCount === 1) {
-			formControlDispatch({
+		if (clientType === 'Individual') {
+			KYCForm.formAction({
 				type: 'remove_step',
 				stage: 'disclosures',
 				step: 'signature mandate',
 			});
 		} else
-			formControlDispatch({
+			KYCForm.formAction({
 				type: 'reset',
 				stages: individualFormMetadata,
 			});
-	}, [applicantCount]);
+	}, [clientType]);
 
 	// Reporting and feedback
-	if (!appWideContext || !appWideContext.onboardingFacts) {
+	if (!KYCForm.clientID) {
 		console.error('missing client ID information');
 		return (
 			<p className='p-10'>Something went wrong! Please contact system admin</p>
 		);
 	}
 
-	if (error.flag) {
-		console.error(error.message);
-
-		return <p className='p-10'>Something went wrong! Please try again later</p>;
-	}
-
-	return (
-		<>
+    return (
+        //@ts-expect-error will fix mismatch later
+		<KYCContext.Provider value={KYCForm}>
 			<FormLayout>
-				{loading && <Loading />}
 				<Form {...form}>
 					<form>
-						<FormProgressSheet
-							formStages={allStages}
-							formAction={formControlDispatch}
-							stage={currentStage}
-							step={currentStep}
-						/>
-						<FormStage
-							step={currentStep}
-							renderStep={(FormStep) => (
-								<FormStep
-									applicantCount={applicantCount}
-									formAction={formControlDispatch}
-									countryList={countryList}
-									clientID={appWideContext?.onboardingFacts?.clientID}
-								/>
-							)}
-						/>
+						<FormNav />
+						{individualStages[KYCForm.formNav.currentStage]}
+						<FormNavButtons />
 					</form>
 				</Form>
 			</FormLayout>
-		</>
+		</KYCContext.Provider>
 	);
 }

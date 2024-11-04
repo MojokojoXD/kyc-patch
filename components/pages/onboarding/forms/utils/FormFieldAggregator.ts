@@ -1,6 +1,7 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 import type { FactoryFieldType } from '@/types/Components/formFactory';
 import type { Tag } from '@/types/Components/formFactory';
+import type { RegisterOptions } from 'react-hook-form';
 
 type ModifierOptions = {
 	required: boolean;
@@ -84,7 +85,7 @@ export class FormFieldAggregator {
 				this._intermediateFields[index] = {
 					...this._intermediateFields[index],
 					rules: {
-						...this._intermediateFields[index].rules,
+						...this._intermediateFields[index].rules as RegisterOptions,
 						...(modifierOptions.required
 							? { required: 'This entry is required' }
 							: { required: false }),

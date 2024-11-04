@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country } from '@/types/forms/common';
+import type { Country,CountryList } from '@/types/forms/common';
 
 const today = new Date();
 
@@ -7,7 +7,7 @@ export const incorporationFields = ({
 	countryList = [],
 }: {
 	index?: number;
-	countryList?: Country[];
+	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
@@ -58,15 +58,11 @@ export const incorporationFields = ({
 		label: "Parent Company's Country of Incorporation (If Applicable)",
 		placeholder: 'Select country',
 		options: {
-			keys: countryList,
+			keys: countryList[1],
 			keySelector(key) {
 				return (key as Country).cty_name;
 			},
-			priorityKeys: (keys) =>
-				(keys as Country[]).filter(
-					(c) =>
-						(c.cty_code === 'GH') || (c.cty_code === 'KE') || (c.cty_code === 'NG')
-				),
+			priorityKeys: countryList[0],
 		},
 	},
 ];

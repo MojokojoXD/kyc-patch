@@ -1,3 +1,4 @@
+
 export type YesOrNo = 'Yes' | 'No';
 
 export type InvestmentCategory = 'Fixed Income' | 'Equities/Shares';
@@ -19,7 +20,7 @@ export interface FileStorage
 
 export interface FieldsWithOther<TPresets = string,TOther = string>
 {
-    presets: TPresets;
+    presets?: TPresets;
     other?: TOther;
 }
 
@@ -37,8 +38,8 @@ export type SignatoryRole =
 export type ResidenceStatus =
 	| 'Resident Ghanaian'
 	| 'Resident Foreigner'
-	| 'Non-resident Ghanaian'
-	| 'Non-resident Foreigner';
+	| 'Non-Resident Ghanaian'
+	| 'Non-Resident Foreigner';
 
 export type MaritalStatus =
 	| 'Single'
@@ -53,6 +54,11 @@ export interface Country {
 	cty_name: string;
 	cty_upd_rem: string | null;
 }
+
+type PriorityList = Country[];
+type OtherList = Country[];
+
+export type CountryList = Country[][];
 
 export interface BankList {
 	bank_code: string;
@@ -84,6 +90,7 @@ export interface EmergencyContact {
 }
 
 export type PhoneInfo = {
+    countryCode: CountryCode;
 	value: string;
 }[];
 
@@ -118,13 +125,13 @@ export interface AccountPerson {
 	middleName?: string;
 	lastName: string;
 	dateOfBirth: string;
-	gender: Gender;
-	maritalStatus: MaritalStatus;
+	gender?: Gender;
+	maritalStatus?: MaritalStatus;
 	placeOfBirth: string;
 	countryOfBirth: string;
 	citizenship: string;
 	countryOfResidence: string;
-	residenceStatus: ResidenceStatus;
+	residenceStatus?: ResidenceStatus;
 	profession: string;
 	occupation: string;
 	jobTitle: string;

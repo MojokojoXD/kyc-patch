@@ -12,7 +12,8 @@ const CustomToggle = forwardRef<HTMLInputElement, InputProps>(
 	(
 		{ className, label, selected, type = 'radio', readonly = false, ...props },
 		ref
-	) => {
+    ) =>
+    {
 		const clx =
 			'border border-neutral-100 bg-white hover:bg-primary-50 hover:border-primary-500 hover:text-neutral-700 w-full rounded-[8px] transition-all block w-full transition-all scale-100 active:scale-[.99] disabled:hover:border-neutral-100 disabled:hover:bg-white disabled:active:scale-100 disabled:opacity-80 disabled:cursor-not-allowed';
 

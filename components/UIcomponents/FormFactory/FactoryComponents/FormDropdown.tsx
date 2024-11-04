@@ -1,13 +1,7 @@
 import type {
 	FactoryComponentProps,
-	DropdownOption,
 } from '@/types/Components/formFactory';
-import {
-	FormItem,
-	FormControl,
-	FormLabel,
-	FormMessage,
-} from '../../ui/form';
+import { FormItem, FormControl, FormLabel, FormMessage } from '../../ui/form';
 import { useFormContext } from 'react-hook-form';
 import {
 	Select,
@@ -24,29 +18,14 @@ interface FormDropdownProps extends FactoryComponentProps {}
 export default function FormDropdown({
 	label,
 	name,
-    placeholder,
-    readonly = false,
+	placeholder,
+	readonly = false,
 	rules,
-	options = { keySelector: () => '', keys: [] },
+	options = { keySelector: () => '', keys: [], priorityKeys: [] },
 	defaultValue = '',
 }: FormDropdownProps) {
 	const { control } = useFormContext();
 
-	let priorityList: DropdownOption[] = [];
-	let mainList = options!.keys;
-
-	if (options && options.priorityKeys) {
-		priorityList = options.priorityKeys(options.keys);
-	}
-
-	if (options && options.keys && priorityList.length > 0) {
-		const priorityListKeys = priorityList.map((p) =>
-			options.keySelector(p)
-		);
-		mainList = options.keys.filter(
-			(k) => !priorityListKeys.includes(options.keySelector(k))
-		);
-	}
 	return (
 		<Controller
 			control={control}
@@ -57,8 +36,7 @@ export default function FormDropdown({
 			}}
 			render={({ field, fieldState }) => (
 				<FormItem className='space-y-2'>
-					<FormLabel
-						className={fieldState.error ? 'text-error-500' : undefined}>
+					<FormLabel className={fieldState.error ? 'text-error-500' : undefined}>
 						{label}
 					</FormLabel>
 					<FormControl>
@@ -66,12 +44,12 @@ export default function FormDropdown({
 							<Select
 								onValueChange={(v) => field.onChange(v)}
 								defaultValue={field.value}>
-								<SelectTrigger disabled={ readonly }>
+								<SelectTrigger disabled={readonly}>
 									<SelectValue placeholder={placeholder} />
 								</SelectTrigger>
 								<SelectContent>
 									<SelectGroup>
-										{priorityList.map((o) => (
+										{options.priorityKeys && options.priorityKeys.map((o) => (
 											<SelectItem
 												key={options!.keySelector(o)}
 												value={options!.keySelector(o)}>
@@ -79,11 +57,9 @@ export default function FormDropdown({
 											</SelectItem>
 										))}
 									</SelectGroup>
-									{priorityList.length > 0 && (
-										<hr className='my-2 border-neutral-200' />
-									)}
+									{options.priorityKeys && options.priorityKeys?.length > 0 && <hr className='my-2 border-neutral-200' />}
 									<SelectGroup>
-										{mainList.map((o) => (
+										{options.keys && options.keys.map((o) => (
 											<SelectItem
 												key={options.keySelector(o)}
 												value={options.keySelector(o)}>

@@ -46,8 +46,8 @@ export default function FormRadio({
 			resetField(otherFieldName.current, { defaultValue: '' });
 			otherFieldName.current = '';
 		}
-	}, [currentValue, otherFieldName, resetField, isOther]);
-
+    }, [ currentValue, otherFieldName, resetField, isOther ] );
+    
 	return (
 		<div className='space-y-[16px]'>
 			<Controller
@@ -62,7 +62,7 @@ export default function FormRadio({
 						</FormLabel>
 						<div className={cn('grid gap-[4px]', componentProps.className)}>
 							{options &&
-								options.keys.map((o) => (
+								options.keys?.map((o) => (
 									<CustomToggle
                                         key={ options.keySelector( o ) }
                                         readonly={ readonly }

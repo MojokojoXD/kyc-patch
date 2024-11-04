@@ -2,14 +2,7 @@ import type { Country } from '@/types/forms/common';
 import axios from 'axios';
 import type { AxiosRequestConfig } from 'axios';
 
-type Markdowns =
-    | 'pep'
-    | 'kestrelTerms'
-    | 'kestrelNominee'
-    | 'databankEmailIndemnity'
-    | 'afrinvestEmailIndemnity'
-    | 'declarations/databank'
-    | 'declarations/kestrel';
+
 
 export class FormHelpers {
 	static getFlagURL = (country: string, countryList: Country[]) =>
@@ -82,16 +75,5 @@ export class FormHelpers {
 	static generateUniqueIdentifier() {
 		return Math.random().toString(36).substr(2, 7);
 	}
-
-	static async fetchMarkdown(name: Markdowns) {
-		try {
-			const res = await axios.get<string>(`/markdown/${name}.md`);
-			if (res.status === 200) {
-				return res.data;
-			}
-			return;
-		} catch (error) {
-			console.log(error);
-		}
-	}
+    
 }

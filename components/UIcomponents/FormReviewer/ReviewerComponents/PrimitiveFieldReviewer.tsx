@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import type { IndividualFormSchema } from "@/types/forms/individual";
+import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import type { Path } from "react-hook-form";
 
 interface PrimitiveFieldReviewerProps
@@ -22,7 +22,7 @@ export function PrimitiveFieldReviewer( { name,label }: PrimitiveFieldReviewerPr
     return (
         <div className="space-y-[8px]">
             {label && <h2 className="paragraph2Medium text-neutral-700">{ label }</h2>}
-            <p className="paragraph2Regular text-neutral-500 first-letter:uppercase">{ fieldValue || 'n/a' }</p>
+            <p className="paragraph2Regular text-neutral-500 first-letter:uppercase">{ fieldValue as string || 'n/a' }</p>
         </div>
     )
 } 

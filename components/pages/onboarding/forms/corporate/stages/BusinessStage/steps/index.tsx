@@ -3,8 +3,8 @@ import { CategoryOfBusiness } from './CategoryOfBusiness';
 import { CategoryOfInvestment } from './CategoryOfInvestments';
 import { CompanyDetails } from './CompanyDetails';
 import { Incorporation } from './Incorporation';
-import { BusinessReview } from './BusinessReview';
-import { useAsyncAction } from '@/customHooks/useAsyncAction';
+import { Review$Business } from './Review$Business';
+import { useAsyncAction } from '@/components/pages/onboarding/forms/utils/customHooks/useAsyncAction';
 import { getCountryList } from '@/utils/vars/countries';
 import Loading from '@/components/UIcomponents/Loading';
 import { CorporateStepDict } from '../../../config/corporateFormConfigs';
@@ -22,10 +22,10 @@ export const BusinessStage = () => {
 		'category of investments': <CategoryOfInvestment />,
 		'company details': <CompanyDetails countryList={countryList} />,
 		'proof of incorporation': <Incorporation countryList={countryList} />,
-		'review_business': <BusinessReview />,
+		review_business: <Review$Business />,
 	};
 
-	if (isLoading) return <Loading />;
+    if ( isLoading ) return <Loading reveal={ isLoading } />;
 
 	return <>{businessStepDict[currentStep as CorporateStep]}</>;
 };

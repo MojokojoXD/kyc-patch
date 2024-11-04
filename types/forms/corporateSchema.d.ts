@@ -70,14 +70,13 @@ interface AccountSignatories {
 interface BaseSignatory {
 	id: string;
 	role: common.SignatoryRole[];
-	phoneNumber: common.PhoneInfo;
 	address: Omit<common.ExpandedContact, 'postalCode' | 'faxNumber'>;
-	signatureMandate: 'a' | 'b';
+	signatureMandate?: 'a' | 'b';
 	signatureResource: string;
 }
 
 export type Signatory = BaseSignatory &
-	common.AccountPerson &
+	Partial<common.AccountPerson> &
 	common.AfrinvestSpecific & {
 		pepInfo: common.PepInfo;
 		proofOfIdentity: common.ProofOfIdentity;
@@ -103,22 +102,21 @@ export type Signatory = BaseSignatory &
 
 type BaseDirectoryOrBeneficialOwnerFields = Pick<
 	common.AccountPerson,
-	'firstName' | 'middleName' | 'lastName'
+	'firstName' | 'middleName' | 'lastName' | 'dateOfBirth'
 > &
 	Pick<common.ExpandedContact, 'residentialAddress' | 'phoneNumber'> &
 	Pick<common.ProofOfIdentity, 'idType' | 'idNumber'> & {
 		id?: string;
-		status: 'executive' | 'non-Executive';
+		status?: 'executive' | 'non-Executive';
 		ownership: string;
-		pepInfo: common.PepInfo;
-		dateOfBirth?: string;
+		pepInfo?: Partial<common.PepInfo>;
 		isPrefill?: boolean;
 	};
 
-export type Director = BaseDirectoryOrBeneficialOwnerFields &
+export type Director = Omit<BaseDirectoryOrBeneficialOwnerFields, 'dateOfBirth' | 'residentialAddress'> &
 	Record<string, unknown>;
 
-export type BeneficialOwner = BaseDirectoryOrBeneficialOwnerFields &
+export type BeneficialOwner = Omit<BaseDirectoryOrBeneficialOwnerFields,'status'> &
 	Record<string, unknown>;
 
 interface SettlementAccount {

@@ -1,11 +1,10 @@
 import { Stack } from '@/utils/dataStructures/stack';
 import type { Dispatch } from 'react';
 
-
 export type Stages<TStage = string, TStep = string> = readonly {
-    readonly name: TStage;
-    readonly steps: readonly TStep[];
-}[]
+	readonly name: TStage;
+	readonly steps: readonly TStep[];
+}[];
 
 export interface FormReducerState<TStage = string, TStep = string> {
 	readonly currentStage: TStage;
@@ -13,10 +12,10 @@ export interface FormReducerState<TStage = string, TStep = string> {
 	allStages: Stages;
 }
 
-export type FormReducerFn<TState = FormReducerState, TAction = FormReducerAction> = (
-	state: TState,
-	action: TAction
-) => TState;
+export type FormReducerFn<
+	TState = FormReducerState,
+	TAction = FormReducerAction
+> = (state: TState, action: TAction) => TState;
 
 export type FormReducerAction<TStage = string, TStep = string> =
 	| { type: 'next' }
@@ -37,21 +36,30 @@ export type FormAction<TStage = string, TStep = string> = Dispatch<
 	FormReducerAction<TStage, TStep>
 >;
 
+export type DeriveFormSteps<TStages extends Stages = Stages> =
+	TStages[number]['steps'][number];
+
+export type DeriveFormStages<TStages extends Stages = Stages> =
+	TStages[number]['name'];
+
+export type FormComponentDict<
+	TStepOrStage extends string | number | symbol = string
+> = Partial<Record<TStepOrStage, JSX.Element>>;
+
+/*
+
+      logic that handles form navigation and it's state
+
+*/
+
 const historyTrace = new Stack<{ stage: string; step: string }>();
 
-export const formReducer: FormReducerFn = (
-	state,
-	action
-) =>  {
+export const formReducer: FormReducerFn = (state, action) => {
 	const { currentStage, currentStep, allStages } = state;
 
-	const currentStageIndex = allStages.findIndex(
-		(s) => s.name === currentStage
-	);
+	const currentStageIndex = allStages.findIndex((s) => s.name === currentStage);
 	const currentSteps = allStages[currentStageIndex].steps;
-	const currentStepIndex = currentSteps.findIndex(
-		(s) => s === currentStep
-	);
+	const currentStepIndex = currentSteps.findIndex((s) => s === currentStep);
 
 	switch (action.type) {
 		case 'next': {
@@ -68,9 +76,7 @@ export const formReducer: FormReducerFn = (
 					? currentStageIndex + 1
 					: currentStageIndex;
 			const nextStepIndex =
-				currentStepIndex === currentSteps.length - 1
-					? 0
-					: currentStepIndex + 1;
+				currentStepIndex === currentSteps.length - 1 ? 0 : currentStepIndex + 1;
 
 			return {
 				...state,
@@ -123,10 +129,7 @@ export const formReducer: FormReducerFn = (
 			const nextStage = allStages.find((s) => s.name === nextStageName);
 			const nextStepName = action.toStep ?? nextStage?.steps.at(0);
 
-			if (
-				!allStages.some((s) => s.name === nextStageName) ||
-				!nextStepName
-			) {
+			if (!allStages.some((s) => s.name === nextStageName) || !nextStepName) {
 				return state;
 			}
 
@@ -144,4 +147,4 @@ export const formReducer: FormReducerFn = (
 		default:
 			throw new Error('action type is not supported');
 	}
-}
+};

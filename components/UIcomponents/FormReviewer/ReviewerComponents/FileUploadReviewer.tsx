@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import type { IndividualFormSchema } from "@/types/forms/individual";
+import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import type { Path } from "react-hook-form";
 
 interface FileUploadReviewerProps

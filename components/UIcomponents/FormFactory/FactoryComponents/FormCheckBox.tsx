@@ -22,11 +22,11 @@ export default function FormCheckBox({
 }: FormCheckBoxProps) {
 	const { control } = useFormContext();
 
-	return (
-		<Controller
-			name={name}
-			control={control}
-			rules={rules}
+    return (
+        <Controller
+            name={ name }
+            control={ control }
+            rules={rules}
 			defaultValue={[]}
 			render={({ field, fieldState }) => (
 				<FormItem className='space-y-2'>
@@ -36,7 +36,7 @@ export default function FormCheckBox({
 					</FormLabel>
 					<FormControl>
 						<div className={cn('grid gap-[4px]', componentProps.className)}>
-							{options &&
+							{options?.keys &&
 								options.keys.map((o) => (
 									<CustomToggle
 										key={options.keySelector(o)}

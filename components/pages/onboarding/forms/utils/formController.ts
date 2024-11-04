@@ -6,22 +6,21 @@ import {
 	useMemo,
 } from 'react';
 import {
-	// type FormReducerFn,
-	// type FormReducerAction,
-	// type FormReducerState,
+	type FormReducerFn,
+	type FormReducerAction,
+	type FormReducerState,
 	type Stages,
 	formReducer,
 } from './formReducer';
 import { UserContext } from '@/Contexts/UserProfileProvider';
 import type { UseFormReturn, FieldValues } from 'react-hook-form';
-// import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 
 export type KYCContextValue = ReturnType<typeof useKYCForm>;
 
 export const KYCContext = createContext<KYCContextValue | null>(null);
 
 export function useKYCFormContext<
-	TSchema extends FieldValues  =  Record<string,FieldValues>,
+	TSchema extends FieldValues  =  FieldValues,
 	TStages extends Stages = Stages
 >() {
 	const context = useContext(KYCContext) as ReturnType<
@@ -37,14 +36,12 @@ export function useKYCForm<
 	TForm extends FieldValues,
 	TStages extends Stages = Stages
 >(stages: TStages, form: UseFormReturn<TForm>) {
-	const { trigger } = form;
 
 	const [formNav, formAction] = useReducer(
-        formReducer 
-    //     as FormReducerFn<
-	// 		FormReducerState<TStages[number]['name'], TStages[number]['steps'][number]>,
-	// 		FormReducerAction<TStages[number]['name'], TStages[number]['steps'][number]>
-    // >
+        formReducer as FormReducerFn<
+			FormReducerState<TStages[number]['name'], TStages[number]['steps'][number]>,
+			FormReducerAction<TStages[number]['name'], TStages[number]['steps'][number]>
+    >
         ,
 		{
 			currentStage: stages[0].name,
@@ -56,10 +53,10 @@ export function useKYCForm<
 	const appWideContext = useContext(UserContext);
 
 	const next = useCallback(async () => {
-		if (await trigger(undefined, { shouldFocus: true })) {
+		if (await form.trigger(undefined, { shouldFocus: true })) {
             formAction({ type: 'next' });
         }
-	}, [trigger, form]);
+	}, [form]);
 
 	const prev = useCallback(() => formAction({ type: 'prev' }), []);
 
@@ -68,11 +65,11 @@ export function useKYCForm<
 			formNav,
 			clientID: appWideContext?.onboardingFacts?.clientID || 'hello',
 			formAction,
-			form: form as UseFormReturn<FieldValues>,
+			form: form as  UseFormReturn<TForm>,
 			next,
 			prev,
 		}),
-		[appWideContext, form, formNav, next, prev, formAction]
+		[appWideContext, formNav, next, prev, formAction,form]
 	);
 
 	return KYCForm;

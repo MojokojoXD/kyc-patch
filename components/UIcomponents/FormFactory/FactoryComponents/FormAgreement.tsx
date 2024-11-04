@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import type { FactoryComponentProps } from '@/types/Components/formFactory';
-import type { IndividualFormSchema } from '@/types/forms/individual';
+import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import { useFormContext, Path } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { FormItem, FormControl, FormMessage } from '../../ui/form';
@@ -47,7 +47,7 @@ export default function FormAgreement({
 			control={control}
 			name={name as Path<IndividualFormSchema>}
 			defaultValue={defaultValue}
-			rules={rules}
+			rules={ rules }
 			render={({ field, fieldState }) => (
 				<FormItem>
 					<FormControl>
