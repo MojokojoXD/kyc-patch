@@ -48,7 +48,7 @@ const defaultNOKValues: NOK = {
 
 export const Personal$NOK$Individual: FormStep = ({ countryList }) => {
 	const {
-        form: { control, setValue },
+        form: { control},
         toggleLoading,
 	} = useKYCFormContext<IndividualFormSchema>();
 
