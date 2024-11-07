@@ -25,17 +25,19 @@ import type { Path } from 'react-hook-form';
 
 export const BankDetails$Individual: FormStep = ({ countryList }) => {
 	const {
-		form: { getValues },
+        form: { getValues },
 	} = useKYCFormContext<IndividualFormSchema>();
 	const [bankList, loading, error] = useAsyncAction(getBankList);
 
 	const applicants = getValues('applicant') ?? [];
 
-	if (error.flag) {
+
+    
+    if (error.flag) {
 		console.log(error.message);
 		return <p className='p-10'>Something went wrong! Please try again later.</p>;
-	}
-
+    }
+    
 	return (
 		<>
 			<Loading reveal={loading} />
@@ -81,7 +83,8 @@ type BankFormProps = SingleFormFieldsGeneratorProps & {
 
 function BankForm({ applicantId, countryList = [], bankList }: BankFormProps) {
 	const {
-		form: { watch },
+        form: { watch },
+        formVars: { brokerCode }
 	} = useKYCFormContext<IndividualFormSchema>();
 
 	const currentBankCountry = watch(
@@ -118,7 +121,11 @@ function BankForm({ applicantId, countryList = [], bankList }: BankFormProps) {
 
 		aggregator.modifyFields('KE', {
 			required: currentResidence === 'KENYA',
-		});
+        } );
+        
+        aggregator.modifyFields( 'KESTR', {
+            remove: brokerCode !== 'KESTR'
+        })
 
 		aggregator.modifyFields('NG', {
 			required: currentResidence === 'NIGERIA',
@@ -131,7 +138,8 @@ function BankForm({ applicantId, countryList = [], bankList }: BankFormProps) {
 		bankList,
 		currentResidence,
 		currentBankCountry,
-		bankFieldName,
+        bankFieldName,
+        brokerCode
 	]);
 
 	// useEffect(() => {

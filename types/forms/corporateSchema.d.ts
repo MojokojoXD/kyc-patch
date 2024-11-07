@@ -12,7 +12,8 @@ interface CorporateFormSchema {
 
 interface BusinessInformation {
 	categoryOfBusiness: string;
-	categoryOfInvestment: InvestmentCategory[];
+    categoryOfInvestment: InvestmentCategory[];
+    csdNumber?: string;
 	taxExempt: common.YesOrNo;
 	details: {
 		name: string;

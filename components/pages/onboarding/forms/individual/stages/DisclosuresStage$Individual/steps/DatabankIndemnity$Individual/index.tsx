@@ -10,29 +10,28 @@ import {
 	FormContent,
 	FormText,
 } from '@/components/UIcomponents/FormLayout';
-import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
+import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 import type { FormStep } from '@/types/Components/onboarding';
 import Markdown from 'react-markdown';
 import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
-import { databankIndemnityModel$Corporate } from './model/databankIndemnityModel$Corporate';
+import { databankIndemnityModel$Individual } from './model/databankIndemnityModel$Individual';
 import { useFetchMarkdown } from '@/components/pages/onboarding/forms/utils/customHooks/useFetchMarkdown';
 import { Ellipsis } from 'lucide-react';
 import { Input } from '@/components/UIcomponents/ui/input';
 import { FormLabel } from '@/components/UIcomponents/ui/form';
 
-export const DatabankEmailIndemnity$Corporate: FormStep = () => {
+export const DatabankEmailIndemnity$Individual: FormStep = () => {
 	const {
 		form: { getValues },
 		formVars: { clientID },
-	} = useKYCFormContext<CorporateFormSchema>();
+	} = useKYCFormContext<IndividualFormSchema>();
 
 	const [termsText, isLoading, error] = useFetchMarkdown(
 		'databankEmailIndemnity'
 	);
 
-	const companyName = getValues('businessInfo.details.name') ?? '';
-	const signatories = getValues('accountSignatories.signatories') ?? [{}];
+	const applicants = getValues('applicant') ?? [{}];
 
 	if (error) {
 		console.error(error);
@@ -47,25 +46,22 @@ export const DatabankEmailIndemnity$Corporate: FormStep = () => {
 				<FormTitle>Email Indemnity - Databank Brokerage Limited</FormTitle>
 			</FormHeader>
 			<FormContent>
-				{signatories.map((s, i) => {
-					const signatoryFirstName = s.firstName ?? '';
-					const signatoryLastName = s.lastName ?? '';
-					const title =
-						!s.title || !s.title.presets
-							? ''
-							: s.title?.presets === 'Other'
-							? s.title?.other
-							: s.title.presets;
+				{applicants.map((a, i) => {
+					const clientFirstName = a.firstName ?? '';
+					const clientLastName = a.lastName ?? '';
+					const clientMiddleName = a.middleName ?? '';
+
+					const fullName = `${clientFirstName} ${clientMiddleName} ${clientLastName}`;
 
 					return (
 						<Accordion
 							collapsible
-							key={s.id}
+							key={a.id}
 							type={'single'}
 							defaultValue='item-0'>
 							<AccordionItem value={`item-${i}`}>
 								<AccordionTrigger>
-									Signatory #{i + 1} {signatoryFirstName} {signatoryLastName}
+									Applicant #{i + 1} {clientFirstName} {clientLastName}
 								</AccordionTrigger>
 								<AccordionContent
 									className='data-[state=closed]:hidden'
@@ -77,8 +73,8 @@ export const DatabankEmailIndemnity$Corporate: FormStep = () => {
 											) : (
 												<Markdown skipHtml>
 													{(termsText as string)
-														.replaceAll('{{var1}}', companyName)
-														.replaceAll('{{var2}}', title ?? '')}
+														.replaceAll('{{var1}}', fullName)
+														.replaceAll('{{var2}}', 'Myself/Ourselves')}
 												</Markdown>
 											)}
 										</FormText>
@@ -88,16 +84,18 @@ export const DatabankEmailIndemnity$Corporate: FormStep = () => {
 											<span>Your Home Address</span>
 											<Input
 												disabled
-												value={s.address.residentialAddress}
+												value={a.contacts?.residentialAddress ?? ''}
 												id='indemnity__address'
 											/>
 										</FormLabel>
-										{databankIndemnityModel$Corporate({ index: i, clientID }).map((f) => (
-											<FormFactory
-												key={f.name}
-												{...f}
-											/>
-										))}
+										{databankIndemnityModel$Individual({ index: i, clientID }).map(
+											(f) => (
+												<FormFactory
+													key={f.name}
+													{...f}
+												/>
+											)
+										)}
 									</>
 								</AccordionContent>
 							</AccordionItem>

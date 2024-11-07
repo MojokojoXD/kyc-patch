@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo,useEffect } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
 import {
@@ -14,6 +14,7 @@ import {
 	FormTitle,
 	FormSubHeader,
 	FormContent,
+	// FormAutopopulate,
 } from '@/components/UIcomponents/FormLayout';
 import type { FormStep } from '@/types/Components/onboarding';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
@@ -47,19 +48,31 @@ const defaultNOKValues: NOK = {
 
 export const Personal$NOK$Individual: FormStep = ({ countryList }) => {
 	const {
-		form: { control, setValue },
+        form: { control, setValue },
+        toggleLoading,
 	} = useKYCFormContext<IndividualFormSchema>();
 
 	const { fields, append, remove } = useFieldArray({
 		control,
 		name: 'nextOfKin',
-	});
+    } );
+    
+    useEffect( () =>
+    {
+        if ( fields.length === 0 )
+        {
+            toggleLoading( true );
+            // setValue('nextOfKin', [defaultNOKValues], {
+            //     shouldTouch: false,
+            // } );
+            append( defaultNOKValues );
+            return;
+        }
 
-	if (fields.length === 0) {
-		setValue('nextOfKin', [defaultNOKValues], {
-			shouldTouch: false,
-		});
-	}
+        toggleLoading( false );
+        
+    }, [ fields, append, toggleLoading ])
+
 
 	return (
 		<>

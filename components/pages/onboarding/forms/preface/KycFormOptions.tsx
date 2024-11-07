@@ -8,6 +8,7 @@ import {
 	FormTitle,
 	FormSubHeader,
 } from '@/components/UIcomponents/FormLayout';
+import type { BrokerCode } from '@/types/forms/broker';
 
 const formOptions = [
 	{
@@ -29,9 +30,14 @@ const formOptions = [
 
 // const BROKER_INFO_URL = BASE_URL + '/';
 
+interface KYCFormOptionProps
+{
+    clientID: string;
+    orgCode: BrokerCode;
+}
 
 
-export default function KycFormOptions() {
+export default function KycFormOptions( { clientID, orgCode }: KYCFormOptionProps ) {
 	const router = useRouter();
 	const [formID, setFormID] = useState<string>('');
 	const [selectionError, setSelectionError] = useState<string>('');
@@ -48,7 +54,7 @@ export default function KycFormOptions() {
 
 		const formPath = selectedForm.href;
 
-		router.replace('/onboarding' + formPath);
+		router.replace('/onboarding' + formPath + `?c_id=${clientID}&b_code=${orgCode}`);
 	};
 
 	

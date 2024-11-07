@@ -26,7 +26,7 @@ export default function FormCheckBox({
         <Controller
             name={ name }
             control={ control }
-            rules={rules}
+            rules={!rules ? {} : rules}
 			defaultValue={[]}
 			render={({ field, fieldState }) => (
 				<FormItem className='space-y-2'>

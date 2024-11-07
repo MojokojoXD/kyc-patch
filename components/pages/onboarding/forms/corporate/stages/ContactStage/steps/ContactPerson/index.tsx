@@ -33,10 +33,17 @@ export const ContactPerson: FormStep = ({ countryList }) => {
 	const fields = useMemo(() => {
 		const rawFields = contactPersonModel({ countryList });
 
-		const aggregator = new FormFieldAggregator(rawFields);
+        const aggregator = new FormFieldAggregator( rawFields );
+        
+        aggregator.modifyFields('GH', {
+			required:
+				residenceStatus === 'Resident Foreigner' ||
+                residenceStatus === 'Non-Resident Foreigner',
+            remove: residenceStatus === 'Resident Ghanaian'
+		});
 
 		return aggregator.generate();
-	}, [countryList]);
+	}, [countryList, residenceStatus]);
 
 	useEffect(
 		() =>

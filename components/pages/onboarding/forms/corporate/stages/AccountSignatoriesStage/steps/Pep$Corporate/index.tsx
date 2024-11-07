@@ -110,7 +110,7 @@ function SignatoryForm({
 
 	return (
 		<>
-			<FormText>
+			<FormText className='[&>ul_ol]:list-[lower-alpha]'>
 				{isLoading ? (
 					<Ellipsis className='w-5 h-5 animate-pulse' />
 				) : (

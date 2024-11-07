@@ -3,6 +3,12 @@ import type { FormFactoryProps } from "@/types/Components/formFactory";
 
 export const categoryOfInvestmentFields: FormFactoryProps[] = [
     {
+        fieldType: 'text',
+        name: 'businessInfo.csdNumber',
+        label: 'CSD Number(If applicable)',
+        placeholder: 'Enter CSD Number'
+    },
+    {
         fieldType: 'checkbox',
         name: `businessInfo.categoryOfInvestment`,
         label: 'Category of Investment',

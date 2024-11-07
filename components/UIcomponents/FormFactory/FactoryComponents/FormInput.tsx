@@ -28,7 +28,7 @@ export default function FormInput({
 			name={name}
 			control={control}
 			defaultValue={defaultValue}
-			rules={rules}
+			rules={!rules ? {} : rules}
 			render={({ field, fieldState }) => (
 				<FormItem className='space-y-2 mr-1'>
 					<FormLabel

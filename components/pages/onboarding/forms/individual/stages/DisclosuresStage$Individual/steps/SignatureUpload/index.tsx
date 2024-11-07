@@ -21,7 +21,7 @@ import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/for
 export const SignatureUpload: FormStep = () => {
 	const {
 		form: { getValues },
-		clientID,
+		formVars: { clientID },
 	} = useKYCFormContext<IndividualFormSchema>();
 
 	const applicants = getValues(`applicant`) || [];

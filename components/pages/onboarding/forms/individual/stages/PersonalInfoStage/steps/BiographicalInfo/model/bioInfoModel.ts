@@ -186,7 +186,6 @@ export const bioInfoModel = ({
 		componentProps: {
 			toggleStyles: 'pointer-events-none',
 		},
-		tags: ['GH'],
 	},
 	{
 		fieldType: 'text',
@@ -361,7 +360,12 @@ export const bioInfoDefaultValue: ClientInfo = {
 			nomineeAgreement: {
 				signatureResource: '',
 			},
-		},
+        },
+        databank: {
+            emailIndemnity: {
+                signatureResource: ''
+            }
+        }
     },
     fileUploads: {}
 };

@@ -113,7 +113,7 @@ export const bankDetailsModel$Individual = ({
 		name: `applicant.${index}.bank.account.KRAPin`,
 		label: 'KRA PIN Number',
 		placeholder: 'Enter KRA PIN number',
-		tags: ['KE'],
+		tags: ['KE', 'KESTR'],
 	},
 	{
 		fieldType: 'text',

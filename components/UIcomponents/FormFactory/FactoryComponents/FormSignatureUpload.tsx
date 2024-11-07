@@ -37,7 +37,7 @@ export default function FormSignatureUpload({
 			control={control}
 			name={name}
 			defaultValue={defaultValue}
-			rules={rules}
+			rules={!rules ? {} : rules}
 			render={({ field, fieldState }) => (
 				<FormItem className='bg-neutral-50 p-[24px] rounded-lg border border-neutral-200 space-y-2.5 text-neutral-700'>
 					<FormLabel>Upload Your Signature</FormLabel>

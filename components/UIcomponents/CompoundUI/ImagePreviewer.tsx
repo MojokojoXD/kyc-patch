@@ -33,7 +33,7 @@ export function ImagePreviewer({
 					{ imageURL && <Image
 						src={imageURL}
 						fill
-						className='object-fit'
+						className='object-contain'
 						alt='signature/file preview'
 					/>}
 				</div>

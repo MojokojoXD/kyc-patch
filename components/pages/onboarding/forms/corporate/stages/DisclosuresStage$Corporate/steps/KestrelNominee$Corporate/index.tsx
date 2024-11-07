@@ -23,7 +23,10 @@ import { format } from 'date-fns';
 const today = format(new Date(), 'M/d/yy');
 
 export const KestrelNorminee$Corporate: FormStep = () => {
-	const { form, clientID } = useKYCFormContext<CorporateFormSchema>();
+	const {
+		form,
+		formVars: { clientID },
+	} = useKYCFormContext<CorporateFormSchema>();
 	const { getValues } = form;
 
 	const [kestrelNomineeText, isLoading, error] =
@@ -56,7 +59,7 @@ export const KestrelNorminee$Corporate: FormStep = () => {
 
 					const signatoryGist = `
 Name: ${signatoryFirstName} ${signatoryMiddleName} ${signatoryLastName}\\
-IDNumber: ${signatoryIDNumber}\\
+ID Number: ${signatoryIDNumber}\\
 Address: ${signatoryAddress}\\
 City: ${signatoryCity}
 `;
@@ -75,7 +78,7 @@ City: ${signatoryCity}
 									className='data-[state=closed]:hidden'
 									forceMount>
 									<>
-										<FormText className=' [&_ol]:list-[decimal] [&_h2]:paragraph2Medium [&_h3]:paragraph2Medium space-y-[16px] [&_ol_ul]:space-y-[16px] max-h-[424px] overflow-auto [&_li>ul]:list-disc [&_li>ul]:list-outside'>
+										<FormText>
 											{isLoading ? (
 												<Ellipsis className='w-5 h-5 animate-pulse' />
 											) : (

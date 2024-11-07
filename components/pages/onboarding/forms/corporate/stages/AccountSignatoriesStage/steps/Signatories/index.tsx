@@ -22,37 +22,40 @@ import { useFieldArray } from 'react-hook-form';
 import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { FormStep } from '@/types/Components/onboarding';
-import type { Signatory } from '@/types/forms/corporateSchema';
 import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import Loading from '@/components/UIcomponents/Loading';
 
 const MAX_SIGNATORIES = 4;
 
 export const Signatories: FormStep = ({ countryList }) => {
-	const { form } = useKYCFormContext();
-	const { control, setValue, getValues } = form;
+	const { form,toggleLoading } = useKYCFormContext();
+	const { control } = form;
 
 	const { fields, append, remove } = useFieldArray({
 		name: 'accountSignatories.signatories',
 		control,
 	});
 
-	const currentSignatories = getValues(
-		'accountSignatories.signatories'
-	) as Signatory[];
+	// const currentSignatories = getValues(
+	// 	'accountSignatories.signatories'
+	// ) as Signatory[];
 
 	useEffect(() => {
-		if (!currentSignatories || currentSignatories.length === 0) {
-			setValue(`accountSignatories.signatories`, [
-				{ ...signatoriesDefaultValues, id: FormHelpers.generateUniqueIdentifier() },
-			]);
-		}
-    }, [ currentSignatories ] );
-    
+        if ( fields.length === 0 )
+        {
+            toggleLoading( true );
+			append({
+				...signatoriesDefaultValues,
+				id: FormHelpers.generateUniqueIdentifier(),
+			});
+        }
+        
+        toggleLoading( false );
+	}, [fields,toggleLoading,append]);
 
 	return (
-        <>
-            <Loading reveal={fields.length === 0}/>
+		<>
+			<Loading reveal={fields.length === 0} />
 			<FormHeader>
 				<FormTitle>Account Signatories</FormTitle>
 			</FormHeader>
@@ -124,7 +127,10 @@ interface SignatoryFormProps extends SingleFormFieldsGeneratorProps {}
 const GHANA = 'GHANA';
 
 function SignatoryForm({ applicantId, countryList }: SignatoryFormProps) {
-	const { form } = useKYCFormContext<CorporateFormSchema>();
+	const {
+		form,
+		formVars: { clientID },
+	} = useKYCFormContext<CorporateFormSchema>();
 	const { setValue, watch } = form;
 
 	const [signatoryResidence, signatoryCitizenship] = watch([
@@ -135,9 +141,10 @@ function SignatoryForm({ applicantId, countryList }: SignatoryFormProps) {
 	const fields = useMemo(() => {
 		return signatoriesModel({
 			index: applicantId,
+			clientID,
 			countryList,
 		});
-	}, [countryList, applicantId]);
+	}, [countryList, applicantId, clientID]);
 
 	useEffect(() => {
 		const residenceStatus =

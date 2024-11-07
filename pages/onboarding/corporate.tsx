@@ -16,7 +16,7 @@ import {
 	KYCContext,
 	useKYCForm,
 } from '@/components/pages/onboarding/forms/utils/formController';
-import type { CorporateStage } from '@/components/pages/onboarding/forms/corporate/config/corporateFormConfigs';
+import Loading from '@/components/UIcomponents/Loading';
 
 export default function CorporateForm() {
 	const form = useForm<CorporateFormSchema>({
@@ -24,7 +24,11 @@ export default function CorporateForm() {
 	});
 	const KYCForm = useKYCForm(corporateStages, form);
 
-	const { formNav, clientID } = KYCForm;
+	const {
+		formNav: { currentStage },
+		isLoading,
+		error,
+	} = KYCForm;
 
 	const {
 		formState: { isDirty },
@@ -42,8 +46,8 @@ export default function CorporateForm() {
 		'document checklist': <Stages.DocumentCheckListStage$Corporate />,
 	};
 
-	if (!clientID) {
-		console.error('missing client ID');
+	if (error) {
+		console.error(error);
 
 		return (
 			<p className='p-10'>
@@ -52,13 +56,14 @@ export default function CorporateForm() {
 		);
 	}
 
-    return (
-        //@ts-expect-error will fix type between context types
+	return (
+		//@ts-expect-error will fix type between context types
 		<KYCContext.Provider value={KYCForm}>
-			<Form {...form}>
-				<FormLayout>
+            <Form { ...form }>
+                <FormLayout>
+                    <Loading reveal={ isLoading }/>
 					<FormNav />
-					{StagesDict[formNav.currentStage as CorporateStage]}
+					{StagesDict[currentStage]}
 					<FormNavButtons />
 				</FormLayout>
 			</Form>

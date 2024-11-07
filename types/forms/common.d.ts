@@ -20,7 +20,7 @@ export interface FileStorage
 
 export interface FieldsWithOther<TPresets = string,TOther = string>
 {
-    presets?: TPresets;
+    presets?: TPresets | 'Other';
     other?: TOther;
 }
 
@@ -31,9 +31,8 @@ export interface InvestmentFrequency
 }
 
 export type SignatoryRole =
-	| 'Director'
+	| 'Director/Executive/Trustee/Admin'
 	| 'Beneficial Owner'
-	| 'Executive/Trustee/Admin';
 
 export type ResidenceStatus =
 	| 'Resident Ghanaian'

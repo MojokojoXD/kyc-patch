@@ -27,7 +27,7 @@ export default function FormDate({
         <Controller
             control={ control }
             name={ name }
-            rules={rules}
+            rules={!rules ? {} : rules}
             defaultValue={defaultValue}
             render={({ field,fieldState }) => (
                 <FormItem className='space-y-2'>

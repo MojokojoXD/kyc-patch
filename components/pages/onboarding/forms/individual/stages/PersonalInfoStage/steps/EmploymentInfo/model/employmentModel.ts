@@ -225,18 +225,18 @@ export const employmentModel = ({
 		label: 'TIN',
 		placeholder: 'Enter TIN',
 	},
-	{
-		fieldType: 'radio',
-		name: `applicant.${index}.employment.statusDetails.annualNetIncome`,
-		label: `Annual Net Income ${currency && '(' + currency + ')'}`,
-		rules: {
-			required: 'Please select annual income range',
-		},
-		options: {
-			keySelector: (key) => key as string,
-			keys: ['1,000,000-3,000,000', '3,000,000-6,000,000', 'above 6,000,000'],
-		},
-	},
+	// {
+	// 	fieldType: 'radio',
+	// 	name: `applicant.${index}.employment.statusDetails.annualNetIncome`,
+	// 	label: `Annual Net Income ${currency && '(' + currency + ')'}`,
+	// 	rules: {
+	// 		required: 'Please select annual income range',
+	// 	},
+	// 	options: {
+	// 		keySelector: (key) => key as string,
+	// 		keys: ['1,000,000-3,000,000', '3,000,000-6,000,000', 'above 6,000,000'],
+	// 	},
+	// },
 	{
 		fieldType: 'radio',
 		name: `applicant.${index}.employment.statusDetails.monthlyIncomeRange`,

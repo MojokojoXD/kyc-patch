@@ -1,18 +1,14 @@
 import UAPContent from '../../../components/pages/onboarding/forms/preface/UAPContent';
 import KycFormOptions from '../../../components/pages/onboarding/forms/preface/KycFormOptions';
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { FormLayout } from '@/components/UIcomponents/FormLayout';
-import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import type { GetServerSidePropsContext } from 'next';
 import { UserActions } from '@/utils/clientActions/userActions';
-import { UserContext } from '@/Contexts/UserProfileProvider';
-// import Loading from '@/components/UIcomponents/Loading';
-import type { OnboardingFacts } from '@/Contexts/UserProfileProvider';
+import type { BrokerDetails } from '@/types/forms/broker';
 
 export async function getServerSideProps({
 	params,
-}: GetServerSidePropsContext): Promise<
-	GetServerSidePropsResult<OnboardingFacts>
-> {
+}: GetServerSidePropsContext) {
 	try {
 		if (!params || !params.slug)
 			throw new Error('malformed or missing onboarding ids');
@@ -46,28 +42,27 @@ export async function getServerSideProps({
 	}
 }
 
-export default function OnboardingPage({ clientID, broker }: OnboardingFacts) {
+export default function OnboardingPage({
+	clientID,
+	broker,
+}: {
+	clientID: string;
+	broker: BrokerDetails;
+}) {
 	const [UAPDecided, setUAPDecided] = useState<boolean>(false);
 
 	//read app wide context
-	const appWideData = useRef(useContext(UserContext));
 
 	const getUAPAgreementHandler = (decision: boolean) => setUAPDecided(decision);
-
-	useEffect(() => {
-		if (appWideData && appWideData.current) {
-			appWideData.current.getOnboardingFacts({
-				clientID,
-				broker,
-			});
-		}
-	}, [appWideData, clientID, broker]);
 
 	return (
 		<>
 			<FormLayout>
 				{UAPDecided ? (
-					<KycFormOptions />
+					<KycFormOptions
+						clientID={clientID}
+						orgCode={broker.org_code}
+					/>
 				) : (
 					<UAPContent getUAPAgreement={getUAPAgreementHandler} />
 				)}

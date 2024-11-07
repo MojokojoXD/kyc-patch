@@ -1,371 +1,372 @@
-This **AGREEMENT** is made on {{date}} between:
+- This **AGREEMENT** is made on {{date}} between:
 
-1. **KESTREL CAPITAL NOMINEES SERVICES LIMITED**, a company incorporated in the
-   Republic of Kenya of Post Office Box Number 40005 -00100 Nairobi, Kenya(hereinafter
-   called “the Nominee”); and
+  1. **KESTREL CAPITAL NOMINEES SERVICES LIMITED**, a company incorporated in the
+     Republic of Kenya of Post Office Box Number 40005 -00100 Nairobi, Kenya(hereinafter
+     called “the Nominee”); and
 
-2. {{applicantGist}}
+  2. {{applicantGist}}
 
-## WHEREAS
+- ## WHEREAS
 
-The Client is desirous of appointing the Nominee, a wholly owned subsidiary of
-Kestrel Capital (East Africa) Limited, to hold and to administer certain
-Securities (hereinafter defined) on behalf of the Client; and
-The Nominee is willing to accept such appointment subject to the terms and conditions
-set forth in this Agreement.
+  - The Client is desirous of appointing the Nominee, a wholly owned subsidiary of
+    Kestrel Capital (East Africa) Limited, to hold and to administer certain
+    Securities (hereinafter defined) on behalf of the Client; and
+    The Nominee is willing to accept such appointment subject to the terms and conditions
+    set forth in this Agreement.
 
-IT IS HEREBY AGREED:
+  IT IS HEREBY AGREED:
 
-## Interpretation
+- ## Interpretation
 
-In this Agreement, unless the context otherwise requires, the following words
-and expressions shall have the following meanings:
+  - In this Agreement, unless the context otherwise requires, the following words
+    and expressions shall have the following meanings:
 
  <!-- markdownlint-disable MD026 -->
 
-## Act:
+- ## Act:
 
-means the Capital Markets Act (Chapter 485A);
+  - means the Capital Markets Act (Chapter 485A);
 
-## Affiliate:
+- ## Affiliate:
 
-means with respect to a person, any other person directly or indirectly
-controlling, controlled by, or under common control with that person. For purposes
-of this definition, the term “control” means the possession, directly or indirectly,
-of the power to direct or cause the direction of the management and policies
-(including financial policies) of a person, whether through the ownership of
-voting securities, by contract or otherwise (including, with correlative meanings,
-the terms "controlling", "controlled by" and "under common control with");
+  - means with respect to a person, any other person directly or indirectly
+    controlling, controlled by, or under common control with that person. For purposes
+    of this definition, the term “control” means the possession, directly or indirectly,
+    of the power to direct or cause the direction of the management and policies
+    (including financial policies) of a person, whether through the ownership of
+    voting securities, by contract or otherwise (including, with correlative meanings,
+    the terms "controlling", "controlled by" and "under common control with");
 
-## Agreement:
+- ## Agreement:
 
-means this agreement and any schedules or annexes hereto;
+  - means this agreement and any schedules or annexes hereto;
 
-## Authorized Person:
+- ## Authorized Person:
 
-means a person authorized to act on behalf of the Client in accordance with this
-Agreement and includes, at the Nominee's discretion, any person the Client informs
-the Nominee is or that the Client holds out to be authorized to give instructions
-for the Client;
+  - means a person authorized to act on behalf of the Client in accordance with this
+    Agreement and includes, at the Nominee's discretion, any person the Client informs
+    the Nominee is or that the Client holds out to be authorized to give instructions
+    for the Client;
 
-## Business Day:
+- ## Business Day:
 
-means any day which is not a Saturday or Sunday or public holiday in the Republic
-of Kenya;
+  - means any day which is not a Saturday or Sunday or public holiday in the Republic
+    of Kenya;
 
-## Client Account Opening Form:
+- ## Client Account Opening Form:
 
-means the application form prepared by or on behalf of the Client and submitted
-to the Nominee or its Affiliates in respect of this Agreement;
+  - means the application form prepared by or on behalf of the Client and submitted
+    to the Nominee or its Affiliates in respect of this Agreement;
 
-## Government:
+- ## Government:
 
-means any government, government related agency or government controlled persons
-including regulators, central banks and public authorities;
+  - means any government, government related agency or government controlled persons
+    including regulators, central banks and public authorities;
 
-## Kestrel:
+- ## Kestrel:
 
-means Kestrel Capital (East Africa) Limited and any of its Affiliates;
+  - means Kestrel Capital (East Africa) Limited and any of its Affiliates;
 
-## Kestrel Terms and Conditions:
-
-means the Kestrel Capital (East Africa) Limited's Terms and Conditions as may
-be amended from time to time.
-
-## Market Regulations:
-
-means all Kenyan or foreign legislation, rules, regulations or guidelines
-applicable to Kestrel, the Client or to the provision of the Services including
-the provisions of the Act and the rules and regulations made thereunder, all
-rules, regulations or by-laws of any relevant exchange and or clearing house
-(including banks), any order, award or other decision or finding of a court or
-quasi-judicial authority of competent jurisdiction, all statutory or other
-requirements relating to money laundering and applicable accepted market practice
-and custom;
-
-## Nominee Account:
-
-means the account maintained by the Nominee specifying the Client's Securities
-and cash held by the Nominee on behalf of the Client pursuant to Clause 3.1 of
-this Agreement;
-
-## Nominee Trading Account:
-
-means a securities trading account opened or to be opened with Kestrel in the
-name of the Nominee for the purposes of holding or otherwise dealing in the
-Client's Securities;
-
-## Securities:
-
-means shares, stocks, bonds, debentures, notes, certificates of indebtedness,
-warrants, options, futures or financial instruments or other securities or assets
-(including cash);
-
-## Services:
-
-- has the meaning ascribed to it in Clause 4 of this Agreement;
-
-  - A reference to a person shall include a natural person, corporate or unincorporated
-    body \-(whether or not having separate legal personality) government, state
-    or agency of a state and that person's successors and permitted assigns.
-  - The singular shall include the plural, masculine shall include the female and
-    vice versa - and the animate shall include the inanimate.
-  - Headings herein shall not affect the construction of this Agreement.
-  - Any obligation in this Agreement on a person not to do something includes an
-    obligation not to agree or allow that thing to be done.
-  - References to writing shall include any mode of representing words in a legible
-    and non-transitory form.
-  - References to times of the day are unless the context requires otherwise, to
-    East African Standard time.
-  - All references to a statutory provision shall be construed as including
-    references to any statutory modification, consolidation or re- enactment
-    (whether before or after the date of this Agreement) for the time being in
-    force; all statutory instruments or orders made pursuant to a statutory provision;
-    and any statutory provisions of which a statutory provision is a consolidation
-    re-enactment or modification.
-  - The rule of construction that a contract shall be interpreted against the party
-    responsible for the drafting or preparation of the contract, shall not apply
-    to the extent that this Agreement has been negotiated between the Parties.
-
-## Appointment
-
-- The Client hereby unequivocally instructs and appoints the Nominee to hold,
-  deal in and register the Client's Securities (in so far as any of the Client's
-  Securities are registrable) in the Nominee's name pursuant to the terms of
-  this Agreement PROVIDED ALWAYS that the Client shall at all times retain
-  beneficial ownership and interest in the Client's Securities notwithstanding
-  that the Nominee is recorded as the holder of the legal title.
-- The Client acknowledges and accepts that the Client's Securities may be
-  co-mingled in a common pool with other Securities held by the Nominee, its
-  agent's, sub-nominees, subcontractors or counterparties on behalf of other clients.
-
-## Establishment of Accounts
-
-The Client hereby unequivocally authorises the Nominee to open, at its absolute
-discretion, one or more accounts in the Nominee's books and accounts in respect
-of the Client's Securities and to segregate, in the Nominee's books and accounts,
-the Client's Securities from Securities held for the Nominee's own account or
-on account of third (3rd) parties.
-
-The Client hereby unequivocally instructs and authorises the Nominee to, at its
-sole discretion, open and maintain a Nominee Trading Account, in accordance with
-the Kestrel Terms and Conditions, to hold or otherwise deal in the Client's Securities.
-The Nominee may at any time, in its sole discretion and without any liability
-to the Client or any other person, refuse to accept any instructions to purchase
-Securities on behalf of the Client or otherwise deliver or procure the delivery
-of Securities into the Nominee Trading Account, without the need to give any
-reasons thereto.
-
-## Services
-
-- The Nominee is hereby unequivocally appointed and authorised to perform
-  all or any of the following acts (the “Services”), and the Nominee accepts such
-  appointment and authority save that the Nominee reserves the absolute right
-  to refuse to perform any act or refrain from performing any act if, in its sole
-  discretion, there are grounds for such refusal:
-
-  1. to deal in the Client's Securities in accordance with the written or, at
-     the discretion of the Nominee, oral instructions of the Client;
-  2. to purchase or subscribe for any type of Security in accordance with the
-     Client's instructions and following receipt of sufficient funds required
-     for that purpose unless the Nominee permits, at its sole discretion, such
-     other terms of payment from time to time as it may in its sole and absolute
-     discretion deem fit;
-  3. to hold or to arrange for the Client's Securities, including documents
-     of title and any other instruments relating to the Client's Securities,
-     to be held in safe custody;
-  4. to receive and collect certificates or other evidence of title, transfer
-     deeds or other instruments of transfer, cheques, sales proceeds and all
-     other moneys payable or due to the Client in respect of the Client's
-     Securities, with full power to give receipts and discharges for the same;
-  5. to deliver documents of title and any other instruments relating to the
-     Client's Securities to the Client or to the order of the Client in accordance
-     with the Client's instructions but at the sole risk of the Client;
-  6. to collect and/or receive, for the account of the Client, all income and
-     other payments and distributions attributable to or in respect of the
-     Client's Securities;
-  7. to receive and hold for the account of the Client, all Securities received
-     by the Nominee as a result of a stock dividend, share sub-division or
-     reorganisation, capitalisation of reserves or otherwise;
-  8. to deal with bonus issues, warrants and other similar interests offered
-     to or received by the Nominee;
-  9. to commence, prosecute, defend, continue and/or discontinue all actions,
-     including without limitation, legal proceedings, claims and demands in
-     respect of any of the matters set out in this Clause 4 with power to
-     compromise or to submit to a judgment or order in any such actions or
-     legal proceedings as aforesaid;
-  10. to sell or otherwise dispose of the Client's Securities or any part(s)
-      thereof and to deal with any proceeds in accordance with this Agreement;
-  11. to agree upon the terms of, enter into and execute all agreements, forms
-      , arrangements, undertakings, indemnities, transfers, assignments,
-      guarantees and deeds and to do such things for and on behalf of the
-      Client as the Nominee may deem necessary or expedient and at such time(s)
-      as the Nominee shall deem fit in respect of or in relation to the
-      Client's Securities or trading under a Nominee Trading Account;
-  12. to open, carry on, supervise, conduct, manage and/or operate a Nominee
-      Trading Account and to execute all necessary documents and/or forms issued
-      by or required by any depository, securities exchange, counterparty
-      broker, regulatory body or other party to give effect to the same;
-  13. to issue, communicate, convey or transmit instructions, notices, requests,
-      orders or demands in relation to the Client's Securities in any manner as
-      the Nominee shall deem fit with full power and authority to assent, consent
-      and agree to any modifications, variations, additions and amendments to
-      such instructions, notices, requests, orders or demands as the Nominee
-      may deem fit in order to give effect to the Client's instructions or to
-      otherwise enable the Nominee carry out its obligations hereunder; and
-  14. generally to act on and give effect to the instructions of the Client
-      and to do, carry out or perform any or all actions that the Nominee deems
-      fit to effect the Client's instructions.
-
-- Nominee is authorised but not obliged to, at its absolute discretion,
-  take such steps as it may consider expedient to enable it to provide the
-  Services and to exercise its powers under this Agreement, including the right:
-
-  1. to comply with any law, regulation, order, directive, notice or request
-     of any government agency (whether or not having the force of law) requiring
-     the Nominee to take or refrain from action;
-  2. to withhold or make payment of any taxes or duties payable on or in respect
-     of the Client's Securities on behalf of the Client;
-  3. in the absence of or delay in receiving instructions from the Client in
-     response to a request for instructions from the Nominee, to do such acts
-     or refrain from doing any act that the Nominee may, at its absolute discretion,
-     deem expedient in the circumstances; and
-  4. to participate in and to comply with the rules and regulations of any
-     system which provides securities exchange or clearing and settlement facilities
-     in respect of the Client's Securities.
-
-- The Nominee shall be under no duty to investigate, participate in or take any
-  action concerning attendance at meetings, voting or other rights or enforcement
-  of rights of whatever nature attaching to or derived from the Client's Securities
-  except as may otherwise be expressly agreed to by the Nominee in writing.
-
-- The Nominee shall not be responsible for monitoring, claiming or doing any
-  other acts in relation to dividends, rights, bonus and any other entitlements
-  or schemes of arrangement in connection with the Client's Securities except
-  as may otherwise be expressly agreed to by the Nominee in writing.
-
-- In the event that the Client instructs the Nominee to sell, transfer or otherwise
-  deal in any Client Securities, then the Client shall ensure that all documents
-  and information (including all title, transfer and all other documents pertaining
-  to the transaction) are availed to the Nominee and duly completed and executed
-  by the Client as may be requested by the Nominee.
-
-- The Nominee may appoint any other person as its nominee (sub-nominee) or agent
-  to perform any of the Services on its behalf and may delegate any of its powers
-  under this Agreement to such person without notice to the Client.
-
-- To the extent that the Client wishes to open multiple Nominee Accounts under
-  this Agreement, all such accounts shall always be in the primary name of the
-  Client. Furthermore, the Nominee shall always treat the Client as its client
-  and shall never be obligated to communicate or deal directly with, or be
-  liable to any third parties claiming through the Client.
-
-- The Client shall provide such information or documentation that the Nominee
-  may request from time to time to enable the Nominee provide the Services;
-  including copies of the Client's certificate of incorporation, proof of
-  directorships, regulatory licenses, lists of Authorized Persons and any
-  other information requested by the Nominee for its files and records.
-
-- The Nominee shall not be held liable for any implied losses or consequential
-  damages.
-
-## Instructions and other Communication
-
-- All instructions or other communication from the Client to the Nominee shall
-  be given strictly in accordance with the Kestrel Terms and Conditions.
-
-- The Client may, in accordance with the Nominee's requirements and the Kestrel
-  Terms and Conditions, appoint an Authorized Person(s) to give instructions or
-  other communications to the Nominee on behalf of the Client and the terms of
-  the Kestrel Terms and Conditions and any agreement between the parties relating
-  to the appointment of Authorised Persons shall apply to such instructions or
-  communications.
-
-- The Nominee shall be entitled but is not obliged to, accept instructions believed
-  by it to have emanated from the Client or an Authorised Person(s) and the Nominee
-  shall not be under any duty to verify the identity of the person(s) giving
-  those instructions or the accuracy or truth of such instructions. The Client
-  agrees and accepts that such instructions shall be binding upon the Client
-  and the Nominee shall not be liable for taking any action or inaction pursuant
-  to such instructions.
-
-- The Nominee reserves the absolute right to refuse to act on the instructions
-  of the Client or Authorised Persons, if in its absolute discretion, there are
-  grounds for doing so but the Nominee shall not be bound to furnish the Client
-  with any reason thereto.
-
-## Declarations, Representation and Warranties
-
-Client hereby declares, represents and warrants to the Nominee that:
-
-- the particulars of the Client as furnished to the Nominee are true and accurate
-  in all respects and will continue to be true and accurate in all respects at
-  all times during the subsistence of this Agreement;
-
-- this Agreement and the opening, use and operation of the relevant Nominee
-  Trading Account shall be governed by the Kestrel Terms and Conditions and any
-  Market Regulations;
-
-- the Client is and shall at all times be deemed to be fully aware of and understand
-  the terms and conditions contained in this Agreement and the Kestrel Terms
-  and Conditions (whether the Client has actually perused through the same or otherwise);
-
-- the Client shall be fully and directly responsible to Kestrel for all of the
-  liabilities and obligations of or incurred by the Nominee on behalf of the
-  Client in respect of the Services or otherwise under this Agreement;
-
-- the Client is and shall at all times remain the ultimate and absolute beneficial
-  owner of the Client's Securities and the only person entitled to all rights,
-  title and interest in and to the Client's Securities;
-
-- the Client is legally authorized and empowered to represent and transact
-  business for its clients (where applicable);
-
-- the Client is fully aware of all Market Regulations governing the dealing of
-  the Client's Securities and the Client shall at all times observe and comply
-  with all Market Regulations;
-
-- the Client and any of its clients are sophisticated, qualified, experienced
-  and knowledgeable investors who are fully capable of assuming all the risks
-  associated with any investment related to this Agreement;
-
-- the Client will not engage in insider trading or seek to otherwise use the
-  Services or the Nominee Trading Account in any way that would constitute a
-  breach of Market Regulations - for the purposes of this clause insider trading
-  means trading of an entity's securities by persons in possession of material
-  non-public information about that entity;
-
-- no order has been made or resolution passed or petition presented for the winding
-  up of the Client or for a provisional liquidator to be appointed in respect of
-  the Client and no meeting has been convened for the purpose of winding-up
-  the Client;
-
-- no receiver has been appointed in respect of the Client or of all or any of
-  its assets;
-
-- no unsatisfied or unfulfilled judgement or Court order is outstanding against
-  the Client;
-
-- the Client has within the requisite time limits duly made all returns, given
-  all notices and supplied all other information required to be supplied to
-  taxation and customs and excise authorities and all such information, returns
-  and notices were when given or supplied and are now accurate in all material
-  respects and made on a proper basis and are not, so far as the Client is aware,
-  liable to be the subject of any dispute with any of the relevant authorities
-  concerned;
-
-- the Client has duly deducted, withheld, paid and accounted for all tax due to
-  have been deducted, withheld, paid or accounted for by it and is not and has
-  not at any time from the date hereof been liable to pay interest or penalties
-  on any unpaid taxation; and
-
-- the Client has taken all the necessary corporate actions to authorise the
-  performance of this agreement and shall execute any such documents as may be
-  necessary for the implementation or effective execution of the transactions
-  contemplated hereby.
-
-The warranties given by the Client in this Clause 6 shall be in addition to any
-warranties given by the Client under the Kestrel Terms and Conditions.
+- ## Kestrel Terms and Conditions:
+
+  - means the Kestrel Capital (East Africa) Limited's Terms and Conditions as may
+    be amended from time to time.
+
+- ## Market Regulations:
+
+  - means all Kenyan or foreign legislation, rules, regulations or guidelines
+    applicable to Kestrel, the Client or to the provision of the Services including
+    the provisions of the Act and the rules and regulations made thereunder, all
+    rules, regulations or by-laws of any relevant exchange and or clearing house
+    (including banks), any order, award or other decision or finding of a court or
+    quasi-judicial authority of competent jurisdiction, all statutory or other
+    requirements relating to money laundering and applicable accepted market practice
+    and custom;
+
+- ## Nominee Account:
+
+  - means the account maintained by the Nominee specifying the Client's Securities
+    and cash held by the Nominee on behalf of the Client pursuant to Clause 3.1 of
+    this Agreement;
+
+- ## Nominee Trading Account:
+
+  - means a securities trading account opened or to be opened with Kestrel in the
+    name of the Nominee for the purposes of holding or otherwise dealing in the
+    Client's Securities;
+
+- ## Securities:
+
+  - means shares, stocks, bonds, debentures, notes, certificates of indebtedness,
+    warrants, options, futures or financial instruments or other securities or assets
+    (including cash);
+
+- ## Services:
+
+  - has the meaning ascribed to it in Clause 4 of this Agreement;
+
+    - A reference to a person shall include a natural person, corporate or unincorporated
+      body \-(whether or not having separate legal personality) government, state
+      or agency of a state and that person's successors and permitted assigns.
+    - The singular shall include the plural, masculine shall include the female and
+      vice versa - and the animate shall include the inanimate.
+    - Headings herein shall not affect the construction of this Agreement.
+    - Any obligation in this Agreement on a person not to do something includes an
+      obligation not to agree or allow that thing to be done.
+    - References to writing shall include any mode of representing words in a legible
+      and non-transitory form.
+    - References to times of the day are unless the context requires otherwise, to
+      East African Standard time.
+    - All references to a statutory provision shall be construed as including
+      references to any statutory modification, consolidation or re- enactment
+      (whether before or after the date of this Agreement) for the time being in
+      force; all statutory instruments or orders made pursuant to a statutory provision;
+      and any statutory provisions of which a statutory provision is a consolidation
+      re-enactment or modification.
+    - The rule of construction that a contract shall be interpreted against the party
+      responsible for the drafting or preparation of the contract, shall not apply
+      to the extent that this Agreement has been negotiated between the Parties.
+
+- ## Appointment
+
+  - The Client hereby unequivocally instructs and appoints the Nominee to hold,
+    deal in and register the Client's Securities (in so far as any of the Client's
+    Securities are registrable) in the Nominee's name pursuant to the terms of
+    this Agreement PROVIDED ALWAYS that the Client shall at all times retain
+    beneficial ownership and interest in the Client's Securities notwithstanding
+    that the Nominee is recorded as the holder of the legal title.
+  - The Client acknowledges and accepts that the Client's Securities may be
+    co-mingled in a common pool with other Securities held by the Nominee, its
+    agent's, sub-nominees, subcontractors or counterparties on behalf of other clients.
+
+- ## Establishment of Accounts
+
+  - The Client hereby unequivocally authorises the Nominee to open, at its absolute
+    discretion, one or more accounts in the Nominee's books and accounts in respect
+    of the Client's Securities and to segregate, in the Nominee's books and accounts,
+    the Client's Securities from Securities held for the Nominee's own account or
+    on account of third (3rd) parties.
+
+  - The Client hereby unequivocally instructs and authorises the Nominee to, at its
+    sole discretion, open and maintain a Nominee Trading Account, in accordance with
+    the Kestrel Terms and Conditions, to hold or otherwise deal in the Client's Securities.
+    The Nominee may at any time, in its sole discretion and without any liability
+    to the Client or any other person, refuse to accept any instructions to purchase
+    Securities on behalf of the Client or otherwise deliver or procure the delivery
+    of Securities into the Nominee Trading Account, without the need to give any
+    reasons thereto.
+
+- ## Services
+
+  - The Nominee is hereby unequivocally appointed and authorised to perform
+    all or any of the following acts (the “Services”), and the Nominee accepts such
+    appointment and authority save that the Nominee reserves the absolute right
+    to refuse to perform any act or refrain from performing any act if, in its sole
+    discretion, there are grounds for such refusal:
+
+    1. to deal in the Client's Securities in accordance with the written or, at
+       the discretion of the Nominee, oral instructions of the Client;
+    2. to purchase or subscribe for any type of Security in accordance with the
+       Client's instructions and following receipt of sufficient funds required
+       for that purpose unless the Nominee permits, at its sole discretion, such
+       other terms of payment from time to time as it may in its sole and absolute
+       discretion deem fit;
+    3. to hold or to arrange for the Client's Securities, including documents
+       of title and any other instruments relating to the Client's Securities,
+       to be held in safe custody;
+    4. to receive and collect certificates or other evidence of title, transfer
+       deeds or other instruments of transfer, cheques, sales proceeds and all
+       other moneys payable or due to the Client in respect of the Client's
+       Securities, with full power to give receipts and discharges for the same;
+    5. to deliver documents of title and any other instruments relating to the
+       Client's Securities to the Client or to the order of the Client in accordance
+       with the Client's instructions but at the sole risk of the Client;
+    6. to collect and/or receive, for the account of the Client, all income and
+       other payments and distributions attributable to or in respect of the
+       Client's Securities;
+    7. to receive and hold for the account of the Client, all Securities received
+       by the Nominee as a result of a stock dividend, share sub-division or
+       reorganisation, capitalisation of reserves or otherwise;
+    8. to deal with bonus issues, warrants and other similar interests offered
+       to or received by the Nominee;
+    9. to commence, prosecute, defend, continue and/or discontinue all actions,
+       including without limitation, legal proceedings, claims and demands in
+       respect of any of the matters set out in this Clause 4 with power to
+       compromise or to submit to a judgment or order in any such actions or
+       legal proceedings as aforesaid;
+    10. to sell or otherwise dispose of the Client's Securities or any part(s)
+        thereof and to deal with any proceeds in accordance with this Agreement;
+    11. to agree upon the terms of, enter into and execute all agreements, forms
+        , arrangements, undertakings, indemnities, transfers, assignments,
+        guarantees and deeds and to do such things for and on behalf of the
+        Client as the Nominee may deem necessary or expedient and at such time(s)
+        as the Nominee shall deem fit in respect of or in relation to the
+        Client's Securities or trading under a Nominee Trading Account;
+    12. to open, carry on, supervise, conduct, manage and/or operate a Nominee
+        Trading Account and to execute all necessary documents and/or forms issued
+        by or required by any depository, securities exchange, counterparty
+        broker, regulatory body or other party to give effect to the same;
+    13. to issue, communicate, convey or transmit instructions, notices, requests,
+        orders or demands in relation to the Client's Securities in any manner as
+        the Nominee shall deem fit with full power and authority to assent, consent
+        and agree to any modifications, variations, additions and amendments to
+        such instructions, notices, requests, orders or demands as the Nominee
+        may deem fit in order to give effect to the Client's instructions or to
+        otherwise enable the Nominee carry out its obligations hereunder; and
+    14. generally to act on and give effect to the instructions of the Client
+        and to do, carry out or perform any or all actions that the Nominee deems
+        fit to effect the Client's instructions.
+
+  - Nominee is authorised but not obliged to, at its absolute discretion,
+    take such steps as it may consider expedient to enable it to provide the
+    Services and to exercise its powers under this Agreement, including the right:
+
+    1. to comply with any law, regulation, order, directive, notice or request
+       of any government agency (whether or not having the force of law) requiring
+       the Nominee to take or refrain from action;
+    2. to withhold or make payment of any taxes or duties payable on or in respect
+       of the Client's Securities on behalf of the Client;
+    3. in the absence of or delay in receiving instructions from the Client in
+       response to a request for instructions from the Nominee, to do such acts
+       or refrain from doing any act that the Nominee may, at its absolute discretion,
+       deem expedient in the circumstances; and
+    4. to participate in and to comply with the rules and regulations of any
+       system which provides securities exchange or clearing and settlement facilities
+       in respect of the Client's Securities.
+
+  - The Nominee shall be under no duty to investigate, participate in or take any
+    action concerning attendance at meetings, voting or other rights or enforcement
+    of rights of whatever nature attaching to or derived from the Client's Securities
+    except as may otherwise be expressly agreed to by the Nominee in writing.
+
+  - The Nominee shall not be responsible for monitoring, claiming or doing any
+    other acts in relation to dividends, rights, bonus and any other entitlements
+    or schemes of arrangement in connection with the Client's Securities except
+    as may otherwise be expressly agreed to by the Nominee in writing.
+
+  - In the event that the Client instructs the Nominee to sell, transfer or otherwise
+    deal in any Client Securities, then the Client shall ensure that all documents
+    and information (including all title, transfer and all other documents pertaining
+    to the transaction) are availed to the Nominee and duly completed and executed
+    by the Client as may be requested by the Nominee.
+
+  - The Nominee may appoint any other person as its nominee (sub-nominee) or agent
+    to perform any of the Services on its behalf and may delegate any of its powers
+    under this Agreement to such person without notice to the Client.
+
+  - To the extent that the Client wishes to open multiple Nominee Accounts under
+    this Agreement, all such accounts shall always be in the primary name of the
+    Client. Furthermore, the Nominee shall always treat the Client as its client
+    and shall never be obligated to communicate or deal directly with, or be
+    liable to any third parties claiming through the Client.
+
+  - The Client shall provide such information or documentation that the Nominee
+    may request from time to time to enable the Nominee provide the Services;
+    including copies of the Client's certificate of incorporation, proof of
+    directorships, regulatory licenses, lists of Authorized Persons and any
+    other information requested by the Nominee for its files and records.
+
+  - The Nominee shall not be held liable for any implied losses or consequential
+    damages.
+
+- ## Instructions and other Communication
+
+  - All instructions or other communication from the Client to the Nominee shall
+    be given strictly in accordance with the Kestrel Terms and Conditions.
+
+  - The Client may, in accordance with the Nominee's requirements and the Kestrel
+    Terms and Conditions, appoint an Authorized Person(s) to give instructions or
+    other communications to the Nominee on behalf of the Client and the terms of
+    the Kestrel Terms and Conditions and any agreement between the parties relating
+    to the appointment of Authorised Persons shall apply to such instructions or
+    communications.
+
+  - The Nominee shall be entitled but is not obliged to, accept instructions believed
+    by it to have emanated from the Client or an Authorised Person(s) and the Nominee
+    shall not be under any duty to verify the identity of the person(s) giving
+    those instructions or the accuracy or truth of such instructions. The Client
+    agrees and accepts that such instructions shall be binding upon the Client
+    and the Nominee shall not be liable for taking any action or inaction pursuant
+    to such instructions.
+
+  - The Nominee reserves the absolute right to refuse to act on the instructions
+    of the Client or Authorised Persons, if in its absolute discretion, there are
+    grounds for doing so but the Nominee shall not be bound to furnish the Client
+    with any reason thereto.
+
+- ## Declarations, Representation and Warranties
+
+  - Client hereby declares, represents and warrants to the Nominee that:
+
+    - the particulars of the Client as furnished to the Nominee are true and accurate
+      in all respects and will continue to be true and accurate in all respects at
+      all times during the subsistence of this Agreement;
+
+    - this Agreement and the opening, use and operation of the relevant Nominee
+      Trading Account shall be governed by the Kestrel Terms and Conditions and any
+      Market Regulations;
+
+    - the Client is and shall at all times be deemed to be fully aware of and understand
+      the terms and conditions contained in this Agreement and the Kestrel Terms
+      and Conditions (whether the Client has actually perused through the same or
+      otherwise);
+
+    - the Client shall be fully and directly responsible to Kestrel for all of the
+      liabilities and obligations of or incurred by the Nominee on behalf of the
+      Client in respect of the Services or otherwise under this Agreement;
+
+    - the Client is and shall at all times remain the ultimate and absolute beneficial
+      owner of the Client's Securities and the only person entitled to all rights,
+      title and interest in and to the Client's Securities;
+
+    - the Client is legally authorized and empowered to represent and transact
+      business for its clients (where applicable);
+
+    - the Client is fully aware of all Market Regulations governing the dealing of
+      the Client's Securities and the Client shall at all times observe and comply
+      with all Market Regulations;
+
+    - the Client and any of its clients are sophisticated, qualified, experienced
+      and knowledgeable investors who are fully capable of assuming all the risks
+      associated with any investment related to this Agreement;
+
+    - the Client will not engage in insider trading or seek to otherwise use the
+      Services or the Nominee Trading Account in any way that would constitute a
+      breach of Market Regulations - for the purposes of this clause insider trading
+      means trading of an entity's securities by persons in possession of material
+      non-public information about that entity;
+
+    - no order has been made or resolution passed or petition presented for the winding
+      up of the Client or for a provisional liquidator to be appointed in respect
+      of the Client and no meeting has been convened for the purpose of winding-up
+      the Client;
+
+    - no receiver has been appointed in respect of the Client or of all or any of
+      its assets;
+
+    - no unsatisfied or unfulfilled judgement or Court order is outstanding against
+      the Client;
+
+    - the Client has within the requisite time limits duly made all returns, given
+      all notices and supplied all other information required to be supplied to
+      taxation and customs and excise authorities and all such information, returns
+      and notices were when given or supplied and are now accurate in all material
+      respects and made on a proper basis and are not, so far as the Client is aware,
+      liable to be the subject of any dispute with any of the relevant authorities
+      concerned;
+
+    - the Client has duly deducted, withheld, paid and accounted for all tax due
+      to have been deducted, withheld, paid or accounted for by it and is not and
+      has not at any time from the date hereof been liable to pay interest or penalties
+      on any unpaid taxation; and
+
+    - the Client has taken all the necessary corporate actions to authorise the
+      performance of this agreement and shall execute any such documents as may be
+      necessary for the implementation or effective execution of the transactions
+      contemplated hereby.
+
+    The warranties given by the Client in this Clause 6 shall be in addition to any
+    warranties given by the Client under the Kestrel Terms and Conditions.
 
 ## Income and Capital Distribution
 
@@ -570,7 +571,7 @@ Orbit Place, 2nd Floor,\
 Westlands Rd\
 P.O. Box 40005 - 00100\
 Nairobi, Kenya\
-Email: [perations@kestrelcapital.com](Operations@kestrelcapital.com)\
+Email: [Operations@kestrelcapital.com](Operations@kestrelcapital.com)\
 Website: [www.kestrelcapital.com](www.kestrelcapital.com)\
 Attention: Head of Operations
 

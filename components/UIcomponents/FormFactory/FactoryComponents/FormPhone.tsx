@@ -30,17 +30,7 @@ export default function FormPhone({
 	name,
 	placeholder,
 	readonly = false,
-	rules = {
-		validate: {
-			isRequired: (v) =>
-				(typeof v.value === 'string' && (v as PhoneInfo[number]).value !== '') ||
-				'Please enter phone number',
-			isValidPhone: (v) =>
-				(typeof v.value === 'string' &&
-					isPossiblePhoneNumber((v as PhoneInfo[number]).value)) ||
-				'Please enter valid phone number',
-		},
-	},
+	rules,
 	defaultValue = 'GH',
 	componentProps = { phoneMode: 'multi', maxPhoneCount: 2 },
 	options,
@@ -60,6 +50,17 @@ export default function FormPhone({
 		});
 	}
 
+    const ruleSet =
+        typeof rules === 'undefined'
+            ? {
+                validate: {
+                    isRequired: ( v: PhoneInfo[ number ] ) =>
+                        v.value !== '' || 'Please enter phone number',
+                    isValidPhone: ( v: PhoneInfo[ number ] ) =>
+                        isPossiblePhoneNumber( v.value ) || 'Please enter valid phone number',
+                },
+            }
+            : {};
 	return (
 		<>
 			<FormItem>
@@ -71,7 +72,7 @@ export default function FormPhone({
 									control={control}
 									name={`${name}.${i}`}
 									defaultValue={{ value: '', areaCode: 'GH' }}
-									rules={rules}
+									rules={ruleSet}
 									render={({ field, fieldState }) => (
 										<div className='space-y-2.5'>
 											{i === 0 && (
@@ -146,7 +147,7 @@ export default function FormPhone({
 					<Button
 						variant={'link'}
 						type='button'
-						disabled={fields.length === componentProps.maxPhoneCount}
+						disabled={fields.length === componentProps.maxPhoneCount || readonly}
 						className='text-primary-500 hover:bg-none hover:no-underline px-0 py-2 h-fit '
 						onClick={() => {
 							append({ value: '', countryCode: 'GH' }, { shouldFocus: false });
@@ -168,11 +169,11 @@ function CustomCountrySelect({
 	disabled,
 	onValueChange,
 	defaultValue,
-	options = { keys: [], priorityKeys: [],keySelector: (key) => key as string },
+	options = { keys: [], priorityKeys: [], keySelector: (key) => key as string },
 }: CustomCountrySelectProps) {
 	const countries = useMemo(
-		() => [...options.keys || [], ...options.priorityKeys || []],
-		[]
+		() => [...(options.keys || []), ...(options.priorityKeys || [])],
+		[options]
 	);
 
 	const flagURL = FormHelpers.getFlagURL(

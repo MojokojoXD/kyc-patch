@@ -116,7 +116,7 @@ function PepForm({
 	return (
 		<div>
 			<div className='space-y-10'>
-				<FormText className='max-h-96 overflow-auto'>
+				<FormText className='max-h-96 overflow-auto [&>ul_ol]:list-[lower-alpha]'>
 					{isLoading ? (
 						<Ellipsis className='h-5 w-5 animate-pulse' />
 					) : (

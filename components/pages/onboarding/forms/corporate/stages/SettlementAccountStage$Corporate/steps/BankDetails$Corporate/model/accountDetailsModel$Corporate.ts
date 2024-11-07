@@ -95,7 +95,7 @@ const accountDetailsModel$Corporate = ({
 		name: `settlementAccount.bank.account.KRAPin`,
 		label: 'KRA PIN Number',
 		placeholder: 'Enter KRA PIN number',
-		tags: ['KE'],
+		tags: ['KE','KESTR'],
 	},
 	{
 		fieldType: 'text',

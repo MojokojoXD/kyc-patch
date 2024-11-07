@@ -124,7 +124,7 @@ export const companyDetailsFields = ({
 	{
 		fieldType: 'radio',
 		name: 'businessInfo.details.turnOver.monthlyAmount',
-		label: 'Monthly Turnover (GHS)',
+		label: 'Monthly Turnover (GHC)',
 		options: {
 			keys: TURN_OVER_AMOUNTS,
 			keySelector(key) {
@@ -135,7 +135,7 @@ export const companyDetailsFields = ({
 	{
 		fieldType: 'radio',
 		name: 'businessInfo.details.turnOver.annualAmount',
-		label: 'Annual Turnover (GHS)',
+		label: 'Annual Turnover (GHC)',
 		options: {
 			keys: TURN_OVER_AMOUNTS,
 			keySelector(key) {

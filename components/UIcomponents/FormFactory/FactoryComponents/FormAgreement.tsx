@@ -47,7 +47,7 @@ export default function FormAgreement({
 			control={control}
 			name={name as Path<IndividualFormSchema>}
 			defaultValue={defaultValue}
-			rules={ rules }
+			rules={ !rules ? {} : rules }
 			render={({ field, fieldState }) => (
 				<FormItem>
 					<FormControl>

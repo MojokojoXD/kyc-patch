@@ -21,8 +21,8 @@ import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/for
 
 export const FileUploads$Individual: FormStep = () => {
 	const {
-        form: { getValues },
-        clientID
+		form: { getValues },
+		formVars: { clientID },
 	} = useKYCFormContext<IndividualFormSchema>();
 
 	const applicants = getValues('applicant') || [{}];

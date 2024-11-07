@@ -12,6 +12,7 @@ import {
 	FormTitle,
 	FormSubHeader,
 	FormContent,
+	// FormAutopopulate,
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import type { FormStep } from '@/types/Components/onboarding';
@@ -66,10 +67,7 @@ export const Contact$NOK$Individual: FormStep = ({ countryList }) => {
 
 interface NOKContactFormProps extends SingleFormFieldsGeneratorProps {}
 
-function NOKContactForm({      
-	applicantId,
-	countryList,
-}: NOKContactFormProps) {
+function NOKContactForm({ applicantId, countryList }: NOKContactFormProps) {
 	const fields = useMemo(
 		() =>
 			contactModel$NOK$Individual({

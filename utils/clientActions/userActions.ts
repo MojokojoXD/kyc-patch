@@ -9,7 +9,7 @@ const SUBMISSION_URL = BASE_URL + '/kyc/client/submit';
 
 interface UserBrokerResponse {
 	data: {
-        brokerData: BrokerDetails;
+		brokerData: BrokerDetails;
 	};
 }
 
@@ -48,8 +48,10 @@ export class UserActions {
 				throw new Error(`failed to load user profile, request status: ${res.status}.
                 Server message: ${res.statusText}`);
 			}
-		} catch (error: any) {
-			console.log(error.message);
+		} catch (error) {
+			if (error instanceof Error) {
+				console.log(error.message);
+			}
 		}
 	}
 
@@ -58,7 +60,7 @@ export class UserActions {
 			throw new Error('missing client or submission ids');
 
 		try {
-			const res = await axios<{}, AxiosResponse<UserBrokerResponse>>(
+			const res = await axios<unknown, AxiosResponse<UserBrokerResponse>>(
 				SUBMISSION_URL + `?clientID=${clientId}&submissionID=${submissionId}`,
 				{
 					withCredentials: true,
@@ -83,7 +85,7 @@ export class UserActions {
 
 		try {
 			const res = await axios<
-				{},
+				unknown,
 				AxiosResponse<{ Status: 'Invalid' | 'Valid' }>
 			>(SUBMISSION_URL + `/${clientId}`, {
 				withCredentials: true,
@@ -92,10 +94,12 @@ export class UserActions {
 			if (res.status === 200) {
 				return res.data.Status === 'Valid';
 			}
+            console.log( res );
 
-			console.log(res);
+            return false;
 		} catch (error) {
-			console.log(error);
+            console.log( error );
+            return false
 		}
 	}
 }

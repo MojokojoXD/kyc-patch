@@ -58,7 +58,7 @@ export type FactoryComponentProps = {
 				};
 			}
 	>;
-	rules?: RegisterOptions;
+	rules?: RegisterOptions | null;
 	placeholder?: string;
 	defaultValue?: string | boolean;
 	options?: {

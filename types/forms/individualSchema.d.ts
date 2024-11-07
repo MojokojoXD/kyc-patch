@@ -3,7 +3,7 @@ import * as common from './common';
 export interface IndividualFormSchema {
 	clientType: 'Individual' | 'Joint Account';
 	clientStatus: string;
-	csdNumber: string;
+	csdNumber?: string;
 	catInvestment: common.InvestmentCategory[];
 	taxexempt: string;
 	signatureMandate?: string;
@@ -135,7 +135,12 @@ interface Disclosures {
 		nomineeAgreement: {
 			signatureResource: string;
 		};
-	};
+    };
+    databank: {
+        emailIndemnity: {
+            signatureResource: string;
+        }
+    }
 }
 
 interface FileUploads {

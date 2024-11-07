@@ -1,10 +1,20 @@
 import Image from 'next/image';
 import logo from '@/public/images/secondStax.webp';
 import { cn } from '@/lib/utils';
-import { ComponentPropsWithoutRef, useEffect, useRef } from 'react';
+import {
+	ComponentPropsWithoutRef,
+	useEffect,
+	useRef,
+	useState,
+	ReactNode,
+	useCallback,
+} from 'react';
 import FormProgressSheet from '../CompoundUI/FormProgressSheet';
+import { Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
+import type { FormFactoryProps } from '@/types/Components/formFactory';
+// import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 interface FormHeaderProps extends ComponentPropsWithoutRef<'div'> {
 	children: React.ReactNode;
@@ -101,12 +111,11 @@ function FormNavButtons() {
 
 type FormTextProps = FormHeaderProps & Record<string, unknown>;
 
-function FormText( { children, className }: FormTextProps )
-{
+function FormText({ children, className }: FormTextProps) {
 	return (
 		<div
 			className={cn(
-				'paragraph2Regular px-8 py-5 bg-neutral-50 rounded-md border border-neutral-100 space-y-2.5 [&_li]:max-w-prose text-neutral-700 [&>ol]:list-inside [&_li>ol]:pl-6 [&_li>ul]:pl-6 [&_h4]:heading7Medium [&_ul]:space-y-[16px]',
+				'max-h-96 overflow-auto bg-neutral-50 space-y-[16px]  max-w-prose text-neutral-700 paragraph2Regular py-[16px] px-8 [&_h2]:paragraph2Medium [&_h2]:text-neutral-800 [&_h3]:paragraph2Medium [&_ul_ol]:space-y-[16px] [&_li]:space-y-[16px] [&>ul_ol]:list-decimal [&>ul_ol]:ml-7 [&>ul_ul]:ml-7 [&_ol_ol_ol_ol]:list-[lower-alpha] [&>ul]:space-y-[16px] [&_ul_ul]:list-disc',
 				className
 			)}>
 			{children}
@@ -139,6 +148,92 @@ function FormNav() {
 	);
 }
 
+interface FormAutopopulateProps {
+	formIndex: number;
+	render: (index: number) => ReactNode;
+	srcPath: string;
+	srcFields: FormFactoryProps[];
+	fromIndex?: number;
+}
+
+function FormAutopopulate({
+	render,
+	formIndex,
+	srcPath,
+	// srcFields,
+	// fromIndex = 0,
+}: FormAutopopulateProps) {
+	const {
+		form: { getValues, setValue },
+	} = useKYCFormContext();
+
+	const [isPopulating, setIsPopulating] = useState(false);
+	const [populatedValues, setPopulatedValues] = useState<object[] | undefined>(
+		undefined
+	);
+
+	const buildNewSource = useCallback(() => {
+		setIsPopulating(true);
+
+		const applicantsData = (getValues(srcPath) as object[]) ?? [];
+
+		// const sourceApplicant = {};
+
+		// srcFields.forEach((f) => {
+		// 	const value = getValues(f.name) as unknown;
+
+		// 	FormHelpers.set(sourceApplicant, f.name, value);
+        // } );
+        
+		// applicantsData[formIndex] = {
+        //     ...applicantsData[formIndex],
+		// 	...(sourceApplicant[srcPath] as unknown[]).at(0),
+		// };
+
+		setPopulatedValues([...applicantsData]);
+
+		setTimeout(() => setIsPopulating(false), 1000);
+	}, [srcPath, getValues]);
+
+	useEffect(() => {
+		if (populatedValues) {
+			setValue(srcPath, populatedValues, {
+				shouldValidate: false,
+				shouldDirty: true,
+			});
+
+			setPopulatedValues(undefined);
+		}
+	}, [populatedValues, srcPath, setValue]);
+
+	return (
+		<>
+			{formIndex > 0 && (
+				<div className='flex justify-end'>
+					<Button
+						type='button'
+						onClick={buildNewSource}
+						size={'sm'}
+						className='text-sm bg-error-400 text-white hover:bg-error-400 hover:opacity-80 transition-all'>
+						<span>
+							{isPopulating ? (
+								<>
+									Populating
+									<Loader2 className='ml-1.5 h-5 w-5 animate-spin inline' />
+								</>
+							) : (
+								'Auto Populate...'
+							)}
+						</span>
+					</Button>
+				</div>
+			)}
+
+			{isPopulating ? 'loading...' : render(formIndex)}
+		</>
+	);
+}
+
 export {
 	FormHeader,
 	FormSubHeader,
@@ -147,4 +242,5 @@ export {
 	FormNavButtons,
 	FormText,
 	FormNav,
+	FormAutopopulate,
 };

@@ -16,6 +16,7 @@ import {
 	useKYCForm,
 	KYCContext,
 } from '@/components/pages/onboarding/forms/utils/formController';
+import Loading from '@/components/UIcomponents/Loading';
 
 export default function IndividualForm() {
 	const form = useForm<IndividualFormSchema>({
@@ -25,8 +26,13 @@ export default function IndividualForm() {
 	const KYCForm = useKYCForm(individualFormMetadata, form);
 
 	const {
-		formState: { isDirty },
-	} = KYCForm.form;
+		form: {
+			formState: { isDirty },
+		},
+		formAction,
+		error,
+		isLoading,
+	} = KYCForm;
 
 	useCloseTabWarning(isDirty);
 
@@ -42,30 +48,30 @@ export default function IndividualForm() {
 
 	useEffect(() => {
 		if (clientType === 'Individual') {
-			KYCForm.formAction({
+			formAction({
 				type: 'remove_step',
 				stage: 'disclosures',
 				step: 'signature mandate',
 			});
 		} else
-			KYCForm.formAction({
+			formAction({
 				type: 'reset',
 				stages: individualFormMetadata,
 			});
-	}, [clientType]);
+	}, [clientType, formAction]);
 
-	// Reporting and feedback
-	if (!KYCForm.clientID) {
-		console.error('missing client ID information');
+	if (error) {
+		console.error(error);
 		return (
 			<p className='p-10'>Something went wrong! Please contact system admin</p>
 		);
 	}
 
-    return (
-        //@ts-expect-error will fix mismatch later
+	return (
+		//@ts-expect-error will fix mismatch later
 		<KYCContext.Provider value={KYCForm}>
 			<FormLayout>
+				<Loading reveal={isLoading} />
 				<Form {...form}>
 					<form>
 						<FormNav />

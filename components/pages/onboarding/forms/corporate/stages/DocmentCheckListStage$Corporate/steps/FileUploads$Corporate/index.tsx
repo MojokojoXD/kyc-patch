@@ -23,7 +23,10 @@ import {
 import type { Signatory } from '@/types/forms/corporateSchema';
 
 export const FileUploads$Corporate: FormStep = () => {
-	const { form, clientID } = useKYCFormContext();
+	const {
+		form,
+		formVars: { clientID },
+	} = useKYCFormContext();
 	const { getValues } = form;
 
 	const signatories = (getValues(
@@ -36,38 +39,39 @@ export const FileUploads$Corporate: FormStep = () => {
 				<FormTitle>Document Checklist</FormTitle>
 				<FormSubHeader>Upload all the required files</FormSubHeader>
 			</FormHeader>
-            <FormContent>
-                <>
-                    <div className='space-y-[8px] py-5'>
-                        {signatories.map((s, i) => (
-                            <Accordion
-                                key={i}
-                                type='single'
-                                defaultValue='item-0'
-                                collapsible>
-                                <AccordionItem value={`item-${i}`}>
-                                    <AccordionTrigger>
-                                        Signatory #{i + 1}: {s.firstName} {s.lastName}
-                                    </AccordionTrigger>
-                                    <AccordionContent
-                                        className='data-[state=closed]:hidden pb-16'
-                                        forceMount>
-                                        <FileUploadForm
-                                            applicantId={i}
-                                            clientID={clientID}
-                                        />
-                                    </AccordionContent>
-                                </AccordionItem>
-                            </Accordion>
-                        ))}
-                    </div>
-                    
-                    {
-                        generalFileUpload$Corporate( { clientID } ).map( f => (
-                            <FormFactory key={f.name} { ...f }/>
-                        ))
-                    }
-                </>
+			<FormContent>
+				<>
+					<div className='space-y-[8px] py-5'>
+						{signatories.map((s, i) => (
+							<Accordion
+								key={i}
+								type='single'
+								defaultValue='item-0'
+								collapsible>
+								<AccordionItem value={`item-${i}`}>
+									<AccordionTrigger>
+										Signatory #{i + 1}: {s.firstName} {s.lastName}
+									</AccordionTrigger>
+									<AccordionContent
+										className='data-[state=closed]:hidden pb-16'
+										forceMount>
+										<FileUploadForm
+											applicantId={i}
+											clientID={clientID}
+										/>
+									</AccordionContent>
+								</AccordionItem>
+							</Accordion>
+						))}
+					</div>
+
+					{generalFileUpload$Corporate({ clientID }).map((f) => (
+						<FormFactory
+							key={f.name}
+							{...f}
+						/>
+					))}
+				</>
 			</FormContent>
 		</>
 	);

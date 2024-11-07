@@ -7,9 +7,22 @@ import {
 } from '@/components/UIcomponents/FormLayout';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 import { incorporationFields } from './model/incorporationFields';
+import { FormFieldAggregator } from '@/components/pages/onboarding/forms/utils/FormFieldAggregator';
+import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
 
 export const Incorporation: FormStep = ({ countryList }) => {
-	const rawFields = incorporationFields({ countryList });
+	const {
+		formVars: { brokerCode },
+	} = useKYCFormContext();
+    const rawFields = incorporationFields( { countryList } );
+    
+    const aggregator = new FormFieldAggregator( rawFields );
+
+    aggregator.modifyFields( 'KESTR', {
+        remove: brokerCode !== 'KESTR'
+    } )
+    
+    const fields = aggregator.generate()
 
 	return (
 		<>
@@ -20,7 +33,7 @@ export const Incorporation: FormStep = ({ countryList }) => {
 				</FormSubHeader>
 			</FormHeader>
 			<FormContent className='space-y-[46px]'>
-				{rawFields.map((f) => (
+				{fields.map((f) => (
 					<FormFactory
 						key={f.name}
 						{...f}

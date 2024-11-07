@@ -64,7 +64,9 @@ export const ContactDetail$Individual: FormStep = ({ countryList }) => {
 
 type ContactFormProps = SingleFormFieldsGeneratorProps & object;
 
-function ContactForm({ applicantId, countryList = [] }: ContactFormProps) {
+function ContactForm( { applicantId, countryList = [] }: ContactFormProps )
+{
+
 	const aggregatorResult = useMemo(() => {
 		const rawFields = contactDetailsModel$Individual({
 			index: applicantId,

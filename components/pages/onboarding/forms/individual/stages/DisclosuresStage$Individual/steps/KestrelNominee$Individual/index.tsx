@@ -26,7 +26,7 @@ export const KestrelNominee$Individual: FormStep = () => {
 	const {
 		form: { getValues },
 		formAction,
-		clientID,
+		formVars: { clientID },
 	} = useKYCFormContext<IndividualFormSchema>();
 
 	const [kestrelNomineeText, isLoading, error] =
@@ -121,7 +121,8 @@ function KestrelNomineeForm({
 
 	const { idNumber } = proofOfIdentity || { idNumber: '' };
 	const { residentialAddress, city } = contacts || {
-		residentialAddress: '', city: ''
+		residentialAddress: '',
+		city: '',
 	};
 
 	const today = format(new Date(), 'M/d/yyyy');
@@ -130,7 +131,7 @@ function KestrelNomineeForm({
     Name: ${firstName} ${middleName} ${lastName}\\
     ID Number: ${idNumber}\\
     Address: ${residentialAddress}
-    ${city } ${ countryOfResidence}
+    ${city} ${countryOfResidence}
     
 
     `;

@@ -1,6 +1,5 @@
 import type { Path } from 'react-hook-form';
-import
-    {
+import {
 	FormHeader,
 	FormTitle,
 	FormSubHeader,
@@ -30,7 +29,7 @@ export const BankDetails$Corporate: FormStep = ({ countryList }) => {
 
 	return (
 		<>
-            { loading && <Loading reveal={ loading } />}
+			{loading && <Loading reveal={loading} />}
 			<FormHeader>
 				<FormTitle>Settlement Account Details</FormTitle>
 				<FormSubHeader>Enter the required information below.</FormSubHeader>
@@ -52,7 +51,10 @@ type BankFormProps = Omit<SingleFormFieldsGeneratorProps, 'applicantId'> & {
 };
 
 function BankForm({ countryList = [], bankList }: BankFormProps) {
-	const { form } = useKYCFormContext<CorporateFormSchema>();
+	const {
+		form,
+		formVars: { brokerCode },
+	} = useKYCFormContext<CorporateFormSchema>();
 	const { watch, resetField } = form;
 
 	const currentBankCountry = watch(
@@ -62,7 +64,8 @@ function BankForm({ countryList = [], bankList }: BankFormProps) {
 		`businessInfo.details.countryOfIncorporation`
 	) as string;
 
-	const bankFieldName = `settlement.bank.locale.name` as Path<CorporateFormSchema>;
+	const bankFieldName =
+		`settlement.bank.locale.name` as Path<CorporateFormSchema>;
 
 	const aggregatorResults = useMemo(() => {
 		const rawFields = accountDetailsModel$Corporate({
@@ -91,12 +94,16 @@ function BankForm({ countryList = [], bankList }: BankFormProps) {
 			required: currentCountryOfIncorporation === 'KENYA',
 		});
 
+		aggregator.modifyFields('KESTR', {
+			remove: brokerCode !== 'KESTR',
+		});
+
 		aggregator.modifyFields('NG', {
 			required: currentCountryOfIncorporation === 'NIGERIA',
 		});
 
 		return aggregator.generate();
-	}, [countryList, bankList, currentCountryOfIncorporation, currentBankCountry]);
+	}, [countryList, bankList, currentCountryOfIncorporation, currentBankCountry, brokerCode]);
 
 	useEffect(() => {
 		resetField(bankFieldName, { defaultValue: '' });

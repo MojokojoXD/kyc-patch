@@ -37,13 +37,14 @@ export default function FormFileUpload({
 			control={control}
 			name={name}
 			defaultValue={defaultValue}
-			rules={rules}
+			rules={!rules ? {} : rules}
 			render={({ field, fieldState }) => (
 				<FormItem>
 					<FormLabel>{label}</FormLabel>
 					<FormControl>
 						<FileUploader
-							id={field.name}
+                            id={ field.name }
+                            ref={field.ref}
 							previewURL={objectURL}
 							isLoading={isLoading}
 							fileName={filename}

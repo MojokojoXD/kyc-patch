@@ -1,7 +1,10 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 import type { Country, CountryList } from '@/types/forms/common';
+import { sub } from 'date-fns';
 
 const today = new Date();
+
+const MIN_AGE = sub( today, { years: 18 } );
 
 export const contactPersonModel = ({
 	countryList = [],
@@ -68,8 +71,8 @@ export const contactPersonModel = ({
 			required: 'Please select date',
 		},
 		componentProps: {
-			disabled: { after: today },
-			endMonth: today,
+			disabled: { after: MIN_AGE },
+			endMonth: MIN_AGE,
 		},
 	},
 	{

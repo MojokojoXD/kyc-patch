@@ -5,6 +5,7 @@ import { Fatca$Individual } from './steps/Fatca$Individual';
 import { KestrelTerms$Individual } from './steps/KestrelTerms$Individual';
 import { KestrelNominee$Individual } from './steps/KestrelNominee$Individual';
 import { AfrinvestIndemnity$Individual } from './steps/AfrinvestIndemnity$Individual';
+import { DatabankEmailIndemnity$Individual } from './steps/DatabankIndemnity$Individual';
 import { SignatureMandate$Individual } from './steps/SignatureMandate$Individual';
 import { AfrinvestPrivacyPolicy } from './steps/AfrinvestPrivacyPolicy';
 import { Declarations$Individual } from './steps/Declarations$Individual';
@@ -31,7 +32,8 @@ export const DisclosuresStage$Individual = () => {
 		fatca: <Fatca$Individual  countryList={countryList}/>,
 		'kestrel capital - terms': <KestrelTerms$Individual />,
 		'kestrel capital - nominee': <KestrelNominee$Individual />,
-		'afrinvest - email indemnity': <AfrinvestIndemnity$Individual />,
+        'afrinvest - email indemnity': <AfrinvestIndemnity$Individual />,
+        'databank - email indemnity': <DatabankEmailIndemnity$Individual/>,
 		declarations: <Declarations$Individual />,
 		'signature mandate': <SignatureMandate$Individual />,
 		'afrinvest - privacy policy': <AfrinvestPrivacyPolicy />,

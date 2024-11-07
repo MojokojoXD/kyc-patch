@@ -100,7 +100,7 @@ export const riskProfileModel$Individual = ({
 		},
 		options: {
 			keySelector: (key) => key as string,
-			keys: ['Less than a year', '1 to 2 years', 'More than 2 years'],
+			keys: ['Short Term (1 year)', 'Medium Term (2-5 years)', 'Long Term (5 years+)'],
 		},
 		componentProps: {
 			toggleStyles: 'normal-case',

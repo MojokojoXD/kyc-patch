@@ -32,7 +32,7 @@ const collateDirectorsFromSignatories = (
 	const collationResult: Director[] = [];
 
 	signatories.forEach((s) => {
-		if (!s.role.includes('Director')) return;
+		if (!s.role.includes('Director/Executive/Trustee/Admin')) return;
 
 		collationResult.push({
 			id: s.id,
@@ -123,7 +123,10 @@ export const Directors: FormStep = ({ countryList }) => {
 		setValue('accountSignatories.directors', [
 			...directorsFromSignatory,
 			...result,
-		]);
+        ] );
+        
+        
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

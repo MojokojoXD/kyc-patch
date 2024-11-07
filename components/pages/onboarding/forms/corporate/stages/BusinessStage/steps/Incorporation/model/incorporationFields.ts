@@ -28,7 +28,8 @@ export const incorporationFields = ({
 		fieldType: 'text',
 		name: 'businessInfo.incorporation.KRAPin',
 		label: 'KRA PIN',
-		placeholder: 'Enter KRA PIN',
+        placeholder: 'Enter KRA PIN',
+        tags: [ 'KESTR' ]
 	},
 	{
 		fieldType: 'date',

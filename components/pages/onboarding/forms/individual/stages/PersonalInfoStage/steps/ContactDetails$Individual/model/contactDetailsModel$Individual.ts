@@ -35,7 +35,7 @@ export const contactDetailsModel$Individual = ({
 		rules: {
 			required: 'Please enter postal address',
 		},
-		tags: ['optional-contact'],
+		tags: ['KE'],
 	},
 	{
 		fieldType: 'phone',
@@ -111,7 +111,8 @@ export const contactDetailsModel$Individual = ({
 		fieldType: 'phone',
 		name: `applicant.${index}.contacts.faxNumber`,
 		label: 'Fax Number',
-		placeholder: 'Enter Fax Number',
+        placeholder: 'Enter Fax Number',
+        rules: null,
 		options: {
 			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList.at(1),
@@ -119,7 +120,8 @@ export const contactDetailsModel$Individual = ({
 		},
 		componentProps: {
 			phoneMode: 'single',
-		},
+        },
+        tags: ['KE']
 	},
 	{
 		fieldType: 'text',

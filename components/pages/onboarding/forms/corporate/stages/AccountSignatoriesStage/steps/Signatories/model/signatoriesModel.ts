@@ -3,6 +3,7 @@ import type { Country, CountryList } from '@/types/forms/common';
 import validator from 'validator';
 import { sub } from 'date-fns';
 import type { Signatory } from '@/types/forms/corporateSchema';
+import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 const today = new Date();
 const MIN_AGE_DATE = sub(today, { years: 18 });
@@ -24,7 +25,7 @@ export const signatoriesModel = ({
 			required: 'Select option',
 		},
 		options: {
-			keys: ['Director', 'Beneficial Owner', 'Executive/Trustee/Admin'],
+			keys: ['Director/Executive/Trustee/Admin', 'Beneficial Owner'],
 			keySelector(key) {
 				return key as string;
 			},
@@ -405,7 +406,7 @@ export const signatoriesModel = ({
 ];
 
 export const signatoriesDefaultValues: Signatory = {
-	id: '',
+	id: FormHelpers.generateUniqueIdentifier(),
     role: [],
 	address: {
 		phoneNumber: [
