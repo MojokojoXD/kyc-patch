@@ -2,19 +2,17 @@ import { useFormContext } from 'react-hook-form';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import type { Path } from 'react-hook-form';
 import { format } from 'date-fns';
-import type { FactoryFieldType } from '@/types/Components/formFactory';
 
 interface PrimitiveFieldReviewerProps {
 	name: string;
-    label: string;
-    field: FactoryFieldType;
+	label: string;
 }
 
 export function PrimitiveFieldReviewer({
 	name,
-    label,
-    field
+	label,
 }: PrimitiveFieldReviewerProps) {
+	let isDate: boolean = false;
 
 	const { getValues } = useFormContext<IndividualFormSchema>();
 
@@ -24,18 +22,17 @@ export function PrimitiveFieldReviewer({
 		fieldValue = fieldValue.toString();
 	}
 
-	if (typeof fieldValue === 'string' && field ==='date') {
-		
-        fieldValue = format( fieldValue, 'd MMM yyyy' )
+	if (typeof fieldValue === 'string' && !Number.isNaN(Date.parse(fieldValue))) {
+		isDate = true;
 	}
 
 	return (
 		<div className='space-y-[8px]'>
 			{label && <h2 className='paragraph2Medium text-neutral-700'>{label}</h2>}
 			<p className='paragraph2Regular text-neutral-500 first-letter:uppercase'>
-				{
-                   fieldValue as string  || 'n/a'
-                }
+				{isDate
+					? format(new Date(), 'd MMM  yyyy')
+					: (fieldValue as string) || 'n/a'}
 			</p>
 		</div>
 	);

@@ -59,7 +59,7 @@ export const BankDetails$Individual: FormStep = ({ countryList }) => {
 										Applicant #{i + 1}: {a.firstName} {a.lastName}
 									</AccordionTrigger>
 									<AccordionContent
-										className='data-[state=closed]:hidden py-10'
+										className='data-[state=closed]:hidden py-10 overflow-visible'
 										forceMount>
 										<BankForm
 											applicantId={i}

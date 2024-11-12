@@ -30,7 +30,8 @@ export function FieldReviewer({
 				return (
 					<PrimitiveFieldReviewer
 						name={reviewFieldConfig.name}
-						label={reviewFieldConfig.label}
+                        label={ reviewFieldConfig.label }
+                        field={ field }
 					/>
 				);
 			case 'phone':

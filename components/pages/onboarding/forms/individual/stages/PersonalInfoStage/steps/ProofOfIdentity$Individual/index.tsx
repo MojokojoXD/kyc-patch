@@ -42,7 +42,7 @@ export const ProofOfIdentity$Individual: FormStep = () => {
 										Applicant #{i + 1}: {a.firstName} {a.lastName}
 									</AccordionTrigger>
 									<AccordionContent
-										className='data-[state=closed]:hidden pb-16'
+										className='data-[state=closed]:hidden pb-16 overflow-visible'
 										forceMount>
 										<IdentityForm applicantId={i} />
 									</AccordionContent>
