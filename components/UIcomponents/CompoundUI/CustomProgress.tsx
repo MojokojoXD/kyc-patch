@@ -1,16 +1,16 @@
 import { Progress } from "../ui/progress";
 import { cn } from "@/lib/utils";
 
-type CustomProgressProps<TFormSteps> = {
+type CustomProgressProps = {
     maxSteps: number;
-    currentStep: TFormSteps;
+    currentStep: number;
     disable?: boolean;
 };
 
 
-export default function CustomProgress<TFormSteps>( { maxSteps, currentStep, disable }: CustomProgressProps<TFormSteps> )
+export default function CustomProgress( { maxSteps, currentStep, disable }: CustomProgressProps )
 {
-    const progressPercentage = ( (  currentStep as number) / maxSteps ) * 100;
+    const progressPercentage = ( (  currentStep) / maxSteps ) * 100;
 
     return (
         <div className={'fixed top-3 left-0 z-[70] sm:max-w-xs w-1/6 min-w-64 h-24 flex flex-col justify-center items-center p-6 text-neutral-700'}>

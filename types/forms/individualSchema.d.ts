@@ -105,6 +105,7 @@ export interface NOK
 		| 'professionalLicense'
 		| 'tin'
 	> {
+	id: string;
 	relationshipToApplicant: string;
 	percentageAllocation?: string;
 	contacts?: common.BaseContact;
@@ -135,18 +136,14 @@ interface Disclosures {
 		nomineeAgreement: {
 			signatureResource: string;
 		};
-    };
-    databank: {
-        emailIndemnity: {
-            signatureResource: string;
-        }
-    }
+	};
+	databank: {
+		emailIndemnity: {
+			signatureResource: string;
+		};
+	};
 }
 
 interface FileUploads {
-	[index: string]: FileUploadInfo;
+	[index: string]: common.FileStorage;
 }
-
-type FileUploadInfo = {
-	documentFileName: string;
-};

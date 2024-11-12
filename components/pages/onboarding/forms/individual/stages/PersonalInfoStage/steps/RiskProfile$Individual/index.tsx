@@ -1,4 +1,3 @@
-import { useFormContext } from 'react-hook-form';
 import {
 	AccordionItem,
 	Accordion,
@@ -14,14 +13,20 @@ import {
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import type { FormStep } from '@/types/Components/onboarding';
+import type { BrokerCode } from '@/types/forms/broker';
 import { BrokerCurrency } from '@/utils/vars/brokers';
 import { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
 import { riskProfileModel$Individual } from './model/riskProfileModel$Individual';
 import { FormFieldAggregator } from '@/components/pages/onboarding/forms/utils/FormFieldAggregator';
 import FormFactory from '@/components/UIcomponents/FormFactory';
+import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
 
-export const RiskProfile$Individual: FormStep = ({ applicantCount }) => {
-	const { getValues } = useFormContext<IndividualFormSchema>();
+export const RiskProfile$Individual: FormStep = () => {
+	const {
+		form: { getValues },
+	} = useKYCFormContext<IndividualFormSchema>();
+
+	const applicant = getValues('applicant') || [{}];
 
 	return (
 		<>
@@ -31,28 +36,24 @@ export const RiskProfile$Individual: FormStep = ({ applicantCount }) => {
 			</FormHeader>
 			<FormContent>
 				<div className='space-y-[8px] py-5'>
-					{[...Array(applicantCount).keys()].map((c) => {
-						const firstName = getValues(`applicant.${c}.firstName`);
-						const lastName = getValues(`applicant.${c}.lastName`);
-						return (
-							<Accordion
-								key={c}
-								type='single'
-								defaultValue='item-0'
-								collapsible>
-								<AccordionItem value={`item-${c}`}>
-									<AccordionTrigger>
-										Applicant #{c + 1}: {firstName} {lastName}
-									</AccordionTrigger>
-									<AccordionContent
-										className='data-[state=closed]:hidden pb-10'
-										forceMount>
-										<RiskProfileForm applicantId={c} />
-									</AccordionContent>
-								</AccordionItem>
-							</Accordion>
-						);
-					})}
+					{applicant.map((a, i) => (
+						<Accordion
+							key={a.id}
+							type='single'
+							defaultValue='item-0'
+							collapsible>
+							<AccordionItem value={`item-${i}`}>
+								<AccordionTrigger>
+									Applicant #{i + 1}: {a.firstName} {a.lastName}
+								</AccordionTrigger>
+								<AccordionContent
+									className='data-[state=closed]:hidden pb-10'
+									forceMount>
+									<RiskProfileForm applicantId={i} />
+								</AccordionContent>
+							</AccordionItem>
+						</Accordion>
+					))}
 				</div>
 			</FormContent>
 		</>
@@ -62,10 +63,12 @@ export const RiskProfile$Individual: FormStep = ({ applicantCount }) => {
 interface RiskProfileFormProps extends SingleFormFieldsGeneratorProps {}
 
 function RiskProfileForm({ applicantId }: RiskProfileFormProps) {
-	// const { getValues } = useFormContext<IndividualFormSchema>();
+	const {
+		formVars: { brokerCode },
+	} = useKYCFormContext<IndividualFormSchema>();
 
 	const aggregatorResults = useMemo(() => {
-		const currency = BrokerCurrency['DATAB'];
+		const currency = BrokerCurrency[brokerCode as BrokerCode];
 
 		const rawFields = riskProfileModel$Individual({
 			index: applicantId,
@@ -74,7 +77,7 @@ function RiskProfileForm({ applicantId }: RiskProfileFormProps) {
 		const aggregator = new FormFieldAggregator(rawFields);
 
 		return aggregator.generate();
-	}, [applicantId]);
+	}, [applicantId,brokerCode]);
 
 	return (
 		<>

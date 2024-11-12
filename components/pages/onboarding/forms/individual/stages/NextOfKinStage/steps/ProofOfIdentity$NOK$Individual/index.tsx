@@ -10,6 +10,7 @@ import {
 	FormTitle,
 	FormSubHeader,
 	FormContent,
+	FormAutopopulate,
 } from '@/components/UIcomponents/FormLayout';
 import { Button } from '@/components/UIcomponents/ui/button';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
@@ -56,7 +57,14 @@ export const ProofOfIdentity$NOK$Individual: FormStep = () => {
 								<AccordionContent
 									className='data-[state=closed]:hidden pb-16'
 									forceMount>
-									<NextOfKin_IdentityProofForm applicantId={i} />
+									<FormAutopopulate
+										formIndex={i}
+										srcPath='nextOfKin'
+										srcFields={proofOfIdentityModel$NOK$Individual({ index: 0 })}
+										render={(index) => (
+											<NextOfKin_IdentityProofForm applicantId={index} />
+										)}
+									/>
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>

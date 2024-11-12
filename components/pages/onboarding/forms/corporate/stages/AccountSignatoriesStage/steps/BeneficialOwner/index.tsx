@@ -102,18 +102,20 @@ export const BeneficialOwners: FormStep = ({ countryList }) => {
 
 			if (existingBownerFromSignatory.length !== 0) {
 				const mergedBeneficialOwner: BeneficialOwner = {
-					id: existingBownerFromSignatory[0].id,
-					firstName: existingBownerFromSignatory[0].firstName,
-					lastName: existingBownerFromSignatory[0].lastName,
-					middleName: existingBownerFromSignatory[0].middleName,
-					idType: existingBownerFromSignatory[0].idType,
-					idNumber: existingBownerFromSignatory[0].idNumber,
-					phoneNumber: [...existingBownerFromSignatory[0].phoneNumber],
-					residentialAddress: existingBownerFromSignatory[0].residentialAddress,
-					dateOfBirth: existingBownerFromSignatory[0].dateOfBirth,
-					pepInfo: { ...existingBownerFromSignatory[0].pepInfo },
-					ownership: b.ownership,
-					isPrefill: existingBownerFromSignatory[0].isPrefill,
+					// id: existingBownerFromSignatory[0].id,
+					// firstName: existingBownerFromSignatory[0].firstName,
+					// lastName: existingBownerFromSignatory[0].lastName,
+					// middleName: existingBownerFromSignatory[0].middleName,
+					// idType: existingBownerFromSignatory[0].idType,
+					// idNumber: existingBownerFromSignatory[0].idNumber,
+					// phoneNumber: [...existingBownerFromSignatory[0].phoneNumber],
+					// residentialAddress: existingBownerFromSignatory[0].residentialAddress,
+					// dateOfBirth: existingBownerFromSignatory[0].dateOfBirth,
+					// pepInfo: { ...existingBownerFromSignatory[0].pepInfo },
+					// ownership: b.ownership,
+                    // isPrefill: existingBownerFromSignatory[0].isPrefill,
+                    ...existingBownerFromSignatory[ 0 ],
+                    ownership: b.ownership,
 				};
 				result.push(mergedBeneficialOwner);
 				beneficialOwnersFromSignatories = beneficialOwnersFromSignatories.filter(
@@ -130,6 +132,7 @@ export const BeneficialOwners: FormStep = ({ countryList }) => {
 			...beneficialOwnersFromSignatories,
 			...result,
 		]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -173,7 +176,7 @@ export const BeneficialOwners: FormStep = ({ countryList }) => {
 											</div>
 										</AccordionTrigger>
 										<AccordionContent
-											className='data-[state=closed]:hidden pb-16'
+											className='data-[state=closed]:hidden pb-16 overflow-visible'
 											forceMount>
 											<BeneficialOwnerForm
 												applicantId={i}
@@ -194,7 +197,7 @@ export const BeneficialOwners: FormStep = ({ countryList }) => {
 							onClick={() => append(beneficialOwnersDefaultValues)}
 							className='text-base text-primary-500'>
 							<span className='mr-1'>
-								<CirclePlus className='h-4 w-4' />
+								<CirclePlus className='h-5 w-5' />
 							</span>
 							Add another Individual
 						</Button>

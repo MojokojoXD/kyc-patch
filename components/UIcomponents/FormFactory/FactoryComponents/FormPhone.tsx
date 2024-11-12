@@ -57,7 +57,7 @@ export default function FormPhone({
                     isRequired: ( v: PhoneInfo[ number ] ) =>
                         v.value !== '' || 'Please enter phone number',
                     isValidPhone: ( v: PhoneInfo[ number ] ) =>
-                        isPossiblePhoneNumber( v.value ) || 'Please enter valid phone number',
+                        isPossiblePhoneNumber( v.value ?? '' ) || 'Please enter valid phone number',
                 },
             }
             : {};

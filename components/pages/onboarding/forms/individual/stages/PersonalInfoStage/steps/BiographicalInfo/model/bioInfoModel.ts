@@ -1,12 +1,10 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import { sub, add } from 'date-fns';
 import type { Country, CountryList } from '@/types/forms/common';
 import type { ClientInfo } from '@/types/forms/individualSchema';
 import OPTIONS from '@/utils/vars/_formDefaults/personal_multiple_choice.json';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
-const today = new Date();
-const minAgeDate = sub(today, { years: 18 });
+const MIN_AGE = 18
 
 export const bioInfoModel = ({
 	index,
@@ -72,16 +70,14 @@ export const bioInfoModel = ({
 		},
 		placeholder: 'Select dates',
 		componentProps: {
-			disabled: { after: minAgeDate },
-			defaultMonth: minAgeDate,
-			startMonth: sub(minAgeDate, { years: 100 }),
-			endMonth: minAgeDate,
+            disableFutureDays: true,
+            minYear: MIN_AGE
 		},
 	},
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.mothersMaidenName`,
-		label: "Mother's maiden name",
+		label: "Mother's Maiden Name",
 		rules: {
 			required: 'Please enter place of birth',
 			validate: (v: string) => v.length > 1 || 'entry is too short',
@@ -91,7 +87,7 @@ export const bioInfoModel = ({
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.maidenName`,
-		label: 'Maiden name (Optional)',
+		label: 'Maiden Name (Optional)',
 		placeholder: 'Enter name',
 	},
 	{
@@ -206,10 +202,7 @@ export const bioInfoModel = ({
 			required: 'Select date',
 		},
 		componentProps: {
-			startMonth: sub(today, { years: 100 }),
-			endMonth: today,
-			disabled: { after: today },
-			defaultMonth: today,
+            disableFutureDays: true
 		},
 		tags: ['GH'],
 	},
@@ -232,10 +225,7 @@ export const bioInfoModel = ({
 			required: 'Select date',
 		},
 		componentProps: {
-			startMonth: today,
-			endMonth: add(today, { years: 100 }),
-			disabled: { before: today },
-			defaultMonth: today,
+            disablePastDays: true,
 		},
 		tags: ['GH'],
 	},

@@ -21,16 +21,15 @@ import type {
 	SingleFormFieldsGeneratorProps,
 } from '@/types/Components/onboarding';
 
-
 export const BiographicalInfo: FormStep = ({ countryList }) => {
 	const {
 		form: { getValues },
 	} = useKYCFormContext<IndividualFormSchema>();
 
 	const applicants = getValues('applicant');
-	
+
 	return (
-        <>
+		<>
 			<FormHeader>
 				<FormTitle>Personal Information</FormTitle>
 				<FormSubHeader>
@@ -73,7 +72,8 @@ function BiographicalForm({
 	applicantId,
 	countryList = [],
 }: BiographicalFormProps) {
-	const { watch, setValue } = useKYCFormContext<IndividualFormSchema>().form;
+	const { watch, setValue, unregister } =
+		useKYCFormContext<IndividualFormSchema>().form;
 
 	const [currentResidence, citizenship] = watch([
 		`applicant.${applicantId}.countryOfResidence`,
@@ -103,16 +103,19 @@ function BiographicalForm({
 		aggregator.modifyFields('GH', {
 			required:
 				residenceStatus === 'Resident Foreigner' ||
-                residenceStatus === 'Non-Resident Foreigner',
-            remove: residenceStatus === 'Resident Ghanaian'
+				residenceStatus === 'Non-Resident Foreigner',
+			remove: residenceStatus === 'Resident Ghanaian',
 		});
 
 		aggregator.modifyFields('NG', {
 			required: isNigeriaResident,
 		});
 
+		if (residenceStatus === 'Resident Ghanaian')
+			unregister(`applicant.${applicantId}.residence.details`);
+
 		return aggregator.generate();
-	}, [applicantId, countryList, residenceStatus, isNigeriaResident]);
+	}, [applicantId, countryList, residenceStatus, isNigeriaResident, unregister]);
 
 	useEffect(
 		() => setValue(`applicant.${applicantId}.residence.status`, residenceStatus),

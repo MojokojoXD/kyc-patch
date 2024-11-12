@@ -35,7 +35,7 @@ export default function FormAgreement({
 			versionPath &&
 				setValue(versionPath, componentProps.agreementVersion);
 			timestampPath &&
-				setValue(timestampPath, new Date().toUTCString());
+				setValue(timestampPath, new Date().toISOString());
 		} else {
 			versionPath && setValue(versionPath, '-1');
 			timestampPath && setValue(timestampPath, '');

@@ -1,12 +1,10 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 import type { Country, CountryList } from '@/types/forms/common';
 import validator from 'validator';
-import { sub } from 'date-fns';
 import type { Signatory } from '@/types/forms/corporateSchema';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
-const today = new Date();
-const MIN_AGE_DATE = sub(today, { years: 18 });
+const MIN_AGE = 18;
 
 export const signatoriesModel = ({
 	index,
@@ -21,9 +19,6 @@ export const signatoriesModel = ({
 		fieldType: 'checkbox',
 		name: `accountSignatories.signatories.${index}.role`,
 		label: 'Do any of the roles apply to the signatory? (Optional)',
-		rules: {
-			required: 'Select option',
-		},
 		options: {
 			keys: ['Director/Executive/Trustee/Admin', 'Beneficial Owner'],
 			keySelector(key) {
@@ -102,8 +97,8 @@ export const signatoriesModel = ({
 			required: 'Please select date',
 		},
 		componentProps: {
-			disabled: { after: MIN_AGE_DATE },
-			endMonth: MIN_AGE_DATE,
+            disableFutureDays: true,
+            minYear: MIN_AGE
 		},
 	},
 	{
@@ -447,9 +442,8 @@ export const signatoriesDefaultValues: Signatory = {
             status: [],
             ownership: ''
         },
-        dataBank: {
+        databank: {
             emailIndemnity: {
-                address: '',
                 signatureResource: ''
             },
         },

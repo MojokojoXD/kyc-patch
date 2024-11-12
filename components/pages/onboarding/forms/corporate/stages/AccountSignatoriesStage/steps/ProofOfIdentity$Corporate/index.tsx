@@ -26,7 +26,7 @@ export const ProofOfIdentity$Corporate: FormStep = () => {
 	return (
 		<>
 			<FormHeader>
-				<FormTitle>Account Signatories</FormTitle>
+				<FormTitle>Proof of Identity</FormTitle>
 			</FormHeader>
 			<FormContent>
 				<ul className='space-y-[8px]'>
@@ -41,7 +41,7 @@ export const ProofOfIdentity$Corporate: FormStep = () => {
 										Signatory #{i + 1}: {s.firstName} {s.lastName}
 									</AccordionTrigger>
 									<AccordionContent
-										className='data-[state=closed]:hidden pb-16'
+										className='data-[state=closed]:hidden pb-16 overflow-visible'
 										forceMount>
 										<SignatoryForm applicantId={i} />
 									</AccordionContent>

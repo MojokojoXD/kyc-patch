@@ -1,8 +1,6 @@
 import type { Country,CountryList, BankList } from '@/types/forms/common';
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import { sub } from 'date-fns';
 
-const today = new Date();
 
 export const bankDetailsModel$Individual = ({
 	index,
@@ -93,9 +91,7 @@ export const bankDetailsModel$Individual = ({
 			required: 'Select date',
 		},
 		componentProps: {
-			endMonth: today,
-			startMonth: sub(today, { years: 100 }),
-			disabled: { after: today },
+			disableFutureDays: true
 		},
 	},
 	{

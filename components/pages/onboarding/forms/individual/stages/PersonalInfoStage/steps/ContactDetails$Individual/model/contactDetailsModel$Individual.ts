@@ -66,7 +66,7 @@ export const contactDetailsModel$Individual = ({
 	},
 	{
 		fieldType: 'text',
-		name: `applicant.${index}.contacts.emergencyContact.name`,
+		name: `applicant.${index}.contacts.emergencyContact.contactName`,
 		label: 'Emergency Contact',
 		placeholder: 'Enter contact name',
 		rules: {

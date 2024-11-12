@@ -57,6 +57,8 @@ export const DatabankEmailIndemnity$Corporate: FormStep = () => {
 							? s.title?.other
 							: s.title.presets;
 
+                    const address = `${ s.address.residentialAddress }, ${s.address.city} ${ s.countryOfResidence }`
+                    
 					return (
 						<Accordion
 							collapsible
@@ -88,7 +90,8 @@ export const DatabankEmailIndemnity$Corporate: FormStep = () => {
 											<span>Your Home Address</span>
 											<Input
 												disabled
-												value={s.address.residentialAddress}
+                                                value={ address }
+                                                className='capitalize'
 												id='indemnity__address'
 											/>
 										</FormLabel>

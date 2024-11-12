@@ -14,7 +14,7 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useKYCFormContext } from '@/components/pages/onboarding/forms/utils/formController';
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-// import { FormHelpers } from '@/utils/clientActions/formHelpers';
+import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 interface FormHeaderProps extends ComponentPropsWithoutRef<'div'> {
 	children: React.ReactNode;
@@ -35,11 +35,11 @@ function FormHeader({ children, ...props }: FormHeaderProps) {
 				<div className='h-[98px] w-[149px] relative'>
 					<Image
 						priority
-						src={logo}
+                        src={ logo }
 						fill
 						className='object-contain'
 						sizes='(max-width: 768px) 200px'
-						alt='SSX Logo'
+                        alt='SSX Logo'
 					/>
 				</div>
 			</div>
@@ -99,7 +99,7 @@ function FormNavButtons() {
 				</Button>
 			)}
 			<Button
-				type='button'
+				type={formNav.currentStep === 'submit' ? 'submit' : 'button'}
 				onClick={next}>
 				{formNav.currentStage === 'introduction'
 					? 'Begin Process'
@@ -160,76 +160,78 @@ function FormAutopopulate({
 	render,
 	formIndex,
 	srcPath,
-	// srcFields,
-	// fromIndex = 0,
-}: FormAutopopulateProps) {
+	srcFields,
+}: // fromIndex = 0,
+FormAutopopulateProps) {
 	const {
 		form: { getValues, setValue },
+		toggleLoading,
+		isLoading,
 	} = useKYCFormContext();
 
-	const [isPopulating, setIsPopulating] = useState(false);
 	const [populatedValues, setPopulatedValues] = useState<object[] | undefined>(
 		undefined
 	);
 
 	const buildNewSource = useCallback(() => {
-		setIsPopulating(true);
-
+		toggleLoading(true);
 		const applicantsData = (getValues(srcPath) as object[]) ?? [];
 
-		// const sourceApplicant = {};
+		const sourceApplicant: Record<string, unknown> = {};
 
-		// srcFields.forEach((f) => {
-		// 	const value = getValues(f.name) as unknown;
+		srcFields.forEach((f) => {
+			const value = getValues(f.name) as unknown;
 
-		// 	FormHelpers.set(sourceApplicant, f.name, value);
-        // } );
-        
-		// applicantsData[formIndex] = {
-        //     ...applicantsData[formIndex],
-		// 	...(sourceApplicant[srcPath] as unknown[]).at(0),
-		// };
+			FormHelpers.set(sourceApplicant, f.name, value);
+		});
+
+		applicantsData[formIndex] = {
+			...applicantsData[formIndex],
+			...(sourceApplicant[srcPath] as unknown[])[0] as object,
+		};
 
 		setPopulatedValues([...applicantsData]);
 
-		setTimeout(() => setIsPopulating(false), 1000);
-	}, [srcPath, getValues]);
+	}, [srcPath, getValues,formIndex,toggleLoading,srcFields]);
 
 	useEffect(() => {
+		let timerID: ReturnType<typeof setTimeout>;
 		if (populatedValues) {
 			setValue(srcPath, populatedValues, {
 				shouldValidate: false,
 				shouldDirty: true,
 			});
 
-			setPopulatedValues(undefined);
+			timerID = setTimeout(() => toggleLoading(false), 1000);
 		}
-	}, [populatedValues, srcPath, setValue]);
+
+		return () => clearTimeout(timerID);
+	}, [populatedValues, srcPath, setValue,toggleLoading]);
+
+	if (formIndex === 0) return render(formIndex);
 
 	return (
 		<>
-			{formIndex > 0 && (
-				<div className='flex justify-end'>
-					<Button
-						type='button'
-						onClick={buildNewSource}
-						size={'sm'}
-						className='text-sm bg-error-400 text-white hover:bg-error-400 hover:opacity-80 transition-all'>
-						<span>
-							{isPopulating ? (
-								<>
-									Populating
-									<Loader2 className='ml-1.5 h-5 w-5 animate-spin inline' />
-								</>
-							) : (
-								'Auto Populate...'
-							)}
-						</span>
-					</Button>
-				</div>
-			)}
+			<div className='flex justify-end'>
+				<Button
+					type='button'
+					onClick={buildNewSource}
+					size={'sm'}
+					className='text-sm bg-error-400 text-white hover:bg-error-400 hover:opacity-80 transition-all'>
+					<span>
+						{isLoading ? (
+							<>
+								Populating
+								<Loader2 className='ml-1.5 h-5 w-5 animate-spin inline' />
+							</>
+						) : (
+							'Same as 1'
+						)}
+					</span>
+				</Button>
+			</div>
 
-			{isPopulating ? 'loading...' : render(formIndex)}
+			{isLoading ? <></> : render(formIndex)}
 		</>
 	);
 }

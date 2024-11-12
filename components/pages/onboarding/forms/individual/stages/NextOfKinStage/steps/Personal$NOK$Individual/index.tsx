@@ -14,7 +14,7 @@ import {
 	FormTitle,
 	FormSubHeader,
 	FormContent,
-	// FormAutopopulate,
+	FormAutopopulate,
 } from '@/components/UIcomponents/FormLayout';
 import type { FormStep } from '@/types/Components/onboarding';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
@@ -24,10 +24,12 @@ import { cn } from '@/lib/utils';
 import { personalModel$NOK$Individual } from './model/personalModel$NOK$Individual';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 import Loading from '@/components/UIcomponents/Loading';
+import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 const MAX_NUMBER_OF_KINS = 2;
 
 const defaultNOKValues: NOK = {
+    id: FormHelpers.generateUniqueIdentifier(),
 	title: {
 		presets: undefined,
 		other: '',
@@ -62,9 +64,6 @@ export const Personal$NOK$Individual: FormStep = ({ countryList }) => {
         if ( fields.length === 0 )
         {
             toggleLoading( true );
-            // setValue('nextOfKin', [defaultNOKValues], {
-            //     shouldTouch: false,
-            // } );
             append( defaultNOKValues );
             return;
         }
@@ -100,9 +99,9 @@ export const Personal$NOK$Individual: FormStep = ({ countryList }) => {
 											<div className='absolute left-[16px]'>
 												{i > 0 && (
 													<span
-														className='text-primary-500 hover:bg-none hover:no-underline px-0 py-2 h-fit '
+														className='text-primary-500 hover:bg-none hover:no-underline px-0 py-0 h-fit '
 														onClick={() => remove(i)}>
-														<Trash2 className='h-[20px] w-[20px] mr-1' />
+														<Trash2 className='h-5 w-5 mr-1' />
 													</span>
 												)}
 											</div>
@@ -110,11 +109,18 @@ export const Personal$NOK$Individual: FormStep = ({ countryList }) => {
 										</AccordionTrigger>
 										<AccordionContent
 											className='data-[state=closed]:hidden py-10'
-											forceMount>
-											<NOKBioForm
-												applicantId={i}
-												countryList={countryList}
-											/>
+                                            forceMount>
+                                            <FormAutopopulate
+                                                formIndex={ i }
+                                                srcFields={ personalModel$NOK$Individual({ index: 0 }) }
+                                                srcPath='nextOfKin'
+                                                render={ (index) => (
+                                                    <NOKBioForm
+                                                        applicantId={index}
+                                                        countryList={countryList}
+                                                    />
+                                                ) }
+                                            />
 										</AccordionContent>
 									</AccordionItem>
 								</Accordion>
@@ -130,7 +136,7 @@ export const Personal$NOK$Individual: FormStep = ({ countryList }) => {
 							onClick={() => {
 								append(defaultNOKValues, {});
 							}}>
-							<CirclePlus className='h-[20px] w-[20px] mr-1' />
+							<CirclePlus className='h-5 w-5 mr-1' />
 							Add a next of kin
 						</Button>
 					</div>

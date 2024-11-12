@@ -27,7 +27,8 @@ export async function getServerSideProps({
 		return broker
 			? {
 					props: {
-						clientID,
+                    clientID,
+                        submissionID,
 						broker,
 					},
 			  }
@@ -44,9 +45,11 @@ export async function getServerSideProps({
 
 export default function OnboardingPage({
 	clientID,
-	broker,
+    broker,
+    submissionID
 }: {
-	clientID: string;
+        clientID: string;
+        submissionID: string;
 	broker: BrokerDetails;
 }) {
 	const [UAPDecided, setUAPDecided] = useState<boolean>(false);
@@ -61,7 +64,8 @@ export default function OnboardingPage({
 				{UAPDecided ? (
 					<KycFormOptions
 						clientID={clientID}
-						orgCode={broker.org_code}
+                        orgCode={ broker.org_code }
+                        submissionID={submissionID}
 					/>
 				) : (
 					<UAPContent getUAPAgreement={getUAPAgreementHandler} />

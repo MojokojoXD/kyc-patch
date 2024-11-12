@@ -1,7 +1,4 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import { add } from 'date-fns';
-
-const today = new Date();
 
 export const proofOfIdentityModel$Contacts: FormFactoryProps[] = [
 	{
@@ -36,8 +33,7 @@ export const proofOfIdentityModel$Contacts: FormFactoryProps[] = [
             required: 'Select Date'
         },
         componentProps: {
-            disabled: { after: today },
-            endMonth: today,
+            disableFutureDays: true,
         }
     },
     {
@@ -58,9 +54,7 @@ export const proofOfIdentityModel$Contacts: FormFactoryProps[] = [
             required: 'Select expiry date'
         },
         componentProps: {
-            disabled: { before: today },
-            startMonth: today,
-            endMonth: add( today, { years: 50 } )
+            disablePastDays: true,
         }
     },
 ];

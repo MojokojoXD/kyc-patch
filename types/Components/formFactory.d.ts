@@ -1,11 +1,9 @@
-import type { PropsBase } from 'react-day-picker';
 import type { Country, BankList } from '../forms/common';
 import type { InputProps } from '@/components/UIcomponents/ui/input';
 import type { RegisterOptions } from 'react-hook-form';
 import type { BrokerCode } from '../forms/broker';
 import type { Path } from 'react-hook-form';
-import type { IndividualFormSchema } from '../forms/individualSchema';
-
+import type { SSXDatePickerProps } from '@/components/UIcomponents/CompoundUI/SSXDatePicker/date-picker';
 type DropdownOption = Country | BankList | string;
 
 type Tag =
@@ -40,11 +38,11 @@ export interface FormFactoryProps extends FactoryComponentProps {
 export type FactoryComponentProps = {
 	label: string;
 	inline?: boolean;
-    readonly name: Path<IndividualFormSchema> | string;
+    readonly name: Path | string;
     readonly?: boolean;
 	componentProps?: Partial<
-		Omit<InputProps, 'disabled'> &
-			PropsBase & {
+		Omit<InputProps, 'disabled' | 'placeholder'> &
+			SSXDatePickerProps & {
 				phoneMode?: 'single' | 'multi';
 				maxPhoneCount?: number;
 				toggleStyles?: string;

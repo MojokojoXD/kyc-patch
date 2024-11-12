@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { useEffect } from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import type { FormComponentDict } from '@/components/pages/onboarding/forms/utils/formReducer';
@@ -8,7 +8,7 @@ import * as Stages from '@/components/pages/onboarding/forms/individual/stages/s
 import {
 	FormLayout,
 	FormNav,
-	FormNavButtons,
+    FormNavButtons,
 } from '@/components/UIcomponents/FormLayout';
 import { useCloseTabWarning } from '@/components/pages/onboarding/forms/utils/customHooks/useCloseTabWarning';
 import { individualFormMetadata } from '@/components/pages/onboarding/forms/individual/config/individualFormMetadata';
@@ -27,11 +27,13 @@ export default function IndividualForm() {
 
 	const {
 		form: {
-			formState: { isDirty },
-		},
+            formState: { isDirty },
+            handleSubmit
+        },
+        formVars: { clientID, submissionID },
 		formAction,
 		error,
-		isLoading,
+        isLoading,
 	} = KYCForm;
 
 	useCloseTabWarning(isDirty);
@@ -58,7 +60,22 @@ export default function IndividualForm() {
 				type: 'reset',
 				stages: individualFormMetadata,
 			});
-	}, [clientType, formAction]);
+    }, [ clientType, formAction ] );
+    
+
+    const submitHandler: SubmitHandler<IndividualFormSchema> = ( data ) =>
+    {
+        const payload = {
+            clientID,
+            submissionID,
+            payload: {
+                ...data
+            }
+        }
+
+        console.log( payload )
+        console.log( JSON.stringify( payload ) );
+    }
 
 	if (error) {
 		console.error(error);
@@ -73,7 +90,7 @@ export default function IndividualForm() {
 			<FormLayout>
 				<Loading reveal={isLoading} />
 				<Form {...form}>
-					<form>
+					<form  onSubmit={ handleSubmit( submitHandler ) }>
 						<FormNav />
 						{individualStages[KYCForm.formNav.currentStage]}
 						<FormNavButtons />

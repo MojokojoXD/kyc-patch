@@ -1,8 +1,6 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country,CountryList } from '@/types/forms/common';
+import type { Country, CountryList } from '@/types/forms/common';
 import validator from 'validator';
-
-const today = new Date();
 
 export const personalModel$NOK$Individual = ({
 	index,
@@ -17,17 +15,17 @@ export const personalModel$NOK$Individual = ({
 		label: 'Title',
 		options: {
 			keySelector: (key) => key as string,
-			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr','Other'],
-        },
-        rules: {
-            required: 'Select Title'
-        },
+			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr', 'Other'],
+		},
+		rules: {
+			required: 'Select Title',
+		},
 		componentProps: {
-            className: 'grid grid-cols-5',
-            otherProps: {
-                label: 'Other? Specify',
-                placeholder: 'Specify'
-            }
+			className: 'grid grid-cols-5',
+			otherProps: {
+				label: 'Other? Specify',
+				placeholder: 'Specify',
+			},
 		},
 	},
 	{
@@ -68,112 +66,110 @@ export const personalModel$NOK$Individual = ({
 		},
 		placeholder: 'Select dates',
 		componentProps: {
-			disabled: { after: today },
-			defaultMonth: today,
-			endMonth: today,
+			disableFutureDays: true,
 		},
-        },
-        {
-            fieldType: 'text',
-            name: `nextOfKin.${index}.relationshipToApplicant`,
-            label: 'Relationship to Applicant',
-            placeholder: 'Enter relationship to applicant',
-            rules: {
-                required: 'Please enter relationship to applicant'
-            }
-        },
-        {
-            fieldType: 'radio',
-            name: `nextOfKin.${index}.gender`,
-            label: 'Gender',
-            rules: {
-                required: 'Select gender',
-            },
-            options: {
-                keySelector: (key) => key as string,
-                keys: [ 'Male', 'Female' ],
-            },
-            componentProps: {
-                className: 'grid grid-cols-2 gap-[4px]',
-            },
-        },
-        {
-            fieldType: 'radio',
-            name: `nextOfKin.${index}.maritalStatus`,
-            label: 'Marital Status',
-            rules: {
-                required: 'Select marital status',
-            },
-            options: {
-                keySelector: (key) => key as string,
-                keys: ['Single','Married','Divorced','Separated'],
-            },
-            componentProps: {
-                className: 'grid grid-cols-4 gap-[4px]',
-            },
-        },
-        {
-            fieldType: 'dropdown',
-            name: `nextOfKin.${index}.countryOfBirth`,
-            label: 'Country of Birth',
-            rules: {
-                required: 'Select country of birth',
-            },
-            options: {
-                keySelector: (key) => (key as Country).cty_name,
-                keys: countryList[1],
-                priorityKeys: countryList[0],
-            },
-            placeholder: 'Select country',
-        },
-        {
-            fieldType: 'text',
-            name: `nextOfKin.${index}.placeOfBirth`,
-            label: 'Place of Birth(Optional)',
-            placeholder: 'Enter place of birth',
-        },
-        {
-            fieldType: 'dropdown',
-            name: `nextOfKin.${index}.countryOfResidence`,
-            label: 'Country of Residence',
-            rules: {
-                required: 'Select country of residence',
-            },
-            options: {
-                keySelector: (key) => (key as Country).cty_name,
-                keys: countryList[1],
-                priorityKeys: countryList[0],
-            },
-            placeholder: 'Select country',
-        },
-    
-        {
-            fieldType: 'dropdown',
-            name: `nextOfKin.${index}.countryOfCitizenship`,
-            label: 'Nationality/Country of Citizenship',
-            rules: {
-                required: 'Select nationality',
-            },
-            options: {
-                keySelector: (key) => (key as Country).cty_name,
-                keys: countryList[1],
-                priorityKeys: countryList[0],
-            },
-            placeholder: 'Select country',
-        },
-        {
-            fieldType: 'text',
-            name: `nextOfKin.${ index }.percentageAllocation`,
-            label: 'Percentage Allocation (Optional)',
-            placeholder: 'Enter number',
-            rules: {
-                validate: {
-                    isNumber: v => validator.isNumeric( v as string ) || 'Entry must be a number',
-                    isWithinRange: (v) =>
-                        (parseInt(v as string) >= 0 && parseInt(v as string) <= 100) ||
-                        'Percentage must be between 0 and 100',
-                }
-            }
-        }
-];
+	},
+	{
+		fieldType: 'text',
+		name: `nextOfKin.${index}.relationshipToApplicant`,
+		label: 'Relationship to Applicant',
+		placeholder: 'Enter relationship to applicant',
+		rules: {
+			required: 'Please enter relationship to applicant',
+		},
+	},
+	{
+		fieldType: 'radio',
+		name: `nextOfKin.${index}.gender`,
+		label: 'Gender',
+		rules: {
+			required: 'Select gender',
+		},
+		options: {
+			keySelector: (key) => key as string,
+			keys: ['Male', 'Female'],
+		},
+		componentProps: {
+			className: 'grid grid-cols-2 gap-[4px]',
+		},
+	},
+	{
+		fieldType: 'radio',
+		name: `nextOfKin.${index}.maritalStatus`,
+		label: 'Marital Status',
+		rules: {
+			required: 'Select marital status',
+		},
+		options: {
+			keySelector: (key) => key as string,
+			keys: ['Single', 'Married', 'Divorced', 'Separated'],
+		},
+		componentProps: {
+			className: 'grid grid-cols-4 gap-[4px]',
+		},
+	},
+	{
+		fieldType: 'dropdown',
+		name: `nextOfKin.${index}.countryOfBirth`,
+		label: 'Country of Birth',
+		rules: {
+			required: 'Select country of birth',
+		},
+		options: {
+			keySelector: (key) => (key as Country).cty_name,
+			keys: countryList[1],
+			priorityKeys: countryList[0],
+		},
+		placeholder: 'Select country',
+	},
+	{
+		fieldType: 'text',
+		name: `nextOfKin.${index}.placeOfBirth`,
+		label: 'Place of Birth(Optional)',
+		placeholder: 'Enter place of birth',
+	},
+	{
+		fieldType: 'dropdown',
+		name: `nextOfKin.${index}.countryOfResidence`,
+		label: 'Country of Residence',
+		rules: {
+			required: 'Select country of residence',
+		},
+		options: {
+			keySelector: (key) => (key as Country).cty_name,
+			keys: countryList[1],
+			priorityKeys: countryList[0],
+		},
+		placeholder: 'Select country',
+	},
 
+	{
+		fieldType: 'dropdown',
+		name: `nextOfKin.${index}.countryOfCitizenship`,
+		label: 'Nationality/Country of Citizenship',
+		rules: {
+			required: 'Select nationality',
+		},
+		options: {
+			keySelector: (key) => (key as Country).cty_name,
+			keys: countryList[1],
+			priorityKeys: countryList[0],
+		},
+		placeholder: 'Select country',
+	},
+	{
+		fieldType: 'text',
+		name: `nextOfKin.${index}.percentageAllocation`,
+		label: 'Percentage Allocation (Optional)',
+		placeholder: 'Enter number',
+		rules: {
+			validate: {
+				isNumber: (v) =>
+					validator.isNumeric(v as string) || 'Entry must be a number',
+				isWithinRange: (v) =>
+					(parseInt(v as string) >= 0 && parseInt(v as string) <= 100) ||
+					'Percentage must be between 0 and 100',
+			},
+		},
+	},
+];

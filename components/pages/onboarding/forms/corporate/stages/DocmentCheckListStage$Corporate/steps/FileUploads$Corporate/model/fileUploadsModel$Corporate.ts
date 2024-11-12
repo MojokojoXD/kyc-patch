@@ -10,7 +10,7 @@ export const signatoryFileUploadsModel$Corporate = ({
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'file-upload',
-		name: `accountSignatores.signatories.${index}.documentChecklist.signatoryID.fileName`,
+		name: `accountSignatories.signatories.${index}.documentChecklist.signatoryID.fileName`,
 		label: 'Notorized Applicant(s) ID',
 		rules: {
 			required: 'Please upload notorized ID',
@@ -22,7 +22,7 @@ export const signatoryFileUploadsModel$Corporate = ({
 	},
 	{
 		fieldType: 'file-upload',
-		name: `accountSignatores.signatories.${index}.documentChecklist.residentPermit.fileName`,
+		name: `accountSignatories.signatories.${index}.documentChecklist.residentPermit.fileName`,
 		label: 'Resident/Work Permit (Optional)',
 		componentProps: {
 			clientID: clientID,
@@ -31,7 +31,7 @@ export const signatoryFileUploadsModel$Corporate = ({
 	},
 	{
 		fieldType: 'file-upload',
-		name: `accountSignatores.signatories.${index}.documentChecklist.signatoryPhotographs.fileName`,
+		name: `accountSignatories.signatories.${index}.documentChecklist.signatoryPhotographs.fileName`,
 		label: 'Signatories Photos (Optional)',
 		componentProps: {
 			clientID: clientID,

@@ -18,8 +18,10 @@ import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboardi
 import { proofOfIdentityModel$Individual } from './model/proofOfIdentityModel$Individual';
 import FormFactory from '@/components/UIcomponents/FormFactory';
 
-export const ProofOfIdentity$Individual: FormStep = ({ applicantCount }) => {
+export const ProofOfIdentity$Individual: FormStep = () => {
 	const { getValues } = useFormContext<IndividualFormSchema>();
+
+    const applicants = getValues( 'applicant' ) || [ {  } ]
 
 	return (
 		<>
@@ -29,19 +31,15 @@ export const ProofOfIdentity$Individual: FormStep = ({ applicantCount }) => {
 			</FormHeader>
 			<FormContent>
 				<div className='space-y-[8px] py-5'>
-					{[...Array(applicantCount).keys()].map((c, i) => {
-						const firstName = getValues(`applicant.${c}.firstName`);
-						const lastName = getValues(`applicant.${c}.lastName`);
-
-						return (
+					{applicants.map((a, i) => (
 							<Accordion
-								key={c}
+								key={a.id}
 								type='single'
 								defaultValue='item-0'
 								collapsible>
-								<AccordionItem value={`item-${c}`}>
+								<AccordionItem value={`item-${i}`}>
 									<AccordionTrigger>
-										Applicant #{c + 1}: {firstName} {lastName}
+										Applicant #{i + 1}: {a.firstName} {a.lastName}
 									</AccordionTrigger>
 									<AccordionContent
 										className='data-[state=closed]:hidden pb-16'
@@ -50,8 +48,8 @@ export const ProofOfIdentity$Individual: FormStep = ({ applicantCount }) => {
 									</AccordionContent>
 								</AccordionItem>
 							</Accordion>
-						);
-					})}
+						)
+					)}
 				</div>
 			</FormContent>
 		</>

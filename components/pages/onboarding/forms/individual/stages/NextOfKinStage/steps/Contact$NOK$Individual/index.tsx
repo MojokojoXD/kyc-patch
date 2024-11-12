@@ -12,7 +12,7 @@ import {
 	FormTitle,
 	FormSubHeader,
 	FormContent,
-	// FormAutopopulate,
+	FormAutopopulate,
 } from '@/components/UIcomponents/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import type { FormStep } from '@/types/Components/onboarding';
@@ -36,24 +36,31 @@ export const Contact$NOK$Individual: FormStep = ({ countryList }) => {
 			</FormHeader>
 			<FormContent>
 				<div className='space-y-[8px] py-5'>
-					{nextOfKins.map((c, i) => {
+					{nextOfKins.map((n, i) => {
 						return (
 							<Accordion
-								key={i}
+								key={n.id}
 								type='single'
 								defaultValue='item-0'
 								collapsible>
 								<AccordionItem value={`item-${i}`}>
 									<AccordionTrigger>
-										Next of Kin #{i + 1}: {c.firstName} {c.lastName}
+										Next of Kin #{i + 1}: {n.firstName} {n.lastName}
 									</AccordionTrigger>
 									<AccordionContent
 										className='data-[state=closed]:hidden py-10'
-										forceMount>
-										<NOKContactForm
-											applicantId={i}
-											countryList={countryList}
-										/>
+                                        forceMount>
+                                        <FormAutopopulate
+                                            formIndex={ i }
+                                            srcFields={ contactModel$NOK$Individual( { index: 0 } ) }
+                                            srcPath='nextOfKin'
+                                            render={ ( index ) => (
+                                                <NOKContactForm
+                                                    applicantId={index}
+                                                    countryList={countryList}
+                                                />
+                                            ) }
+                                        />
 									</AccordionContent>
 								</AccordionItem>
 							</Accordion>

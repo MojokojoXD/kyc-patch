@@ -5,7 +5,7 @@ import type { ClientID } from "@/types/forms/broker";
 export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: number; clientID?: ClientID; } ): FormFactoryProps[] => [
     {
         fieldType: 'file-upload',
-        name: `applicant.${ index }.fileUploads.applicantID.documentFileName`,
+        name: `applicant.${ index }.fileUploads.applicantID.fileName`,
         label: 'Notorized Applicant(s) ID',
         rules: {
             required: 'Please upload notorized ID',
@@ -17,7 +17,7 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
     },
     {
         fieldType: 'file-upload',
-        name: `applicant.${ index }.fileUploads.passportPhotograph.documentFileName`,
+        name: `applicant.${ index }.fileUploads.passportPhotograph.fileName`,
         label: 'Passport Photograph of Account Holder(s)',
         rules: {
             required: 'Please upload passport photograph',
@@ -29,7 +29,7 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
     },
     {
         fieldType: 'file-upload',
-        name: `applicant.${ index }.fileUploads.taxCertificate.documentFileName`,
+        name: `applicant.${ index }.fileUploads.taxCertificate.fileName`,
         label: 'Tax Registration Certificate (Optional)',
         componentProps: {
             clientID: clientID,
@@ -38,7 +38,7 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
     },
     {
         fieldType: 'file-upload',
-        name: `applicant.${ index }.fileUploads.BVN.documentFileName`,
+        name: `applicant.${ index }.fileUploads.BVN.fileName`,
         label: 'BVN (Optional)',
         componentProps: {
             clientID: clientID,
@@ -47,7 +47,7 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
     },
     {
         fieldType: 'file-upload',
-        name: `applicant.${ index }.fileUploads.proofOfAddress.documentFileName`,
+        name: `applicant.${ index }.fileUploads.proofOfAddress.fileName`,
         label: 'Notarized Proof of Address (latest utility bill, signed lease agreement, signed affidavit)',
         rules: {
             required: 'Please upload proof of address'
@@ -59,7 +59,7 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
     },
     {
         fieldType: 'file-upload',
-        name: `applicant.${ index }.fileUploads.addressMap.documentFileName`,
+        name: `applicant.${ index }.fileUploads.addressMap.fileName`,
         label: 'Address Map Screenshot (required if proof of address is signed affidavit)',
         rules: {
             required: 'Please upload address map screenshot'
@@ -71,7 +71,7 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
     },
     {
         fieldType: 'file-upload',
-        name: `applicant.${ index }.fileUploads.foreignAddress.documentFileName`,
+        name: `applicant.${ index }.fileUploads.foreignAddress.fileName`,
         label: 'Proof of Foreign Address (Non-Resident Clients) (Optional)',
         componentProps: {
             clientID: clientID,
@@ -80,7 +80,7 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
     },
     {
         fieldType: 'file-upload',
-        name: `applicant.${ index }.fileUploads.residencePermit.documentFileName`,
+        name: `applicant.${ index }.fileUploads.residencePermit.fileName`,
         label: 'Residence/Work Permit (if applicable)',
         componentProps: {
             clientID: clientID,
@@ -89,7 +89,7 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
     },
     {
         fieldType: 'file-upload',
-        name: `applicant.${ index }.fileUploads.proofOfBank.documentFileName`,
+        name: `applicant.${ index }.fileUploads.proofOfBank.fileName`,
         label: 'Notarized Proof of Bank (3 months bank statement or cancelled cheque leaf) (Optional)',
         componentProps: {
             clientID: clientID,
@@ -98,7 +98,7 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
     },
     {
         fieldType: 'file-upload',
-        name: `applicant.${ index }.fileUploads.KRAPin.documentFileName`,
+        name: `applicant.${ index }.fileUploads.KRAPin.fileName`,
         label: 'Kenya KRA PIN Certificate (Optional)',
         componentProps: {
             clientID: clientID,

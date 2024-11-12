@@ -33,11 +33,12 @@ const formOptions = [
 interface KYCFormOptionProps
 {
     clientID: string;
+    submissionID: string;
     orgCode: BrokerCode;
 }
 
 
-export default function KycFormOptions( { clientID, orgCode }: KYCFormOptionProps ) {
+export default function KycFormOptions( { clientID, orgCode, submissionID }: KYCFormOptionProps ) {
 	const router = useRouter();
 	const [formID, setFormID] = useState<string>('');
 	const [selectionError, setSelectionError] = useState<string>('');
@@ -54,7 +55,7 @@ export default function KycFormOptions( { clientID, orgCode }: KYCFormOptionProp
 
 		const formPath = selectedForm.href;
 
-		router.replace('/onboarding' + formPath + `?c_id=${clientID}&b_code=${orgCode}`);
+		router.replace('/onboarding' + formPath + `?c_id=${clientID}&b_code=${orgCode}&submission=${submissionID}`);
 	};
 
 	

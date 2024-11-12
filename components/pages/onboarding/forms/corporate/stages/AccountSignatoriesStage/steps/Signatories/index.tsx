@@ -78,7 +78,7 @@ export const Signatories: FormStep = ({ countryList }) => {
 													<span
 														onClick={() => remove(i)}
 														className='h-fit py-0 w-fit px-0 text-primary-500'>
-														<Trash2 className='h-5 w-5' />
+														<Trash2 className='h-4 w-4' />
 													</span>
 												)}
 												<p className='inline-block'>Signatory #{i + 1}</p>

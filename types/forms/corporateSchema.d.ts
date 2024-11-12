@@ -86,9 +86,8 @@ export type Signatory = BaseSignatory &
 				status: string[];
 				ownership: string;
 			};
-			dataBank: {
+			databank: {
 				emailIndemnity: {
-					address: string;
 					signatureResource: string;
 				};
 			};

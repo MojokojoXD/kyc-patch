@@ -20,6 +20,7 @@ import { useRouter } from 'next/router';
 type ParsedURLQuery = {
 	c_id: string;
 	b_code: string;
+	submission: string;
 };
 
 export type KYCContextValue = ReturnType<typeof useKYCForm>;
@@ -61,8 +62,6 @@ export function useKYCForm<
 	const router = useRouter();
 	const urlQuery = router.query as ParsedURLQuery;
 
-	router.isReady;
-
 	const toggleLoading = useCallback(
 		(toggle: boolean) => setIsLoading(toggle),
 		[]
@@ -72,26 +71,21 @@ export function useKYCForm<
 
 	const next = useCallback(async () => {
 		if (await form.trigger(undefined, { shouldFocus: true })) {
-            formAction({ type: 'next' });
+			formAction({ type: 'next' });
 		}
 	}, [form]);
 
 	const prev = useCallback(() => formAction({ type: 'prev' }), []);
 
 	useEffect(() => {
-        if ( router.isReady )
-        {
-            if ( urlQuery.c_id && urlQuery.b_code )
-            {
-                
-            } else
-            {
-                setError('missing or malformed client ID or broker code');
-            }
-            
-            setIsLoading(false);
-		} 
+		if (router.isReady) {
+			if (urlQuery.c_id && urlQuery.b_code && urlQuery.submission) {
+			} else {
+				setError('missing or malformed client ID or broker code');
+			}
 
+			setIsLoading(false);
+		}
 	}, [router, urlQuery]);
 
 	return useMemo(
@@ -100,6 +94,7 @@ export function useKYCForm<
 			formVars: {
 				clientID: urlQuery.c_id ?? '',
 				brokerCode: urlQuery.b_code ?? '',
+				submissionID: urlQuery.submission ?? '',
 			},
 			formAction,
 			form: form as UseFormReturn<TForm>,

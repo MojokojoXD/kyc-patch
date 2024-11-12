@@ -240,7 +240,7 @@ export const employmentModel = ({
 	{
 		fieldType: 'radio',
 		name: `applicant.${index}.employment.statusDetails.monthlyIncomeRange`,
-		label: `Total Monthly Income Range ${currency && '(' + currency + ')'}`,
+		label: `Total Monthly Income Range ${currency && ' (' + currency + ')'}`,
 		rules: {
 			required: 'Please select income range',
 		},

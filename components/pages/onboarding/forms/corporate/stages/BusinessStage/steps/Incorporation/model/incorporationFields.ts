@@ -1,8 +1,6 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 import type { Country,CountryList } from '@/types/forms/common';
 
-const today = new Date();
-
 export const incorporationFields = ({
 	countryList = [],
 }: {
@@ -39,9 +37,7 @@ export const incorporationFields = ({
 			required: 'Select date',
 		},
 		componentProps: {
-			endMonth: today,
-			defaultMonth: today,
-			disabled: { after: today },
+			disableFutureDays: true
 		},
 	},
 	{

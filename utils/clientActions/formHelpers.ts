@@ -74,59 +74,62 @@ export class FormHelpers {
 		return Math.random().toString(36).substr(2, 7);
 	}
 
-    // private static helper(obj, path: string[], value){
-    //     // get the current and the remaining keys from the path
-    //     const [current, ...rest] =  path;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private static helper( obj: Record<string,any>, path: string[], value: unknown )
+    {
+        // get the current and the remaining keys from the path
+        const [current, ...rest] =  path;
       
-    //     // if there are more keys
-    //     // add the value as an object or array
-    //     // depending upon the typeof key
-    //     if(rest.length > 0){
-    //         // if there is no key present
-    //         // create a new one
-    //         if(!obj[current]){
-    //           // if the key is numeric
-    //           // add an array
-    //           // else add an object
-    //           const isNumber = `${+rest[0]}` === rest[0];
-    //           obj[current] = isNumber ? [] : {};
-    //         }
+        // if there are more keys
+        // add the value as an object or array
+        // depending upon the typeof key
+        if(rest.length > 0){
+            // if there is no key present
+            // create a new one
+            if(!obj[current]){
+              // if the key is numeric
+              // add an array
+              // else add an object
+              const isNumber = `${+rest[0]}` === rest[0];
+              obj[current] = isNumber ? [] : {};
+            }
                 
-    //         // recurisvely update the remaining path
-    //         // if the last path is not of object type
-    //         // but key is then
-    //         // create an object or array based on the key
-    //         // and update the value
-    //         if(typeof obj[current] !== 'object'){
-    //           // determine if the key is string or numeric 
-    //           const isNumber = `${+rest[0]}` === rest[0];
-    //           obj[current] = this.helper(isNumber ? [] : {}, rest, value)
-    //         }
-    //         // else directly update value
-    //         else{
-    //           obj[current] = this.helper(obj[current], rest, value);
-    //         }
-    //     }
-    //     // else directly assing the value to the key
-    //     else{
-    //       obj[current] = value;
-    //     }
+            // recurisvely update the remaining path
+            // if the last path is not of object type
+            // but key is then
+            // create an object or array based on the key
+            // and update the value
+            if(typeof obj[current] !== 'object'){
+              // determine if the key is string or numeric 
+              const isNumber = `${+rest[0]}` === rest[0];
+              obj[current] = this.helper(isNumber ? []  : {}, rest, value)
+            }
+            // else directly update value
+            else{
+              obj[current] = this.helper(obj[current], rest, value);
+            }
+        }
+        // else directly assign the value to the key
+        else{
+          obj[current] = value;
+        }
       
-    //     // return the updated obj
-    //     return obj;
-    //  }
+        // return the updated obj
+        return obj;
+     }
     
-    // static set(obj, path, value) {
-    //    let pathArr = path;
+    static set( obj: Record<string, unknown>, path: string, value: unknown ) 
+    {
+       let pathArr: string[] = [];
       
-    //    // if path is of string type
-    //    // replace the special characters
-    //    // and split the string on . to get the path keys array
-    //    if(typeof path === 'string'){
-    //      pathArr = path.split('.')
-    //    }
+       // if path is of string type
+       // replace the special characters
+       // and split the string on . to get the path keys array
+       if(typeof path === 'string'){
+         pathArr = path.split('.')
+       }
        
-    //    // use the helper function to update
-    //    this.helper(obj, pathArr, value);
-    // };
+       // use the helper function to update
+       this.helper(obj, pathArr, value);
+    };
 }

@@ -1,4 +1,5 @@
-import DatePicker from '../../CompoundUI/DatePicker';
+// import DatePicker from '../../CompoundUI/DatePicker';
+import { SSXDatePicker } from '../../CompoundUI/SSXDatePicker';
 import type { FactoryComponentProps } from '@/types/Components/formFactory';
 import {
 	FormItem,
@@ -15,9 +16,9 @@ export default function FormDate({
     label,
 	name,
     defaultValue = '',
-    readonly,
+    // readonly,
 	rules,
-	componentProps = {},
+	componentProps = { disableFutureDays: false, disablePastDays: false, minYear: 0 },
 }: FormDateProps) {
 	const {
 		control,
@@ -37,12 +38,18 @@ export default function FormDate({
                     </FormLabel>
                     <FormControl>
                         <div ref={ field.ref }>
-                            <DatePicker
+                            {/* <DatePicker
                                 { ...componentProps }
                                 readonly={readonly}
                                 mode={ 'single' }
                                 onDateChange={ d => field.onChange( d ) }
                                 currentDate={ field.value }
+                            /> */}
+                            <SSXDatePicker
+                                onDateChange={ date => field.onChange( date.toISOString() ) }
+                                value={ field.value }
+                                placeholder={ 'Select Date' }
+                                { ...componentProps }
                             />
                         </div>
                     </FormControl>

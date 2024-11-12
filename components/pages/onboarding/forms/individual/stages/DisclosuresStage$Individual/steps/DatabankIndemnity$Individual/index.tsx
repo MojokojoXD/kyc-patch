@@ -31,7 +31,8 @@ export const DatabankEmailIndemnity$Individual: FormStep = () => {
 		'databankEmailIndemnity'
 	);
 
-	const applicants = getValues('applicant') ?? [{}];
+    const applicants = getValues( 'applicant' ) ?? [ {} ];
+    const clientType = getValues( 'clientType' )
 
 	if (error) {
 		console.error(error);
@@ -74,7 +75,7 @@ export const DatabankEmailIndemnity$Individual: FormStep = () => {
 												<Markdown skipHtml>
 													{(termsText as string)
 														.replaceAll('{{var1}}', fullName)
-														.replaceAll('{{var2}}', 'Myself/Ourselves')}
+														.replaceAll('{{var2}}', clientType === 'Individual' ? 'Myself' : 'Ourselves')}
 												</Markdown>
 											)}
 										</FormText>

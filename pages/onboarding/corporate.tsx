@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import {
 	corporateStages,
 	CorporateStageDict,
@@ -26,12 +26,14 @@ export default function CorporateForm() {
 
 	const {
 		formNav: { currentStage },
+		formVars: { clientID, submissionID },
 		isLoading,
 		error,
 	} = KYCForm;
 
 	const {
 		formState: { isDirty },
+		handleSubmit,
 	} = form;
 
 	useCloseTabWarning(isDirty);
@@ -46,6 +48,20 @@ export default function CorporateForm() {
 		'document checklist': <Stages.DocumentCheckListStage$Corporate />,
 	};
 
+    const submitHandler: SubmitHandler<CorporateFormSchema> = ( data ) =>
+    {
+		const payload = {
+			clientID,
+			submissionID,
+			payload: {
+				...data,
+			},
+		};
+
+		console.log(payload);
+		console.log(JSON.stringify(payload));
+	};
+
 	if (error) {
 		console.error(error);
 
@@ -57,15 +73,17 @@ export default function CorporateForm() {
 	}
 
 	return (
-		//@ts-expect-error will fix type between context types
+		//@ts-expect-error will fix type mismatch between context types
 		<KYCContext.Provider value={KYCForm}>
-            <Form { ...form }>
-                <FormLayout>
-                    <Loading reveal={ isLoading }/>
-					<FormNav />
-					{StagesDict[currentStage]}
-					<FormNavButtons />
-				</FormLayout>
+			<Form {...form}>
+				<form onSubmit={handleSubmit(submitHandler)}>
+					<FormLayout>
+						<Loading reveal={isLoading} />
+						<FormNav />
+						{StagesDict[currentStage]}
+						<FormNavButtons />
+					</FormLayout>
+				</form>
 			</Form>
 		</KYCContext.Provider>
 	);
