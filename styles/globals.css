@@ -4,33 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @font-face {
-  font-family: "Circular";
-  src: url("../public/fonts/Circular_Pro_Light.otf");
-  font-weight: 100;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Circular";
-  src: url("../public/fonts/Circular_Pro_Medium.ttf");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Circular";
-  src: url("../public/fonts/Circular_Pro_Bold.ttf");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Circular";
-  src: url("../public/fonts/Circular_Pro_Black.ttf");
-  font-weight: bold;
-  font-style: normal;
-} */
 
 .signature input,
 .signature-preview {

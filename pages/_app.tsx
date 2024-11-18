@@ -1,7 +1,6 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import UserContextProvider from '@/Contexts/UserProfileProvider';
 import localFont from 'next/font/local'
 
 const circular = localFont( {
@@ -60,9 +59,7 @@ export default function App( { Component, pageProps }: AppProps )
 					id='favico'
 				/>
 			</Head>
-            <UserContextProvider>
                     <Component {...pageProps} />
-			</UserContextProvider>
 		</main>
 	);
 }

@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
+      "@/middleware/*": ["utils/middlewareUtils/*"]
     },
     "emitDeclarationOnly": true,
     "declaration": true,

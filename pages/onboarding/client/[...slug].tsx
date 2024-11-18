@@ -1,7 +1,7 @@
-import UAPContent from '../../../components/pages/onboarding/forms/preface/UAPContent';
-import KycFormOptions from '../../../components/pages/onboarding/forms/preface/KycFormOptions';
+import UAPContent from '../../../components/forms/preface/UAPContent';
+import KycFormOptions from '../../../components/forms/preface/KycFormOptions';
 import { useState } from 'react';
-import { FormLayout } from '@/components/UIcomponents/FormLayout';
+import { FormLayout } from '@/components/FormLayout';
 import type { GetServerSidePropsContext } from 'next';
 import { UserActions } from '@/utils/clientActions/userActions';
 import type { BrokerDetails } from '@/types/forms/broker';
@@ -27,8 +27,8 @@ export async function getServerSideProps({
 		return broker
 			? {
 					props: {
-                    clientID,
-                        submissionID,
+						clientID,
+						submissionID,
 						broker,
 					},
 			  }
@@ -45,11 +45,11 @@ export async function getServerSideProps({
 
 export default function OnboardingPage({
 	clientID,
-    broker,
-    submissionID
+	broker,
+	submissionID,
 }: {
-        clientID: string;
-        submissionID: string;
+	clientID: string;
+	submissionID: string;
 	broker: BrokerDetails;
 }) {
 	const [UAPDecided, setUAPDecided] = useState<boolean>(false);
@@ -64,8 +64,8 @@ export default function OnboardingPage({
 				{UAPDecided ? (
 					<KycFormOptions
 						clientID={clientID}
-                        orgCode={ broker.org_code }
-                        submissionID={submissionID}
+						orgCode={broker.org_code}
+						submissionID={submissionID}
 					/>
 				) : (
 					<UAPContent getUAPAgreement={getUAPAgreementHandler} />

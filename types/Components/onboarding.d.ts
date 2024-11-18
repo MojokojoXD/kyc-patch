@@ -1,6 +1,6 @@
 import type { CountryList } from '../forms/common';
 import type { FC, JSX } from 'react';
-import type { FormAction } from '@/components/pages/onboarding/forms/utils/formReducer';
+import type { FormAction } from '@/components/forms/utils/formReducer';
 
 export interface FormStepProps {
 	applicantCount?: number;

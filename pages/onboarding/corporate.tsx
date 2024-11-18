@@ -2,21 +2,17 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import {
 	corporateStages,
 	CorporateStageDict,
-} from '@/components/pages/onboarding/forms/corporate/config/corporateFormConfigs';
-import { Form } from '@/components/UIcomponents/ui/form';
-import {
-	FormLayout,
-	FormNav,
-	FormNavButtons,
-} from '@/components/UIcomponents/FormLayout';
+} from '@/components/forms/corporate/config/corporateFormConfigs';
+import { Form } from '@/components/ui/form';
+import { FormLayout, FormNav, FormNavButtons } from '@/components/FormLayout';
 import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
-import * as Stages from '@/components/pages/onboarding/forms/corporate/stages/stagesComponents';
-import { useCloseTabWarning } from '@/components/pages/onboarding/forms/utils/customHooks/useCloseTabWarning';
+import * as Stages from '@/components/forms/corporate/stages/stagesComponents';
+import { useCloseTabWarning } from '@/components/forms/utils/customHooks/useCloseTabWarning';
 import {
 	KYCContext,
 	useKYCForm,
-} from '@/components/pages/onboarding/forms/utils/formController';
-import Loading from '@/components/UIcomponents/Loading';
+} from '@/components/forms/utils/formController';
+import Loading from '@/components/ui/Loading';
 
 export default function CorporateForm() {
 	const form = useForm<CorporateFormSchema>({

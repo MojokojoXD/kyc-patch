@@ -1,18 +1,18 @@
 import type { Country, BankList } from '../forms/common';
-import type { InputProps } from '@/components/UIcomponents/ui/input';
+import type { InputProps } from '@/components/ui/input';
 import type { RegisterOptions } from 'react-hook-form';
 import type { BrokerCode } from '../forms/broker';
 import type { Path } from 'react-hook-form';
-import type { SSXDatePickerProps } from '@/components/UIcomponents/CompoundUI/SSXDatePicker/date-picker';
+import type { SSXDatePickerProps } from '@/components/CompoundUI/SSXDatePicker/date-picker';
 type DropdownOption = Country | BankList | string;
 
 type Tag =
 	| BrokerCode
 	| 'NG'
 	| 'GH'
-    | 'KE'
-    | 'read-only'
-    | 'remove'
+	| 'KE'
+	| 'read-only'
+	| 'remove'
 	| 'optional-contact'
 	| 'residence-contact'
 	| 'remove-all-except'
@@ -30,7 +30,6 @@ type FactoryFieldType =
 	| 'agreement'
 	| 'file-upload';
 
-
 export interface FormFactoryProps extends FactoryComponentProps {
 	fieldType: FactoryFieldType;
 }
@@ -38,8 +37,8 @@ export interface FormFactoryProps extends FactoryComponentProps {
 export type FactoryComponentProps = {
 	label: string;
 	inline?: boolean;
-    readonly name: Path | string;
-    readonly?: boolean;
+	readonly name: Path | string;
+	readonly?: boolean;
 	componentProps?: Partial<
 		Omit<InputProps, 'disabled' | 'placeholder'> &
 			SSXDatePickerProps & {
@@ -50,6 +49,7 @@ export type FactoryComponentProps = {
 				agreementVersion?: string;
 				fileFieldName?: string;
 				isCurrency?: boolean;
+				errorPosition?: 'relative' | 'absolute';
 				otherProps?: {
 					label: string;
 					placeholder: string;
@@ -64,10 +64,10 @@ export type FactoryComponentProps = {
 		keys: DropdownOption[] | undefined;
 		priorityKeys?: DropdownOption[];
 	};
-    tags?: Tag[];
-    reviewerOverride?: {
-        name?: string;
-        type?: FactoryFieldType;
-        label?: string;
-    };
+	tags?: Tag[];
+	reviewerOverride?: {
+		name?: string;
+		type?: FactoryFieldType;
+		label?: string;
+	};
 };

@@ -63,7 +63,7 @@ export type ClientInfo = Omit<
 				frequency: Omit<common.Frequency, 'Quarterly'>;
 			};
 			reaction?: string;
-			agreementOfTerms?: string;
+			agreementOfTerms?: common.Agreement;
 		};
 		disclosures: Disclosures;
 		fileUploads: FileUploads;
@@ -80,7 +80,7 @@ export interface Employed {
 	phoneNumber: common.PhoneInfo;
 	email: string;
 	natureOfBusiness: string;
-	country: string;
+	countryOfEmployment: string;
 	digitalAddress: string;
 	nearestLandmark: string;
 	yearsOfTotalEmployment: string;

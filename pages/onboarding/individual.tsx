@@ -1,22 +1,20 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useEffect } from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
-import type { FormComponentDict } from '@/components/pages/onboarding/forms/utils/formReducer';
-import type { IndividualFormStage } from '@/components/pages/onboarding/forms/individual/config/individualFormMetadata';
-import { Form } from '@/components/UIcomponents/ui/form';
-import * as Stages from '@/components/pages/onboarding/forms/individual/stages/stagesDictionary';
+import type { FormComponentDict } from '@/components/forms/utils/formReducer';
+import { Form } from '@/components/ui/form';
+import * as Stages from '@/components/forms/individual/stages/stagesDictionary';
+import { FormLayout, FormNav, FormNavButtons } from '@/components/FormLayout';
+import { useCloseTabWarning } from '@/components/forms/utils/customHooks/useCloseTabWarning';
 import {
-	FormLayout,
-	FormNav,
-    FormNavButtons,
-} from '@/components/UIcomponents/FormLayout';
-import { useCloseTabWarning } from '@/components/pages/onboarding/forms/utils/customHooks/useCloseTabWarning';
-import { individualFormMetadata } from '@/components/pages/onboarding/forms/individual/config/individualFormMetadata';
+	individualFormMetadata,
+	type IndividualFormStage,
+} from '@/components/forms/individual/config/individualFormMetadata';
 import {
 	useKYCForm,
 	KYCContext,
-} from '@/components/pages/onboarding/forms/utils/formController';
-import Loading from '@/components/UIcomponents/Loading';
+} from '@/components/forms/utils/formController';
+import Loading from '@/components/ui/Loading';
 
 export default function IndividualForm() {
 	const form = useForm<IndividualFormSchema>({
@@ -27,13 +25,14 @@ export default function IndividualForm() {
 
 	const {
 		form: {
-            formState: { isDirty },
-            handleSubmit
-        },
-        formVars: { clientID, submissionID },
+			formState: { isDirty },
+			handleSubmit,
+		},
+		formVars: { clientID, submissionID },
+		formNav: { currentStage },
 		formAction,
 		error,
-        isLoading,
+		isLoading,
 	} = KYCForm;
 
 	useCloseTabWarning(isDirty);
@@ -60,22 +59,20 @@ export default function IndividualForm() {
 				type: 'reset',
 				stages: individualFormMetadata,
 			});
-    }, [ clientType, formAction ] );
-    
+	}, [clientType, formAction]);
 
-    const submitHandler: SubmitHandler<IndividualFormSchema> = ( data ) =>
-    {
-        const payload = {
-            clientID,
-            submissionID,
-            payload: {
-                ...data
-            }
-        }
+	const submitHandler: SubmitHandler<IndividualFormSchema> = (data) => {
+		const payload = {
+			clientID,
+			submissionID,
+			payload: {
+				...data,
+			},
+		};
 
-        console.log( payload )
-        console.log( JSON.stringify( payload ) );
-    }
+		console.log(payload);
+		console.log(JSON.stringify(payload));
+	};
 
 	if (error) {
 		console.error(error);
@@ -90,9 +87,9 @@ export default function IndividualForm() {
 			<FormLayout>
 				<Loading reveal={isLoading} />
 				<Form {...form}>
-					<form  onSubmit={ handleSubmit( submitHandler ) }>
+					<form onSubmit={handleSubmit(submitHandler)}>
 						<FormNav />
-						{individualStages[KYCForm.formNav.currentStage]}
+						{individualStages[currentStage]}
 						<FormNavButtons />
 					</form>
 				</Form>
