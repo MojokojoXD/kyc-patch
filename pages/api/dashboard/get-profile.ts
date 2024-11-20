@@ -1,25 +1,26 @@
 import type { NextApiHandler } from 'next';
 import { protectedAxiosInstance } from '@/lib/http/axios';
-import { BASE_URL } from '@/utils/vars/uri';
 import { AxiosError } from 'axios';
+import { BASE_URL } from '@/utils/vars/uri';
 
-const METRICS_URL = BASE_URL + '/kyc/dashboard/metrics';
+const USER_PROFILE_ENDPOINT = BASE_URL + '/users/self';
 
 const handler: NextApiHandler = async (req, res) => {
     try
     {
-		const ssxServerRes = await protectedAxiosInstance.get(METRICS_URL, {
+		const ssxRes = await protectedAxiosInstance.get( USER_PROFILE_ENDPOINT, {
             headers: {
-                cookie: req.headers.cookie
+				cookie: req.headers.cookie,
 			},
 		});
 
-		if (ssxServerRes.status === 200) {
-            res.status( 200 ).json( ssxServerRes.data );
-            return;
+		if (ssxRes.status === 200) {
+			res.status(200).json(ssxRes.data);
+			return;
 		}
-		res.status(ssxServerRes.status).json(ssxServerRes.data);
+		res.status(ssxRes.status).json(ssxRes.data);
 	} catch (error) {
+		console.log(error);
 		if (error instanceof AxiosError) {
 			res
 				.status(error.status as number)

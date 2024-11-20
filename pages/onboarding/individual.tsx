@@ -61,7 +61,7 @@ export default function IndividualForm() {
 			});
 	}, [clientType, formAction]);
 
-	const submitHandler: SubmitHandler<IndividualFormSchema> = (data) => {
+	const submitHandler: SubmitHandler<IndividualFormSchema> = async (data) => {
 		const payload = {
 			clientID,
 			submissionID,
@@ -71,7 +71,21 @@ export default function IndividualForm() {
 		};
 
 		console.log(payload);
-		console.log(JSON.stringify(payload));
+
+		try {
+			const res = await fetch(
+				'/api/forms',
+				{
+					method: 'POST',
+					body: JSON.stringify(payload),
+				}
+			);
+
+			if (res.ok) {
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	if (error) {

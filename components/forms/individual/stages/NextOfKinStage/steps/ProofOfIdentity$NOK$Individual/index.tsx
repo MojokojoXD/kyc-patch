@@ -55,7 +55,7 @@ export const ProofOfIdentity$NOK$Individual: FormStep = () => {
 									Applicant #{i + 1}: {n.firstName} {n.lastName}
 								</AccordionTrigger>
 								<AccordionContent
-									className='data-[state=closed]:hidden pb-16'
+									className='data-[state=closed]:hidden pb-16 overflow-visible'
 									forceMount>
 									<FormAutopopulate
 										formIndex={i}

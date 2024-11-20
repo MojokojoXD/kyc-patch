@@ -12,17 +12,16 @@ import * as HomeLayout from '../components/home/layout';
 import FormInput from '@/components/FormFactory/FactoryComponents/FormInput';
 import FormPasswordInput from '@/components/FormFactory/FactoryComponents/FormPasswordInput';
 
-export async function getServerSideProps({ req }: GetServerSidePropsContext) {
-	const cookies = req.cookies;
-
-	if (cookies.token && cookies.tk === 'token') {
-		return {
-			redirect: {
-				destination: '/dashboard/broker',
-				permanent: false,
-			},
-		};
-	}
+export async function getServerSideProps({}: GetServerSidePropsContext) {
+    
+	// if (cookies.securedprofileCookie) {
+	// 	return {
+	// 		redirect: {
+	// 			destination: '/dashboard',
+	// 			permanent: false,
+	// 		},
+	// 	};
+	// }
 
 	return { props: {} };
 }
@@ -59,8 +58,6 @@ export default function Home() {
 
 			if (res.status === 200 && res.data.Status === 'SUCC') {
 				if (!res.data.profile) return;
-
-				console.log(res.data.token);
 
 				router.push(
 					{

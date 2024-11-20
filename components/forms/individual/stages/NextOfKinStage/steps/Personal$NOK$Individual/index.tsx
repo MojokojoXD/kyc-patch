@@ -104,7 +104,7 @@ export const Personal$NOK$Individual: FormStep = ({ countryList }) => {
 											Next of Kin #{i + 1}
 										</AccordionTrigger>
 										<AccordionContent
-											className='data-[state=closed]:hidden py-10'
+											className='data-[state=closed]:hidden py-10 overflow-visible'
 											forceMount>
 											<FormAutopopulate
 												formIndex={i}

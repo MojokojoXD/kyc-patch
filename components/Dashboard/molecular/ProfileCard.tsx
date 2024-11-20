@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { PopupModal } from './PopupModal';
-import { sessionContext } from '../_contexts/sessionContext';
+import { sessionContext } from '../contexts/sessionContext';
 import type { Profile } from '@/types/accounts/user';
 
 interface ProfileCardType {
@@ -15,7 +15,7 @@ const ProfileCard = (props: ProfileCardType) => {
 
 	const [logoutPrompt, setLogoutPrompt] = useState(false);
 	// const [showMyProf, setShowMyProf] = useState(false);
-	const [userProfile, setUserProfile] = useState<Profile | undefined>(undefined);
+	const [userProfile, setUserProfile] = useState<Profile | null | undefined>(null);
 
 	const profileCardRef = useRef<HTMLDivElement | null>(null);
 	const userData = useRef(useContext(sessionContext));

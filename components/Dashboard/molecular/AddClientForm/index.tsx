@@ -8,7 +8,7 @@ import { useState, useContext } from 'react';
 import { addClientFormModel } from './model/addClientFormModel';
 import FormFactory from '@/components/FormFactory';
 import type { NewClientPayload } from './model/addClientForm';
-import { DashboardContext } from '@/pages/dashboard';
+import { sessionContext } from '../../contexts/sessionContext';
 
 enum AddClientFormSteps {
 	Form = 1,
@@ -24,7 +24,7 @@ export function AddClientForm({
 }) {
 	const [countryList, isFetchingCountry, countryListError] =
 		useAsyncAction(getCountryList);
-	const userContext = useContext(DashboardContext);
+	const userContext = useContext(sessionContext);
 	const form = useForm<NewClientPayload>({
 		defaultValues: {
 			clientFirstName: '',

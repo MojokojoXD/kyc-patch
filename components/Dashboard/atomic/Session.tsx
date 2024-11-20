@@ -1,80 +1,106 @@
 import {
 	sessionContext,
 	type SessionContextSchema,
-} from '../_contexts/sessionContext';
-import { type ReactNode, useState, useEffect, useCallback } from 'react';
+} from '../contexts/sessionContext';
+import {
+	type ReactNode,
+	useState,
+	useEffect,
+	useCallback,
+} from 'react';
 import { useRouter } from 'next/router';
-import type { BaseSSXResponse } from '@/types/server/SSX';
-import { type Method, AxiosError } from 'axios';
-import { protectedAxiosInstance } from '@/lib/http/axios';
+import {
+	RequestQueue,
+	Job,
+	Feedback,
+	JobFeedbackFn,
+} from '../lib/requestQuene';
+import { Profile } from '@/types/accounts/user';
 
 interface SessionProviderProps extends Pick<SessionContextSchema, 'profile'> {
 	token: string;
 	children: ReactNode;
 }
 
+const ACCESS_TOKEN_IDENTIFIER = 'SSX_ACCESS_TOKEN';
+
 export function Session({ children, token, profile }: SessionProviderProps) {
 	const router = useRouter();
-	const [isLoggedIn, _setIsLoggedIn] = useState(
-		() =>
-			(typeof sessionStorage !== 'undefined' &&
-				sessionStorage?.getItem('token') !== undefined) ||
-			token !== ''
-	);
-	const [userProfile, _setUserProfile] = useState<typeof profile>(profile);
 
-	const request = useCallback(
-		async <T extends BaseSSXResponse>(
-			url: string,
-			method: Method,
-			data?: { [index: string]: unknown }
-		) => {
-			const accessToken = sessionStorage.getItem('token') ?? token;
-			try {
-				const res = await protectedAxiosInstance.request<T>({
-					url,
-					method,
-					data,
-					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
-				});
+	const [userProfile, setUserProfile] = useState<typeof profile>(profile);
 
-				if (res.status === 200) return res.data;
-			} catch (error) {
-				if (error instanceof AxiosError && error.status === 401) {
-					const res = protectedAxiosInstance.request<T>({
-						url: 'refresh',
-					});
+	const [requestJobs, setRequestJobs] = useState<
+		{ job: Job; feedback: Feedback }[]
+	>(() => {
+		if (!profile)
+			return [
+				{
+					job: { url: 'get-profile', method: 'GET' },
+					feedback: function (res, error, status) {
+						if (status === 'COMPLETED') {
+							setUserProfile(res?.profile[ 0 ]);
+							return;
+						}
 
-					console.log(res);
-				}
-			}
-		},
-		[token]
+						if (status === 'FAILED') console.log(error);
+                    } satisfies Feedback<{ profile: Profile[]; } >,
+				},
+			];
+		return [];
+	});
+
+	const addRequestJob = useCallback<JobFeedbackFn>(
+		(job, feedback) =>
+			setRequestJobs((prevJobs) => {
+				prevJobs.push({ job, feedback });
+				return prevJobs;
+			}),
+		[]
 	);
 
 	const logout = useCallback(() => {
-		sessionStorage.removeItem('token');
+		sessionStorage.removeItem(ACCESS_TOKEN_IDENTIFIER);
 		router.replace('/');
 	}, [router]);
+
+	const setNewAccessToken = (token: string) =>
+		sessionStorage.setItem(ACCESS_TOKEN_IDENTIFIER, token);
+
+	const getAccessToken = () => sessionStorage.getItem(ACCESS_TOKEN_IDENTIFIER);
 
 	useEffect(() => {
 		(() => {
 			if (token) {
-				sessionStorage.setItem('token', token);
-				return;
-			} else if (!sessionStorage.getItem('token')) logout();
+				setNewAccessToken(token);
+			} else if (!getAccessToken()) logout();
 		})();
-	}, [logout, token]);
+	}, [logout, profile, token, addRequestJob]);
 
+	useEffect(() => {
+		(async () => {
+            if ( requestJobs.length > 0 )
+            {
+                const queue = new RequestQueue();
+
+				queue.enqueue(...requestJobs);
+
+				await queue.process();
+            }
+            
+		})();
+	}, [requestJobs]);
+
+    console.log(userProfile)
 	return (
 		<sessionContext.Provider
 			value={{
 				profile: userProfile,
-				isLoggedIn,
-				request,
-				logout,
+				isLoggedIn:
+					token.length > 0 ||
+					(typeof sessionStorage !== 'undefined' &&
+						sessionStorage.getItem(ACCESS_TOKEN_IDENTIFIER) !== undefined),
+				request: addRequestJob,
+				logout: () => {},
 			}}>
 			{children}
 		</sessionContext.Provider>

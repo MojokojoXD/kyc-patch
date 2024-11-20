@@ -1,4 +1,3 @@
-import { createContext} from 'react';
 import {
 	type GetServerSideProps,
 	type InferGetServerSidePropsType,
@@ -6,26 +5,19 @@ import {
 import type { Profile } from '@/types/accounts/user';
 import { DashboardHeader as Header } from '@/components/Dashboard/compound/Header';
 import { Session } from '@/components/Dashboard/atomic/Session';
-import { Metrics } from '@/components/Dashboard/atomic/Metrics';
+import type { Metric } from '@/components/Dashboard/types/dashboard';
+import { Metrics } from '@/components/Dashboard/molecular/Metrics';
 // import SideMenu from '../../src/components/SideMenu';
 // import ProtectedPage from '../../src/components/ProtectedPage';
 
-type DashboardMetrics = { status: string; nbr: string }[];
 
-interface DashboardContext {
-	token: string | undefined;
-	profile: Profile;
-}
-interface InitialDashboardProps extends DashboardContext {
-	metrics: DashboardMetrics;
-}
+interface InitialDashboardProps 
+{
+    token: string;
 
-export const DashboardContext = createContext<
-	| (DashboardContext & {
-			setToken: (newToken: string) => void;
-	  })
-	| undefined
->(undefined);
+    profile: Profile | null;
+	metrics: Metric [];
+}
 
 export const getServerSideProps = (async ({ query }) => {
 	if (query.profile && query.token) {
@@ -34,7 +26,7 @@ export const getServerSideProps = (async ({ query }) => {
 				props: {
 					token: query.token as string,
 					profile: JSON.parse(query.profile as string) as Profile,
-					metrics: [] as DashboardMetrics,
+					metrics: [] as Metric [],
 				},
 			};
 		} catch (error) {
@@ -42,7 +34,7 @@ export const getServerSideProps = (async ({ query }) => {
 			return {
 				props: {
 					token: '',
-					profile: {} as Profile,
+					profile: null,
 					metrics: [],
 				},
 			};
@@ -52,7 +44,7 @@ export const getServerSideProps = (async ({ query }) => {
 	return {
 		props: {
 			token: '',
-			profile: {} as Profile,
+			profile: null,
 			metrics: [],
 		},
 	};

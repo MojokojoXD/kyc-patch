@@ -1,15 +1,14 @@
 import { createContext } from "react";
-import type { Method } from "axios";
 import type { Profile } from "@/types/accounts/user";
-import type { BaseSSXResponse } from "@/types/server/SSX";
+import { JobFeedbackFn } from "../lib/requestQuene";
 
 
 export interface SessionContextSchema
 {
     isLoggedIn: boolean;
-    request: <T extends BaseSSXResponse>( url: string, method: Method, data?: { [index:string]: unknown } ) => Promise<T | undefined>;
+    request: JobFeedbackFn;
     logout: () => void;
-    profile: Profile 
+    profile: Profile | null | undefined; 
 }
 
 
