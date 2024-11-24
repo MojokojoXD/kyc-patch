@@ -2,12 +2,7 @@ import {
 	sessionContext,
 	type SessionContextSchema,
 } from '../contexts/sessionContext';
-import {
-	type ReactNode,
-	useState,
-	useEffect,
-	useCallback,
-} from 'react';
+import { type ReactNode, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import {
 	RequestQueue,
@@ -30,7 +25,7 @@ export function Session({ children, token, profile }: SessionProviderProps) {
 	const [userProfile, setUserProfile] = useState<typeof profile>(profile);
 
 	const [requestJobs, setRequestJobs] = useState<
-		{ job: Job; feedback: Feedback }[]
+		{ job: Job; feedback: Feedback }[] | null
 	>(() => {
 		if (!profile)
 			return [
@@ -38,25 +33,25 @@ export function Session({ children, token, profile }: SessionProviderProps) {
 					job: { url: 'get-profile', method: 'GET' },
 					feedback: function (res, error, status) {
 						if (status === 'COMPLETED') {
-							setUserProfile(res?.profile[ 0 ]);
+							setUserProfile(res?.profile[0]);
 							return;
 						}
 
 						if (status === 'FAILED') console.log(error);
-                    } satisfies Feedback<{ profile: Profile[]; } >,
+					} satisfies Feedback<{ profile: Profile[] }>,
 				},
 			];
 		return [];
 	});
 
-	const addRequestJob = useCallback<JobFeedbackFn>(
-		(job, feedback) =>
-			setRequestJobs((prevJobs) => {
-				prevJobs.push({ job, feedback });
-				return prevJobs;
-			}),
-		[]
-	);
+	const addRequestJob = useCallback<JobFeedbackFn>((job, feedback) => {
+		setRequestJobs((prevJobs) => {
+			if (!prevJobs) return [{ job, feedback }];
+
+			prevJobs.push({ job, feedback });
+			return prevJobs;
+		});
+	}, []);
 
 	const logout = useCallback(() => {
 		sessionStorage.removeItem(ACCESS_TOKEN_IDENTIFIER);
@@ -66,31 +61,30 @@ export function Session({ children, token, profile }: SessionProviderProps) {
 	const setNewAccessToken = (token: string) =>
 		sessionStorage.setItem(ACCESS_TOKEN_IDENTIFIER, token);
 
-	const getAccessToken = () => sessionStorage.getItem(ACCESS_TOKEN_IDENTIFIER);
+	const getAccessToken = () =>
+		typeof sessionStorage !== 'undefined' &&
+		sessionStorage.getItem(ACCESS_TOKEN_IDENTIFIER);
 
-	useEffect(() => {
-		(() => {
-			if (token) {
-				setNewAccessToken(token);
-			} else if (!getAccessToken()) logout();
-		})();
-	}, [logout, profile, token, addRequestJob]);
+	if (token) {
+		setNewAccessToken(token);
+	} else if (!getAccessToken()) {
+		typeof window !== 'undefined' && logout();
+	}
 
 	useEffect(() => {
 		(async () => {
-            if ( requestJobs.length > 0 )
-            {
-                const queue = new RequestQueue();
+			if (requestJobs && requestJobs.length > 0) {
+				const queue = new RequestQueue();
 
 				queue.enqueue(...requestJobs);
 
 				await queue.process();
-            }
-            
+
+				setRequestJobs(null);
+			}
 		})();
 	}, [requestJobs]);
 
-    console.log(userProfile)
 	return (
 		<sessionContext.Provider
 			value={{

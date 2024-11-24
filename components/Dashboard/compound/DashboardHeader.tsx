@@ -68,12 +68,12 @@ export function DashboardHeader() {
 
 	return (
 		<>
-			<div className='w-full flex items-center justify-between h-[88px] px-[32px] py-[16px] border-b border-neutral-100 bg-white sticky top-0'>
+			<div className='fixed top-0 z-10 inset-x-0 flex items-center justify-between h-dashboard-header p-x-dashboard py-[16px] border-b border-neutral-100 bg-white'>
 				<Link href={'/'}>
 					<Image
 						src={logo}
 						height={150}
-						width={150}
+                        width={ 150 }
 						priority
 						alt='ssx logo'
 					/>
@@ -86,7 +86,7 @@ export function DashboardHeader() {
 						onClick={() => {
 							setAddMdl(true);
 						}}>
-						<CirclePlus className='h-5 w-5'/>
+						<CirclePlus className='h-5 w-5' />
 						<span>Add a Client</span>
 					</Button>
 					<div className='h-[40px] w-[1px] bg-neutral-100' />
@@ -94,18 +94,16 @@ export function DashboardHeader() {
 					{/*notifications button*/}
 					<div className='relative'>
 						<Button
-                            type='button'
-                            variant={ 'ghost' }
-                            size={ 'icon' }
-							className={` ${
-								showNotifs ? 'bg-neutral-100 hover:bg-neutarl-100' : ''
-							}`}
+							type='button'
+							variant={'ghost'}
+							size={'icon'}
+							className={` ${showNotifs ? 'bg-neutral-100 hover:bg-neutarl-100' : ''}`}
 							onClick={() => {
 								setShowNotifs(true);
 							}}>
 							<span className='bg-error-500 absolute top-0 right-0 w-[8px] h-[8px] rounded-full' />
-							
-							<Bell className='h-5 w-5'/>
+
+							<Bell className='h-5 w-5' />
 						</Button>
 						{showNotifs && (
 							<NotificationsCard

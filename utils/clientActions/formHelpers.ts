@@ -26,7 +26,7 @@ export class FormHelpers {
 			: (countryList.filter((c) => c.cty_name === country).at(0) as Country)
 					.call_code;
 
-	static recursiveFormSearch(path: string, target: unknown): unknown {
+	static recursiveObjectSearch(path: string, target: unknown): unknown {
 		if (path === '') return target;
 
 		const accessors = path.split('.');
@@ -36,7 +36,7 @@ export class FormHelpers {
 
 		if (typeof value === 'object') {
 			accessors.shift();
-			return this.recursiveFormSearch(accessors.join('.'), value);
+			return this.recursiveObjectSearch(accessors.join('.'), value);
 		}
 
 		return value;

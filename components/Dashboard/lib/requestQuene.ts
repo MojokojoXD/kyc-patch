@@ -29,8 +29,8 @@ export interface Feedback <T = any>
 	): void;
 }
 
-export interface JobFeedbackFn {
-	(job: Job, result: Feedback): void;
+export interface JobFeedbackFn<T = any> {
+	(job: Job, result: Feedback<T>): void;
 }
 interface Queueable {
 	enqueue: (...request: { job: Job; feedback: Feedback }[]) => void;
@@ -63,7 +63,6 @@ export class RequestQueue implements Queueable {
 	private async request(job: Job, feedback: Feedback) {
 		feedback(null, null, RequestStatus.PROCESSING);
 
-		console.log(protectedAxiosInstance.defaults);
 		try {
 			const res = await protectedAxiosInstance.request({
 				url: job.url,
@@ -71,7 +70,7 @@ export class RequestQueue implements Queueable {
 				data: job.data,
 			});
 
-			if (res.status === 200) {
+			if (res.status === 200 || res.status === 304) {
 				feedback(res.data, null, RequestStatus.COMPLETED);
 				return;
 			}
@@ -79,8 +78,9 @@ export class RequestQueue implements Queueable {
 			const newTokenResponse = await protectedAxiosInstance.get('refresh-token');
 
 			if (newTokenResponse.status !== 200) {
-				feedback(null, 'Unable to refresh access token', RequestStatus.FAILED);
-				return;
+                feedback( null, 'Unable to refresh access token', RequestStatus.FAILED );
+                sessionStorage.removeItem( ACCESS_TOKEN_IDENTIFIER );
+				return true;
 			}
 
 			const newToken = newTokenResponse.data.token as string;
@@ -112,19 +112,22 @@ export class RequestQueue implements Queueable {
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				feedback(null, error.message, RequestStatus.FAILED);
-			}
+            }
+            
+            console.log( error )
 		}
 	}
 
 	async process() {
-		while (this.jobsQueue.length > 0) {
-			const refreshFailure = await this.request(
+        while ( this.jobsQueue.length > 0 )
+        {
+			const didTokenRefreshFail = await this.request(
 				this.jobsQueue[0].job,
 				this.jobsQueue[0].feedback
 			);
 
+			if (didTokenRefreshFail) break;
 			this.dequeue();
-			if (refreshFailure) break;
 		}
 	}
 }

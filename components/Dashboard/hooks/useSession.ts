@@ -1,8 +1,9 @@
 import { useContext } from "react";
 import { sessionContext } from '../contexts/sessionContext';
-export function useSession()
+import type { SessionContextSchema } from "../contexts/sessionContext";
+export function useSession<TResponseData = any>()
 {
-	const context = useContext(sessionContext);
+	const context = useContext(sessionContext) as SessionContextSchema<TResponseData> | null;
 
 	if (!context)
 		throw new Error(

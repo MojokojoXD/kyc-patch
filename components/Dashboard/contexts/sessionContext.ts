@@ -3,10 +3,10 @@ import type { Profile } from "@/types/accounts/user";
 import { JobFeedbackFn } from "../lib/requestQuene";
 
 
-export interface SessionContextSchema
+export interface SessionContextSchema<TResponseData = any>
 {
     isLoggedIn: boolean;
-    request: JobFeedbackFn;
+    request: JobFeedbackFn<TResponseData>;
     logout: () => void;
     profile: Profile | null | undefined; 
 }

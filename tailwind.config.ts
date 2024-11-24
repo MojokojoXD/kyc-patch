@@ -10,6 +10,12 @@ module.exports = {
 	],
 	theme: {
 		extend: {
+			spacing: {
+				'dashboard-header': 'var(--h-dashboard-header)',
+			},
+			padding: {
+				'x-dashboard': 'var(--x-dashboard)',
+			},
 			gridTemplateColumns: {
 				'6': 'repeat(6, minmax(0, 1fr))',
 				'13': 'repeat(13, minmax(0, 1fr))',

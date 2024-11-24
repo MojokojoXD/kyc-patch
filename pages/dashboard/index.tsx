@@ -3,20 +3,14 @@ import {
 	type InferGetServerSidePropsType,
 } from 'next';
 import type { Profile } from '@/types/accounts/user';
-import { DashboardHeader as Header } from '@/components/Dashboard/compound/Header';
+import { DashboardHeader } from '@/components/Dashboard/compound/DashboardHeader';
+import { DashboardBody } from '@/components/Dashboard/DashboardBody';
 import { Session } from '@/components/Dashboard/atomic/Session';
-import type { Metric } from '@/components/Dashboard/types/dashboard';
-import { Metrics } from '@/components/Dashboard/molecular/Metrics';
-// import SideMenu from '../../src/components/SideMenu';
-// import ProtectedPage from '../../src/components/ProtectedPage';
 
+interface InitialDashboardProps {
+	token: string;
 
-interface InitialDashboardProps 
-{
-    token: string;
-
-    profile: Profile | null;
-	metrics: Metric [];
+	profile: Profile | null;
 }
 
 export const getServerSideProps = (async ({ query }) => {
@@ -26,7 +20,6 @@ export const getServerSideProps = (async ({ query }) => {
 				props: {
 					token: query.token as string,
 					profile: JSON.parse(query.profile as string) as Profile,
-					metrics: [] as Metric [],
 				},
 			};
 		} catch (error) {
@@ -35,7 +28,6 @@ export const getServerSideProps = (async ({ query }) => {
 				props: {
 					token: '',
 					profile: null,
-					metrics: [],
 				},
 			};
 		}
@@ -45,29 +37,18 @@ export const getServerSideProps = (async ({ query }) => {
 		props: {
 			token: '',
 			profile: null,
-			metrics: [],
 		},
 	};
 }) satisfies GetServerSideProps<InitialDashboardProps>;
 
-const Dashboard = ({
-    metrics,
-    ...props
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-
-
+const Dashboard = (
+	props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
 	return (
-		<Session { ...props }>
-			<div className='relative h-screen w-full bg-white'>
-				<Header />
-				<div >
-					{/* <SideMenu active={router.pathname} /> */}
-                    <div className='w-full flex flex-col'>
-                        <Metrics/>
-                    </div>
-				</div>
-			</div>
-        </Session>
+		<Session {...props}>
+			<DashboardHeader />
+			<DashboardBody />
+		</Session>
 	);
 };
 

@@ -4,7 +4,7 @@ export const protectedAxiosInstance = axios.create( {
     withCredentials: true,
     validateStatus( status )
     {
-        return status === 200 || status === 401;
+        return status === 200 || status === 401 || status === 304;
     },
     timeout: 30_000,
     headers: {
