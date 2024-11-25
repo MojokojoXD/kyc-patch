@@ -5,6 +5,7 @@ import { JobFeedbackFn } from "../lib/requestQuene";
 
 export interface SessionContextSchema<TResponseData = any>
 {
+    isRequesting: boolean;
     isLoggedIn: boolean;
     request: JobFeedbackFn<TResponseData>;
     logout: () => void;

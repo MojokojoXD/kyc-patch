@@ -5,9 +5,20 @@ import { AxiosError } from 'axios';
 
 const ALL_CLIENTS_URL = BASE_URL + '/kyc/dashboard/getall';
 
-const handler: NextApiHandler = async (req, res) => {
+const handler: NextApiHandler = async ( req, res ) =>
+{
+    
+    const { path } = req.query;
+	const pathParts = (req.url as string).split('/');
+	const sliceEndIndex = pathParts.findIndex((segment) => segment === 'proxy');
+
+    const ssxURL = BASE_URL + '/' + ( path as string[] ).join( '/' );
+
 	try {
-		const ssxServerRes = await protectedAxiosInstance.get(ALL_CLIENTS_URL, {
+		const ssxServerRes = await protectedAxiosInstance({
+			url: ssxURL,
+			method: req.method,
+			data: req.method === 'POST' ? req.body : undefined,
 			headers: {
 				cookie: req.headers.cookie,
 			},

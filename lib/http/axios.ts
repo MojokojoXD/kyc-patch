@@ -1,6 +1,6 @@
 import axios from 'axios'
 export const protectedAxiosInstance = axios.create( {
-	baseURL: '/api/dashboard/',
+	baseURL: '/api/dashboard/proxy',
     withCredentials: true,
     validateStatus( status )
     {

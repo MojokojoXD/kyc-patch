@@ -1,6 +1,6 @@
 import * as ViewContent from '../Layout/ViewContent';
 import { Button } from '@/components/ui/button';
-import { SearchField } from './SearchField';
+import { SearchField } from './ClientsSearchField';
 import { ClientsTable } from './ClientsTable';
 import { Pagination } from './Pagination';
 import {
@@ -11,7 +11,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import type { DashboardClient } from './client';
+import type { DashboardClient } from './clients';
 import type { BaseSSXResponse } from '@/types/server/SSX';
 import { useSession } from '../../hooks/useSession';
 import { useSearch } from './hooks/useSearch';
@@ -56,7 +56,7 @@ export function Clients() {
 		Path<(typeof clientsData)[0]> | undefined
 	>();
 	const [error, setError] = useState<string | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
+	// const [isLoading, setIsLoading] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const { request } = useSession<AllClientsEndpointResponse>();
@@ -86,18 +86,19 @@ export function Clients() {
 	}, [currentPage, sortedResult, sortOption]);
 
 	useEffect(() => {
-		request({ url: 'get-all', method: 'GET' }, function (data, error, status) {
-			if (status === 'COMPLETED') {
-				setClientsData(
-					data!.all_trans.filter((c) => c.client_first_name && c.client_last_name)
-				);
-				setIsLoading(false);
-				return;
-			}
+		request(
+			{ url: '/kyc/dashboard/getall', method: 'GET' },
+			function (data, error, status) {
+				if (status === 'COMPLETED') {
+					setClientsData(
+						data!.all_trans.filter((c) => c.client_first_name && c.client_last_name)
+					);
+					return;
+				}
 
-			error && setError(error);
-			setIsLoading(false);
-		});
+				error && setError(error);
+			}
+		);
 	}, []);
 
 	const onPageChange = useCallback((page: number) => setCurrentPage(page), []);
@@ -114,26 +115,27 @@ export function Clients() {
 
 	return (
 		<>
-			<Loading
-				absolute
-				reveal={isLoading}
-			/>
 			<ViewContent.Header className='flex justify-between items-center'>
 				<h1 className='heading6Bold'>All Clients</h1>
 				<div className='flex justify-end space-x-4 w-4/6'>
 					<Select
 						value={sortOption}
 						onValueChange={handleSortOption}>
-						<SelectTrigger className='w-full max-w-[271px] flex-none'>
+						<SelectTrigger className='w-full max-w-[271px] flex-none text-sm'>
 							<span>
-                                sort by <SelectValue className='capitalize'/>
+								Sort by{' '}
+								<span className='capitalize'>
+									<SelectValue  />
+								</span>
 							</span>
 						</SelectTrigger>
 						<SelectContent>
 							{sortOptions.map((o) => (
 								<SelectItem
 									key={o.value}
-									value={o.value}>
+                                    value={ o.value }
+                                    className='text-sm pl-2'
+                                >
 									{o.label}
 								</SelectItem>
 							))}

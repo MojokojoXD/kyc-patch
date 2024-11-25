@@ -75,7 +75,9 @@ export class RequestQueue implements Queueable {
 				return;
 			}
 
-			const newTokenResponse = await protectedAxiosInstance.get('refresh-token');
+            const newTokenResponse = await protectedAxiosInstance.get( 'api/dashboard/refresh-token', {
+                baseURL: '',
+            });
 
 			if (newTokenResponse.status !== 200) {
                 feedback( null, 'Unable to refresh access token', RequestStatus.FAILED );

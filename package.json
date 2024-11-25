@@ -19,6 +19,7 @@
     "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tabs": "^1.1.1",
     "@types/formidable": "^3.4.5",
     "@types/react-phone-number-input": "^3.0.17",
     "@types/validator": "^13.12.2",

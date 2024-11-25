@@ -55,7 +55,7 @@ export function TableHead({ data, className, ...props }: TableDataProps) {
 	return (
 		<th
 			className={cn(
-				'first:rounded-s-[8px] last:rounded-e-[8px] bg-neutral-800 px-4 text-left',
+				'first:rounded-s-[8px] last:rounded-e-[8px] bg-gradient-to-b from-neutral-800 to-neutral-900 px-4 text-left',
 				className
 			)}
 			{...props}>

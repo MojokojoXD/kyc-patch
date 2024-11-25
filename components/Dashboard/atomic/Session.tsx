@@ -23,14 +23,14 @@ export function Session({ children, token, profile }: SessionProviderProps) {
 	const router = useRouter();
 
 	const [userProfile, setUserProfile] = useState<typeof profile>(profile);
-
+    const [ isRequesting, setIsRequesting ] = useState( true );
 	const [requestJobs, setRequestJobs] = useState<
 		{ job: Job; feedback: Feedback }[] | null
 	>(() => {
 		if (!profile)
 			return [
 				{
-					job: { url: 'get-profile', method: 'GET' },
+					job: { url: '/users/self', method: 'GET' },
 					feedback: function (res, error, status) {
 						if (status === 'COMPLETED') {
 							setUserProfile(res?.profile[0]);
@@ -73,14 +73,18 @@ export function Session({ children, token, profile }: SessionProviderProps) {
 
 	useEffect(() => {
 		(async () => {
-			if (requestJobs && requestJobs.length > 0) {
+            if ( requestJobs && requestJobs.length > 0 )
+            {
+                setIsRequesting( true );
+
 				const queue = new RequestQueue();
 
 				queue.enqueue(...requestJobs);
 
 				await queue.process();
 
-				setRequestJobs(null);
+                setRequestJobs( null );
+                setIsRequesting( false );
 			}
 		})();
 	}, [requestJobs]);
@@ -88,7 +92,8 @@ export function Session({ children, token, profile }: SessionProviderProps) {
 	return (
 		<sessionContext.Provider
 			value={{
-				profile: userProfile,
+                profile: userProfile,
+                isRequesting,
 				isLoggedIn:
 					token.length > 0 ||
 					(typeof sessionStorage !== 'undefined' &&

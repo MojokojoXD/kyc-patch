@@ -24,7 +24,7 @@ const statusBadgeVariants = cva(
 			},
 			size: {
 				sm: 'w-[130px]',
-				lg: 'w-full h-[45px]',
+				lg: 'w-full h-[45px] font-medium',
 			},
         },
         defaultVariants: {

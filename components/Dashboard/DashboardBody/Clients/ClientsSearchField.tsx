@@ -41,7 +41,7 @@ export function SearchField({
 			<Input
 				ref={inputRef}
 				placeholder={placeholder}
-				className='w-full pl-4 pr-10 peer focus-visible:border-primary-500 placeholder:text-sm'
+				className='w-full pl-4 pr-10 peer focus-visible:border-primary-500 placeholder:text-sm placeholder:text-neutral-400'
 			/>
 			<span className='absolute right-4 text-neutral-300 peer-focus:text-primary-500 peer-hover:text-primary-300'>
 				{isEnteringInput ? (

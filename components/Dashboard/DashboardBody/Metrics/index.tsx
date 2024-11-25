@@ -23,17 +23,19 @@ export function Metrics({ onPortalChange }: MetricsProps) {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		request({ url: 'metrics', method: 'GET' }, function (data, error, status) {
-            if ( status === 'COMPLETED' )
-            {
-				setMetricsData([...data!.metrics]);
-				setIsLoading(false);
-				return;
-			}
+		request(
+			{ url: '/kyc/dashboard/metrics', method: 'GET' },
+			function (data, error, status) {
+				if (status === 'COMPLETED') {
+					setMetricsData([...data!.metrics]);
+					setIsLoading(false);
+					return;
+				}
 
-			(error && status === 'FAILED' )&& setError(error);
-			setIsLoading(false);
-		});
+				error && status === 'FAILED' && setError(error);
+				setIsLoading(false);
+			}
+		);
     }, [] );
     
 
@@ -44,7 +46,7 @@ export function Metrics({ onPortalChange }: MetricsProps) {
     }
 
 	return (
-		<div className='bg-white p-8 space-y-4 rounded-lg h-full border border-neutral-100'>
+		<div className='bg-white p-8 space-y-4 rounded-lg h-full'>
 			<Loading
 				absolute
 				reveal={isLoading}

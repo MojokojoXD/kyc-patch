@@ -16,7 +16,7 @@ interface MainProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function Main({ children, className, ...props }: MainProps) {
 	return (
-		<div className='relative h-screen bg-gradient-to-br from-neutral-50 to-neutral-100 grid pt-dashboard-header'>
+		<div className='relative h-screen bg-white grid pt-dashboard-header'>
 			<div
 				{...props}
 				className={cn(

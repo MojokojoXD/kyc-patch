@@ -8,12 +8,13 @@ import { AddClientForm } from '../molecular/AddClientForm';
 // import UserProfileInfo from '../UserProfileInfo';
 // import UserContext from '../../utils/userContext';
 // import dayjs from 'dayjs';
-import { CirclePlus, Bell } from 'lucide-react';
+import { CirclePlus, Bell, RotateCcw } from 'lucide-react';
 import { useIdleTimer } from 'react-idle-timer';
 import { Button } from '@/components/ui/button';
 import { PopupModal } from '../molecular/PopupModal';
 import { SideModal } from '../molecular/SideModal';
-// import { useSession } from '../hooks/useSession';
+import { useSession } from '../hooks/useSession';
+import { cn } from '@/lib/utils';
 
 
 export function DashboardHeader() {
@@ -26,7 +27,7 @@ export function DashboardHeader() {
 	const [inactivePrompt, setInactivePrompt] = useState(false);
 	// const userData = useContext(UserContext);
     const promptBeforeTimeout = 3; //mins
-    // const { logout } = useSession();
+    const { isRequesting } = useSession();
 
     const logout = () => {}
 
@@ -68,16 +69,19 @@ export function DashboardHeader() {
 
 	return (
 		<>
-			<div className='fixed top-0 z-10 inset-x-0 flex items-center justify-between h-dashboard-header p-x-dashboard py-[16px] border-b border-neutral-100 bg-white'>
-				<Link href={'/'}>
-					<Image
-						src={logo}
-						height={150}
-                        width={ 150 }
-						priority
-						alt='ssx logo'
-					/>
-				</Link>
+            <div className='fixed top-0 z-10 inset-x-0 flex items-center justify-between h-dashboard-header p-x-dashboard py-[16px] border-b border-neutral-100 bg-white'>
+                <div className='flex space-x-2'>
+                    <Link href={'/'}>
+                        <Image
+                            src={logo}
+                            height={150}
+                            width={ 150 }
+                            priority
+                            alt='ssx logo'
+                        />
+                    </Link>
+                    <RotateCcw className={cn('self-center animate-spin hidden text-neutral-700/50 h-5 aspect-square', isRequesting && 'block')}/>
+                </div>
 				<div className='flex items-center gap-[24px]'>
 					{/*add client button*/}
 					<Button
