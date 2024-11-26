@@ -7,12 +7,11 @@ interface ClientTabsProps {
 	client: ClientTabData;
 }
 
-export function ClientTabs( { client }: ClientTabsProps )
-{
-	const { logs, ...clientBio } = client ;
+export function ClientTabs({ client }: ClientTabsProps) {
+	const { logs, ...clientBio } = client;
 
 	const tabBtnClx =
-        'data-[state=active]:bg-neutral-100 data-[state=active]:border-b heading6SMedium rounded-none py-[16px] border-neutral-700 w-full ';
+		'data-[state=active]:bg-neutral-100 data-[state=active]:border-b heading6SMedium rounded-none py-[16px] border-neutral-700 w-full ';
 
 	return (
 		<Tabs

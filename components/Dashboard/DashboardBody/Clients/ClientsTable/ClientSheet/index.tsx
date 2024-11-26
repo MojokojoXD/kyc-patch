@@ -1,4 +1,3 @@
-import { useState, useCallback } from 'react';
 import {
 	Sheet,
 	SheetContent,
@@ -12,10 +11,9 @@ import {
 	SSXStatusBadge,
 	type BadgeStatus,
 } from '@/components/ui/SSXStatusBadge';
-import { Dot, X, ArrowLeft } from 'lucide-react';
+import { X } from 'lucide-react';
 import { clientStatusMapping } from '../utils/mappings';
 import type { ClientTabData } from '../../clients';
-import { cn } from '@/lib/utils';
 
 interface ClientSheetProps {
 	open: boolean;
@@ -25,16 +23,8 @@ interface ClientSheetProps {
 }
 
 export function ClientSheet({ open, client, onSheetChange }: ClientSheetProps) {
-	const [showBackBtn, setShowBackBtn] = useState(false);
-	const toggleBackButton = useCallback((open: boolean) => {
-		if (!open) setShowBackBtn(false);
-		setShowBackBtn(open);
-	}, []);
 	if (!client) return null;
 	const {
-		client_first_name: firstName,
-		client_last_name: lastName,
-		type_of_client,
 		status,
 	} = client;
 
@@ -46,17 +36,17 @@ export function ClientSheet({ open, client, onSheetChange }: ClientSheetProps) {
 				side={'right'}
 				disableClose
 				className='p-0 pb-24'>
-				<SheetHeader className='h-dashboard-header p-[32px] border-b border-neutral-100'>
-					<SheetTitle className='relative flex items-center text-neutral-700 h-full w-full'>
+				<SheetHeader className='relative h-dashboard-header p-[32px] border-b border-neutral-100 flex items-center'>
+					<SheetTitle className='hidden'>
+					</SheetTitle>
+					<SheetDescription className='hidden'></SheetDescription>
 						<Button
 							variant={'ghost'}
 							size={'icon'}
-							className='absolute right-0'
+							className='absolute right-[2rem] bottom-[1.5rem]'
 							onClick={() => onSheetChange(false)}>
 							<X />
 						</Button>
-					</SheetTitle>
-					<SheetDescription className='hidden'></SheetDescription>
 				</SheetHeader>
 				<div
 					className='p-[32px] space-y-[24px] h-full overflow-auto'

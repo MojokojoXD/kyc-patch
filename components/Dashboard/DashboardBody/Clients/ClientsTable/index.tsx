@@ -37,7 +37,6 @@ export function ClientsTable({ data, headerLabels }: ClientsTableProps) {
 				{ url: `/kyc/dashboard/${clientID}`, method: 'GET' },
 				function (res, error, status) {
 					if (status === 'COMPLETED') {
-						console.log(res);
 						resolve(res);
 					}
 
@@ -49,11 +48,10 @@ export function ClientsTable({ data, headerLabels }: ClientsTableProps) {
 	const handleClientRowClick = useCallback(async (cl: DashboardClient) => {
 		if (!cl) return;
 
-        
-        const result = await clientLogsRequest( cl?.client_id );
-        
+		const result = await clientLogsRequest(cl?.client_id);
+
 		setOpenSheet(true);
-        
+
 		setClient({
 			...cl,
 			logs: result?.data ?? [],

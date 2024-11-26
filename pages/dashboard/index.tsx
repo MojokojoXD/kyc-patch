@@ -3,7 +3,7 @@ import {
 	type InferGetServerSidePropsType,
 } from 'next';
 import type { Profile } from '@/types/accounts/user';
-import { DashboardHeader } from '@/components/Dashboard/compound/DashboardHeader';
+import { DashboardHeader } from '@/components/Dashboard/DashboardHeader';
 import { DashboardBody } from '@/components/Dashboard/DashboardBody';
 import { Session } from '@/components/Dashboard/atomic/Session';
 
