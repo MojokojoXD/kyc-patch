@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { SSXActionSuccess as ActionSuccess } from '@/components/CompoundUI/SSXActionSuccess';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 import { useAsyncAction } from '@/components/forms/utils/customHooks/useAsyncAction';
 import { getCountryList } from '@/utils/vars/countries';
 import { useState } from 'react';
@@ -23,13 +24,13 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 	const [countryList, isFetchingCountry, countryListError] =
 		useAsyncAction(getCountryList);
 
-	const { profile } = useSession();
+	const { profile, request } = useSession<{ Status: 'SUCC' | 'FAIL' }>();
 	const form = useForm<NewClientPayload>({
 		defaultValues: {
 			clientFirstName: '',
 			clientLastName: '',
 			clientEmail: '',
-			clientPhone: '',
+			clientPhone: [{ value: '', countryCode: 'GH' }],
 			brokerID: profile?.broker_id ?? '',
 			typeOfClient: '',
 		},
@@ -38,12 +39,34 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 
 	const { handleSubmit } = form;
 
-	const [isLoading, _setIsLoading] = useState(false);
-	const [submitError, _setSubmitError] = useState('');
-	const [step, _setStep] = useState<NewClientFormSteps>(NewClientFormSteps.Form);
+	const [isLoading, setIsLoading] = useState(false);
+	const [submitError, setSubmitError] = useState('');
+	const [step, setStep] = useState<NewClientFormSteps>(NewClientFormSteps.Form);
 
 	const submitHandler: SubmitHandler<NewClientPayload> = (payload) => {
-		console.log(payload);
+		setIsLoading(true);
+
+		//data transformation to match server schema;
+		const newClient = {
+			...payload,
+			clientPhone: payload.clientPhone[0].value,
+			typeOfClient:
+				payload.typeOfClient === 'Individual or Joint'
+					? 'Individual'
+					: payload.typeOfClient,
+		};
+
+		request(
+			{ url: 'kyc/broker/client', method: 'POST', data: newClient },
+			function (res, error, status) {
+				if (status === 'COMPLETED' && res?.Status === 'SUCC') {
+					setStep(NewClientFormSteps.ClientAdded);
+					setIsLoading(false);
+				}
+
+				status === 'FAILED' && setSubmitError(error as string);
+			}
+		);
 	};
 
 	const aggregateLoadingState = isLoading || isFetchingCountry;
@@ -59,11 +82,11 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 			return (
 				<>
 					{step === NewClientFormSteps.Form && (
-						<h6 className='heading6Bold absolute top-[32px]'>Add A New Client</h6>
+						<p className='paragraph2Medium absolute top-[32px]'>Add A New Client</p>
 					)}
 					<Form {...form}>
 						<form onSubmit={handleSubmit(submitHandler)}>
-							<div className='space-y-[40px]'>
+							<div className='space-y-[40px] relative'>
 								{addClientFormModel({ countryList }).map((f) => (
 									<FormFactory
 										key={f.name}
@@ -75,7 +98,11 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 									className='w-full'
 									type='submit'
 									disabled={aggregateLoadingState}>
-									Confirm
+									{isLoading ? (
+										<Loader2 className='h-5 aspect-square ml-.5 animate-spin' />
+									) : (
+										'Confirm'
+									)}
 								</Button>
 							</div>
 						</form>
@@ -84,11 +111,11 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 			);
 		case NewClientFormSteps.ClientAdded:
 			return (
-				<div className='flex flex-col flex-1 items-center w-full'>
+				<div className='flex flex-col flex-1 items-center w-full h-full'>
 					<div className='flex flex-col flex-1 justify-center items-center'>
 						<ActionSuccess headingText='Client Added!' />
 					</div>
-					<Button onClick={() => toggleSheet()}>Sounds Good</Button>
+					<Button className='w-full' onClick={() => toggleSheet()}>Sounds Good</Button>
 				</div>
 			);
 		default:

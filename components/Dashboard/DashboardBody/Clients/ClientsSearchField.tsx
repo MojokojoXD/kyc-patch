@@ -34,7 +34,7 @@ export function SearchField({
 			inputNode.removeEventListener('keyup', handleChange);
 			clearTimeout(timerID);
 		};
-	}, []);
+	}, [ onChange ]);
 
 	return (
 		<span className='relative flex items-center w-full max-w-[271px]'>

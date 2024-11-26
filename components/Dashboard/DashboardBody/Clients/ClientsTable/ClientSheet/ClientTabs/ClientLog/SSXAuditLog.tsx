@@ -1,4 +1,3 @@
-import type { ClientLogEntry } from '../../../../clients';
 import { cn } from '@/lib/utils';
 
 interface SSXAuditLogProps {

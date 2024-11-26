@@ -36,7 +36,7 @@ export function Metrics({ onPortalChange }: MetricsProps) {
 				setIsLoading(false);
 			}
 		);
-    }, [] );
+    }, [ request ] );
     
 
     if ( error )

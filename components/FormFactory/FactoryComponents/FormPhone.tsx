@@ -197,7 +197,7 @@ function CustomCountrySelect({
 					)}
 				</div>
 			</SelectTrigger>
-			<SelectContent>
+			<SelectContent className=''>
 				<SelectGroup>
 					{options?.priorityKeys?.map((c) => (
 						<SelectItem

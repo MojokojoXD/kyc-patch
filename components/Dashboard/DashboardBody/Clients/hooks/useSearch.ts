@@ -26,5 +26,5 @@ export function useSearch<
             return isMatch;
         } );
 
-	}, [searchStr,collection]);
+	}, [searchStr,collection, properties]);
 }

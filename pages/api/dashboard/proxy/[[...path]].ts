@@ -3,14 +3,11 @@ import { protectedAxiosInstance } from '@/lib/http/axios';
 import { BASE_URL } from '@/utils/vars/uri';
 import { AxiosError } from 'axios';
 
-const ALL_CLIENTS_URL = BASE_URL + '/kyc/dashboard/getall';
 
 const handler: NextApiHandler = async ( req, res ) =>
 {
     
     const { path } = req.query;
-	const pathParts = (req.url as string).split('/');
-	const sliceEndIndex = pathParts.findIndex((segment) => segment === 'proxy');
 
     const ssxURL = BASE_URL + '/' + ( path as string[] ).join( '/' );
 
@@ -24,12 +21,18 @@ const handler: NextApiHandler = async ( req, res ) =>
 			},
 		});
 
-		if (ssxServerRes.status === 200) {
+    if ( ssxServerRes.status === 200 )
+    {
+      
 			res.status(200).json(ssxServerRes.data);
 			return;
-		}
+    }
+    
+
 		res.status(ssxServerRes.status).json(ssxServerRes.data);
-	} catch (error) {
+  } catch ( error )
+  {
+    console.log( error )
 		if (error instanceof AxiosError) {
 			res
 				.status(error.status as number)

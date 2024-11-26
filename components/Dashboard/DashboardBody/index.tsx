@@ -8,12 +8,12 @@ export function DashboardBody() {
 			<Dashboard.SideMenu
 				renderPortal={(portal, changePortalView) => (
 					<Dashboard.Portal current={portal}>
-                        <Dashboard.View name='metrics'>
-                            <Metrics onPortalChange={changePortalView}/>
+						<Dashboard.View name='metrics'>
+							<Metrics onPortalChange={changePortalView} />
 						</Dashboard.View>
-                        <Dashboard.View name='clientele'>
-                            <Clients/>
-                        </Dashboard.View>
+						<Dashboard.View name='clientele'>
+							<Clients />
+						</Dashboard.View>
 					</Dashboard.Portal>
 				)}
 			/>

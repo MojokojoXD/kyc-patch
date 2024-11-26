@@ -30,7 +30,7 @@ export function ClientsTable({ data, headerLabels }: ClientsTableProps) {
 		[]
 	);
 
-	const clientLogsRequest = (clientID?: string) =>
+	const clientLogsRequest = useCallback((clientID?: string) =>
 		new Promise<ClientLogsResponse | null>((resolve, reject) => {
 			if (!clientID) resolve(null);
 			request(
@@ -43,10 +43,10 @@ export function ClientsTable({ data, headerLabels }: ClientsTableProps) {
 					status === 'FAILED' && reject(error);
 				}
 			);
-		});
+		}),[ request ]);
 
 	const handleClientRowClick = useCallback(async (cl: DashboardClient) => {
-		if (!cl) return;
+		if (!cl && !isRequesting) return;
 
 		const result = await clientLogsRequest(cl?.client_id);
 
@@ -57,7 +57,7 @@ export function ClientsTable({ data, headerLabels }: ClientsTableProps) {
 			logs: result?.data ?? [],
 			verifications: result?.verifications ?? [],
 		});
-	}, []);
+	}, [clientLogsRequest, isRequesting]);
 
 	return (
 		<>

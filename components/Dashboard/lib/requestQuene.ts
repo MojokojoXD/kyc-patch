@@ -11,7 +11,7 @@ export interface Job {
 	url: string;
 	method: Method;
 
-	data?: { [index: string]: unknown };
+	data?: object;
 }
 
 export enum RequestStatus {
@@ -20,7 +20,7 @@ export enum RequestStatus {
 	COMPLETED = 'COMPLETED',
 	FAILED = 'FAILED',
 }
-export interface Feedback <T = any>
+export interface Feedback <T = never>
 {
 	(
 		res: T | null,
@@ -29,7 +29,7 @@ export interface Feedback <T = any>
 	): void;
 }
 
-export interface JobFeedbackFn<T = any> {
+export interface JobFeedbackFn<T = never> {
 	(job: Job, result: Feedback<T>): void;
 }
 interface Queueable {

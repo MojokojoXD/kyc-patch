@@ -45,8 +45,8 @@ export function usePagination({
         const lastPageIndex = totalNumberOfPages;
     
         if (!shouldShowLeftDots && shouldShowRightDots) {
-            let leftItemCount = 3 + 2 * siblingCount;
-            let leftRange = arrayEnumerator(1, leftItemCount);
+            const leftItemCount = 3 + 2 * siblingCount;
+            const leftRange = arrayEnumerator(1, leftItemCount);
     
             return [...leftRange, dots, totalNumberOfPages];
         }

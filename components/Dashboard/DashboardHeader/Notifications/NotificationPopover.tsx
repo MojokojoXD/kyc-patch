@@ -42,7 +42,7 @@ export function NotificationPopover({
 			</PopoverTrigger>
 			<PopoverContent
 				align={'end'}
-				sideOffset={30}
+				sideOffset={15}
 				className='w-[26.875rem] p-0 text-neutral-700'>
 				<>
 					<div className='h-12 paragraph2Medium py-3 px-4'>

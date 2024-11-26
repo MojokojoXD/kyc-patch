@@ -99,7 +99,7 @@ export function Session({ children, token, profile }: SessionProviderProps) {
 					(typeof sessionStorage !== 'undefined' &&
 						sessionStorage.getItem(ACCESS_TOKEN_IDENTIFIER) !== undefined),
 				request: addRequestJob,
-				logout: () => {},
+				logout,
 			}}>
 			{children}
 		</sessionContext.Provider>

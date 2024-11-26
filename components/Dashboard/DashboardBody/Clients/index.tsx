@@ -1,5 +1,4 @@
 import * as ViewContent from '../Layout/ViewContent';
-import { Button } from '@/components/ui/button';
 import { SearchField } from './ClientsSearchField';
 import { ClientsTable } from './ClientsTable';
 import { Pagination } from './Pagination';
@@ -7,7 +6,6 @@ import {
 	Select,
 	SelectContent,
 	SelectItem,
-	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
@@ -17,7 +15,6 @@ import { useSession } from '../../hooks/useSession';
 import { useSearch } from './hooks/useSearch';
 import { useSorter } from './hooks/useSorter';
 import { useEffect, useState, useMemo, useCallback } from 'react';
-import Loading from '@/components/ui/Loading';
 import type { Path } from 'react-hook-form';
 
 interface AllClientsEndpointResponse extends BaseSSXResponse {
@@ -69,7 +66,7 @@ export function Clients() {
 			'client_last_name',
 			'broker',
 			'status',
-            'type_of_client',
+			'type_of_client',
 		]
 	);
 
@@ -79,10 +76,12 @@ export function Clients() {
 	);
 
 	const currentClients = useMemo(() => {
-		const firstPageIndex = (currentPage - 1) * CLIENTS_PER_PAGE;
-		const lastPageIndex = firstPageIndex + CLIENTS_PER_PAGE;
+		if (sortOption || !sortOption) {
+			const firstPageIndex = (currentPage - 1) * CLIENTS_PER_PAGE;
+			const lastPageIndex = firstPageIndex + CLIENTS_PER_PAGE;
 
-		return sortedResult.slice(firstPageIndex, lastPageIndex);
+			return sortedResult.slice(firstPageIndex, lastPageIndex);
+		}
 	}, [currentPage, sortedResult, sortOption]);
 
 	useEffect(() => {
@@ -99,7 +98,7 @@ export function Clients() {
 				error && setError(error);
 			}
 		);
-	}, []);
+	}, [request]);
 
 	const onPageChange = useCallback((page: number) => setCurrentPage(page), []);
 
@@ -114,18 +113,19 @@ export function Clients() {
 	}
 
 	return (
-		<>
-			<ViewContent.Header className='flex justify-between items-center'>
-				<h1 className='heading6Bold'>All Clients</h1>
-				<div className='flex justify-end space-x-4 w-4/6'>
+	<>
+		<ViewContent.Header className='flex justify-between items-center'>
+			<h1 className='heading6Bold'>All Clients</h1>
+			<div className='flex justify-end space-x-4 w-4/6'>
+				<div className='w-full max-w-[271px]'>
 					<Select
 						value={sortOption}
 						onValueChange={handleSortOption}>
-						<SelectTrigger className='w-full max-w-[271px] flex-none text-sm'>
+						<SelectTrigger className='w-full flex-none text-sm'>
 							<span>
 								Sort by{' '}
 								<span className='capitalize'>
-									<SelectValue  />
+									<SelectValue />
 								</span>
 							</span>
 						</SelectTrigger>
@@ -133,44 +133,44 @@ export function Clients() {
 							{sortOptions.map((o) => (
 								<SelectItem
 									key={o.value}
-                                    value={ o.value }
-                                    className='text-sm pl-2'
-                                >
+									value={o.value}
+									className='text-sm pl-2'>
 									{o.label}
 								</SelectItem>
 							))}
 						</SelectContent>
 					</Select>
-					<SearchField
-						placeholder='Search by Name,Type,Email...'
-						onChange={(v) => {
-							setCurrentPage(1);
-							setSearchStr(v);
-						}}
-					/>
 				</div>
-			</ViewContent.Header>
-			<ViewContent.Body>
-				<ClientsTable
-					headerLabels={[
-						'client name',
-						'client type',
-						'email address',
-						'broker',
-						'status',
-					]}
-					data={currentClients}
+				<SearchField
+					placeholder='Search by Name,Type,Email...'
+					onChange={(v) => {
+						setCurrentPage(1);
+						setSearchStr(v);
+					}}
 				/>
-			</ViewContent.Body>
-			<ViewContent.Footer className='flex justify-end'>
-				<Pagination
-					onPageChange={onPageChange}
-					totalDataCount={searchResult.length}
-					currentPage={currentPage}
-					maxDataPerPage={CLIENTS_PER_PAGE}
-					siblingCount={2}
-				/>
-			</ViewContent.Footer>
-		</>
-	);
+			</div>
+		</ViewContent.Header>
+		<ViewContent.Body>
+			<ClientsTable
+				headerLabels={[
+					'client name',
+					'client type',
+					'email address',
+					'broker',
+					'status',
+				]}
+				data={currentClients!}
+			/>
+		</ViewContent.Body>
+		<ViewContent.Footer className='flex justify-end'>
+			<Pagination
+				onPageChange={onPageChange}
+				totalDataCount={searchResult.length}
+				currentPage={currentPage}
+				maxDataPerPage={CLIENTS_PER_PAGE}
+				siblingCount={2}
+			/>
+		</ViewContent.Footer>
+	</>
+);
 }
