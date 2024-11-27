@@ -102,8 +102,7 @@ function BiographicalForm({
 
 		aggregator.modifyFields('GH', {
 			required:
-				residenceStatus === 'Resident Foreigner' ||
-				residenceStatus === 'Non-Resident Foreigner',
+				residenceStatus === 'Resident Foreigner',
 			remove: residenceStatus === 'Resident Ghanaian',
 		});
 
