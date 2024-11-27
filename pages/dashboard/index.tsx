@@ -6,19 +6,23 @@ import type { Profile } from '@/types/accounts/user';
 import { DashboardHeader } from '@/components/Dashboard/DashboardHeader';
 import { DashboardBody } from '@/components/Dashboard/DashboardBody';
 import { Session } from '@/components/Dashboard/atomic/Session';
+import { IdleDetection } from '@/components/Dashboard/atomic/IdleDetection';
 
 interface InitialDashboardProps {
-	token: string;
-
 	profile: Profile | null;
 }
 
-export const getServerSideProps = (async ({ query }) => {
+export const getServerSideProps = ( async ( { res,query } ) =>
+{
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  )
+
 	if (query.profile && query.token) {
 		try {
 			return {
 				props: {
-					token: query.token as string,
 					profile: JSON.parse(query.profile as string) as Profile,
 				},
 			};
@@ -26,7 +30,6 @@ export const getServerSideProps = (async ({ query }) => {
 			console.log(error);
 			return {
 				props: {
-					token: '',
 					profile: null,
 				},
 			};
@@ -35,17 +38,18 @@ export const getServerSideProps = (async ({ query }) => {
 
 	return {
 		props: {
-			token: '',
 			profile: null,
 		},
 	};
 }) satisfies GetServerSideProps<InitialDashboardProps>;
 
 const Dashboard = (
-	props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
-	return (
-		<Session {...props}>
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) =>
+{
+  return (
+    <Session { ...props }>
+      <IdleDetection/>
 			<DashboardHeader />
 			<DashboardBody />
 		</Session>

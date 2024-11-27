@@ -11,19 +11,17 @@ import {
 	JobFeedbackFn,
 } from '../lib/requestQuene';
 import { Profile } from '@/types/accounts/user';
+import { protectedAxiosInstance } from '@/lib/http/axios';
 
 interface SessionProviderProps extends Pick<SessionContextSchema, 'profile'> {
-	token: string;
-	children: ReactNode;
+	children?: ReactNode;
 }
 
-const ACCESS_TOKEN_IDENTIFIER = 'SSX_ACCESS_TOKEN';
-
-export function Session({ children, token, profile }: SessionProviderProps) {
+export function Session({ children,profile}: SessionProviderProps) {
 	const router = useRouter();
 
 	const [userProfile, setUserProfile] = useState<typeof profile>(profile);
-    const [ isRequesting, setIsRequesting ] = useState( true );
+	const [isRequesting, setIsRequesting] = useState(true);
 	const [requestJobs, setRequestJobs] = useState<
 		{ job: Job; feedback: Feedback }[] | null
 	>(() => {
@@ -53,29 +51,23 @@ export function Session({ children, token, profile }: SessionProviderProps) {
 		});
 	}, []);
 
-	const logout = useCallback(() => {
-		sessionStorage.removeItem(ACCESS_TOKEN_IDENTIFIER);
+  const logout = useCallback( async () =>
+  {
+    
+		const res = await protectedAxiosInstance.post('logout', {});
+
+		if (res.status === 0) {
+			router.replace('/');
+			return;
+		}
+
 		router.replace('/');
 	}, [router]);
 
-	const setNewAccessToken = (token: string) =>
-		sessionStorage.setItem(ACCESS_TOKEN_IDENTIFIER, token);
-
-	const getAccessToken = () =>
-		typeof sessionStorage !== 'undefined' &&
-		sessionStorage.getItem(ACCESS_TOKEN_IDENTIFIER);
-
-	if (token) {
-		setNewAccessToken(token);
-	} else if (!getAccessToken()) {
-		typeof window !== 'undefined' && logout();
-	}
-
 	useEffect(() => {
 		(async () => {
-            if ( requestJobs && requestJobs.length > 0 )
-            {
-                setIsRequesting( true );
+			if (requestJobs && requestJobs.length > 0) {
+				setIsRequesting(true);
 
 				const queue = new RequestQueue();
 
@@ -83,8 +75,8 @@ export function Session({ children, token, profile }: SessionProviderProps) {
 
 				await queue.process();
 
-                setRequestJobs( null );
-                setIsRequesting( false );
+				setRequestJobs(null);
+				setIsRequesting(false);
 			}
 		})();
 	}, [requestJobs]);
@@ -92,12 +84,8 @@ export function Session({ children, token, profile }: SessionProviderProps) {
 	return (
 		<sessionContext.Provider
 			value={{
-                profile: userProfile,
-                isRequesting,
-				isLoggedIn:
-					token.length > 0 ||
-					(typeof sessionStorage !== 'undefined' &&
-						sessionStorage.getItem(ACCESS_TOKEN_IDENTIFIER) !== undefined),
+				profile: userProfile,
+				isRequesting,
 				request: addRequestJob,
 				logout,
 			}}>

@@ -64,13 +64,19 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 					setIsLoading(false);
 				}
 
-				status === 'FAILED' && setSubmitError(error as string);
+        if ( status === 'FAILED' )
+        {
+          setSubmitError( error as string );
+          setIsLoading( false );
+        };
 			}
 		);
 	};
 
 	const aggregateLoadingState = isLoading || isFetchingCountry;
-	const aggregateErrorState = countryListError.message || submitError;
+  const aggregateErrorState = countryListError.message || submitError;
+  
+  const clientFormFields = countryList ? addClientFormModel( { countryList } ) : [];
 
 	if (aggregateErrorState) {
 		console.log(aggregateErrorState);
@@ -86,8 +92,8 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 					)}
 					<Form {...form}>
 						<form onSubmit={handleSubmit(submitHandler)}>
-							<div className='space-y-[40px] relative'>
-								{addClientFormModel({ countryList }).map((f) => (
+							<div className='space-y-[40px] relative w-full'>
+								{clientFormFields.map((f) => (
 									<FormFactory
 										key={f.name}
 										{...f}

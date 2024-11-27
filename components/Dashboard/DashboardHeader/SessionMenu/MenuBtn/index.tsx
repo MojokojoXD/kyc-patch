@@ -18,7 +18,7 @@ export function MenuBtn({
 	...props
 }: MenuBtnProps) {
 	const menuBtnClx =
-		'group w-full rounded-none bg-transparent paragraph2Medium capitalize text-neutral-700 flex justify-between items-center border-r border-white p-x-dashboard hover:bg-neutral-50 hover:text-primary-500 transition-[text_border_fill] duration-150 ease-in-out hover:border-primary-500 h-[3.25rem] px-3 py-4';
+		'group w-full rounded-none bg-transparent paragraph2Medium capitalize text-neutral-700 flex justify-between items-center border-r border-white p-x-dashboard hover:bg-neutral-50 hover:text-primary-500 transition-[text_border_fill] duration-150 ease-in-out hover:border-primary-500 h-[3.25rem] px-3 py-4 overflow-hidden';
 	const iconClx =
 		'h-5 aspect-square fill-neutral-700  group-hover:fill-primary-500 stroke-white';
 

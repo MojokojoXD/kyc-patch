@@ -20,8 +20,7 @@ export enum RequestStatus {
 	COMPLETED = 'COMPLETED',
 	FAILED = 'FAILED',
 }
-export interface Feedback <T = never>
-{
+export interface Feedback<T = never> {
 	(
 		res: T | null,
 		error: string | null,
@@ -39,18 +38,12 @@ interface Queueable {
 	process: () => void;
 }
 
-const ACCESS_TOKEN_IDENTIFIER = 'SSX_ACCESS_TOKEN';
-
 export class RequestQueue implements Queueable {
 	private jobsQueue: JobFeedback[] = [];
 
 	constructor() {
 		if (typeof window === 'undefined')
 			throw new Error('RequestQueue can only be instantiated client side');
-
-		protectedAxiosInstance.defaults.headers.common[
-			'Authorization'
-		] = `bearer ${sessionStorage.getItem(ACCESS_TOKEN_IDENTIFIER)}`;
 	}
 	enqueue(...requests: typeof this.jobsQueue) {
 		this.jobsQueue.push(...requests);
@@ -75,19 +68,17 @@ export class RequestQueue implements Queueable {
 				return;
 			}
 
-            const newTokenResponse = await protectedAxiosInstance.get( 'api/dashboard/refresh-token', {
-                baseURL: '',
-            });
+			const newTokenResponse = await protectedAxiosInstance.get(
+				'api/dashboard/refresh-token',
+				{
+					baseURL: '',
+				}
+			);
 
 			if (newTokenResponse.status !== 200) {
-                feedback( null, 'Unable to refresh access token', RequestStatus.FAILED );
-                sessionStorage.removeItem( ACCESS_TOKEN_IDENTIFIER );
+				feedback(null, 'Unable to refresh access token', RequestStatus.FAILED);
 				return true;
 			}
-
-			const newToken = newTokenResponse.data.token as string;
-
-			sessionStorage.setItem(ACCESS_TOKEN_IDENTIFIER, newToken);
 
 			const retryRes = await protectedAxiosInstance.request({
 				url: job.url,
@@ -95,7 +86,6 @@ export class RequestQueue implements Queueable {
 				data: job.data,
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `bearer  ${newToken}`,
 				},
 			});
 
@@ -114,15 +104,14 @@ export class RequestQueue implements Queueable {
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				feedback(null, error.message, RequestStatus.FAILED);
-            }
-            
-            console.log( error )
+			}
+
+			console.log(error);
 		}
 	}
 
 	async process() {
-        while ( this.jobsQueue.length > 0 )
-        {
+		while (this.jobsQueue.length > 0) {
 			const didTokenRefreshFail = await this.request(
 				this.jobsQueue[0].job,
 				this.jobsQueue[0].feedback

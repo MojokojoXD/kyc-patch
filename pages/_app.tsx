@@ -49,7 +49,7 @@ export default function App( { Component, pageProps }: AppProps )
     }
 
 	return (
-		<main className={ circular.className }>
+		<main className={ circular.className + ' anti-aliased' }>
 			<Head>
 				<title>SecondSTAX KYC</title>
 				<link

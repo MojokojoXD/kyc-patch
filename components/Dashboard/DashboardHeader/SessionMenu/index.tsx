@@ -5,36 +5,73 @@ import {
 	PopoverTrigger,
 	PopoverContent,
 } from '@/components/ui/popover';
+import { DashboardDialog } from '../../atomic/DashboardDialog';
+import { SessionMenuTrigger } from './SessionMenuTrigger';
+import { SessionProfileSheet } from './SessionProfileSheet';
 import { MenuBtn } from './MenuBtn';
 import { User2 } from 'lucide-react';
-import { SessionLogout } from './SessionLogout';
-import { SessionMenuTrigger } from './SessionMenuTrigger';
 
 interface SessionMenuPopoverProps {}
 
 export function SessionMenuPopover({}: SessionMenuPopoverProps) {
-	const { profile} = useSession();
-  const [ sessionMenuOpened, setSessionMenuOpened ] = useState( false );
-  const userInitials = profile?.user_name.split(' ').map( n => n.charAt(0) ).join('') ?? ''
+	const { profile,logout } = useSession();
+	const [sessionMenuOpened, setSessionMenuOpened] = useState(false);
+  const [ openProfileSheet, setOpenProfileSheet ] = useState( false );
+  const [ openLogoutDialog, setOpenLogoutDialog ] = useState( false );
 
-  const handlePopoverTriggered = () => setSessionMenuOpened( prevState => !prevState );
 
+	const userInitials =
+		profile?.user_name
+			.split(' ')
+			.map((n) => n.charAt(0))
+			.join('') ?? '';
+
+	const handlePopoverTriggered = () =>
+		setSessionMenuOpened((prevState) => !prevState);
 
 	return (
-		<div className='max-w-72'>
-			<Popover open={sessionMenuOpened} onOpenChange={setSessionMenuOpened}>
-				<PopoverTrigger onClick={ handlePopoverTriggered }>
-          <SessionMenuTrigger fallback={ userInitials } isActive={ sessionMenuOpened } />
-				</PopoverTrigger>
-				<PopoverContent
-					align='end'
-					sideOffset={15}
-					className='grid grid-row-[3.25rem] paragraph2Medium p-0'>
-          <div className='py-3 px-4'>{ profile?.user_name }</div>
-          <MenuBtn icon={ User2 } label='Profile'/>
-          <SessionLogout/>
-				</PopoverContent>
-			</Popover>
-		</div>
-	);
+	<div className='max-w-72'>
+		<Popover
+			open={sessionMenuOpened}
+			onOpenChange={setSessionMenuOpened}>
+			<PopoverTrigger onClick={handlePopoverTriggered}>
+				<SessionMenuTrigger
+					fallback={userInitials}
+					isActive={sessionMenuOpened}
+				/>
+			</PopoverTrigger>
+			<PopoverContent
+				align='end'
+				sideOffset={15}
+				className='grid grid-row-[3.25rem] paragraph2Medium p-0 overflow-hidden text-neutral-700'>
+				<div className='py-3 px-4'>{profile?.user_name}</div>
+				<div onClick={() => handlePopoverTriggered()}>
+					<MenuBtn
+						label='my profile'
+						icon={User2}
+						onClick={() => setOpenProfileSheet(true)}
+					/>
+					<MenuBtn
+						label='logout'
+						icon={User2}
+						onClick={() => setOpenLogoutDialog(true)}
+					/>
+				</div>
+			</PopoverContent>
+		</Popover>
+
+		{/* sheets or any component that need to remain mounted after popover is unmounted */}
+		<SessionProfileSheet
+			open={openProfileSheet}
+			onOpenChange={setOpenProfileSheet}
+		/>
+		<DashboardDialog
+			open={openLogoutDialog}
+			onDialogOpen={setOpenLogoutDialog}
+			header={'logout'}
+			onContinue={async() => await logout()}>
+			Are you sure you want to logout?
+		</DashboardDialog>
+	</div>
+);
 }

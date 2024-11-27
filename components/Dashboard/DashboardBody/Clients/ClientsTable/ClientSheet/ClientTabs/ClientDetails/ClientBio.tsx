@@ -28,7 +28,7 @@ export function ClientBio( {
 			<Input
 				id={id}
 				readOnly
-				value={fieldValue}
+				value={fieldValue ?? ''}
 				className='bg-neutral-50 text-neutral-500 text-sm border border-neutral-100 hover:border-inherit focus-visible:border-inherit'
 			/>
 		</div>

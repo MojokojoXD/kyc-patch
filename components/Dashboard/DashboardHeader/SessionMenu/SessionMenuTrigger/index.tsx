@@ -15,7 +15,7 @@ export function SessionMenuTrigger({ src, fallback, isActive }: SessionMenuTrigg
 
   return (
     <div className='group flex items-center'>
-      <div className='relative flex justify-center items-center h-10 aspect-square rounded-full bg-neutral-50 border border-neutral-100 group-hover:bg-neutral-100'>
+      <div className='relative flex justify-center items-center h-10 aspect-square rounded-full bg-neutral-50 border border-neutral-100 group-hover:bg-neutral-100 transition-bg duration-150 ease-in-out'>
         {imageURL ? (
           <Image
             src={imageURL}

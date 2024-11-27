@@ -8,9 +8,7 @@ export const protectedAxiosInstance = axios.create( {
     },
     timeout: 30_000,
     headers: {
-        common: {
-            'Content-Type': 'application/json'
-        }
+      'Content-Type': 'application/json'
     },
 	timeoutErrorMessage:
 		'Request failed because the connection timed out. Check you internet connection.',

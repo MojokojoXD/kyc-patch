@@ -9,7 +9,7 @@ const defaultResponse: LoginResponse = {
 	profile: [],
 	Code: '',
 	token: '',
-}; 
+};
 
 const handler: NextApiHandler<LoginResponse> = async (req, res) => {
 	const body = req.body;
@@ -23,25 +23,28 @@ const handler: NextApiHandler<LoginResponse> = async (req, res) => {
 			}
 		);
 
-        if ( ssxServerRes.status === 200 && ssxServerRes.data.Status === 'SUCC' )
-        {
-            const ssxCookies = ssxServerRes.headers[ 'set-cookie' ];
-            
-			Array.isArray(ssxCookies) && res.setHeader('Set-Cookie', [ ...ssxCookies ] );
-            
+		if (ssxServerRes.status === 200 && ssxServerRes.data.Status === 'SUCC') {
+			const ssxCookies = ssxServerRes.headers['set-cookie'];
+
+			Array.isArray(ssxCookies) && res.setHeader('Set-Cookie', [...ssxCookies]);
+
 			res.status(200).json(ssxServerRes.data);
 		}
 
-		res.status(ssxServerRes.status).json({ ...defaultResponse, Message: 'SSX servers unable to process request'});
-    } catch ( error )
-    {
-        res.status( 500 );
+		res
+			.status(ssxServerRes.status)
+			.json({ ...defaultResponse, Message: 'SSX servers unable to process request' });
+	} catch (error) {
+		res.status(500);
 		if (axios.isAxiosError(error)) {
-            res.json( { ...defaultResponse, Message: 'Unable to reach SSX servers' } );
-            return;
-        }
-        
-        res.json({ ...defaultResponse, Message: 'API route experienced unknown error' })
+			res.json({ ...defaultResponse, Message: 'Unable to reach SSX servers' });
+			return;
+		}
+
+		res.json({
+			...defaultResponse,
+			Message: 'API route experienced unknown error',
+		});
 	}
 };
 
