@@ -103,7 +103,7 @@ export function Portal({ current, children }: PortalProps) {
 			(el) => (el.props as ViewProps).name === current
 		) ?? null;
 
-	return <div className='p-[32px] space-y-[16px] text-neutral-700 h-fit'>{currentView}</div>;
+	return <div className='p-[32px] space-y-[16px] text-neutral-700 h-fit max-w-screen-xl w-full mx-auto'>{currentView}</div>;
 }
 
 interface ViewProps {
