@@ -34,7 +34,7 @@ export interface Profile
 export interface LoginResponse
 {
     Status: 'SUCC' | 'FAIL';
-    token: string;
+    token?: string;
     profile?: Profile[];
     Message?: string;
     Code?: string;

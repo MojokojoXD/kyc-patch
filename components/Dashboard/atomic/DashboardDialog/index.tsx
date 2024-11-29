@@ -15,8 +15,9 @@ export interface DashboardDialogProps {
 
 	open: boolean;
 
+  hideCancelBtn?: boolean;
 	onDialogOpen: (open: boolean) => void;
-	onContinue: () => void;
+  onContinue: () => void;
 }
 
 export function DashboardDialog({
@@ -24,7 +25,8 @@ export function DashboardDialog({
 	children,
 	onDialogOpen,
 	open,
-	onContinue,
+  onContinue,
+  hideCancelBtn = false
 }: DashboardDialogProps) {
 	return (
 		<Dialog
@@ -39,7 +41,7 @@ export function DashboardDialog({
           {children}
         </div>
         <DialogFooter className='grid grid-cols-2'>
-          <Button onClick={ () => onDialogOpen( false ) } variant={'outline'}>Cancel</Button>
+          {!hideCancelBtn && <Button onClick={ () => onDialogOpen( false ) } variant={'outline'}>Cancel</Button>}
           <Button onClick={ () => onContinue() }>Continue</Button>
         </DialogFooter>
 			</DialogContent>

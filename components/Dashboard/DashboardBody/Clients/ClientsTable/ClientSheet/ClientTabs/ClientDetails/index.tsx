@@ -18,15 +18,15 @@ export function ClientDetails({ verifications, ...bio }: ClientDetailsProps) {
 			<div className='absolute top-[28px]'>
 				{currentView === 'client_bio' ? (
 					<p className='inline-block paragraph2Medium capitalize'>
-						{`${bio.client_first_name} ${bio.client_last_name}`}{' '}
-						<Dot className='inline' /> {bio.type_of_client}
+						{`${bio.client_first_name} ${bio.client_last_name}`} <Dot className='inline' />{' '}
+						{bio.type_of_client}
 					</p>
 				) : (
 					<Button
 						variant={'ghost'}
+						size={'icon'}
 						onClick={() => setCurrentView('client_bio')}>
 						<ArrowLeft className='h-5 aspect-square' />
-						Go Back
 					</Button>
 				)}
 			</div>

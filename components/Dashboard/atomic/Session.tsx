@@ -10,7 +10,6 @@ import {
 	Feedback,
 	JobFeedbackFn,
 } from '../lib/requestQuene';
-import { Profile } from '@/types/accounts/user';
 import { protectedAxiosInstance } from '@/lib/http/axios';
 
 interface SessionProviderProps extends Pick<SessionContextSchema, 'profile'> {
@@ -20,27 +19,11 @@ interface SessionProviderProps extends Pick<SessionContextSchema, 'profile'> {
 export function Session({ children,profile}: SessionProviderProps) {
 	const router = useRouter();
 
-	const [userProfile, setUserProfile] = useState<typeof profile>(profile);
+	// const [userProfile] = useState<typeof profile>(profile);
 	const [isRequesting, setIsRequesting] = useState(true);
 	const [requestJobs, setRequestJobs] = useState<
 		{ job: Job; feedback: Feedback }[] | null
-	>(() => {
-		if (!profile)
-			return [
-				{
-					job: { url: '/users/self', method: 'GET' },
-					feedback: function (res, error, status) {
-						if (status === 'COMPLETED') {
-							setUserProfile(res?.profile[0]);
-							return;
-						}
-
-						if (status === 'FAILED') console.log(error);
-					} satisfies Feedback<{ profile: Profile[] }>,
-				},
-			];
-		return [];
-	});
+	>(null);
 
 	const addRequestJob = useCallback<JobFeedbackFn>((job, feedback) => {
 		setRequestJobs((prevJobs) => {
@@ -53,15 +36,17 @@ export function Session({ children,profile}: SessionProviderProps) {
 
   const logout = useCallback( async () =>
   {
-    
-		const res = await protectedAxiosInstance.post('logout', {});
+    try
+    {
+      
+      const res = await protectedAxiosInstance.post( '/api/dashboard/logout', {}, { baseURL: '' } );
 
-		if (res.status === 0) {
-			router.replace('/');
-			return;
-		}
+      if( res.status === 200 ) router.replace('/');
 
-		router.replace('/');
+    } catch (error) {
+      console.log(error) 
+    }
+
 	}, [router]);
 
 	useEffect(() => {
@@ -84,7 +69,7 @@ export function Session({ children,profile}: SessionProviderProps) {
 	return (
 		<sessionContext.Provider
 			value={{
-				profile: userProfile,
+				profile,
 				isRequesting,
 				request: addRequestJob,
 				logout,

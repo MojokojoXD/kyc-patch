@@ -51,7 +51,7 @@ export function Clients() {
 	const [searchStr, setSearchStr] = useState('');
 	const [sortOption, setSortOption] = useState<
 		Path<(typeof clientsData)[0]> | undefined
-	>();
+	>('date_created');
 	const [error, setError] = useState<string | null>(null);
 	// const [isLoading, setIsLoading] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);

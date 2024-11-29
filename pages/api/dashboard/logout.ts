@@ -3,24 +3,31 @@ import { protectedAxiosInstance } from '@/lib/http/axios';
 import { AxiosError } from 'axios';
 import { BASE_URL } from '@/utils/vars/uri';
 
-const REFRESH_TOKEN_ENDPOINT = BASE_URL + '/refresh-token';
+const LOGOUT_ENDPOINT = BASE_URL + '/logout';
 
 const handler: NextApiHandler = async (req, res) => {
 	try {
-		const ssxRes = await protectedAxiosInstance.get<{
-			Status: 'SUCC' | 'FAIL';
-			token: string;
-		}>(REFRESH_TOKEN_ENDPOINT, {
-			headers: {
-				cookie: req.headers.cookie,
-			},
-		});
+		const token = req.cookies['token'];
+		const ssxRes = await protectedAxiosInstance.post<{
+			Status: 'OK';
+		}>(
+			LOGOUT_ENDPOINT,
+			{},
+			{
+				baseURL: '',
+				headers: {
+					cookie: req.headers.cookie,
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
 
-		if (ssxRes.status === 200 && ssxRes.data.Status === 'SUCC') {
-			res.setHeader('Set-Cookie', [
-				...(ssxRes.headers['set-cookie'] as string[]),
-				`token=${ssxRes.data.token};HttpOnly;Secure;SameSite=Strict;Path=/`,
-			]);
+		if (ssxRes.status === 200 && ssxRes.data.Status === 'OK') {
+			const newCookies = [
+				...ssxRes.headers['set-cookie']!,
+				`token=;expires=${new Date(0).toUTCString()};Path=/`,
+			];
+			res.setHeader('Set-Cookie', newCookies);  
 			res.status(200).json(ssxRes.data);
 			return;
 		}

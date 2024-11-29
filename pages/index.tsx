@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import type { GetServerSidePropsContext } from 'next';
+import type { GetServerSideProps } from 'next';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import type { SubmitHandler } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import validator from 'validator';
 import axios from 'axios';
 import { LoginResponse } from '@/types/accounts/user';
@@ -11,20 +10,25 @@ import { useRouter } from 'next/router';
 import * as HomeLayout from '../components/home/layout';
 import FormInput from '@/components/FormFactory/FactoryComponents/FormInput';
 import FormPasswordInput from '@/components/FormFactory/FactoryComponents/FormPasswordInput';
+import { Loader2 } from 'lucide-react';
 
-export async function getServerSideProps({}: GetServerSidePropsContext) {
-    
-	// if (cookies.securedprofileCookie) {
-	// 	return {
-	// 		redirect: {
-	// 			destination: '/dashboard',
-	// 			permanent: false,
-	// 		},
-	// 	};
-	// }
+export const getServerSideProps = (async ({ req,res }) => {
+	const profileCookie = req.cookies['securedRefreshtokenCookie'];
+	const accessToken = req.cookies['token'];
+
+	if (profileCookie && accessToken) {
+		return {
+			redirect: {
+				permanent: true,
+				destination: '/dashboard',
+			},
+		};
+  }
+  
+  res.setHeader( 'Set-Cookie', `token=;expires=${ new Date( 0 ).toUTCString() }` );
 
 	return { props: {} };
-}
+}) satisfies GetServerSideProps<Record<string, never>>;
 
 export interface LoginCredentials {
 	username: string;
@@ -43,9 +47,7 @@ export default function Home() {
 		reValidateMode: 'onChange',
 	});
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [networkError, setNetworkError] = useState<string | undefined>(
-		undefined
-	);
+	const [networkError, setNetworkError] = useState<string | undefined>(undefined);
 
 	//Ajax call to sign authorized user in and get authorization tokens
 	const submitHandler: SubmitHandler<LoginCredentials> = async (data) => {
@@ -57,19 +59,7 @@ export default function Home() {
 			const res = await axios.post<LoginResponse>(LOGIN_URI, data, axiosOptions);
 
 			if (res.status === 200 && res.data.Status === 'SUCC') {
-				if (!res.data.profile) return;
-
-				router.push(
-					{
-						pathname: '/dashboard',
-						query: {
-							token: res.data.token,
-							profile: JSON.stringify(res.data.profile[0]),
-						},
-					},
-					'/dashboard'
-				);
-
+				router.push('/dashboard');
 				return;
 			}
 
@@ -103,8 +93,7 @@ export default function Home() {
 								rules={{
 									required: 'Please enter email',
 									validate: (value) =>
-										validator.isEmail(value) ||
-										'Email must be of the format: name@example.com',
+										validator.isEmail(value) || 'Email must be of the format: name@example.com',
 								}}
 							/>
 							<FormPasswordInput
@@ -130,7 +119,11 @@ export default function Home() {
 							<Button
 								disabled={isLoading}
 								type={'submit'}>
-								Next
+								{isLoading ? (
+									<span>
+										<Loader2 className='animate-spin h-5 aspect-square' />
+									</span>
+								) : 'Login'}
 							</Button>
 						</HomeLayout.Footer>
 					</HomeLayout.Main>
@@ -139,17 +132,3 @@ export default function Home() {
 		</HomeLayout.Layout>
 	);
 }
-
-// const cookies = req.headers.cookie;
-// if (cookies) {
-//   const token = cookies.split("=")[1];
-//   const tk = cookies.split("=")[0];
-//   if (token && tk === "token") {
-//     return {
-//       redirect: {
-//         destination: "/dashboard/broker",
-//         permanent: false,
-//       },
-//     };
-//   }
-// }

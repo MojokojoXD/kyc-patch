@@ -29,17 +29,17 @@ export class FormHelpers {
 	static recursiveObjectSearch(path: string, target: unknown): unknown {
 		if (path === '') return target;
 
-		const accessors = path.split('.');
+    const accessors = path.split( '.' );
+    
+    if( typeof target !== 'object' || !target ) return target
 
-		//@ts-expect-error target type is unknown
-		const value = target[accessors[0]];
+    const hasProperty = Object.hasOwn( target, accessors[ 0 ] );
+    
+    const value = hasProperty ? (<Record<typeof accessors[ 0 ],unknown>>target)[ accessors[ 0 ] ] : undefined;
+    
+		accessors.shift();
+		return this.recursiveObjectSearch(accessors.join('.'), value);
 
-		if (typeof value === 'object') {
-			accessors.shift();
-			return this.recursiveObjectSearch(accessors.join('.'), value);
-		}
-
-		return value;
 	}
 
 	static async statelessRequest<TRequest = unknown, TResponse = unknown>(

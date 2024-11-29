@@ -24,11 +24,15 @@ const handler: NextApiHandler<LoginResponse> = async (req, res) => {
 		);
 
 		if (ssxServerRes.status === 200 && ssxServerRes.data.Status === 'SUCC') {
-			const ssxCookies = ssxServerRes.headers['set-cookie'];
+      const ssxCookies = ssxServerRes.headers[ 'set-cookie' ];
+      
+			Array.isArray(ssxCookies) &&
+				res.setHeader('Set-Cookie', [
+					...ssxCookies,
+					`token=${ssxServerRes.data.token};HttpOnly;Secure;SameSite=Strict;Path=/`,
+				]);
 
-			Array.isArray(ssxCookies) && res.setHeader('Set-Cookie', [...ssxCookies]);
-
-			res.status(200).json(ssxServerRes.data);
+			res.status(200).json({ Status: 'SUCC' });
 		}
 
 		res

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { DashboardDialog } from './DashboardDialog';
 import { useSession } from '../hooks/useSession';
 
-const IDLE_TIMEOUT = 120_000;
+const IDLE_TIMEOUT = 300_000;
 
 export function IdleDetection()
 {
@@ -38,6 +38,7 @@ export function IdleDetection()
 			open={openIdleDialog}
 			onDialogOpen={setOpenIdleDialog}
       header={ 'Still there?' }
+      hideCancelBtn
     >
 			Inactivity detected. You&apos;ll be logged out in {logoutCountdown} second(s)
 		</DashboardDialog>
