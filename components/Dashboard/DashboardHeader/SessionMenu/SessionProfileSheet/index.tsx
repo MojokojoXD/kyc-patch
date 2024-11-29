@@ -22,7 +22,7 @@ export function SessionProfileSheet({
 			open={open}
 			onOpenChange={onOpenChange}>
 			<SheetContent
-				className='p-0 text-neutral-700'
+				className='p-0 text-neutral-700 grid grid-rows gap-0 pb-8'
         disableClose
       >
 				<SheetHeader className='relative h-dashboard-header p-8 border-b border-neutral-100'>
@@ -36,7 +36,9 @@ export function SessionProfileSheet({
 						<X />
 					</Button>
         </SheetHeader>
-        <div className='p-8'>
+        <div className='p-8 h-full overflow-auto' style={ {
+          scrollbarWidth: 'thin'
+        }}>
           <SessionProfileDetails/>
         </div>
 			</SheetContent>

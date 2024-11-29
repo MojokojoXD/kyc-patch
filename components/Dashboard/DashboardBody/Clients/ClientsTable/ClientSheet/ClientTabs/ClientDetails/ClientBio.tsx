@@ -21,7 +21,7 @@ export function ClientBio( {
 	const clientTabField = (id: string, fieldValue: string = '') => (
 		<div className='space-y-[8px]'>
 			<Label
-				className='text-sm capitalize'
+				className='paragraph2Regular capitalize'
 				htmlFor={id}>
 				{id.split('_').join(' ')}
 			</Label>
@@ -29,7 +29,7 @@ export function ClientBio( {
 				id={id}
 				readOnly
 				value={fieldValue ?? ''}
-				className='bg-neutral-50 text-neutral-500 text-sm border border-neutral-100 hover:border-inherit focus-visible:border-inherit'
+				className='bg-neutral-50 text-neutral-500 paragraph2Regular border border-neutral-100 hover:border-inherit focus-visible:border-inherit'
 			/>
 		</div>
 	);

@@ -25,12 +25,12 @@ export function SessionProfileDetails() {
 	const cityProvinceZipcodeLine = `${user_city}, ${user_province} ${user_postcode}`;
 
 	return (
-		<div className='space-y-6'>
+		<div className='space-y-6 h-full'>
 			<div className='border border-neutral-100 p-4 rounded-lg flex flex-cols justify-between gap-2'>
 				<div className='space-y-2 text-neutral-500 max-w-prose'>
-					<h2 className='paragraph1Medium text-neutral-700'>{user_name}</h2>
-					<p className='paragraph1Regular'>{user_email}</p>
-					<p className='paragraph1Regular'>Joined on {formattedJoinedDate} </p>
+					<h2 className='paragraph2Medium text-neutral-700'>{user_name}</h2>
+					<p className='paragraph2Regular'>{user_email}</p>
+					<p className='paragraph2Regular'>Joined on {formattedJoinedDate} </p>
 				</div>
 				<div>
 					{/* don't know if this is supposed to be static */}
@@ -40,18 +40,18 @@ export function SessionProfileDetails() {
 				</div>
 			</div>
 			<div className='border border-neutral-100 p-4 rounded-lg space-y-2 text-neutral-500'>
-				<h2 className='paragraph1Medium text-neutral-700'>Address</h2>
-				<p className='paragraph1Regular'>{user_address}</p>
-				<p className='paragraph1Regular'>{cityProvinceZipcodeLine}</p>
-				<p className='paragraph1Regular'>{user_country}</p>
+				<h2 className='paragraph2Medium text-neutral-700'>Address</h2>
+				<p className='paragraph2Regular'>{user_address}</p>
+				<p className='paragraph2Regular'>{cityProvinceZipcodeLine}</p>
+				<p className='paragraph2Regular'>{user_country}</p>
 			</div>
 			<div className='border border-neutral-100 p-4 rounded-lg space-y-2 text-neutral-500'>
-				<h2 className='paragraph1Medium text-neutral-700'>Organization</h2>
-				<p className='paragraph1Regular capitalize'>{user_org_name.toLowerCase()}</p>
+				<h2 className='paragraph2Medium text-neutral-700'>Organization</h2>
+				<p className='paragraph2Regular capitalize'>{user_org_name.toLowerCase()}</p>
 			</div>
 			<div className='border border-neutral-100 p-4 rounded-lg space-y-2 text-neutral-500'>
-				<h2 className='paragraph1Medium text-neutral-700'>Last Successful Login</h2>
-				<p className='paragraph1Regular capitalize'>{lastSuccessfulLogin}</p>
+				<h2 className='paragraph2Medium text-neutral-700'>Last Successful Login</h2>
+				<p className='paragraph2Regular capitalize'>{lastSuccessfulLogin}</p>
 			</div>
 		</div>
 	);

@@ -68,7 +68,7 @@ export function TableData({ children, className, ...props }: TableDataProps) {
 	return (
         <td
 			className={cn(
-				'first:rounded-s-[8px] last:rounded-e-[8px] first:border-l last:border-r h-12 px-4 paragraph2Regular bg-neutral-50 border-y border-neutral-100 bg-white text-ellipsis overflow-hidden text-nowrap text-sm',
+				'first:rounded-s-[8px] last:rounded-e-[8px] first:border-l last:border-r h-12 px-4 paragraph2Regular bg-neutral-50 border-y border-neutral-100 bg-white text-ellipsis overflow-hidden text-nowrap',
 				className
 			)}
 			{...props}>

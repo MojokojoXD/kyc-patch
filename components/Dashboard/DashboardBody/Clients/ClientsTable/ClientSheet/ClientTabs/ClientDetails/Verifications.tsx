@@ -18,7 +18,7 @@ export function Verifications({ clientVerifications }: VerificationsProps) {
 	const clientTabField = (id: string, fieldValue: string = '') => (
 		<div className='space-y-[8px]'>
 			<Label
-				className='text-sm capitalize'
+				className='paragraph2Medium capitalize'
 				htmlFor={id}>
 				{id.split('_').join(' ')}
 			</Label>
@@ -26,19 +26,19 @@ export function Verifications({ clientVerifications }: VerificationsProps) {
 				id={id}
 				readOnly
 				value={fieldValue}
-				className='bg-neutral-50 text-neutral-500 text-sm border border-neutral-100 hover:border-inherit focus-visible:border-inherit'
+				className='bg-neutral-50 text-neutral-500 paragraph2Regular border border-neutral-100 hover:border-inherit focus-visible:border-inherit'
 			/>
 		</div>
 	);
 
 	return clientVerifications.map((v, i) => (
 		<Accordion
-			value={v.signatory_id}
+			defaultValue={v.signatory_id}
 			key={v.signatory_id}
 			type={'single'}
 			collapsible>
 			<AccordionItem value={v.signatory_id}>
-				<AccordionTrigger className='paragraph1Regular text-sm'>Signatory #{i + 1}</AccordionTrigger>
+				<AccordionTrigger className='paragraph1Regular'>Signatory #{i + 1}</AccordionTrigger>
 				<AccordionContent className=''>
 					{clientTabField('name', v.signatory_name)}
 					{clientTabField('email', v.signatory_email)}

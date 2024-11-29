@@ -11,13 +11,13 @@ export function ClientTabs({ client }: ClientTabsProps) {
 	const { logs, ...clientBio } = client;
 
 	const tabBtnClx =
-		'data-[state=active]:bg-neutral-100 data-[state=active]:border-b heading6SMedium rounded-none py-[16px] border-neutral-700 w-full ';
+		'data-[state=active]:bg-neutral-100 data-[state=active]:border-b paragraph2Medium rounded-none py-4 border-neutral-700 w-full ';
 
 	return (
 		<Tabs
 			defaultValue='client details'
 			className='w-full text-neutral-700 space-y-[40px] h-full'>
-			<TabsList className='w-full border-b border-neutral-100 h-[51px] px-0'>
+			<TabsList className='w-full border-b border-neutral-100 h-12 px-0'>
 				<TabsTrigger
 					value='client details'
 					className={tabBtnClx}>
