@@ -15,9 +15,9 @@ export interface DashboardDialogProps {
 
 	open: boolean;
 
-  hideCancelBtn?: boolean;
+	hideCancelBtn?: boolean;
 	onDialogOpen: (open: boolean) => void;
-  onContinue: () => void;
+	onContinue: () => void;
 }
 
 export function DashboardDialog({
@@ -25,8 +25,8 @@ export function DashboardDialog({
 	children,
 	onDialogOpen,
 	open,
-  onContinue,
-  hideCancelBtn = false
+	onContinue,
+	hideCancelBtn = false,
 }: DashboardDialogProps) {
 	return (
 		<Dialog
@@ -36,14 +36,25 @@ export function DashboardDialog({
 				<DialogHeader>
 					<DialogTitle className='capitalize'>{header}</DialogTitle>
 					<DialogDescription className='hidden'></DialogDescription>
-        </DialogHeader>
-        <div className='flex items-center'>
-          {children}
-        </div>
-        <DialogFooter className='grid grid-cols-2'>
-          {!hideCancelBtn && <Button onClick={ () => onDialogOpen( false ) } variant={'outline'}>Cancel</Button>}
-          <Button onClick={ () => onContinue() }>Continue</Button>
-        </DialogFooter>
+				</DialogHeader>
+				<div className='flex items-center'>{children}</div>
+				<DialogFooter className='grid grid-cols-2'>
+					<div>
+						<Button
+							onClick={() => onDialogOpen(false)}
+							className={hideCancelBtn ? 'hidden' : 'w-full'}
+							variant={'outline'}>
+							Cancel
+						</Button>
+					</div>
+					<div>
+						<Button
+							onClick={() => onContinue()}
+							className='w-full'>
+							Continue
+						</Button>
+					</div>
+				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	);

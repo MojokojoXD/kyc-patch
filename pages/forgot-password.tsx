@@ -7,8 +7,8 @@ import validator from 'validator';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { SSXActionSuccess } from '@/components/CompoundUI/SSXActionSuccess';
-import FormInput from '@/components/FormFactory/FactoryComponents/FormInput';
+import { SSXActionSuccess } from '@/components/ui/CompoundUI/SSXActionSuccess';
+import FormInput from '@/components/forms/FormFactory/FactoryComponents/FormInput';
 import * as PasswordResetLayout from '../components/home/layout';
 
 enum PasswordResetStep {
@@ -44,12 +44,10 @@ const ForgotPassword: NextPage = () => {
 			);
 			if (res.status === 200 && res.data.Status === 'SUCC') {
 				setResetStep(PasswordResetStep.Success);
-				setLoading(false);
 			}
 
 			throw new Error(res.data.Message, { cause: 'server-error' });
 		} catch (error) {
-			setLoading(false);
 			if (error instanceof Error && error.cause === 'server-error') {
 				setErrMsg(error.message);
 				return;
@@ -63,6 +61,8 @@ const ForgotPassword: NextPage = () => {
 
 			console.log(error);
 			setErrMsg('Fatal Error, use browser console for more details');
+		} finally {
+			setLoading(false);
 		}
 	};
 

@@ -36,14 +36,12 @@ export function Metrics({ onPortalChange }: MetricsProps) {
 				setIsLoading(false);
 			}
 		);
-    }, [ request ] );
-    
+	}, [request]);
 
-    if ( error )
-    {
-        console.error( error );
-        return <p className='p-10'>Something went wrong. Please try again later!</p>
-    }
+	if (error) {
+		console.error(error);
+		return <p className='p-10'>Something went wrong. Please try again later!</p>;
+	}
 
 	return (
 		<div className='bg-white p-8 space-y-4 rounded-lg h-full'>
@@ -59,13 +57,16 @@ export function Metrics({ onPortalChange }: MetricsProps) {
 					View Applications
 				</Button>
 			</ViewContent.Header>
-            <ViewContent.Body className='grid grid-cols-2 gap-[16px]'>
-                { metricsData.map( d => (
-                    <div key={d.status}>
-                        <MetricDataCard status={ d.status.toLowerCase() }  amount={ d.nbr }/>
-                   </div>
-               ) ) }
-            </ViewContent.Body>
+			<ViewContent.Body className='grid grid-cols-2 gap-[16px]'>
+				{metricsData.map((d) => (
+					<div key={d.status}>
+						<MetricDataCard
+							status={d.status.toLowerCase()}
+							amount={d.nbr}
+						/>
+					</div>
+				))}
+			</ViewContent.Body>
 		</div>
 	);
 }

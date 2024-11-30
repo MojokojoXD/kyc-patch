@@ -1,7 +1,7 @@
-import UAPContent from '../../../components/forms/preface/UAPContent';
-import KycFormOptions from '../../../components/forms/preface/KycFormOptions';
+import UAPContent from '../../../components/forms/__KYC__/preface/UAPContent';
+import KycFormOptions from '../../../components/forms/__KYC__/preface/KycFormOptions';
 import { useState } from 'react';
-import { FormLayout } from '@/components/FormLayout';
+import { FormLayout } from '@/components/forms/FormLayout';
 import type { GetServerSidePropsContext } from 'next';
 import { UserActions } from '@/utils/clientActions/userActions';
 import type { BrokerDetails } from '@/types/forms/broker';

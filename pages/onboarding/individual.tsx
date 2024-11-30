@@ -3,13 +3,13 @@ import { useEffect } from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import type { FormComponentDict } from '@/components/forms/utils/formReducer';
 import { Form } from '@/components/ui/form';
-import * as Stages from '@/components/forms/individual/stages/stagesDictionary';
-import { FormLayout, FormNav, FormNavButtons } from '@/components/FormLayout';
+import * as Stages from '@/components/forms/__KYC__/individual/stages/stagesDictionary';
+import { FormLayout, FormNav, FormNavButtons } from '@/components/forms/FormLayout';
 import { useCloseTabWarning } from '@/components/forms/utils/customHooks/useCloseTabWarning';
 import {
 	individualFormMetadata,
 	type IndividualFormStage,
-} from '@/components/forms/individual/config/individualFormMetadata';
+} from '@/components/forms/__KYC__/individual/config/individualFormMetadata';
 import {
 	useKYCForm,
 	KYCContext,

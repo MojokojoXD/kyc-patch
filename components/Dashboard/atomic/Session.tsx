@@ -10,7 +10,7 @@ import {
 	Feedback,
 	JobFeedbackFn,
 } from '../lib/requestQuene';
-import { protectedAxiosInstance } from '@/lib/http/axios';
+import { protectedAxiosInstance } from '@/components/Dashboard/lib/http/axios';
 
 interface SessionProviderProps extends Pick<SessionContextSchema, 'profile'> {
 	children?: ReactNode;

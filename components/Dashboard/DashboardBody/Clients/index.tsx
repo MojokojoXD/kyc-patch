@@ -113,64 +113,64 @@ export function Clients() {
 	}
 
 	return (
-	<>
-		<ViewContent.Header className='flex justify-between items-center'>
-			<h1 className='heading6Bold'>All Clients</h1>
-			<div className='flex justify-end space-x-4 w-4/6'>
-				<div className='w-full max-w-[271px]'>
-					<Select
-						value={sortOption}
-						onValueChange={handleSortOption}>
-						<SelectTrigger className='w-full flex-none text-sm'>
-							<span>
-								Sort by{' '}
-								<span className='capitalize'>
-									<SelectValue />
+		<>
+			<ViewContent.Header className='flex justify-between items-center'>
+				<h1 className='heading6Bold'>All Clients</h1>
+				<div className='flex justify-end space-x-4 w-4/6'>
+					<div className='w-full max-w-[271px]'>
+						<Select
+							value={sortOption}
+							onValueChange={handleSortOption}>
+							<SelectTrigger className='w-full flex-none text-sm'>
+								<span>
+									Sort by{' '}
+									<span className='capitalize'>
+										<SelectValue />
+									</span>
 								</span>
-							</span>
-						</SelectTrigger>
-						<SelectContent>
-							{sortOptions.map((o) => (
-								<SelectItem
-									key={o.value}
-									value={o.value}
-									className='text-sm pl-2'>
-									{o.label}
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
+							</SelectTrigger>
+							<SelectContent>
+								{sortOptions.map((o) => (
+									<SelectItem
+										key={o.value}
+										value={o.value}
+										className='text-sm pl-2'>
+										{o.label}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
+					<SearchField
+						placeholder='Search by Name,Type,Email...'
+						onChange={(v) => {
+							setCurrentPage(1);
+							setSearchStr(v);
+						}}
+					/>
 				</div>
-				<SearchField
-					placeholder='Search by Name,Type,Email...'
-					onChange={(v) => {
-						setCurrentPage(1);
-						setSearchStr(v);
-					}}
+			</ViewContent.Header>
+			<ViewContent.Body>
+				<ClientsTable
+					headerLabels={[
+						'client name',
+						'client type',
+						'email address',
+						'broker',
+						'status',
+					]}
+					data={currentClients!}
 				/>
-			</div>
-		</ViewContent.Header>
-		<ViewContent.Body>
-			<ClientsTable
-				headerLabels={[
-					'client name',
-					'client type',
-					'email address',
-					'broker',
-					'status',
-				]}
-				data={currentClients!}
-			/>
-		</ViewContent.Body>
-		<ViewContent.Footer className='flex justify-end'>
-			<Pagination
-				onPageChange={onPageChange}
-				totalDataCount={searchResult.length}
-				currentPage={currentPage}
-				maxDataPerPage={CLIENTS_PER_PAGE}
-				siblingCount={2}
-			/>
-		</ViewContent.Footer>
-	</>
-);
+			</ViewContent.Body>
+			<ViewContent.Footer className='flex justify-end'>
+				<Pagination
+					onPageChange={onPageChange}
+					totalDataCount={searchResult.length}
+					currentPage={currentPage}
+					maxDataPerPage={CLIENTS_PER_PAGE}
+					siblingCount={2}
+				/>
+			</ViewContent.Footer>
+		</>
+	);
 }

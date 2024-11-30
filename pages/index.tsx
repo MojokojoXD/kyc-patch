@@ -8,11 +8,11 @@ import axios from 'axios';
 import { LoginResponse } from '@/types/accounts/user';
 import { useRouter } from 'next/router';
 import * as HomeLayout from '../components/home/layout';
-import FormInput from '@/components/FormFactory/FactoryComponents/FormInput';
-import FormPasswordInput from '@/components/FormFactory/FactoryComponents/FormPasswordInput';
+import FormInput from '@/components/forms/FormFactory/FactoryComponents/FormInput';
+import FormPasswordInput from '@/components/forms/FormFactory/FactoryComponents/FormPasswordInput';
 import { Loader2 } from 'lucide-react';
 
-export const getServerSideProps = (async ({ req,res }) => {
+export const getServerSideProps = (async ({ req, res }) => {
 	const profileCookie = req.cookies['securedRefreshtokenCookie'];
 	const accessToken = req.cookies['token'];
 
@@ -23,9 +23,9 @@ export const getServerSideProps = (async ({ req,res }) => {
 				destination: '/dashboard',
 			},
 		};
-  }
-  
-  res.setHeader( 'Set-Cookie', `token=;expires=${ new Date( 0 ).toUTCString() }` );
+	}
+
+	res.setHeader('Set-Cookie', `token=;expires=${new Date(0).toUTCString()}`);
 
 	return { props: {} };
 }) satisfies GetServerSideProps<Record<string, never>>;
@@ -62,13 +62,10 @@ export default function Home() {
 				router.push('/dashboard');
 				return;
 			}
-
-			setIsLoading(false);
-
 			setNetworkError(res.data.Message);
 		} catch (error) {
 			console.log(error);
-
+		} finally {
 			setIsLoading(false);
 		}
 	};
@@ -123,7 +120,9 @@ export default function Home() {
 									<span>
 										<Loader2 className='animate-spin h-5 aspect-square' />
 									</span>
-								) : 'Login'}
+								) : (
+									'Login'
+								)}
 							</Button>
 						</HomeLayout.Footer>
 					</HomeLayout.Main>

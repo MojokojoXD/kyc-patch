@@ -5,10 +5,10 @@ import type { NextPage } from 'next';
 import type { PasswordResetResponse } from '@/types/server/password-reset';
 import validator from 'validator';
 import { Form } from '@/components/ui/form';
-import FormInput from '@/components/FormFactory/FactoryComponents/FormInput';
-import FormPasswordInput from '@/components/FormFactory/FactoryComponents/FormPasswordInput';
+import FormInput from '@/components/forms/FormFactory/FactoryComponents/FormInput';
+import FormPasswordInput from '@/components/forms/FormFactory/FactoryComponents/FormPasswordInput';
 import { Button } from '@/components/ui/button';
-import { SSXActionSuccess } from '@/components/CompoundUI/SSXActionSuccess';
+import { SSXActionSuccess } from '@/components/ui/CompoundUI/SSXActionSuccess';
 import { useRouter } from 'next/router';
 import { CircleCheck } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
@@ -71,8 +71,6 @@ const SetNewPwd: NextPage = () => {
 				postPayload
 			);
 
-			setLoading(false);
-
 			if (res.status !== 200) {
 				throw new Error(`Network response failed with status ${res.status}`);
 			}
@@ -82,7 +80,6 @@ const SetNewPwd: NextPage = () => {
 				return;
 			} else throw new Error(res.data.Message, { cause: 'ssx-failure' });
 		} catch (error) {
-			setLoading(false);
 
 			if (error instanceof Error && error.cause === 'ssx-failure') {
 				setErrMsg(error.message);
@@ -91,7 +88,10 @@ const SetNewPwd: NextPage = () => {
 
 			console.log(error);
 			setErrMsg('Unable to complete request. Please try again later!');
-		}
+    } finally
+    {
+      setLoading( false );
+    }
 	};
 
 	switch (newPwdStep) {

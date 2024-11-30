@@ -7,7 +7,7 @@ import { DashboardHeader } from '@/components/Dashboard/DashboardHeader';
 import { DashboardBody } from '@/components/Dashboard/DashboardBody';
 import { Session } from '@/components/Dashboard/atomic/Session';
 import { IdleDetection } from '@/components/Dashboard/atomic/IdleDetection';
-import { protectedAxiosInstance } from '@/lib/http/axios';
+import { protectedAxiosInstance } from '@/components/Dashboard/lib/http/axios';
 import { BASE_URL } from '@/utils/vars/uri';
 
 interface InitialDashboardProps {
@@ -37,7 +37,10 @@ export const getServerSideProps = (async ({ req }) => {
 					Authorization: `Bearer ${token}`,
 				},
 			}
-		);
+    );
+    
+    if ( ssxRes.status !== 200 )
+      throw ssxRes
 
 		return {
 			props: {
@@ -46,18 +49,6 @@ export const getServerSideProps = (async ({ req }) => {
 		};
 	} catch (error) {
 		console.log(error);
-
-		await protectedAxiosInstance.post(
-			BASE_URL + '/logout',
-			{},
-			{
-				baseURL: '',
-				headers: {
-					Authorization: `Bearer ${token}`,
-					cookie: req.headers.cookie,
-				},
-			}
-		);
 
 		return {
 			props: {

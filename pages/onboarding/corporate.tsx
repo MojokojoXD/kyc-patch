@@ -2,11 +2,11 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import {
 	corporateStages,
 	CorporateStageDict,
-} from '@/components/forms/corporate/config/corporateFormConfigs';
+} from '@/components/forms/__KYC__/corporate/config/corporateFormConfigs';
 import { Form } from '@/components/ui/form';
-import { FormLayout, FormNav, FormNavButtons } from '@/components/FormLayout';
+import { FormLayout, FormNav, FormNavButtons } from '@/components/forms/FormLayout';
 import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
-import * as Stages from '@/components/forms/corporate/stages/stagesComponents';
+import * as Stages from '@/components/forms/__KYC__/corporate/stages/stagesComponents';
 import { useCloseTabWarning } from '@/components/forms/utils/customHooks/useCloseTabWarning';
 import {
 	KYCContext,

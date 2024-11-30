@@ -37,7 +37,7 @@ const handler: NextApiHandler<LoginResponse> = async (req, res) => {
 
 		res
 			.status(ssxServerRes.status)
-			.json({ ...defaultResponse, Message: 'SSX servers unable to process request' });
+			.json({ ...defaultResponse, Message: ssxServerRes.data.Message });
 	} catch (error) {
 		res.status(500);
 		if (axios.isAxiosError(error)) {

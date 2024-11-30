@@ -1,13 +1,13 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { SSXActionSuccess as ActionSuccess } from '@/components/CompoundUI/SSXActionSuccess';
+import { SSXActionSuccess as ActionSuccess } from '@/components/ui/CompoundUI/SSXActionSuccess';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useAsyncAction } from '@/components/forms/utils/customHooks/useAsyncAction';
 import { getCountryList } from '@/utils/vars/countries';
 import { useState } from 'react';
 import { addClientFormModel } from './model/addClientFormModel';
-import FormFactory from '@/components/FormFactory';
+import FormFactory from '@/components/forms/FormFactory';
 import type { NewClientPayload } from './model/addClientForm';
 import { useSession } from '@/components/Dashboard/hooks/useSession';
 

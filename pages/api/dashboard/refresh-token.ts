@@ -1,5 +1,5 @@
 import type { NextApiHandler } from 'next';
-import { protectedAxiosInstance } from '@/lib/http/axios';
+import { protectedAxiosInstance } from '@/components/Dashboard/lib/http/axios';
 import { AxiosError } from 'axios';
 import { BASE_URL } from '@/utils/vars/uri';
 

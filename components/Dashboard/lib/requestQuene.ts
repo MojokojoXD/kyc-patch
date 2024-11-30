@@ -1,5 +1,5 @@
 import type { Method } from 'axios';
-import { protectedAxiosInstance } from '@/lib/http/axios';
+import { protectedAxiosInstance } from '../lib/http/axios';
 import { AxiosError } from 'axios';
 
 export interface JobFeedback {
@@ -56,11 +56,13 @@ export class RequestQueue implements Queueable {
 	private async request(job: Job, feedback: Feedback) {
 		feedback(null, null, RequestStatus.PROCESSING);
 
+		const { url, method, data } = job;
+
 		try {
 			const res = await protectedAxiosInstance.request({
-				url: job.url,
-				method: job.method,
-				data: job.data,
+				url,
+				method,
+				...(data && { data }),
 			});
 
 			if (res.status === 200 || res.status === 304) {

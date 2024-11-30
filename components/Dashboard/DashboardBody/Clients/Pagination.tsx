@@ -69,9 +69,7 @@ export function Pagination({
 				<Button
 					{...paginationBtnConfig}
 					onClick={handleNextPage}
-					disabled={
-						props.currentPage === paginationRange[paginationRange?.length - 1]
-					}>
+					disabled={props.currentPage === paginationRange[paginationRange?.length - 1]}>
 					<ChevronRight className='h-5' />
 				</Button>
 			</li>
