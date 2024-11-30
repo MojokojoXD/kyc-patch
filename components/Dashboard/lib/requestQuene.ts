@@ -1,6 +1,5 @@
 import type { Method } from 'axios';
-import { protectedAxiosInstance } from '../lib/http/axios';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 
 export interface JobFeedback {
 	job: Job;
@@ -59,10 +58,11 @@ export class RequestQueue implements Queueable {
 		const { url, method, data } = job;
 
 		try {
-			const res = await protectedAxiosInstance.request({
-				url,
+			const res = await axios({
+				url: '/api/dashboard/proxy' + url,
 				method,
-				...(data && { data }),
+        ...( data && { data } ),
+        withCredentials: true
 			});
 
 			if (res.status === 200 || res.status === 304) {
@@ -70,39 +70,10 @@ export class RequestQueue implements Queueable {
 				return;
 			}
 
-			const newTokenResponse = await protectedAxiosInstance.get(
-				'api/dashboard/refresh-token',
-				{
-					baseURL: '',
-				}
-			);
-
-			if (newTokenResponse.status !== 200) {
-				feedback(null, 'Unable to refresh access token', RequestStatus.FAILED);
-				return true;
-			}
-
-			const retryRes = await protectedAxiosInstance.request({
-				url: job.url,
-				method: job.method,
-				data: job.data,
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-
-			if (retryRes.status === 200) {
-				feedback(retryRes.data, null, RequestStatus.COMPLETED);
-				return;
-			}
-
-			feedback(
-				null,
-				`unable to complete request for request url: ${job.url}`,
-				RequestStatus.FAILED
-			);
-
-			return true;
+      feedback( null, res.statusText, RequestStatus.FAILED );
+			
+      return true
+			
 		} catch (error) {
 			if (error instanceof AxiosError) {
 				feedback(null, error.message, RequestStatus.FAILED);
@@ -119,8 +90,10 @@ export class RequestQueue implements Queueable {
 				this.jobsQueue[0].feedback
 			);
 
-			if (didTokenRefreshFail) break;
+			if (didTokenRefreshFail) return false;
 			this.dequeue();
-		}
+    }
+
+    return true
 	}
 }

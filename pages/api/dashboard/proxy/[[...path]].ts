@@ -1,33 +1,36 @@
 import type { NextApiHandler } from 'next';
-import { protectedAxiosInstance } from '@/components/Dashboard/lib/http/axios';
-import { BASE_URL } from '@/utils/vars/uri';
-import { AxiosError } from 'axios';
+import { protectedServerRequest } from '@/components/Dashboard/lib/http/axios';
+import { AxiosError,Method } from 'axios';
 
 const handler: NextApiHandler = async (req, res) => {
 	const { path } = req.query;
 
-  const ssxURL = BASE_URL + '/' + ( path as string[] ).join( '/' );
-  
-  const authToken = req.cookies[ 'token' ] ?? '';
+  const ssxURL = '/' + ( path as string[] ).join( '/' );
 
 	try {
-		const ssxServerRes = await protectedAxiosInstance({
-			url: ssxURL,
-			method: req.method,
+		const ssxServerRes = await protectedServerRequest({
+			endpoint: ssxURL,
+			method: <Method>req.method,
 			data: req.method === 'POST' ? req.body : undefined,
-			headers: {
-        cookie: req.headers.cookie,
-        'Authorization': `Bearer ${authToken}`
-			},
-		});
+			securityHeaders:  req.cookies,
+    } );
+    
+    if ( typeof ssxServerRes !== 'string' )
+    {
+      const [ data, headers ] = ssxServerRes;
 
-		if (ssxServerRes.status === 200) {
-			res.setHeader('Set-Cookie', ssxServerRes.headers['set-cookie'] as string[]);
-			res.status(200).json(ssxServerRes.data);
+      if ( headers )
+      {
+        res.setHeader('Set-Cookie', headers);      
+      }
+
+			res.status(200).json(data);
 			return;
 		}
 
-		res.status(ssxServerRes.status).json(ssxServerRes.data);
+    res.statusMessage = ssxServerRes
+    res.status( 400 ).send( ssxServerRes );
+    
 	} catch (error) {
 		console.log(error);
 		if (error instanceof AxiosError) {

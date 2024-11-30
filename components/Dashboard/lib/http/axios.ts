@@ -1,7 +1,8 @@
+import { BASE_URL } from '@/utils/vars/uri';
 import axios, { type Method } from 'axios';
 // import { BASE_URL } from '@/utils/vars/uri';
 export const protectedAxiosInstance = axios.create({
-	baseURL: '/api/dashboard/proxy/',
+	baseURL: BASE_URL,
 	withCredentials: true,
 	validateStatus(status) {
 		return status === 200 || status === 401 || status === 304;
@@ -17,7 +18,7 @@ export const protectedAxiosInstance = axios.create({
 interface ProtectedServerRequestParams {
 	endpoint: string;
 	method: Method;
-	securityHeaders: { [index: string]: string };
+	securityHeaders: Partial<{ [index: string]: string }>;
 	data?: unknown;
 }
 
@@ -27,22 +28,27 @@ export async function protectedServerRequest({
 	endpoint,
 	method,
 	securityHeaders,
-	data = {},
-}: ProtectedServerRequestParams) {
+	data,
+}: ProtectedServerRequestParams): Promise<
+	[unknown, string | null ] | string
+  >
+{
+  //covert the record of cookie headers from the request into a single string and remove the token cookie
 	const securityCookies = Object.keys(securityHeaders).reduce(
-		(prevKey, currentKey) =>
-			currentKey !== 'token'
-				? (prevKey as string) + `${currentKey}=${securityHeaders[currentKey]};`
-				: '',
-		''
-	);
+	(prevKey, currentKey) =>
+		currentKey !== 'token'
+			? prevKey +
+			  `${currentKey}=${securityHeaders[currentKey]};`
+			: prevKey,
+	''
+);
 
 	try {
 		//initial request which is configured not to throw an error if response is 200, 304 or 401
 		const res = await protectedAxiosInstance({
 			url: endpoint,
 			method,
-			data,
+			data: method === 'POST' ? data : undefined,
 			headers: {
 				cookie: securityCookies,
 				Authorization: `Bearer ${securityHeaders['token']}`,
@@ -50,11 +56,12 @@ export async function protectedServerRequest({
 		});
 
 		if (res.status === 200) {
-			// request is successful. We return the data property.
-			return [res.data, res.headers];
+      // request is successful. We return the data property.
+			return [res.data, null];
 		}
 
-		let newAccessToken: string = '';
+    let newAccessToken: string = '';
+    let newSecurityCookies: string = ''
 
 		while (refreshTokenRetries > 0) {
 			// try to get a new access token from refresh token endpoint
@@ -67,7 +74,8 @@ export async function protectedServerRequest({
 			});
 
 			if (retryRes.status === 200) {
-				newAccessToken = retryRes.data.token;
+        newAccessToken = retryRes.data.token;
+        newSecurityCookies = (retryRes.headers[ 'set-cookie' ] as string[]).reduce(( a, c ) => a + ';' + c);
 				break;
 			}
 
@@ -83,18 +91,17 @@ export async function protectedServerRequest({
 			method,
 			data,
 			headers: {
-				cookie: securityCookies,
+				cookie: newSecurityCookies,
 				Authorization: `Bearer ${newAccessToken}`,
 			},
 		});
 
 		if (resentRequest.status === 200)
-      return [ resentRequest.data, { ...securityHeaders, token: newAccessToken } ];
-    
-    return 'unknown error trying to resend initial request';
-  } catch ( error )
-  {
-    console.log( error );
-    return 'critical error reaching ssx servers';
-  }
+			return [resentRequest.data, newSecurityCookies + `token=${newAccessToken};Same-Site=Strict;Secure;HttpOnly;Path=/` ];
+
+		throw resentRequest
+	} catch (error) {
+		console.log(error);
+		return 'critical error reaching ssx servers';
+	}
 }

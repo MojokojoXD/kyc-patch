@@ -1,9 +1,8 @@
 import type { NextApiHandler } from 'next';
 import { protectedAxiosInstance } from '@/components/Dashboard/lib/http/axios';
 import { AxiosError } from 'axios';
-import { BASE_URL } from '@/utils/vars/uri';
 
-const LOGOUT_ENDPOINT = BASE_URL + '/logout';
+const LOGOUT_ENDPOINT = '/logout';
 
 const handler: NextApiHandler = async (req, res) => {
 	try {
@@ -14,7 +13,6 @@ const handler: NextApiHandler = async (req, res) => {
 			LOGOUT_ENDPOINT,
 			{},
 			{
-				baseURL: '',
 				headers: {
 					cookie: req.headers.cookie,
 					Authorization: `Bearer ${token}`,

@@ -58,13 +58,15 @@ export function Session({ children,profile}: SessionProviderProps) {
 
 				queue.enqueue(...requestJobs);
 
-				await queue.process();
+        const isProcessed = await queue.process();
+        
+        !isProcessed && logout();
 
 				setRequestJobs(null);
 				setIsRequesting(false);
 			}
 		})();
-	}, [requestJobs]);
+	}, [requestJobs,logout]);
 
 	return (
 		<sessionContext.Provider
