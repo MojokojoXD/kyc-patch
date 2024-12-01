@@ -4,7 +4,11 @@ import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import type { FormComponentDict } from '@/components/forms/utils/formReducer';
 import { Form } from '@/components/ui/form';
 import * as Stages from '@/components/forms/__KYC__/individual/stages/stagesDictionary';
-import { FormLayout, FormNav, FormNavButtons } from '@/components/forms/FormLayout';
+import {
+	FormLayout,
+	FormNav,
+	FormNavButtons,
+} from '@/components/forms/FormLayout';
 import { useCloseTabWarning } from '@/components/forms/utils/customHooks/useCloseTabWarning';
 import {
 	individualFormMetadata,
@@ -37,7 +41,7 @@ export default function IndividualForm() {
 
 	useCloseTabWarning(isDirty);
 
-	const individualStages: FormComponentDict<IndividualFormStage> = {
+	const individualStagesDict: FormComponentDict<IndividualFormStage> = {
 		introduction: <Stages.FormsIntro />,
 		personal: <Stages.PersonalInfoStage />,
 		'next of kin': <Stages.NextOfKinStage />,
@@ -73,13 +77,10 @@ export default function IndividualForm() {
 		console.log(payload);
 
 		try {
-			const res = await fetch(
-				'/api/forms',
-				{
-					method: 'POST',
-					body: JSON.stringify(payload),
-				}
-			);
+			const res = await fetch('/api/forms', {
+				method: 'POST',
+				body: JSON.stringify(payload),
+			});
 
 			if (res.ok) {
 			}
@@ -99,14 +100,20 @@ export default function IndividualForm() {
 		//@ts-expect-error will fix mismatch later
 		<KYCContext.Provider value={KYCForm}>
 			<FormLayout>
+				<FormNav />
 				<Loading reveal={isLoading} />
-				<Form {...form}>
-					<form onSubmit={handleSubmit(submitHandler)}>
-						<FormNav />
-						{individualStages[currentStage]}
-						<FormNavButtons />
-					</form>
-				</Form>
+				<div className='relative w-full bg-neutral-50 flex justify-center overflow-auto h-full py-10'>
+					<Form {...form}>
+						<form
+							onSubmit={handleSubmit(submitHandler)}
+							className='w-full max-w-[44.75rem]'>
+							<div className='border border-neutral-100 rounded-xl overflow-hidden'>
+								{individualStagesDict[currentStage]}
+								<FormNavButtons />
+							</div>
+						</form>
+					</Form>
+				</div>
 			</FormLayout>
 		</KYCContext.Provider>
 	);

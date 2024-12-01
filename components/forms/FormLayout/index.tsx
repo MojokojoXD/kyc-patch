@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { JSX } from 'react';
 import logo from '@/public/images/secondStax.webp';
 import { cn } from '@/lib/utils';
 import {
@@ -28,7 +29,7 @@ function FormHeader({ children, ...props }: FormHeaderProps) {
 	}, [props.content]);
 
 	return (
-		<div className='row-span-4 bg-white overflow-hidden'>
+		<div className='row-span-4 bg-white'>
 			<div
 				className='h-[98px] bg-neutral-100 flex justify-center items-center '
 				ref={contentRef}>
@@ -94,12 +95,14 @@ function FormNavButtons() {
 				<Button
 					type='button'
 					variant={'outline'}
+          size={'lg'}
 					onClick={prev}>
 					Go Back
 				</Button>
 			)}
 			<Button
 				type={formNav.currentStep === 'submit' ? 'submit' : 'button'}
+        size={'lg'}
 				onClick={next}>
 				{formNav.currentStage === 'introduction'
 					? 'Begin Process'
@@ -123,14 +126,14 @@ function FormText({ children, className }: FormTextProps) {
 	);
 }
 
-function FormLayout({ children }: FormLayoutProps) {
+function FormLayout( { children }: FormLayoutProps )
+{
+  const childrenCount = ( children as JSX.Element[] ).length;
 	return (
-		<div className='h-screen w-full grid grid-cols-3'>
-			<div className='flex items-center col-start-2 col-span-full'>
-				<div className='w-full max-w-[716px] bg-white '>
-					<div className='rounded-xl overflow-hidden relative'>{children}</div>
-				</div>
-			</div>
+		<div className='h-screen w-full'>
+          <div className={cn('flex h-full', childrenCount > 1 && 'flex-cols')}>
+          { children }
+          </div>
 		</div>
 	);
 }

@@ -34,7 +34,7 @@ export default function CorporateForm() {
 
 	useCloseTabWarning(isDirty);
 
-	const StagesDict: CorporateStageDict = {
+	const corporateStagesDict: CorporateStageDict = {
 		introduction: <Stages.FormsIntro />,
 		business: <Stages.BusinessStage />,
 		contacts: <Stages.ContactsStage />,
@@ -69,18 +69,24 @@ export default function CorporateForm() {
 	}
 
 	return (
-		//@ts-expect-error will fix type mismatch between context types
-		<KYCContext.Provider value={KYCForm}>
-			<Form {...form}>
-				<form onSubmit={handleSubmit(submitHandler)}>
-					<FormLayout>
-						<Loading reveal={isLoading} />
-						<FormNav />
-						{StagesDict[currentStage]}
-						<FormNavButtons />
-					</FormLayout>
-				</form>
-			</Form>
-		</KYCContext.Provider>
-	);
+	//@ts-expect-error will fix type mismatch between context types
+	<KYCContext.Provider value={KYCForm}>
+		<FormLayout>
+			<FormNav />
+			<Loading reveal={isLoading} />
+			<div className='relative w-full bg-neutral-50 flex justify-center overflow-auto h-full py-10'>
+				<Form {...form}>
+					<form
+						onSubmit={handleSubmit(submitHandler)}
+						className='w-full max-w-[44.75rem]'>
+						<div className='border border-neutral-100 rounded-xl overflow-hidden'>
+							{corporateStagesDict[currentStage]}
+							<FormNavButtons />
+						</div>
+					</form>
+				</Form>
+			</div>
+		</FormLayout>
+	</KYCContext.Provider>
+);
 }
