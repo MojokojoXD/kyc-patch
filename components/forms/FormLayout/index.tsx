@@ -130,8 +130,8 @@ function FormLayout( { children }: FormLayoutProps )
 {
   const childrenCount = ( children as JSX.Element[] ).length;
 	return (
-		<div className='h-screen w-full'>
-          <div className={cn('flex h-full', childrenCount > 1 && 'flex-cols')}>
+		<div className='fixed inset-0 bg-neutral-50 overflow-auto'>
+          <div className={cn('flex h-full w-full', childrenCount > 1 && 'flex-cols')}>
           { children }
           </div>
 		</div>
