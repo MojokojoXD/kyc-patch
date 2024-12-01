@@ -64,49 +64,51 @@ export default function KycFormOptions({
 		);
 	};
 
-	return (
-		<>
-			<FormHeader>
-				<FormTitle>KYC Verification</FormTitle>
-				<FormSubHeader>
-					Comply with regulations and help us secure our platform and users with our
-					quick and easy KYC verification process. Select the type of account you
-					want to create.
-				</FormSubHeader>
-			</FormHeader>
-			<FormContent>
-				<div className='flex flex-col space-y-[40px]'>
-					<p className='paragraph2Medium'>Select Account Type</p>
-					<div className='space-y-[8px]'>
-						{formOptions.map((o) => (
-							<div
-								key={o.id}
-								className='w-full'>
-								<CustomToggle
-									selected={formID === o.id}
-									label={o.label}
-									type={'checkbox'}
-									value={o.id}
-									onChange={() => handleFormSelection(o.id)}
-								/>
-							</div>
-						))}
-						<div>
-							{selectionError && (
-								<p className='text-error-500 mt-5'>{selectionError}</p>
-							)}
-						</div>
-					</div>
-					<div className=' flex justify-end'>
-						<Button
-							onClick={handleContinue}
-							disabled={!formID}
-							size='lg'>
-							Continue
-						</Button>
-					</div>
-				</div>
-			</FormContent>
-		</>
+  return (
+    <div className='w-full py-10'>
+      <div className='w-full max-w-[44.75rem] mx-auto rounded-xl overflow-hidden border border-neutral-100'>
+        <FormHeader>
+          <FormTitle>KYC Verification</FormTitle>
+          <FormSubHeader>
+            Comply with regulations and help us secure our platform and users with our
+            quick and easy KYC verification process. Select the type of account you
+            want to create.
+          </FormSubHeader>
+        </FormHeader>
+        <FormContent>
+          <div className='flex flex-col space-y-[40px]'>
+            <p className='paragraph2Medium'>Select Account Type</p>
+            <div className='space-y-[8px]'>
+              {formOptions.map((o) => (
+                <div
+                  key={o.id}
+                  className='w-full'>
+                  <CustomToggle
+                    selected={formID === o.id}
+                    label={o.label}
+                    type={'checkbox'}
+                    value={o.id}
+                    onChange={() => handleFormSelection(o.id)}
+                  />
+                </div>
+              ))}
+              <div>
+                {selectionError && (
+                  <p className='text-error-500 mt-5'>{selectionError}</p>
+                )}
+              </div>
+            </div>
+            <div className=' flex justify-end'>
+              <Button
+                onClick={handleContinue}
+                disabled={!formID}
+                size='lg'>
+                Continue
+              </Button>
+            </div>
+          </div>
+        </FormContent>
+      </div>
+    </div>
 	);
 }

@@ -27,7 +27,6 @@ export function ArrayFieldReviewer({
 			temp.push(p.value);
 		});
 	}
-
 	return (
 		<div className='space-y-[8px]'>
 			{label && <h2 className='paragraph2Medium text-neutra-700'>{label}</h2>}
