@@ -69,8 +69,8 @@ export const contactPersonModel = ({
 			required: 'Please select date',
 		},
 		componentProps: {
-            minYear: MIN_AGE,
-            disableFutureDays: true,
+			minYear: MIN_AGE,
+			disableFutureDays: true,
 		},
 	},
 	{
@@ -121,6 +121,9 @@ export const contactPersonModel = ({
 		name: 'contacts.contactPerson.countryOfBirth',
 		label: 'Country of Birth',
 		placeholder: 'Select country',
+		rules: {
+			required: 'Select country of birth',
+		},
 		options: {
 			keys: countryList[1],
 			keySelector(key) {
@@ -134,6 +137,9 @@ export const contactPersonModel = ({
 		name: 'contacts.contactPerson.citizenship',
 		label: 'Citizenship',
 		placeholder: 'Select country',
+		rules: {
+			required: 'Select citizenship',
+		},
 		options: {
 			keys: countryList[1],
 			keySelector(key) {
@@ -147,6 +153,9 @@ export const contactPersonModel = ({
 		name: 'contacts.contactPerson.countryOfResidence',
 		label: 'Country of Residence',
 		placeholder: 'Select country',
+		rules: {
+			required: 'Select country of residence',
+		},
 		options: {
 			keys: countryList[1],
 			keySelector(key) {
@@ -157,8 +166,8 @@ export const contactPersonModel = ({
 	},
 	{
 		fieldType: 'radio',
-        name: 'contacts.contactPerson.residenceStatus',
-        readonly: true,
+		name: 'contacts.contactPerson.residenceStatus',
+		readonly: true,
 		label: 'Residence Status',
 		options: {
 			keys: [
@@ -232,7 +241,10 @@ export const contactPersonModel = ({
 	{
 		fieldType: 'radio',
 		name: 'contacts.contactPerson.isSignatory',
-		label: 'Will this contact person also be an account signatory?',
+    label: 'Will this contact person also be an account signatory?',
+    rules: {
+      required: 'Select signatory status'
+    },
 		options: {
 			keys: ['Yes', 'No'],
 			keySelector(key) {

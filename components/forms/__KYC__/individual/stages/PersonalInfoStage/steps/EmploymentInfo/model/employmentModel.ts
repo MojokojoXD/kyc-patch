@@ -1,7 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country,CountryList } from '@/types/forms/common';
-import { isPossiblePhoneNumber } from 'react-phone-number-input';
-import type { PhoneInfo } from '@/types/forms/common';
+import type { Country, CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const employmentModel = ({
@@ -24,7 +22,7 @@ export const employmentModel = ({
 			keySelector: (key: string) => key,
 			keys: ['Employed', 'Self-Employed', 'Unemployed', 'Retired', 'Student'],
 		},
-		tags: [ 'remove-all-except', 'control-employment'],
+		tags: ['remove-all-except', 'control-employment'],
 	},
 	{
 		fieldType: 'text',
@@ -84,18 +82,7 @@ export const employmentModel = ({
 	{
 		fieldType: 'phone',
 		name: `applicant.${index}.employment.statusDetails.phoneNumber`,
-        label: 'Employer/Business/School Phone Number',
-        rules: {
-            validate: {
-                isRequired: (v) =>
-                    (typeof v.value === 'string' && (v as PhoneInfo[number]).value !== '') ||
-                    'Please enter phone number',
-                isValidPhone: (v) =>
-                    (typeof v.value === 'string' &&
-                        isPossiblePhoneNumber((v as PhoneInfo[number]).value)) ||
-                    'Please enter valid phone number',
-            },
-        },
+		label: 'Employer/Business/School Phone Number',
 		placeholder: 'Enter phone number',
 		options: {
 			keys: countryList[1],
@@ -198,7 +185,7 @@ export const employmentModel = ({
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.employment.statusDetails.licenseNumber`,
-		label: 'Professional License Number (If applicable)',
+		label: 'Professional License Number (Optional)',
 		placeholder: 'Enter license number',
 	},
 	{
@@ -209,14 +196,14 @@ export const employmentModel = ({
 		rules: {
 			required: 'Please enter email address',
 			validate: (v) =>
-				validator.isEmail(v) || 'Email must be of the format: name@example.com',
+				validator.isEmail(<string>v) || 'Email must be of the format: name@example.com',
 		},
-		tags: [ 'remove-all-except'],
+		tags: ['remove-all-except'],
 	},
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.employment.statusDetails.tin`,
-		label: 'TIN',
+		label: 'TIN (Optional)',
 		placeholder: 'Enter TIN',
 	},
 	// {

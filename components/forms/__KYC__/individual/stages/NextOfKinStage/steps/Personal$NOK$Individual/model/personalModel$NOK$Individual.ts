@@ -125,7 +125,7 @@ export const personalModel$NOK$Individual = ({
 	{
 		fieldType: 'text',
 		name: `nextOfKin.${index}.placeOfBirth`,
-		label: 'Place of Birth(Optional)',
+		label: 'Place of Birth (Optional)',
 		placeholder: 'Enter place of birth',
 	},
 	{

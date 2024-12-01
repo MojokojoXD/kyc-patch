@@ -53,6 +53,7 @@ export class FormFieldAggregator {
 
 			let tagSpecificFieldIndices: number[] = [];
 
+			//Aggregate field indices that need to modified, if the tag parameter is provide or else world on all fields if no tag parameter is provided.
 			if (fieldNameOrTag === '') {
 				tagSpecificFieldIndices = [...this._intermediateFields.keys()];
 			} else {
@@ -81,11 +82,22 @@ export class FormFieldAggregator {
 				return;
 			}
 
+			/*
+        Beyond this we modify the properties on the field themselves;  
+      */
+      
+      // if ( !modifierOptions.fieldType || !modifierOptions.readonly || !modifierOptions.required ) return;
+
 			tagSpecificFieldIndices.forEach((index) => {
+				const fieldToModify = this._intermediateFields[index];
+
 				this._intermediateFields[index] = {
-					...this._intermediateFields[index],
+					...fieldToModify,
+					label: modifierOptions.required
+						? this.removeOptionalOnLabel(fieldToModify.label)
+						: this.addOptionalToLabel(fieldToModify.label),
 					rules: {
-						...this._intermediateFields[index].rules as RegisterOptions,
+						...(fieldToModify.rules as RegisterOptions),
 						...(modifierOptions.required
 							? { required: 'This entry is required' }
 							: { required: false }),
@@ -100,4 +112,11 @@ export class FormFieldAggregator {
 	}
 
 	generate = () => this._intermediateFields;
+
+	private addOptionalToLabel = (label: string) => label + ' (Optional)';
+	private removeOptionalOnLabel = (label: string) => {
+		const sliceEndIndex = label.indexOf('(Optional)');
+
+		return sliceEndIndex >= 0 ? label.slice(0, sliceEndIndex - 1) : label;
+	};
 }

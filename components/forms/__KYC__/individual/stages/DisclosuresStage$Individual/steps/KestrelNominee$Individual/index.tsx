@@ -5,7 +5,6 @@ import {
 	AccordionContent,
 	AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
 import { Ellipsis } from 'lucide-react';
 import {
 	FormHeader,
@@ -25,7 +24,6 @@ import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchM
 export const KestrelNominee$Individual: FormStep = () => {
 	const {
 		form: { getValues },
-		formAction,
 		formVars: { clientID },
 	} = useKYCFormContext<IndividualFormSchema>();
 
@@ -47,16 +45,9 @@ export const KestrelNominee$Individual: FormStep = () => {
 	return (
 		<>
 			<FormHeader>
-				<div className='flex justify-between items-center'>
 					<FormTitle>
 						Nominee Agreement - Kestrel Capital Nominees Services LTD
 					</FormTitle>
-					<Button
-						variant={'outline'}
-						onClick={() => formAction({ type: 'next' })}>
-						Skip
-					</Button>
-				</div>
 			</FormHeader>
 			<FormContent>
 				<div className='space-y-10 py-5'>

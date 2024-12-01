@@ -9,7 +9,7 @@ import {
 import type { FormStep } from '@/types/Components/onboarding';
 import { ReviewerSection } from '@/components/forms/FormReviewer/ReviewerComponents/ReviewerSection';
 import { retailClientModel } from '../RetailClient/model/retailClientModel';
-import { investmentCatergoryFields } from '../InvestmentCategory/formBuilder/InvestmentCategoryFormBuilder';
+import { investmentCatergoryFields } from '../InvestmentCategory/model/InvestmentCategoryFormBuilder';
 import { bioInfoModel } from '../BiographicalInfo/model/bioInfoModel';
 import { contactDetailsModel$Individual } from '../ContactDetails$Individual/model/contactDetailsModel$Individual';
 import { employmentModel } from '../EmploymentInfo/model/employmentModel';

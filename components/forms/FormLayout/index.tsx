@@ -50,13 +50,13 @@ function FormHeader({ children, ...props }: FormHeaderProps) {
 	);
 }
 
-type FormTitleProps = FormHeaderProps & object;
+type FormTitleProps = FormHeaderProps & Record<string, unknown>;
 
 function FormTitle({ children }: FormTitleProps) {
 	return <h1 className={`heading5Bold`}>{children}</h1>;
 }
 
-type FormSubHeaderProps = FormHeaderProps & object;
+type FormSubHeaderProps = FormHeaderProps & Record<string, unknown>;
 
 function FormSubHeader({ children }: FormSubHeaderProps) {
 	return (
@@ -125,12 +125,10 @@ function FormText({ children, className }: FormTextProps) {
 
 function FormLayout({ children }: FormLayoutProps) {
 	return (
-		<div className='h-screen w-full grid grid-cols-3'>
-			<div className='flex items-center col-start-2 col-span-full'>
-				<div className='w-full max-w-[716px] bg-white '>
+		<div className='min-h-screen w-full bg-white py-24 flex items-center justify-center'>
+				<div className='w-full max-w-[716px] bg-white rounded-xl border border-neutral-100'>
 					<div className='rounded-xl overflow-hidden relative'>{children}</div>
 				</div>
-			</div>
 		</div>
 	);
 }

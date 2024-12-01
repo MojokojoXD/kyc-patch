@@ -1,6 +1,6 @@
 import { FormHeader, FormTitle, FormContent } from '@/components/forms/FormLayout';
 import FormFactory from '@/components/forms/FormFactory';
-import { investmentCatergoryFields } from './formBuilder/InvestmentCategoryFormBuilder';
+import { investmentCatergoryFields } from './model/InvestmentCategoryFormBuilder';
 import type { FormStep } from '@/types/Components/onboarding';
 
 export const InvestmentCategory: FormStep = () => {

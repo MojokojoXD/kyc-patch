@@ -97,13 +97,13 @@ export const contactDetailsModel$Corporate = ({
 	{
 		fieldType: 'text',
 		name: 'contacts.digitalAddress',
-		label: 'Digital Address',
+		label: 'Digital Address (Optional)',
 		placeholder: 'Enter digital Address',
 	},
 	{
 		fieldType: 'text',
 		name: 'contacts.nearestLandmark',
-		label: 'Nearest Landmark',
+		label: 'Nearest Landmark (Optional)',
 		placeholder: 'Enter landmark',
 	},
 ];

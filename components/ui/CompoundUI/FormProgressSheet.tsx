@@ -55,7 +55,7 @@ export default function FormProgressSheet<T extends ProgressStage>({
 				onInteractOutside={(e) => e.preventDefault()}
 				onEscapeKeyDown={(e) => e.preventDefault()}
 				onOpenAutoFocus={(e) => e.preventDefault()}
-				className='py-10 px-0 border-none h-screen w-1/5 min-w-64 shadow-none'>
+				className='py-10 px-0 border-r border-neutral-100 h-screen w-1/5 min-w-64 shadow-sm'>
 				<div className='hidden'>
 					<SheetHeader>
 						<SheetTitle></SheetTitle>

@@ -6,7 +6,7 @@ import type { Profile } from '@/types/accounts/user';
 import { DashboardHeader } from '@/components/Dashboard/DashboardHeader';
 import { DashboardBody } from '@/components/Dashboard/DashboardBody';
 import { Session } from '@/components/Dashboard/atomic/Session';
-// import { IdleDetection } from '@/components/Dashboard/atomic/IdleDetection';
+import { IdleDetection } from '@/components/Dashboard/atomic/IdleDetection';
 import { protectedServerRequest } from '@/components/Dashboard/lib/http/axios';
 
 interface InitialDashboardProps {
@@ -61,7 +61,7 @@ const Dashboard = (
 ) => {
 	return (
 		<Session {...props}>
-			{/* <IdleDetection /> */}
+			<IdleDetection />
 			<DashboardHeader />
 			<DashboardBody />
 		</Session>

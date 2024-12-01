@@ -100,9 +100,7 @@ export const fatcaModel$Individual = ({
 		name: `applicant.${index}.disclosures.fatca.details.phoneNumber`,
 		label: 'Foreign Phone Number',
 		placeholder: 'Enter foreign phone number',
-		rules: {
-			required: 'Please enter foreign phone number',
-        },
+		
         componentProps: {
             phoneMode: 'single',
         },

@@ -99,7 +99,8 @@ function PepForm({
 		const aggregator = new FormFieldAggregator(rawFields);
 
 		aggregator.modifyFields('remove-all-except', {
-			remove: currentPepStatus === 'No' || !currentPepStatus,
+      remove: currentPepStatus === 'No' || !currentPepStatus,
+      required: currentPepStatus === 'Yes'
 		});
 
 		if (currentPepStatus === 'No') {
@@ -121,7 +122,7 @@ function PepForm({
 						<Markdown>{pepText}</Markdown>
 					)}
 				</FormText>
-				<div className='space-y-5'>
+				<div className='space-y-11'>
 					{aggregatorResults.map((f) => (
 						<FormFactory
 							key={f.name}

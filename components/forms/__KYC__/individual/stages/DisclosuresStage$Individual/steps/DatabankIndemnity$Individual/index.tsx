@@ -51,7 +51,7 @@ export const DatabankEmailIndemnity$Individual: FormStep = () => {
 					const clientMiddleName = a.middleName ?? '';
 
 					const fullName = `${clientFirstName} ${clientMiddleName} ${clientLastName}`;
-
+          const address = `${ a.contacts.residentialAddress }, ${ a.contacts.city } ${ a.contacts.postalAddress }, ${ a.countryOfResidence }`;
 					return (
 						<Accordion
 							collapsible
@@ -83,7 +83,7 @@ export const DatabankEmailIndemnity$Individual: FormStep = () => {
 											<span>Your Home Address</span>
 											<Input
 												disabled
-												value={a.contacts?.residentialAddress ?? ''}
+												value={ address ?? ''}
 												id='indemnity__address'
 											/>
 										</FormLabel>

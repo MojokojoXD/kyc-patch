@@ -4,7 +4,7 @@ const investmentCatergoryFields: FormFactoryProps[] = [
 	{
 		fieldType: 'text',
 		name: 'csdNumber',
-		label: 'CSD Number(If applicable)',
+		label: 'CSD Number (Optional)',
 		placeholder: 'Enter CSD number',
 	},
 	{

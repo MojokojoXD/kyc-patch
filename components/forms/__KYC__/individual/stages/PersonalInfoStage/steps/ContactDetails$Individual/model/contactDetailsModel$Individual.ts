@@ -110,7 +110,7 @@ export const contactDetailsModel$Individual = ({
 	{
 		fieldType: 'phone',
 		name: `applicant.${index}.contacts.faxNumber`,
-		label: 'Fax Number',
+		label: 'Fax Number (Optional)',
         placeholder: 'Enter Fax Number',
         rules: null,
 		options: {
@@ -126,14 +126,14 @@ export const contactDetailsModel$Individual = ({
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.contacts.digitalAddress`,
-		label: 'Digital Address (GhanaPost GPS)',
+		label: 'Digital Address (GhanaPost GPS) (Optional)',
 		placeholder: 'Enter address',
 		tags: ['residence-contact'],
 	},
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.contacts.nearestLandmark`,
-		label: 'Nearest Landmark',
+		label: 'Nearest Landmark (Optional)',
 		placeholder: 'Enter landmark',
 		tags: ['residence-contact'],
 	},
