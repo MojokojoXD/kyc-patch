@@ -71,8 +71,8 @@ export function useKYCForm<
 
 	const next = useCallback(async () => {
 		if (await form.trigger(undefined, { shouldFocus: true })) {
+      formAction({ type: 'next' });
     }
-    formAction({ type: 'next' });
 	}, [form]);
 
 	const prev = useCallback(() => formAction({ type: 'prev' }), []);
