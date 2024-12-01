@@ -9,7 +9,7 @@ import { DashboardDialog } from '../../atomic/DashboardDialog';
 import { SessionMenuTrigger } from './SessionMenuTrigger';
 import { SessionProfileSheet } from './SessionProfileSheet';
 import { MenuBtn } from './MenuBtn';
-import { User2 } from 'lucide-react';
+import { User2, LogOut } from 'lucide-react';
 
 interface SessionMenuPopoverProps {}
 
@@ -53,7 +53,7 @@ export function SessionMenuPopover({}: SessionMenuPopoverProps) {
 					/>
 					<MenuBtn
 						label='logout'
-						icon={User2}
+						icon={LogOut}
 						onClick={() => setOpenLogoutDialog(true)}
 					/>
 				</div>

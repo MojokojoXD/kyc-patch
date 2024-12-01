@@ -57,7 +57,7 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 		};
 
 		request(
-			{ url: 'kyc/broker/client', method: 'POST', data: newClient },
+			{ url: '/kyc/broker/client', method: 'POST', data: newClient },
 			function (res, error, status) {
 				if (status === 'COMPLETED' && res?.Status === 'SUCC') {
 					setStep(NewClientFormSteps.ClientAdded);

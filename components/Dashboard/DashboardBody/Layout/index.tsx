@@ -41,23 +41,18 @@ interface SideMenuProps extends HTMLAttributes<HTMLDivElement> {
 export function SideMenu({ renderPortal }: SideMenuProps) {
 	const [portal, setPortal] = useState<Portal>('metrics');
 
-	const changePortalView = useCallback(
-		(portal: Portal) => setPortal(portal),
-		[]
-	);
+	const changePortalView = useCallback((portal: Portal) => setPortal(portal), []);
 
 	const sideMenuBtnClx =
-		'group w-full rounded-none bg-transparent paragraph2Medium capitalize text-neutral-700 justify-between border-r border-white p-x-dashboard hover:bg-transparent hover:text-neutral-700/70 transition-[text_border_fill] duration-150 ease-in-out';
+		'group w-full rounded-none bg-transparent paragraph2Medium capitalize text-neutral-700 justify-between border-r border-white px-3 hover:bg-transparent hover:text-neutral-700/70 transition-[text_border_fill] duration-150 ease-in-out';
 	const activeBtnClx =
 		'text-primary-500 bg-neutral-50 border-primary-500 hover:text-primary-500/75 hover:border-primary-500/75';
-	const iconClx =
-		'h-4 aspect-square space-x-2 fill-neutral-700 text-white group-hover:fill-neutral-700/75';
-	const activeIconClx =
-		'fill-primary-500 text-white group-hover:fill-primary-500/75';
+	const iconClx = 'h-5 aspect-square';
+	const activeIconClx = '';
 
 	return (
 		<>
-			<div className='absolute left-0 h-full w-[257px] inset-y-0 bg-white border-r border-neutral-100 py-[32px]'>
+			<div className='absolute left-0 h-full w-[257px] inset-y-0 bg-white border-r border-neutral-100 py-8'>
 				<ul>
 					{portalViewsMetadata.map((v) => {
 						const isActive = v.name === portal;
@@ -68,12 +63,10 @@ export function SideMenu({ renderPortal }: SideMenuProps) {
 									size={'lg'}
 									id={v.name}
 									className={cn(sideMenuBtnClx, isActive && activeBtnClx)}
-									onClick={(e) =>
-										setPortal((e.currentTarget as HTMLButtonElement).id as Portal)
-									}>
-									<span className='flex items-center'>
+									onClick={(e) => setPortal((e.currentTarget as HTMLButtonElement).id as Portal)}>
+									<span className='flex items-center space-x-4'>
 										<v.icon className={cn(iconClx, isActive && activeIconClx)} />
-										{v.displayName}
+										<span>{v.displayName}</span>
 									</span>
 									<span>
 										<ChevronRight className='h-4 aspect-square opacity-40' />
@@ -85,9 +78,7 @@ export function SideMenu({ renderPortal }: SideMenuProps) {
 				</ul>
 			</div>
 			<div className='relative col-span-full col-start-2 overflow-auto'>
-				<div className='h-full'>
-					{renderPortal(portal, changePortalView)}
-				</div>
+				<div className='h-full'>{renderPortal(portal, changePortalView)}</div>
 			</div>
 		</>
 	);
@@ -103,7 +94,11 @@ export function Portal({ current, children }: PortalProps) {
 			(el) => (el.props as ViewProps).name === current
 		) ?? null;
 
-	return <div className='p-[32px] space-y-[16px] text-neutral-700 h-fit max-w-screen-xl w-full mx-auto'>{currentView}</div>;
+	return (
+		<div className='p-[32px] space-y-[16px] text-neutral-700 h-fit max-w-screen-xl w-full mx-auto'>
+			{currentView}
+		</div>
+	);
 }
 
 interface ViewProps {

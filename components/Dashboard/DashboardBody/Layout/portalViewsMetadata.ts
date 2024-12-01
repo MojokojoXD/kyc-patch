@@ -1,4 +1,4 @@
-import { Grid2x2Plus, UsersRound } from "lucide-react";
+import { Grid2x2Plus, UserCog } from "lucide-react";
 
 export const portalViewsMetadata = [
 
@@ -12,6 +12,6 @@ export const portalViewsMetadata = [
         id: 1,
         name: 'clientele',
         displayName: 'all clients',
-        icon: UsersRound
+        icon: UserCog
     }
 ] as const;

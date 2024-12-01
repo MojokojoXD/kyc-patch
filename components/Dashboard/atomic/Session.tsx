@@ -2,7 +2,7 @@ import {
 	sessionContext,
 	type SessionContextSchema,
 } from '../contexts/sessionContext';
-import { type ReactNode, useState, useEffect, useCallback } from 'react';
+import { type ReactNode, useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import {
 	RequestQueue,
@@ -66,16 +66,18 @@ export function Session({ children,profile}: SessionProviderProps) {
 				setIsRequesting(false);
 			}
 		})();
-	}, [requestJobs,logout]);
+  }, [ requestJobs, logout ] );
+  
+  const sessionContextValue = useMemo( () => ( {
+    profile,
+    isRequesting,
+    request: addRequestJob,
+    logout
+  }),[profile,isRequesting, addRequestJob,logout])
 
 	return (
 		<sessionContext.Provider
-			value={{
-				profile,
-				isRequesting,
-				request: addRequestJob,
-				logout,
-			}}>
+			value={ sessionContextValue }>
 			{children}
 		</sessionContext.Provider>
 	);

@@ -19,12 +19,12 @@ export function Header({ className, children, ...props }: HeaderProps) {
 		</div>
 	);
 }
-interface NavAreaProps extends HTMLAttributes<HTMLDivElement> {}
+interface NavWidgetProps extends HTMLAttributes<HTMLDivElement> {}
 
-export function NavArea({ className, children, ...props }: NavAreaProps) {
+export function WidgetArea({ className, children, ...props }: NavWidgetProps) {
 	return (
 		<div
-			className={cn('flex items-center gap-[24px]', className)}
+			className={cn('flex items-center gap-6', className)}
 			{...props}>
 			{children}
 		</div>
