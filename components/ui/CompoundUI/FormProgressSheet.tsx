@@ -82,7 +82,7 @@ export default function FormProgressSheet<T extends ProgressStage>({
 										});
 									}}
 									disabled={!progressStage.current.has(_stage.name)}
-									className='border-none data-[state=closed]:rounded-none data-[state=open]:rounded-none bg-transparent px-5 leading-relaxed text-base font-bold text-neutral-700 capitalize'>
+									className='border-none data-[state=closed]:rounded-none data-[state=open]:rounded-none bg-transparent px-5 leading-relaxed text-base font-medium text-neutral-700 capitalize'>
 									<li>{_stage.name}</li>
 								</AccordionTrigger>
                 <AccordionContent className={ 'relative py-0 border-none' }>
