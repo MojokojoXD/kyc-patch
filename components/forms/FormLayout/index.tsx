@@ -115,14 +115,16 @@ function FormNavButtons() {
 type FormTextProps = FormHeaderProps & Record<string, unknown>;
 
 function FormText({ children, className }: FormTextProps) {
-	return (
-		<div
-			className={cn(
-				'max-h-96 overflow-auto bg-neutral-50 space-y-[16px]  max-w-prose text-neutral-700 paragraph2Regular py-[16px] px-8 [&_h2]:paragraph2Medium [&_h2]:text-neutral-800 [&_h3]:paragraph2Medium [&_ul_ol]:space-y-[16px] [&_li]:space-y-[16px] [&>ul_ol]:list-decimal [&>ul_ol]:ml-7 [&>ul_ul]:ml-7 [&_ol_ol_ol_ol]:list-[lower-alpha] [&>ul]:space-y-[16px] [&_ul_ul]:list-disc',
-				className
-			)}>
-			{children}
-		</div>
+  return (
+    <div className='py-5 border border-neutral-100 rounded bg-neutral-50'>
+      <div
+        className={cn(
+          'max-h-96 overflow-auto space-y-[16px]  max-w-prose text-neutral-700 paragraph2Regular py-[16px] px-8 [&_h2]:paragraph2Medium [&_h2]:text-neutral-800 [&_h3]:paragraph2Medium [&_ul_ol]:space-y-[16px] [&_li]:space-y-[16px] [&>ul_ol]:list-decimal [&>ul_ol]:ml-7 [&>ul_ul]:ml-7 [&_ol_ol_ol_ol]:list-[lower-alpha] [&>ul]:space-y-[16px] [&_ul_ul]:list-disc',
+          className
+        )}>
+        {children}
+      </div>
+    </div>
 	);
 }
 

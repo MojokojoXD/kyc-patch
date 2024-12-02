@@ -74,11 +74,11 @@ export class FormFieldAggregator {
 			}
 
 			if (modifierOptions.removeAllExcept) {
-				const fieldsNotToRemove = tagSpecificFieldIndices.map(
+				this._intermediateFields = tagSpecificFieldIndices.map(
 					(fieldIndex) => this._intermediateFields[fieldIndex]
 				);
 
-				this._intermediateFields = fieldsNotToRemove;
+				
 				return;
 			}
 
@@ -91,20 +91,26 @@ export class FormFieldAggregator {
 			tagSpecificFieldIndices.forEach((index) => {
 				const fieldToModify = this._intermediateFields[index];
 
-				this._intermediateFields[index] = {
-					...fieldToModify,
-					label: modifierOptions.required
-						? this.removeOptionalOnLabel(fieldToModify.label)
-						: this.addOptionalToLabel(fieldToModify.label),
+        this._intermediateFields[ index ] = {
+          //destructure all default value
+          ...fieldToModify,
+          
+          //Override specific properties based on configuration
+          //--label-override
+          ...( typeof modifierOptions.required !== 'undefined' && { label: modifierOptions.required ? this.removeOptionalOnLabel( fieldToModify.label ) : this.addOptionalToLabel( fieldToModify.label ) } ),
+          
+          //--rules-override
 					rules: {
 						...(fieldToModify.rules as RegisterOptions),
 						...(modifierOptions.required
 							? { required: 'This entry is required' }
 							: { required: false }),
-					},
+          },
+          //--field type override
 					...(modifierOptions.fieldType && {
 						fieldType: modifierOptions.fieldType,
-					}),
+          } ),
+          //--readonly-override
 					...(modifierOptions.readonly && { readonly: true }),
 				};
 			});

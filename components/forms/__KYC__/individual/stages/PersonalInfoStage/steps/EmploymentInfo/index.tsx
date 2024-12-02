@@ -91,7 +91,7 @@ function EmploymentForm({
 			removeAllExcept:
 				currentEmploymentStatus === 'Retired' ||
 				currentEmploymentStatus === 'Unemployed' ||
-				!currentEmploymentStatus,
+        !currentEmploymentStatus,
 		});
 
 		aggregator.modifyFields('remove-all-except', {

@@ -47,8 +47,8 @@ export default function FormDropdown({
 							<Select
 								onValueChange={(v) => field.onChange(v)}
 								defaultValue={field.value}>
-								<SelectTrigger disabled={readonly}>
-									<SelectValue placeholder={placeholder} />
+								<SelectTrigger disabled={readonly} className='capitalize'>
+									<SelectValue placeholder={placeholder}/>
 								</SelectTrigger>
 								<SelectContent>
 									<SelectGroup>
@@ -57,7 +57,7 @@ export default function FormDropdown({
 												<SelectItem
 													key={options!.keySelector(o)}
 													value={options!.keySelector(o)}>
-													{options!.keySelector(o)}
+													{options!.keySelector(o).toLowerCase()}
 												</SelectItem>
 											))}
 									</SelectGroup>
@@ -70,7 +70,7 @@ export default function FormDropdown({
 												<SelectItem
 													key={options.keySelector(o)}
 													value={options.keySelector(o)}>
-													{options.keySelector(o)}
+													{options.keySelector(o).toLowerCase()}
 												</SelectItem>
 											))}
 									</SelectGroup>

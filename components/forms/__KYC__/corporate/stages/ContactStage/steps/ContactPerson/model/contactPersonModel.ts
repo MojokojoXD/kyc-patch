@@ -226,7 +226,7 @@ export const contactPersonModel = ({
 	{
 		fieldType: 'text',
 		name: 'contacts.contactPerson.professionalLicenseNo',
-		label: 'Professional License Number (If Applicable)',
+		label: 'Professional License Number (Optional)',
 		placeholder: 'Enter number',
 	},
 	{

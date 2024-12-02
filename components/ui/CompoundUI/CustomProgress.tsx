@@ -7,7 +7,7 @@ type CustomProgressProps = {
 	disable?: boolean;
 };
 
-export default function CustomProgress({
+export function CustomProgress({
 	maxSteps,
 	currentStep,
 	disable,
@@ -17,7 +17,7 @@ export default function CustomProgress({
 	return (
 		<div
 			className={
-				'fixed top-3 left-0 z-[70] sm:max-w-xs w-1/6 min-w-64 h-24 flex flex-col justify-center items-center p-6 text-neutral-700'
+				'flex flex-col justify-center items-center p-6 text-neutral-700'
 			}>
 			<div className='w-full'>
 				<p
@@ -32,7 +32,7 @@ export default function CustomProgress({
 						max={maxSteps}
 						value={progressPercentage}
 						className={cn(
-							'w-full border border-neutral-200 bg-transparent grow',
+							'w-full border border-neutral-100 bg-transparent grow',
 							disable && 'border-neutral-700/20'
 						)}
 					/>
