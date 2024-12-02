@@ -15,7 +15,6 @@ export const accountActivityModel = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: [
 				'Salaries/Wages',
 				'Proceeds from Business',
@@ -36,7 +35,6 @@ export const accountActivityModel = ({
             },
             options: {
                 keys: [ 'Monthly', 'Quarterly', 'Annually' ],
-                keySelector(key){ return key as string }
             },
             componentProps: {
                 className: 'grid-cols-3'
@@ -63,7 +61,6 @@ export const accountActivityModel = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually', 'Other'],
 		},
 		componentProps: {
@@ -95,7 +92,6 @@ export const accountActivityModel = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually', 'Other'],
 		},
 		componentProps: {

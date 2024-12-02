@@ -20,7 +20,6 @@ export const categoryOfInvestmentFields: FormFactoryProps[] = [
                 'Fixed Income',
                 'Equities/Shares'
             ],
-            keySelector(key){ return key as string }
         },
         componentProps: {
             className: 'grid-cols-2'
@@ -35,7 +34,6 @@ export const categoryOfInvestmentFields: FormFactoryProps[] = [
         },
         options: {
             keys: [ 'Yes', 'No' ],
-            keySelector(key){ return key as string }
         },
         componentProps: {
             className: 'grid-cols-2'

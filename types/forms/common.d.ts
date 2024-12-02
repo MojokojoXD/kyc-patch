@@ -46,7 +46,8 @@ export type MaritalStatus =
 	| 'Separated'
 	| 'Divorced';
 
-export interface Country {
+export interface Country
+{
 	call_code: string | null;
 	cty_code: string;
 	cty_flag_name: string | null;
@@ -59,7 +60,8 @@ type OtherList = Country[];
 
 export type CountryList = Country[][];
 
-export interface BankList {
+export interface BankList
+{
 	bank_code: string;
 	bank_name: string;
 	country_code: string;

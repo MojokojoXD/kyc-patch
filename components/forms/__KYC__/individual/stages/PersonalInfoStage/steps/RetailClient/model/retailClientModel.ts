@@ -7,7 +7,6 @@ export const retailClientModel: FormFactoryProps[] = [
 		defaultValue: 'Individual',
         label: 'Client Type',
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Individual', 'Joint Account'],
 		},
 		componentProps: {
@@ -19,7 +18,6 @@ export const retailClientModel: FormFactoryProps[] = [
 		name: 'clientStatus',
         label: 'Client Status',
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['New Client', 'Existing Client'],
 		},
 		componentProps: {

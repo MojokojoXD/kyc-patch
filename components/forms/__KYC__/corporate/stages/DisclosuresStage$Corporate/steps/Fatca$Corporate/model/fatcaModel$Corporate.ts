@@ -11,9 +11,6 @@ export const fatcaModel$Corporate = ({
 		name: `accountSignatories.signatories.${index}.disclosures.fatca.status`,
 		label: 'FATCA Status',
 		options: {
-			keySelector(key) {
-				return key as string;
-			},
 			keys: [
 				'Were you born in the United States of America (USA)?',
 				'Are you a U.S Citizen?',

@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country, CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const personalModel$NOK$Individual = ({
@@ -14,7 +14,6 @@ export const personalModel$NOK$Individual = ({
 		name: `nextOfKin.${index}.title.presets`,
 		label: 'Title',
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr', 'Other'],
 		},
 		rules: {
@@ -86,7 +85,6 @@ export const personalModel$NOK$Individual = ({
 			required: 'Select gender',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Male', 'Female'],
 		},
 		componentProps: {
@@ -101,7 +99,6 @@ export const personalModel$NOK$Individual = ({
 			required: 'Select marital status',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Single', 'Married', 'Divorced', 'Separated'],
 		},
 		componentProps: {
@@ -116,7 +113,6 @@ export const personalModel$NOK$Individual = ({
 			required: 'Select country of birth',
 		},
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList[1],
 			priorityKeys: countryList[0],
 		},
@@ -136,7 +132,6 @@ export const personalModel$NOK$Individual = ({
 			required: 'Select country of residence',
 		},
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList[1],
 			priorityKeys: countryList[0],
 		},
@@ -151,7 +146,6 @@ export const personalModel$NOK$Individual = ({
 			required: 'Select nationality',
 		},
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList[1],
 			priorityKeys: countryList[0],
 		},

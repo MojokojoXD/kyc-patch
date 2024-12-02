@@ -103,7 +103,7 @@ export default function IndividualForm() {
 				<FormNav />
 				<Loading reveal={isLoading} />
 				<div className='relative w-full bg-neutral-50 flex justify-center overflow-auto h-full py-10'>
-					<Form {...form}>
+					<Form {...KYCForm.form}>
 						<form
 							onSubmit={handleSubmit(submitHandler)}
 							className='w-full max-w-[44.75rem]'>

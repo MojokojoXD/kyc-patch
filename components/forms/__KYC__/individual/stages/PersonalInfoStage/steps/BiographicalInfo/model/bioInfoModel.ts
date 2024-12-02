@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country, CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 import type { ClientInfo } from '@/types/forms/individualSchema';
 import OPTIONS from '@/utils/vars/_formDefaults/personal_multiple_choice.json';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
@@ -21,7 +21,6 @@ export const bioInfoModel = ({
 			required: 'Please enter select title',
 		},
 		options: {
-			keySelector: (key: string) => key,
 			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr', 'Other'],
 		},
 		componentProps: {
@@ -98,7 +97,6 @@ export const bioInfoModel = ({
 			required: 'Select gender',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: OPTIONS.bio.gender,
 		},
 		componentProps: {
@@ -113,7 +111,6 @@ export const bioInfoModel = ({
 			required: 'Select marital status',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: OPTIONS.bio.maritalStatus,
 		},
 		componentProps: {
@@ -138,7 +135,6 @@ export const bioInfoModel = ({
 			required: 'Select country of residence',
 		},
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList.at(1),
 			priorityKeys: countryList.at(0),
 		},
@@ -153,7 +149,6 @@ export const bioInfoModel = ({
 			required: 'Select nationality',
 		},
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList.at(1),
 			priorityKeys: countryList.at(0),
 		},
@@ -171,7 +166,6 @@ export const bioInfoModel = ({
 			],
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: [
 				'Resident Ghanaian',
 				'Resident Foreigner',

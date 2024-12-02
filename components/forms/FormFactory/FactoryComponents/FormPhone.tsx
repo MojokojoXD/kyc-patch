@@ -170,7 +170,7 @@ function CustomCountrySelect({
 	disabled,
 	onValueChange,
 	defaultValue,
-	options = { keys: [], priorityKeys: [], keySelector: (key) => key as string },
+	options = { keys: [], priorityKeys: []},
 }: CustomCountrySelectProps) {
 	const countries = useMemo(
 		() => [...(options.keys || []), ...(options.priorityKeys || [])],
@@ -200,23 +200,32 @@ function CustomCountrySelect({
 			</SelectTrigger>
 			<SelectContent className=''>
 				<SelectGroup>
-					{options?.priorityKeys?.map((c) => (
+          { options?.priorityKeys?.map( ( c ) =>
+          {
+            if ( typeof c === 'string' ) return <></>
+            if( !('cty_name' in c) ) return <></>
+
+            return(
 						<SelectItem
-							value={(c as Country).cty_code}
-							key={(c as Country).cty_code}>
-							{(c as Country).cty_name} ({(c as Country).call_code})
+							value={c.cty_code}
+							key={c.cty_code}>
+							{c.cty_name.toLowerCase()} ({c.call_code})
 						</SelectItem>
-					))}
+					)})}
 				</SelectGroup>
 				<hr className='my-2 border-neutral-200' />
 				<SelectGroup>
-					{options?.keys?.map((c) => (
+          { options?.keys?.map( ( c ) =>
+          {
+            if ( typeof c === 'string' ) return <></>
+            if( !('cty_name' in c) ) return <></>
+            return(
 						<SelectItem
-							value={(c as Country).cty_code}
-							key={(c as Country).cty_code}>
-							{(c as Country).cty_name} ({(c as Country).call_code})
+							value={c.cty_code}
+							key={c.cty_code}>
+							{c.cty_name.toLowerCase()} ({c.call_code})
 						</SelectItem>
-					))}
+					)})}
 				</SelectGroup>
 			</SelectContent>
 		</Select>

@@ -10,7 +10,6 @@ export const proofOfIdentityModel$Individual = ({
 		name: `applicant.${index}.proofOfIdentity.idType`,
 		label: 'ID Type',
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Passport', 'National ID', "Driver's license"],
 		},
 		rules: {

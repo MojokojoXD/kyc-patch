@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country, CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 const TURN_OVER_AMOUNTS = [
@@ -76,9 +76,6 @@ export const companyDetailsFields = ({
 		placeholder: 'Enter phone/mobile number',
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
 			priorityKeys: countryList[0],
 		},
 	},
@@ -103,9 +100,6 @@ export const companyDetailsFields = ({
 		},
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
 			priorityKeys: countryList[0],
 		},
 	},
@@ -127,9 +121,6 @@ export const companyDetailsFields = ({
 		label: 'Monthly Turnover (GHC)',
 		options: {
 			keys: TURN_OVER_AMOUNTS,
-			keySelector(key) {
-				return key as string;
-			},
 		},
 	},
 	{
@@ -138,9 +129,6 @@ export const companyDetailsFields = ({
 		label: 'Annual Turnover (GHC)',
 		options: {
 			keys: TURN_OVER_AMOUNTS,
-			keySelector(key) {
-				return key as string;
-			},
 		},
 	},
 ];

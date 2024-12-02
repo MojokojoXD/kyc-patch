@@ -16,7 +16,6 @@ export const signatureMandateModel$Corporate: FormFactoryProps[] = [
                 'Two to sign [A + B]',
                 'All to sign [All As + All Bs]'
             ],
-            keySelector(key) { return key as string }
         }
     }
 ]

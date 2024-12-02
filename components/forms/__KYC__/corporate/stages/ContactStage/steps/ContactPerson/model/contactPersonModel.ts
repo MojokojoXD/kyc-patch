@@ -1,6 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country, CountryList } from '@/types/forms/common';
-
+import type { CountryList } from '@/types/forms/common';
 
 const MIN_AGE = 18;
 
@@ -19,9 +18,6 @@ export const contactPersonModel = ({
 		},
 		options: {
 			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr', 'Other'],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 		componentProps: {
 			className: 'grid-cols-5',
@@ -82,9 +78,6 @@ export const contactPersonModel = ({
 		},
 		options: {
 			keys: ['Male', 'Female'],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 		componentProps: {
 			className: 'grid-cols-2',
@@ -99,9 +92,6 @@ export const contactPersonModel = ({
 		},
 		options: {
 			keys: ['Single', 'Married', 'Separated', 'Divorced'],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 		componentProps: {
 			className: 'grid-cols-4',
@@ -126,9 +116,7 @@ export const contactPersonModel = ({
 		},
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
+
 			priorityKeys: countryList[0],
 		},
 	},
@@ -142,9 +130,7 @@ export const contactPersonModel = ({
 		},
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
+
 			priorityKeys: countryList[0],
 		},
 	},
@@ -158,9 +144,7 @@ export const contactPersonModel = ({
 		},
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
+
 			priorityKeys: countryList[0],
 		},
 	},
@@ -176,9 +160,6 @@ export const contactPersonModel = ({
 				'Non-Resident Ghanaian',
 				'Non-Resident Foreigner',
 			],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 	},
 	{
@@ -241,15 +222,12 @@ export const contactPersonModel = ({
 	{
 		fieldType: 'radio',
 		name: 'contacts.contactPerson.isSignatory',
-    label: 'Will this contact person also be an account signatory?',
-    rules: {
-      required: 'Select signatory status'
-    },
+		label: 'Will this contact person also be an account signatory?',
+		rules: {
+			required: 'Select signatory status',
+		},
 		options: {
 			keys: ['Yes', 'No'],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 		componentProps: {
 			className: 'grid-cols-2',

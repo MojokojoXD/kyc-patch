@@ -15,7 +15,6 @@ export const proofOfIdentityModel$Corporate = ( { index }: { index: number; } ):
                 'National ID',
                 'Driver\'s License'
             ],
-            keySelector(key) { return key as string }
         }
     },
     {

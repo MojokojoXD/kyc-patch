@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country, CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const contactDetailsModel$Individual = ({
@@ -47,7 +47,6 @@ export const contactDetailsModel$Individual = ({
 			maxPhoneCount: 2,
 		},
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList.at(1),
 			priorityKeys: countryList.at(0),
 		},
@@ -90,7 +89,6 @@ export const contactDetailsModel$Individual = ({
 		label: '',
 		placeholder: 'Enter contact phone number',
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList.at(1),
 			priorityKeys: countryList.at(0),
 		},
@@ -114,7 +112,6 @@ export const contactDetailsModel$Individual = ({
         placeholder: 'Enter Fax Number',
         rules: null,
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList.at(1),
 			priorityKeys: countryList.at(0),
 		},

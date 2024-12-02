@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country,CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 
 export const contactModel$NOK$Individual = ({
 	index,
@@ -35,7 +35,6 @@ export const contactModel$NOK$Individual = ({
 			phoneMode: 'single',
 		},
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList[1],
 			priorityKeys: countryList[0],
 		},

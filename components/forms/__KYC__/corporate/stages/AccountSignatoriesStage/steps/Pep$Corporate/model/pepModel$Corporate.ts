@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country,CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 
 export const pepModel$Corporate = ({
 	index,
@@ -18,9 +18,7 @@ export const pepModel$Corporate = ({
 		},
 		options: {
 			keys: ['Yes', 'No'],
-			keySelector(key) {
-				return key as string;
-			},
+			
         },
         componentProps: {
             className: 'grid-cols-2'
@@ -46,9 +44,6 @@ export const pepModel$Corporate = ({
 		},
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
 			priorityKeys: countryList[0],
 		},
 	},

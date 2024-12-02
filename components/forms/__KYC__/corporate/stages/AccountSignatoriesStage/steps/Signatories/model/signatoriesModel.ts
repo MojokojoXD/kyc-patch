@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country, CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 import type { Signatory } from '@/types/forms/corporateSchema';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
@@ -21,9 +21,6 @@ export const signatoriesModel = ({
 		label: 'Do any of the roles apply to the signatory? (Optional)',
 		options: {
 			keys: ['Director/Executive/Trustee/Admin', 'Beneficial Owner'],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 	},
 	{
@@ -35,9 +32,6 @@ export const signatoriesModel = ({
 		},
 		options: {
 			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr', 'Other'],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 		componentProps: {
 			className: 'grid-cols-5',
@@ -97,8 +91,8 @@ export const signatoriesModel = ({
 			required: 'Please select date',
 		},
 		componentProps: {
-            disableFutureDays: true,
-            minYear: MIN_AGE
+			disableFutureDays: true,
+			minYear: MIN_AGE,
 		},
 	},
 	{
@@ -110,9 +104,6 @@ export const signatoriesModel = ({
 		},
 		options: {
 			keys: ['Male', 'Female'],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 		componentProps: {
 			className: 'grid-cols-2',
@@ -127,9 +118,6 @@ export const signatoriesModel = ({
 		},
 		options: {
 			keys: ['Single', 'Married', 'Separated', 'Divorced'],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 		componentProps: {
 			className: 'grid-cols-4',
@@ -148,15 +136,13 @@ export const signatoriesModel = ({
 		fieldType: 'dropdown',
 		name: `accountSignatories.signatories.${index}.countryOfBirth`,
 		label: 'Country of Birth',
-        placeholder: 'Select country',
-        rules: {
-            required: 'Please select country'
-        },
+		placeholder: 'Select country',
+		rules: {
+			required: 'Please select country',
+		},
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
+
 			priorityKeys: countryList[0],
 		},
 	},
@@ -164,15 +150,13 @@ export const signatoriesModel = ({
 		fieldType: 'dropdown',
 		name: `accountSignatories.signatories.${index}.citizenship`,
 		label: 'Citizenship',
-        placeholder: 'Select country',
-        rules: {
-            required: 'Please select country'
-        },
+		placeholder: 'Select country',
+		rules: {
+			required: 'Please select country',
+		},
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
+
 			priorityKeys: countryList[0],
 		},
 	},
@@ -180,22 +164,20 @@ export const signatoriesModel = ({
 		fieldType: 'dropdown',
 		name: `accountSignatories.signatories.${index}.countryOfResidence`,
 		label: 'Country of Residence',
-        placeholder: 'Select country',
-        rules: {
-            required: 'Please select country'
-        },
+		placeholder: 'Select country',
+		rules: {
+			required: 'Please select country',
+		},
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
+
 			priorityKeys: countryList[0],
 		},
 	},
 	{
 		fieldType: 'radio',
-        name: `accountSignatories.signatories.${ index }.residenceStatus`,
-        readonly: true,
+		name: `accountSignatories.signatories.${index}.residenceStatus`,
+		readonly: true,
 		label: 'Residence Status',
 		options: {
 			keys: [
@@ -204,9 +186,6 @@ export const signatoriesModel = ({
 				'Non-Resident Ghanaian',
 				'Non-Resident Foreigner',
 			],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 	},
 	{
@@ -216,9 +195,7 @@ export const signatoriesModel = ({
 		placeholder: 'Enter phone/mobile number',
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
+
 			priorityKeys: countryList[0],
 		},
 	},
@@ -328,9 +305,6 @@ export const signatoriesModel = ({
 		placeholder: 'Contact phone number',
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
 			priorityKeys: countryList[0],
 		},
 		componentProps: {
@@ -379,9 +353,6 @@ export const signatoriesModel = ({
 		},
 		options: {
 			keys: ['A', 'B'],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 		componentProps: {
 			className: 'grid-cols-2',
@@ -402,17 +373,17 @@ export const signatoriesModel = ({
 
 export const signatoriesDefaultValues: Signatory = {
 	id: FormHelpers.generateUniqueIdentifier(),
-    role: [],
+	role: [],
 	address: {
 		phoneNumber: [
 			{
-                value: '',
-                countryCode: 'GH'
+				value: '',
+				countryCode: 'GH',
 			},
 		],
-        residentialAddress: '',
-        email: '',
-        city: '',
+		residentialAddress: '',
+		email: '',
+		city: '',
 		postalAddress: '',
 		digitalAddress: '',
 		nearestLandmark: '',
@@ -421,39 +392,39 @@ export const signatoriesDefaultValues: Signatory = {
 			relation: '',
 			phoneNumber: [
 				{
-                    value: '',
-                    countryCode: 'GH'
+					value: '',
+					countryCode: 'GH',
 				},
 			],
 		},
-    },
-    pepInfo: {
-        isPep: 'No',
-    },
-    proofOfIdentity: {
-        idNumber: '',
-        idType: '',
-        issueDate: '',
-        expiryDate: '',
-        placeOfIssue: ''
-    },
-    disclosures: {
-        fatca: {
-            status: [],
-            ownership: ''
-        },
-        databank: {
-            emailIndemnity: {
-                signatureResource: ''
-            },
-        },
-        kestrel: {
-            nomineeAgreement: {
-                signatureResource: '',
-            },
-        },
-    },
-    documentChecklist: {},
+	},
+	pepInfo: {
+		isPep: 'No',
+	},
+	proofOfIdentity: {
+		idNumber: '',
+		idType: '',
+		issueDate: '',
+		expiryDate: '',
+		placeOfIssue: '',
+	},
+	disclosures: {
+		fatca: {
+			status: [],
+			ownership: '',
+		},
+		databank: {
+			emailIndemnity: {
+				signatureResource: '',
+			},
+		},
+		kestrel: {
+			nomineeAgreement: {
+				signatureResource: '',
+			},
+		},
+	},
+	documentChecklist: {},
 	signatureMandate: undefined,
 	signatureResource: '',
 	title: {

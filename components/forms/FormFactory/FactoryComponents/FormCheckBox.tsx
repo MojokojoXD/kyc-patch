@@ -36,9 +36,12 @@ export default function FormCheckBox({
 					<FormControl>
 						<div className={cn('grid gap-[4px]', componentProps.className)}>
 							{options?.keys &&
-								options.keys.map((o) => (
+                options.keys.map( ( o ) =>
+                {
+                  if( typeof o !== 'string' ) return <></>
+                  return(
 									<CustomToggle
-										key={options.keySelector(o)}
+										key={o}
 										{...field}
 										onChange={(e) => {
 											let temp = [];
@@ -54,13 +57,13 @@ export default function FormCheckBox({
 											field.onChange(temp);
 										}}
 										className={componentProps.toggleStyles}
-										value={options.keySelector(o)}
+										value={o}
 										type={'checkbox'}
 										readonly={readonly}
-										label={options.keySelector(o)}
-										selected={field.value.includes(options.keySelector(o))}
+										label={o}
+										selected={field.value.includes(o)}
 									/>
-								))}
+								)})}
 						</div>
 					</FormControl>
 					<FormMessage>{fieldState.error?.message}</FormMessage>

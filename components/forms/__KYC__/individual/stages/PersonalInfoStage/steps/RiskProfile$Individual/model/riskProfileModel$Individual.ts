@@ -16,7 +16,6 @@ export const riskProfileModel$Individual = ({
 			required: 'Select risk tolerance',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['High', 'Medium', 'Low'],
 		},
 		componentProps: {
@@ -52,7 +51,6 @@ export const riskProfileModel$Individual = ({
 			required: 'Select time period',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: [
 				'Less than 1 year',
 				'1 to 2 years',
@@ -70,7 +68,6 @@ export const riskProfileModel$Individual = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Yes', 'No', 'Yes,but less than six months'],
 		},
 		tags: ['DATAB'],
@@ -83,7 +80,6 @@ export const riskProfileModel$Individual = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Limited', 'Moderate', 'Extensive'],
 		},
 		componentProps: {
@@ -99,7 +95,6 @@ export const riskProfileModel$Individual = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: [
 				'Short Term (1 year)',
 				'Medium Term (2-5 years)',
@@ -120,7 +115,6 @@ export const riskProfileModel$Individual = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: [
 				'Extremely concerned; sell my investment',
 				'Concerned; consider selling my investment',
@@ -138,7 +132,6 @@ export const riskProfileModel$Individual = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: [
 				'Salaries/Wages',
 				'Proceeds from Business',
@@ -171,7 +164,6 @@ export const riskProfileModel$Individual = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually', 'Other'],
 		},
 		componentProps: {
@@ -203,7 +195,6 @@ export const riskProfileModel$Individual = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually', 'Other'],
 		},
 		componentProps: {
@@ -239,7 +230,6 @@ export const riskProfileModel$Individual = ({
 		},
 		options: {
 			keys: ['Email', 'Online', 'Collection at Branch'],
-			keySelector: (key) => key as string,
 		},
 		componentProps: {
 			className: 'grid grid-cols-3 gap-[4px]',
@@ -255,7 +245,6 @@ export const riskProfileModel$Individual = ({
 		},
 		options: {
 			keys: ['Semi-Annual', 'Annual', 'Monthly'],
-			keySelector: (key) => key as string,
 		},
 		componentProps: {
 			className: 'grid grid-cols-3 gap-[4px]',

@@ -18,7 +18,6 @@ export const categoryOfBusinessFields: FormFactoryProps[] = [
                 'Charities/NGOs',
                 'Other'
             ],
-            keySelector(key){ return key as string }
         },
         componentProps: {
             otherProps: {

@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country,CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const contactDetailsModel$Corporate = ({
@@ -42,9 +42,6 @@ export const contactDetailsModel$Corporate = ({
 		placeholder: 'Enter phone number',
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
 			priorityKeys: countryList[0],
 		},
 	},
@@ -85,9 +82,6 @@ export const contactDetailsModel$Corporate = ({
 		placeholder: 'Contact phone number',
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
 			priorityKeys: countryList[0],
 		},
 		componentProps: {

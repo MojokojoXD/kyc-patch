@@ -60,7 +60,6 @@ export type FactoryComponentProps = {
 	placeholder?: string;
 	defaultValue?: string | boolean;
 	options?: {
-		keySelector(key: DropdownOption): string;
 		keys: DropdownOption[] | undefined;
 		priorityKeys?: DropdownOption[];
 	};

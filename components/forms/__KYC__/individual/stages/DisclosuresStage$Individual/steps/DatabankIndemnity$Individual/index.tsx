@@ -51,7 +51,7 @@ export const DatabankEmailIndemnity$Individual: FormStep = () => {
 					const clientMiddleName = a.middleName ?? '';
 
 					const fullName = `${clientFirstName} ${clientMiddleName} ${clientLastName}`;
-          const address = `${ a.contacts.residentialAddress }, ${ a.contacts.city } ${ a.contacts.postalAddress }, ${ a.countryOfResidence }`;
+          const address = `${ a.contacts.residentialAddress }, ${ a.contacts.city } ${ a.contacts.postalCode}, ${ a.countryOfResidence }`;
 					return (
 						<Accordion
 							collapsible

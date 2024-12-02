@@ -27,6 +27,7 @@ export type KYCContextValue = ReturnType<typeof useKYCForm>;
 
 export const KYCContext = createContext<KYCContextValue | null>(null);
 
+// Custom hook for safe use of the KYC context object
 export function useKYCFormContext<
 	TSchema extends FieldValues = FieldValues,
 	TStages extends Stages = Stages
@@ -43,10 +44,17 @@ export function useKYCFormContext<
 export function useKYCForm<
 	TForm extends FieldValues,
 	TStages extends Stages = Stages
->(stages: TStages, form: UseFormReturn<TForm>) {
+  >( stages: TStages, form: UseFormReturn<TForm> )
+{
+
+  
+  //Global error and loading state
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState('');
 
+
+
+  //Reducer for handling form stage and step movement i.e next, prev, jump to step
 	const [formNav, formAction] = useReducer(
 		formReducer as FormReducerFn<
 			FormReducerState<TStages[number]['name'], TStages[number]['steps'][number]>,
@@ -57,26 +65,48 @@ export function useKYCForm<
 			currentStep: stages[0].steps[0],
 			allStages: stages,
 		}
-	);
+  );
+  
 
+
+  //collect broker info and client info from page url query params
 	const router = useRouter();
 	const urlQuery = router.query as ParsedURLQuery;
 
+
+
+  /*
+      Any component within the KYC context can toggle loading overlay to musk
+      async operation or calculations that take time
+  */
 	const toggleLoading = useCallback(
 		(toggle: boolean) => setIsLoading(toggle),
 		[]
 	);
 
-	const getError = useCallback((error: string) => setError(error), []);
 
+
+  /* 
+      Set global error stage form any component with KYC context to show critical failure.
+  */
+  const getError = useCallback( ( error: string ) => setError( error ), [] );
+  
+
+
+
+  // advance form one step
 	const next = useCallback(async () => {
 		if (await form.trigger(undefined, { shouldFocus: true })) {
       formAction({ type: 'next' });
     }
-	}, [form]);
+  }, [ form ] );
+  
 
+
+  // advance form one step backward
 	const prev = useCallback(() => formAction({ type: 'prev' }), []);
 
+  //effect to detect form vars in URL
 	useEffect(() => {
 		if (router.isReady) {
 			if (urlQuery.c_id && urlQuery.b_code && urlQuery.submission) {
@@ -88,6 +118,7 @@ export function useKYCForm<
 		}
 	}, [router, urlQuery]);
 
+  //All custom hook returns memoized to mitigate unnecessary rerenders
 	return useMemo(
 		() => ({
 			formNav,

@@ -19,7 +19,6 @@ interface SessionProviderProps extends Pick<SessionContextSchema, 'profile'> {
 export function Session({ children,profile}: SessionProviderProps) {
 	const router = useRouter();
 
-	// const [userProfile] = useState<typeof profile>(profile);
 	const [isRequesting, setIsRequesting] = useState(true);
 	const [requestJobs, setRequestJobs] = useState<
 		{ job: Job; feedback: Feedback }[] | null
@@ -67,7 +66,7 @@ export function Session({ children,profile}: SessionProviderProps) {
 			}
 		})();
   }, [ requestJobs, logout ] );
-  
+
   const sessionContextValue = useMemo( () => ( {
     profile,
     isRequesting,

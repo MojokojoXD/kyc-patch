@@ -9,7 +9,6 @@ export const signatureMandateModel$Individual: FormFactoryProps[] = [
             required: 'Please select option'
         },
         options: {
-            keySelector( key ) { return key as string; },
             keys: [
                 'Both signatories to sign',
                 'One signatory to sign'

@@ -10,9 +10,6 @@ export const proofOfIdentityModel$Contacts: FormFactoryProps[] = [
         },
 		options: {
 			keys: ['Passport', 'National ID', "Driver's License"],
-			keySelector(key) {
-				return key as string;
-			},
 		},
     },
     {

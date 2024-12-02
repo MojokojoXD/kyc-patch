@@ -67,17 +67,20 @@ export default function FormRadio({
 						</FormLabel>
 						<div className={cn('grid gap-[4px]', componentProps.className)}>
 							{options &&
-								options.keys?.map((o) => (
+                options.keys?.map( ( o ) =>
+                {
+                  if( typeof o !== 'string' ) return<></>
+                  return(
 									<CustomToggle
-										key={options.keySelector(o)}
+										key={o}
 										readonly={readonly}
 										{...field}
-										value={options.keySelector(o)}
+										value={o}
 										className={componentProps.toggleStyles}
-										label={options.keySelector(o)}
-										selected={field.value === options.keySelector(o)}
+										label={o}
+										selected={field.value === o}
 									/>
-								))}
+								)})}
 						</div>
 						<FormMessage>{fieldState.error?.message}</FormMessage>
 					</FormItem>

@@ -12,7 +12,6 @@ const investmentCatergoryFields: FormFactoryProps[] = [
 		name: 'catInvestment',
 		label: 'Category of Investment',
 		options: {
-			keySelector: (key) => key  as string,
 			keys: ['Fixed Income', 'Equities/Shares'],
 		},
 		rules: {
@@ -27,7 +26,6 @@ const investmentCatergoryFields: FormFactoryProps[] = [
 		name: 'taxExempt',
 		label: 'Are you tax exempt?',
         options: {
-            keySelector: ( key) => key as string,
             keys: [ 'Yes', 'No' ]
         },
         componentProps: {

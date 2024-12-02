@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from "@/types/Components/formFactory";
-import type { CountryList, Country } from "@/types/forms/common";
+import type { CountryList } from "@/types/forms/common";
 import validator from 'validator';
 
 export const addClientFormModel = ( { countryList = [] }: { countryList?: CountryList } ): FormFactoryProps[] => [
@@ -37,7 +37,6 @@ export const addClientFormModel = ( { countryList = [] }: { countryList?: Countr
         options: {
             keys: countryList[ 1 ],
             priorityKeys: countryList[ 0 ],
-            keySelector(key){ return (key as Country).cty_name }
         },
         componentProps: {
             phoneMode: 'single'
@@ -61,7 +60,6 @@ export const addClientFormModel = ( { countryList = [] }: { countryList?: Countr
             required: 'Select client type'
         },
         options: {
-            keySelector(key){ return key as string },
             keys: [ 'Individual or Joint', 'Corporate' ]
         }
     }

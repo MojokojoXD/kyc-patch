@@ -1,4 +1,4 @@
-import type { Country,CountryList, BankList } from '@/types/forms/common';
+import type { CountryList, BankList } from '@/types/forms/common';
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 
 
@@ -21,7 +21,6 @@ export const bankDetailsModel$Individual = ({
 			required: 'Select country',
 		},
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList[1],
 			priorityKeys: countryList[0],
 		},
@@ -35,7 +34,6 @@ export const bankDetailsModel$Individual = ({
 			required: 'Select bank',
 		},
 		options: {
-			keySelector: (key) => (key as BankList).bank_name,
 			keys: bankList,
 		},
 	},

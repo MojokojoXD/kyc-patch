@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country,CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 import type { BeneficialOwner } from '@/types/forms/corporateSchema';
 import validator from 'validator';
 
@@ -53,9 +53,6 @@ export const beneficialOwnersModel = ({
 		},
 		options: {
 			keys: ['Passport', 'National ID', "Driver's License"],
-			keySelector(key) {
-				return key as string;
-			},
 		},
 		tags: ['read-only'],
 	},
@@ -66,9 +63,6 @@ export const beneficialOwnersModel = ({
 		placeholder: 'Enter phone/mobile number',
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
 			priorityKeys: countryList[0],
         },
         tags: ['read-only']
@@ -106,9 +100,7 @@ export const beneficialOwnersModel = ({
 		},
 		options: {
 			keys: ['Yes', 'No'],
-			keySelector(key) {
-				return key as string;
-			},
+			
 		},
 		componentProps: {
 			className: 'grid-cols-2',
@@ -135,9 +127,6 @@ export const beneficialOwnersModel = ({
 		},
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
 			priorityKeys: countryList[0],
 		},
 		tags: ['remove', 'read-only'],

@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country,CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 
 export const incorporationFields = ({
 	countryList = [],
@@ -56,9 +56,6 @@ export const incorporationFields = ({
 		placeholder: 'Select country',
 		options: {
 			keys: countryList[1],
-			keySelector(key) {
-				return (key as Country).cty_name;
-			},
 			priorityKeys: countryList[0],
 		},
 	},

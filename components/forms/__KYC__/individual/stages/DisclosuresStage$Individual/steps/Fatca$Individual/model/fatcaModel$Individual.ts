@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country,CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const fatcaModel$Individual = ({
@@ -14,9 +14,6 @@ export const fatcaModel$Individual = ({
 		name: `applicant.${index}.disclosures.fatca.status`,
 		label: 'FATCA Status',
 		options: {
-			keySelector(key) {
-				return key as string;
-			},
 			keys: [
 				'Were you born in the United States of America (USA)?',
 				'Are you a U.S Citizen?',
@@ -105,7 +102,6 @@ export const fatcaModel$Individual = ({
             phoneMode: 'single',
         },
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList[1],
 			priorityKeys: countryList[0],
 		},

@@ -11,7 +11,7 @@ type BaseProps = {
 type LayoutProps = BaseProps & Record<string, unknown>;
 export function Layout({ children }: LayoutProps) {
 	return (
-		<main className='min-h-screen flex justify-center items-center py-24'>
+		<main className='min-h-screen flex justify-center items-center py-24 bg-neutral-50'>
 			{children}
 		</main>
 	);

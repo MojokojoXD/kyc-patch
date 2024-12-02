@@ -1,4 +1,7 @@
-import type { FactoryComponentProps } from '@/types/Components/formFactory';
+import type {
+	DropdownOption,
+	FactoryComponentProps,
+} from '@/types/Components/formFactory';
 import {
 	FormItem,
 	FormControl,
@@ -24,10 +27,19 @@ export default function FormDropdown({
 	placeholder,
 	readonly = false,
 	rules,
-	options = { keySelector: () => '', keys: [], priorityKeys: [] },
+	options = { keys: [], priorityKeys: [] },
 	defaultValue = '',
 }: FormDropdownProps) {
 	const { control } = useFormContext();
+
+	const dropdownItemValueGetter = (value: DropdownOption) => {
+		if (typeof value === 'object') {
+			if ('cty_name' in value) return value.cty_name;
+			if ('bank_name' in value) return value.bank_name;
+		}
+
+		return value;
+	};
 
 	return (
 		<Controller
@@ -47,32 +59,42 @@ export default function FormDropdown({
 							<Select
 								onValueChange={(v) => field.onChange(v)}
 								defaultValue={field.value}>
-								<SelectTrigger disabled={readonly} className='capitalize'>
-									<SelectValue placeholder={placeholder}/>
+								<SelectTrigger
+									disabled={readonly}
+									className='capitalize'>
+									<SelectValue placeholder={placeholder} />
 								</SelectTrigger>
 								<SelectContent>
 									<SelectGroup>
 										{options.priorityKeys &&
-											options.priorityKeys.map((o) => (
-												<SelectItem
-													key={options!.keySelector(o)}
-													value={options!.keySelector(o)}>
-													{options!.keySelector(o).toLowerCase()}
-												</SelectItem>
-											))}
+											options.priorityKeys.map((o) => {
+                        const value = dropdownItemValueGetter( o );
+
+												return (
+													<SelectItem
+														key={value}
+														value={value}>
+														{value.toLowerCase()}
+													</SelectItem>
+												);
+											})}
 									</SelectGroup>
 									{options.priorityKeys && options.priorityKeys?.length > 0 && (
 										<hr className='my-2 border-neutral-200' />
 									)}
 									<SelectGroup>
 										{options.keys &&
-											options.keys.map((o) => (
-												<SelectItem
-													key={options.keySelector(o)}
-													value={options.keySelector(o)}>
-													{options.keySelector(o).toLowerCase()}
-												</SelectItem>
-											))}
+                      options.keys.map( ( o ) =>
+                      {
+                        const value = dropdownItemValueGetter( o )
+												return (
+													<SelectItem
+														key={value}
+														value={value}>
+														{value.toLowerCase()}
+													</SelectItem>
+												);
+											})}
 									</SelectGroup>
 								</SelectContent>
 							</Select>

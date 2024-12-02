@@ -14,7 +14,6 @@ export const proofOfIdentityModel$NOK$Individual = ( {
 			required: 'Select ID type',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: [
 				'Passport',
 				'National ID',

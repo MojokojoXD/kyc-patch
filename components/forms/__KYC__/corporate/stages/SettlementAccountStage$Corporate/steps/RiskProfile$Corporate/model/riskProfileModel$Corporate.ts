@@ -10,7 +10,6 @@ export const riskProfileModel$Corporate: FormFactoryProps[] = [
 			required: 'Select risk tolerance',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['High', 'Medium', 'Low'],
 		},
 		componentProps: {
@@ -25,7 +24,6 @@ export const riskProfileModel$Corporate: FormFactoryProps[] = [
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Short Term (1 year)', 'Medium Term (2-5 years)', 'Long Term (5 years+)'],
 		},
 		componentProps: {
@@ -40,7 +38,6 @@ export const riskProfileModel$Corporate: FormFactoryProps[] = [
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Limited', 'Moderate', 'Extensive'],
 		},
 		componentProps: {
@@ -56,7 +53,6 @@ export const riskProfileModel$Corporate: FormFactoryProps[] = [
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: [
 				'Extremely concerned; sell my investment',
 				'Concerned; consider selling my investment',

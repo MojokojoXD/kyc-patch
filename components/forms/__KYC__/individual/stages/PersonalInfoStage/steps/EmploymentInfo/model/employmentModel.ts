@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country, CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const employmentModel = ({
@@ -19,7 +19,6 @@ export const employmentModel = ({
 			required: 'Select employment status',
 		},
 		options: {
-			keySelector: (key: string) => key,
 			keys: ['Employed', 'Self-Employed', 'Unemployed', 'Retired', 'Student'],
 		},
 		tags: ['remove-all-except', 'control-employment'],
@@ -86,7 +85,6 @@ export const employmentModel = ({
 		placeholder: 'Enter phone number',
 		options: {
 			keys: countryList[1],
-			keySelector: (key) => (key as Country).cty_name,
 			priorityKeys: countryList[0],
 		},
 		tags: ['remove-all-except'],
@@ -145,7 +143,6 @@ export const employmentModel = ({
 			required: 'Select country',
 		},
 		options: {
-			keySelector: (key: Country) => key.cty_name,
 			keys: countryList[1],
 			priorityKeys: countryList[0],
 		},
@@ -226,7 +223,6 @@ export const employmentModel = ({
 			required: 'Please select income range',
 		},
 		options: {
-			keySelector: (key: string) => key as string,
 			keys: ['Below 1,000', '1,000-5,000', '5,000-10,000', 'Above 10,000'],
 		},
 	},

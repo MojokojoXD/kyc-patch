@@ -19,7 +19,6 @@ export const statementsModel: FormFactoryProps[] = [
 		},
 		options: {
 			keys: ['Email', 'Online', 'Collection at Branch'],
-			keySelector: (key) => key as string,
 		},
 		componentProps: {
 			className: 'grid grid-cols-3 gap-[4px]',
@@ -35,7 +34,6 @@ export const statementsModel: FormFactoryProps[] = [
 		},
 		options: {
 			keys: ['Semi-Annual', 'Annual', 'Monthly'],
-			keySelector: (key) => key as string,
 		},
 		componentProps: {
 			className: 'grid grid-cols-3 gap-[4px]',

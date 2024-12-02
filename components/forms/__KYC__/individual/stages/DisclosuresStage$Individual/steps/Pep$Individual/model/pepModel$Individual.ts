@@ -1,5 +1,5 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { Country,CountryList } from '@/types/forms/common';
+import type { CountryList } from '@/types/forms/common';
 
 export const pepModel$Individual = ({
 	index,
@@ -17,7 +17,6 @@ export const pepModel$Individual = ({
 			required: 'Select option',
 		},
 		options: {
-			keySelector: (key) => key as string,
 			keys: ['Yes', 'No'],
         },
         componentProps: {
@@ -43,7 +42,6 @@ export const pepModel$Individual = ({
 			required: 'Please select country',
 		},
 		options: {
-			keySelector: (key) => (key as Country).cty_name,
 			keys: countryList[1],
 			priorityKeys: countryList[0]
         },
