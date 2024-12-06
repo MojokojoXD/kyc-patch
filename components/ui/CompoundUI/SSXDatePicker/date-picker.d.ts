@@ -14,7 +14,9 @@ export interface SSXDatePickerProps {
 	disableFutureDays?: boolean;
 	placeholder?: string;
 	value?: string;
-	minYear?: number;
+  minYear?: number;
+  
+  readonly?: boolean;
 }
 export interface SSXCalendarProps {
 	onDateChange: (date: Date) => void;

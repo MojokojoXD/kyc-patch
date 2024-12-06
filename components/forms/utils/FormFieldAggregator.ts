@@ -78,39 +78,44 @@ export class FormFieldAggregator {
 					(fieldIndex) => this._intermediateFields[fieldIndex]
 				);
 
-				
 				return;
 			}
 
 			/*
         Beyond this we modify the properties on the field themselves;  
       */
-      
-      // if ( !modifierOptions.fieldType || !modifierOptions.readonly || !modifierOptions.required ) return;
+
+			// if ( !modifierOptions.fieldType || !modifierOptions.readonly || !modifierOptions.required ) return;
 
 			tagSpecificFieldIndices.forEach((index) => {
 				const fieldToModify = this._intermediateFields[index];
 
-        this._intermediateFields[ index ] = {
-          //destructure all default value
-          ...fieldToModify,
-          
-          //Override specific properties based on configuration
-          //--label-override
-          ...( typeof modifierOptions.required !== 'undefined' && { label: modifierOptions.required ? this.removeOptionalOnLabel( fieldToModify.label ) : this.addOptionalToLabel( fieldToModify.label ) } ),
-          
-          //--rules-override
-					rules: {
-						...(fieldToModify.rules as RegisterOptions),
-						...(modifierOptions.required
-							? { required: 'This entry is required' }
-							: { required: false }),
-          },
-          //--field type override
+				this._intermediateFields[index] = {
+					//destructure all default value
+					...fieldToModify,
+
+					//Override specific properties based on configuration
+					//--label-override
+					...(typeof modifierOptions.required !== 'undefined' && {
+						label: modifierOptions.required
+							? this.removeOptionalOnLabel(fieldToModify.label)
+							: this.addOptionalToLabel(fieldToModify.label),
+					}),
+
+					//--rules-override
+					...(typeof modifierOptions.required !== 'undefined' && {
+						rules: {
+							...(fieldToModify.rules as RegisterOptions),
+							...(modifierOptions.required
+								? { required: 'This entry is required' }
+								: { required: false }),
+						},
+					}),
+					//--field type override
 					...(modifierOptions.fieldType && {
 						fieldType: modifierOptions.fieldType,
-          } ),
-          //--readonly-override
+					}),
+					//--readonly-override
 					...(modifierOptions.readonly && { readonly: true }),
 				};
 			});

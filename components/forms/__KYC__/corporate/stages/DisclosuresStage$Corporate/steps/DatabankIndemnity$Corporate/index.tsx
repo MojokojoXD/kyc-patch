@@ -17,7 +17,7 @@ import Markdown from 'react-markdown';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 import { databankIndemnityModel$Corporate } from './model/databankIndemnityModel$Corporate';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 import { Input } from '@/components/ui/input';
 import { FormLabel } from '@/components/ui/form';
 
@@ -46,7 +46,7 @@ export const DatabankEmailIndemnity$Corporate: FormStep = () => {
 			<FormHeader>
 				<FormTitle>Email Indemnity - Databank Brokerage Limited</FormTitle>
 			</FormHeader>
-			<FormContent>
+			<FormContent className='space-y-1'>
 				{signatories.map((s, i) => {
 					const signatoryFirstName = s.firstName ?? '';
 					const signatoryLastName = s.lastName ?? '';
@@ -62,9 +62,10 @@ export const DatabankEmailIndemnity$Corporate: FormStep = () => {
 					return (
 						<Accordion
 							collapsible
-							key={s.id}
+							key={s._id}
 							type={'single'}
-							defaultValue='item-0'>
+              defaultValue='item-0'
+            >
 							<AccordionItem value={`item-${i}`}>
 								<AccordionTrigger>
 									Signatory #{i + 1} {signatoryFirstName} {signatoryLastName}
@@ -75,7 +76,7 @@ export const DatabankEmailIndemnity$Corporate: FormStep = () => {
 									<>
 										<FormText>
 											{isLoading ? (
-												<Ellipsis className='h-5 w-5 animate-pulse' />
+												<DisclosuresSkeleton />
 											) : (
 												<Markdown skipHtml>
 													{(termsText as string)

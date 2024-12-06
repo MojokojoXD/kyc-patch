@@ -17,7 +17,7 @@ import Markdown from 'react-markdown';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 import { databankIndemnityModel$Individual } from './model/databankIndemnityModel$Individual';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 import { Input } from '@/components/ui/input';
 import { FormLabel } from '@/components/ui/form';
 
@@ -68,7 +68,7 @@ export const DatabankEmailIndemnity$Individual: FormStep = () => {
 									<>
 										<FormText>
 											{isLoading ? (
-												<Ellipsis className='h-5 w-5 animate-pulse' />
+												< DisclosuresSkeleton />
 											) : (
 												<Markdown skipHtml>
 													{(termsText as string)

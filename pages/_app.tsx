@@ -48,7 +48,7 @@ export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<main className={circular.className + ' anti-aliased'}>
 			<Head>
-				<title>SecondSTAX KYC</title>
+				<title>Secondstax-KYC</title>
 				<meta
 					name='viewport'
 					content='width=device-width, initial-scale=1'

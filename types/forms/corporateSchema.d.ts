@@ -45,7 +45,9 @@ interface BusinessInformation {
 
 //Contacts Details
 export interface ContactInformation {
-	contactPerson: ContactPerson;
+  contactPerson: ContactPerson;
+  
+  residentialAddress: string;
 	city: string;
 	postalAddress: string;
 	phoneNumber: common.PhoneInfo;
@@ -57,7 +59,7 @@ export interface ContactInformation {
 }
 
 interface ContactPerson extends common.AccountPerson {
-	isSignatory: common.YesOrNo;
+	isSignatory?: common.YesOrNo;
 }
 
 //Signatores
@@ -68,16 +70,17 @@ interface AccountSignatories {
 	affiliations: { value: string }[];
 }
 
-interface BaseSignatory {
-	id: string;
-	role: common.SignatoryRole[];
+interface BaseSignatory
+{
+  _id: string;
+  role: common.SignatoryRole[];
 	address: Omit<common.ExpandedContact, 'postalCode' | 'faxNumber'>;
 	signatureMandate?: 'a' | 'b';
 	signatureResource: string;
 }
 
 export type Signatory = BaseSignatory &
-	Partial<common.AccountPerson> &
+	common.AccountPerson &
 	common.AfrinvestSpecific & {
 		pepInfo: common.PepInfo;
 		proofOfIdentity: common.ProofOfIdentity;
@@ -97,7 +100,8 @@ export type Signatory = BaseSignatory &
 				};
 			};
 		};
-		documentChecklist: DocumentChecklist;
+  documentChecklist: DocumentChecklist;
+  _fillSrc?: 'AUTO' | 'MANUAL' ;
 	};
 
 type BaseDirectoryOrBeneficialOwnerFields = Pick<

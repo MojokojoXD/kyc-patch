@@ -5,7 +5,7 @@ import {
 	AccordionContent,
 	AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 import {
 	FormHeader,
 	FormTitle,
@@ -117,7 +117,7 @@ function PepForm({
 			<div className='space-y-10'>
 				<FormText className='max-h-96 overflow-auto [&>ul_ol]:list-[lower-alpha]'>
 					{isLoading ? (
-						<Ellipsis className='h-5 w-5 animate-pulse' />
+            <DisclosuresSkeleton/>
 					) : (
 						<Markdown>{pepText}</Markdown>
 					)}

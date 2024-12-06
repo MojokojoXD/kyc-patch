@@ -8,7 +8,7 @@ import type { FormStep } from '@/types/Components/onboarding';
 import { afrinvestIndemnityModel$Individual } from './model/afrinvestIndemnityModel$Individual';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
 import FormFactory from '@/components/forms/FormFactory';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 import Markdown from 'react-markdown';
 
 export const AfrinvestIndemnity$Individual: FormStep = () => {
@@ -28,7 +28,7 @@ export const AfrinvestIndemnity$Individual: FormStep = () => {
 			<FormContent>
 				<FormText>
 					{isLoading ? (
-						<Ellipsis className='w-5 h-5 animate-pulse' />
+						<DisclosuresSkeleton />
 					) : (
 						<Markdown>{indemnityText as string}</Markdown>
 					)}

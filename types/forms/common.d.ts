@@ -121,7 +121,7 @@ export interface ProofOfIdentity {
 }
 
 export interface AccountPerson {
-    title: FieldsWithOther<TitlePresets>;
+  title: FieldsWithOther<TitlePresets>;
 	firstName: string;
 	middleName?: string;
 	lastName: string;

@@ -5,6 +5,7 @@ import type {
 	SSXCalendarProps,
 	CalendarActions,
 } from './date-picker';
+import { Input } from '../../input';
 import { add, sub, setYear, format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { CalendarDays } from 'lucide-react';
@@ -13,7 +14,8 @@ export const SSXDatePicker = ({
 	label = '',
 	subText = '',
 	placeholder = 'Select date',
-	value = '',
+  value = '',
+  readonly = false,
 	...props
 }: SSXDatePickerProps) => {
 	const currentDateValue = Date.parse(value);
@@ -87,19 +89,20 @@ export const SSXDatePicker = ({
 			</div>
 			<div
 				ref={calendarRef}
-				className='relative px-4 flex flex-col rounded-lg bg-white transition-all duration-300 ease-out border border-neutral-200 hover:border-primary-300 text-neutral-700'>
+				className={cn('relative flex flex-col rounded-lg bg-white transition-all duration-300 ease-out text-neutral-700')}>
 				<div className='relative w-full flex items-center overflow-hidden'>
-					<input
+					<Input
 						type='text'
 						value={selectedDate ? format(selectedDate, 'd MMM yyyy') : ''}
-						readOnly
+            readOnly
+            disabled={ readonly }
 						placeholder={placeholder}
-						className='border-none text-neutral-900 text-[16px] font-[400] w-full bg-transparent cursor-pointer outline-none placeholder:text-neutral-200 py-6 h-12'
+						className='text-4 font-[400] w-full cursor-pointer placeholder:text-neutral-200 py-6 h-12'
 						onClick={() => setIsCalendarOpen((prevState) => !prevState)}
 					/>
 					{/*calendar icon*/}
-					<div className='absolute right-0 h-fit'>
-						<CalendarDays className='h-6 aspect-square'/>
+					<div className='absolute right-4 h-fit'>
+						<CalendarDays className={cn('h-6 aspect-square', readonly && 'opacity-60')}/>
 					</div>
 				</div>
 				<div

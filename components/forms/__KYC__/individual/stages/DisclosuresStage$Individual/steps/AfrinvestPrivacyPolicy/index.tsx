@@ -10,7 +10,7 @@ import FormFactory from '@/components/forms/FormFactory';
 import { afrinvestPrivacyPolicyModel } from './model/afrinvestPrivacyPolicyModel';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
 import Markdown from 'react-markdown';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 
 export const AfrinvestPrivacyPolicy: FormStep = () => {
 	const [policyText, isLoading, error] = useFetchMarkdown(
@@ -33,7 +33,7 @@ export const AfrinvestPrivacyPolicy: FormStep = () => {
 			<FormContent>
 				<FormText>
 					{isLoading ? (
-						<Ellipsis className='h-5 w-5 animate-pulse' />
+						<DisclosuresSkeleton/>
 					) : (
 						<Markdown skipHtml>{policyText as string}</Markdown>
 					)}

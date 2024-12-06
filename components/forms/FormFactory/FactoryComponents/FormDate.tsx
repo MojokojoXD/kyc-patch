@@ -16,7 +16,7 @@ export default function FormDate({
 	label,
 	name,
 	defaultValue = '',
-	// readonly,
+	readonly,
 	rules,
 	componentProps = {
 		disableFutureDays: false,
@@ -43,7 +43,8 @@ export default function FormDate({
 								onDateChange={(date) => field.onChange(date.toISOString())}
 								value={field.value}
 								placeholder={'Select Date'}
-								{...componentProps}
+                { ...componentProps }
+                readonly={ readonly }
 							/>
 						</div>
 					</FormControl>

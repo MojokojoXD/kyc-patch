@@ -6,10 +6,13 @@ import {
 	AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { FormHeader, FormContent, FormTitle } from '@/components/forms/FormLayout';
+import {
+	FormHeader,
+	FormContent,
+	FormTitle,
+} from '@/components/forms/FormLayout';
 import FormFactory from '@/components/forms/FormFactory';
-import Markdown from 'react-markdown';
-import { CircleAlert, CirclePlus, Trash2 } from 'lucide-react';
+import { CirclePlus, Trash2 } from 'lucide-react';
 import { useFieldArray } from 'react-hook-form';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 import { directorsDefaultValues, directorsModel } from './model/directorsModel';
@@ -19,6 +22,7 @@ import type { Director } from '@/types/forms/corporateSchema';
 import type { Signatory } from '@/types/forms/corporateSchema';
 import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
 import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
+import { PrefillBannerDesc } from '../../PrefillBannerDesc';
 
 const MAX_INDIVIDUALS = 2;
 
@@ -31,7 +35,7 @@ const collateDirectorsFromSignatories = (
 		if (!s.role.includes('Director/Executive/Trustee/Admin')) return;
 
 		collationResult.push({
-			id: s.id,
+			id: s._id,
 			firstName: s.firstName ?? '',
 			middleName: s.middleName ?? '',
 			lastName: s.lastName ?? '',
@@ -193,15 +197,6 @@ export const Directors: FormStep = ({ countryList }) => {
 
 interface DirectorFormProps extends SingleFormFieldsGeneratorProps {}
 
-const headerText = `
-## **Auto-populated fields**
-
-Some fields have been carried forward from your earlier responses.
-To maintain accuracy and consistency in your application, these
-details cannot be modified here.
-
-`;
-
 function DirectorForm({ applicantId, countryList }: DirectorFormProps) {
 	const { form } = useKYCFormContext<CorporateFormSchema>();
 	const { watch } = form;
@@ -231,18 +226,7 @@ function DirectorForm({ applicantId, countryList }: DirectorFormProps) {
 
 	return (
 		<>
-			{isApplicantPrefilled && (
-				<div
-					className='bg-neutral-50 p-5 rounded-lg border border-neutral-200 
-            [&>h2]:text-neutral-700 flex space-x-5 text-sm text-neutral-600'>
-					<div>
-						<CircleAlert className='h-5 w-5 text-primary-500' />
-					</div>
-					<div>
-						<Markdown>{headerText}</Markdown>
-					</div>
-				</div>
-			)}
+			{isApplicantPrefilled && <PrefillBannerDesc />}
 			{fields.map((f) => (
 				<FormFactory
 					key={f.name}

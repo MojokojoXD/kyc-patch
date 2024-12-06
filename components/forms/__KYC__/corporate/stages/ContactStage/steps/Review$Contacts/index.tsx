@@ -13,7 +13,7 @@ import {
 import type { CorporateStep } from '../../../../config/corporateFormConfigs';
 
 export const Review$Contacts: FormStep = () => {
-	const { formAction } = useKYCFormContext();
+  const { formAction } = useKYCFormContext();
 
 	const editStep = (step: CorporateStep) => {
 		formAction({
@@ -21,7 +21,8 @@ export const Review$Contacts: FormStep = () => {
 			toStage: 'contacts',
 			toStep: step,
 		});
-	};
+  };
+  
 
 	return (
 		<>

@@ -35,12 +35,11 @@ function FormHeader({ children, ...props }: FormHeaderProps) {
 				ref={contentRef}>
 				<div className='h-[98px] w-[149px] relative'>
 					<Image
-						priority
 						src={logo}
 						fill
 						className='object-contain'
 						sizes='(max-width: 768px) 200px'
-						alt='SSX Logo'
+            alt='SSX Logo'
 					/>
 				</div>
 			</div>
@@ -102,8 +101,9 @@ function FormNavButtons() {
 			)}
 			<Button
 				type={formNav.currentStep === 'submit' ? 'submit' : 'button'}
-        size={'lg'}
-				onClick={next}>
+        size={ 'lg' }
+        onClick={ next }
+      >
 				{formNav.currentStage === 'introduction'
 					? 'Begin Process'
 					: 'Save & Continue'}
@@ -141,12 +141,12 @@ function FormLayout( { children }: FormLayoutProps )
 }
 
 function FormNav() {
-	const { formNav, formAction } = useKYCFormContext();
+	const { formNav, goToFormLocation } = useKYCFormContext();
 
 	return (
 		<FormProgressSheet
 			formStages={formNav.allStages}
-			formAction={formAction}
+			formAction={goToFormLocation}
 			stage={formNav.currentStage}
 			step={formNav.currentStep}
 		/>

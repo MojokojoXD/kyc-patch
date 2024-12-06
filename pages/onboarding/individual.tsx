@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useEffect } from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
@@ -96,25 +97,30 @@ export default function IndividualForm() {
 		);
 	}
 
-	return (
-		//@ts-expect-error will fix mismatch later
-		<KYCContext.Provider value={KYCForm}>
-			<FormLayout>
-				<FormNav />
-				<Loading reveal={isLoading} />
-				<div className='relative w-full bg-neutral-50 flex justify-center overflow-auto h-full py-10'>
-					<Form {...KYCForm.form}>
-						<form
-							onSubmit={handleSubmit(submitHandler)}
-							className='w-full max-w-[44.75rem]'>
-							<div className='border border-neutral-100 rounded-xl overflow-hidden'>
-								{individualStagesDict[currentStage]}
-								<FormNavButtons />
-							</div>
-						</form>
-					</Form>
-				</div>
-			</FormLayout>
-		</KYCContext.Provider>
+  return (
+    <>
+      <Head>
+        <title>SecondSTAX KYC - Individual or Joint</title>
+      </Head>
+      {/* @ts-expect-error will fix mismatch later */}
+      <KYCContext.Provider value={KYCForm}>
+        <FormLayout>
+          <FormNav />
+          <Loading reveal={isLoading} />
+          <div className='relative w-full bg-neutral-50 flex justify-center overflow-auto h-full py-10'>
+            <Form {...KYCForm.form}>
+              <form
+                onSubmit={handleSubmit(submitHandler)}
+                className='w-full max-w-[44.75rem]'>
+                <div className='border border-neutral-100 rounded-xl overflow-hidden'>
+                  {individualStagesDict[currentStage]}
+                  <FormNavButtons />
+                </div>
+              </form>
+            </Form>
+          </div>
+        </FormLayout>
+      </KYCContext.Provider>
+    </>
 	);
 }

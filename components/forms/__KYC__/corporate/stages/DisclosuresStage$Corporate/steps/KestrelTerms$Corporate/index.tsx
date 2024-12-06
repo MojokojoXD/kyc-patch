@@ -9,7 +9,7 @@ import type { FormStep } from '@/types/Components/onboarding';
 import { kestrelTermsModel$Corporate } from './model/kestrelTermModel$Corporate';
 import Markdown from 'react-markdown';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 
 export const KestrelTerms$Corporate: FormStep = () => {
 	const [termsText, isLoading, error] = useFetchMarkdown('kestrelTerms');
@@ -30,7 +30,7 @@ export const KestrelTerms$Corporate: FormStep = () => {
 				<>
 					<FormText>
 						{isLoading ? (
-							<Ellipsis className='w-5 h-5 animate-pulse' />
+							<DisclosuresSkeleton />
 						) : (
 							<Markdown skipHtml>{termsText as string}</Markdown>
 						)}

@@ -27,41 +27,41 @@ export const Fatca$Corporate: FormStep = () => {
 		(getValues('accountSignatories.signatories') as Signatory[]) || [];
 
 	return (
-		<>
-			<FormHeader>
-				<FormTitle>Foreign Account Tax Compliance Act (FATCA)</FormTitle>
-				<FormSubHeader>
-					The following questions are designed to capture information for common
-					reporting standards as well as FATCA (Foreign Account Tax Compliance Act)
-				</FormSubHeader>
-			</FormHeader>
-			<FormContent>
-				{signatories.map((s, i) => {
-					const signatoryFirstName = s.firstName ?? 'John';
-					const signatoryLastName = s.lastName ?? 'Doe';
+	<>
+		<FormHeader>
+			<FormTitle>Foreign Account Tax Compliance Act (FATCA)</FormTitle>
+			<FormSubHeader>
+				The following questions are designed to capture information for common reporting
+				standards as well as FATCA (Foreign Account Tax Compliance Act)
+			</FormSubHeader>
+		</FormHeader>
+		<FormContent className='space-y-1'>
+			{signatories.map((s, i) => {
+				const signatoryFirstName = s.firstName ?? 'John';
+				const signatoryLastName = s.lastName ?? 'Doe';
 
-					return (
-						<Accordion
-							collapsible
-							key={i}
-							type={'single'}
-							defaultValue='item-0'>
-							<AccordionItem value={`item-${i}`}>
-								<AccordionTrigger>
-									Signatory #{i + 1} {signatoryFirstName} {signatoryLastName}
-								</AccordionTrigger>
-								<AccordionContent
-									className='data-[state=closed]:hidden'
-									forceMount>
-									<FatcaForm applicantId={i} />
-								</AccordionContent>
-							</AccordionItem>
-						</Accordion>
-					);
-				})}
-			</FormContent>
-		</>
-	);
+				return (
+					<Accordion
+						collapsible
+						key={i}
+						type={'single'}
+						defaultValue='item-0'>
+						<AccordionItem value={`item-${i}`}>
+							<AccordionTrigger>
+								Signatory #{i + 1} {signatoryFirstName} {signatoryLastName}
+							</AccordionTrigger>
+							<AccordionContent
+								className='data-[state=closed]:hidden'
+								forceMount>
+								<FatcaForm applicantId={i} />
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
+				);
+			})}
+		</FormContent>
+	</>
+);
 };
 
 interface FatcaFormProps extends SingleFormFieldsGeneratorProps {}

@@ -15,7 +15,8 @@ export const proofOfIdentityModel$Corporate = ( { index }: { index: number; } ):
                 'National ID',
                 'Driver\'s License'
             ],
-        }
+        },
+        tags: [ 'read-only' ]
     },
     {
         fieldType: 'text',
@@ -24,7 +25,8 @@ export const proofOfIdentityModel$Corporate = ( { index }: { index: number; } ):
         placeholder: 'Enter ID number',
         rules: {
             required: 'Please enter ID number'
-        }
+        },
+        tags: [ 'read-only' ]
     },
     {
         fieldType: 'date',
@@ -36,7 +38,8 @@ export const proofOfIdentityModel$Corporate = ( { index }: { index: number; } ):
         },
         componentProps: {
             disableFutureDays: true
-        }
+        },
+        tags: [ 'read-only' ]
     },
     {
         fieldType: 'text',
@@ -45,7 +48,8 @@ export const proofOfIdentityModel$Corporate = ( { index }: { index: number; } ):
         placeholder: 'Enter place of issue',
         rules: {
             required: 'Please enter place of issue'
-        }
+        },
+        tags: [ 'read-only' ]
     },
     {
         fieldType: 'date',
@@ -57,6 +61,7 @@ export const proofOfIdentityModel$Corporate = ( { index }: { index: number; } ):
         },
         componentProps: {
             disablePastDays: true
-        }
+        },
+        tags: [ 'read-only' ]
     },
 ]

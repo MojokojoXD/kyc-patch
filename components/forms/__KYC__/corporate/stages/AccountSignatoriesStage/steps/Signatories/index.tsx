@@ -3,6 +3,7 @@ import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboardi
 import {
 	signatoriesModel,
 	signatoriesDefaultValues,
+	MAX_SIGNATORIES,
 } from './model/signatoriesModel';
 import {
 	Accordion,
@@ -10,47 +11,83 @@ import {
 	AccordionContent,
 	AccordionTrigger,
 } from '@/components/ui/accordion';
-import { FormHeader, FormTitle, FormContent } from '@/components/forms/FormLayout';
+import {
+	FormHeader,
+	FormTitle,
+	FormContent,
+} from '@/components/forms/FormLayout';
 import { CirclePlus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import FormFactory from '@/components/forms/FormFactory';
 import { useFieldArray } from 'react-hook-form';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
-import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { FormStep } from '@/types/Components/onboarding';
 import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
-import Loading from '@/components/ui/Loading';
-
-const MAX_SIGNATORIES = 4;
+import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
+import { PrefillBannerDesc } from '../../PrefillBannerDesc';
+import { useFormState } from 'react-hook-form';
+import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 export const Signatories: FormStep = ({ countryList }) => {
-	const { form, toggleLoading } = useKYCFormContext();
-	const { control } = form;
+	const { form, onFormNav } = useKYCFormContext<CorporateFormSchema>();
+	const { control, setValue, resetField, getValues } = form;
+	const { touchedFields } = useFormState<CorporateFormSchema>({
+		name: 'accountSignatories.signatories',
+		exact: true,
+	});
 
-	const { fields, append, remove } = useFieldArray({
+	const { fields, append, remove, replace } = useFieldArray({
 		name: 'accountSignatories.signatories',
 		control,
 	});
 
-	// const currentSignatories = getValues(
-	// 	'accountSignatories.signatories'
-	// ) as Signatory[];
+	const signatories = getValues('accountSignatories.signatories') ?? [];
 
-	useEffect(() => {
-		if (fields.length === 0) {
-			toggleLoading(true);
-			append({
-				...signatoriesDefaultValues,
-				id: FormHelpers.generateUniqueIdentifier(),
-			});
+  onFormNav( function ()
+  {
+    debugger
+		if (!('accountSignatories' in touchedFields)) return;
+
+		const currentTouchedSignatories = touchedFields.accountSignatories!.signatories;
+
+		if (!currentTouchedSignatories) return;
+
+		const signatoriesCopy = [...signatories];
+
+		let index = 0;
+
+		for (const touched of currentTouchedSignatories) {
+			if (!touched) {
+				signatoriesCopy.splice(index, 0);
+				index++;
+				continue;
+			}
+
+			if (signatoriesCopy[index]._fillSrc === 'AUTO') {
+				index++;
+				continue;
+			}
+
+			signatoriesCopy[index] = {
+				...signatories[index],
+				_fillSrc: 'MANUAL',
+			};
+
+			index++;
 		}
 
-		toggleLoading(false);
-	}, [fields, toggleLoading, append]);
+		resetField('accountSignatories.signatories');
+		replace(signatoriesCopy);
+	});
+
+	useEffect(() =>
+		signatories.length === 0
+			? setValue('accountSignatories.signatories', [{ ...signatoriesDefaultValues }])
+			: undefined
+	);
 
 	return (
 		<>
-			<Loading reveal={fields.length === 0} />
 			<FormHeader>
 				<FormTitle>Account Signatories</FormTitle>
 			</FormHeader>
@@ -101,7 +138,7 @@ export const Signatories: FormStep = ({ countryList }) => {
 							onClick={() =>
 								append({
 									...signatoriesDefaultValues,
-									id: FormHelpers.generateUniqueIdentifier(),
+									_id: FormHelpers.generateUniqueIdentifier(),
 								})
 							}
 							className='text-base text-primary-500'>
@@ -126,20 +163,36 @@ function SignatoryForm({ applicantId, countryList }: SignatoryFormProps) {
 		form,
 		formVars: { clientID },
 	} = useKYCFormContext<CorporateFormSchema>();
-	const { setValue, watch } = form;
+	const { setValue, watch, getValues } = form;
 
 	const [signatoryResidence, signatoryCitizenship] = watch([
 		`accountSignatories.signatories.${applicantId}.countryOfResidence`,
 		`accountSignatories.signatories.${applicantId}.citizenship`,
 	]);
 
+	const fillSrc = getValues(
+		`accountSignatories.signatories.${applicantId}._fillSrc`
+	);
+
 	const fields = useMemo(() => {
-		return signatoriesModel({
+		const rawFields = signatoriesModel({
 			index: applicantId,
 			clientID,
 			countryList,
 		});
-	}, [countryList, applicantId, clientID]);
+
+		const aggregator = new FormFieldAggregator(rawFields);
+
+		aggregator.modifyFields('read-only', {
+			readonly: fillSrc === 'AUTO',
+		});
+
+		aggregator.modifyFields('NG', {
+			required: signatoryResidence === 'NIGERIA',
+		});
+
+		return aggregator.generate();
+	}, [countryList, applicantId, clientID, fillSrc, signatoryResidence]);
 
 	useEffect(() => {
 		const residenceStatus =
@@ -159,6 +212,7 @@ function SignatoryForm({ applicantId, countryList }: SignatoryFormProps) {
 
 	return (
 		<>
+			{fillSrc === 'AUTO' && <PrefillBannerDesc />}
 			{fields.map((f) => (
 				<FormFactory
 					key={f.name}

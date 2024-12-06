@@ -11,7 +11,7 @@ import type { FormStep } from '@/types/Components/onboarding';
 import Markdown from 'react-markdown';
 import { declarationsModel$Corporate } from './model/declarationsModel$Corporate';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 
 const consentText = `
 I/We hereby:
@@ -48,7 +48,7 @@ export const Declarations$Corporate: FormStep = () => {
 					<FormLabel>Databank</FormLabel>
 					<FormText className=' [&_ol]:list-[decimal] [&_h2]:paragraph2Medium [&_h3]:paragraph2Medium space-y-[16px] [&_ol_ul]:space-y-[16px] [&_li>ul]:list-disc [&_li>ul]:list-outside'>
 						{isLoading ? (
-							<Ellipsis className='w-5 h-5 animate-pulse' />
+							<DisclosuresSkeleton />
 						) : (
 							<Markdown skipHtml>{mdTexts[0]}</Markdown>
 						)}
@@ -58,7 +58,7 @@ export const Declarations$Corporate: FormStep = () => {
 					<FormLabel>Kestrel</FormLabel>
 					<FormText className=' [&_ol]:list-[decimal] [&_h2]:paragraph2Medium [&_h3]:paragraph2Medium space-y-[16px] [&_ol_ul]:space-y-[16px] [&_li>ul]:list-disc [&_li>ul]:pl-10'>
 						{isLoading ? (
-							<Ellipsis className='w-5 h-5 animate-pulse' />
+							<DisclosuresSkeleton />
 						) : (
 							<Markdown skipHtml>{mdTexts[1]}</Markdown>
 						)}

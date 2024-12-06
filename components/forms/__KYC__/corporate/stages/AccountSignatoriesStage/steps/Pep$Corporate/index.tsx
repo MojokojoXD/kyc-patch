@@ -20,7 +20,7 @@ import { useKYCFormContext } from '@/components/forms/utils/formController';
 import { pepModel$Corporate } from './model/pepModel$Corporate';
 import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 
 export const Pep$Corporate: FormStep = ({ countryList }) => {
 	const {
@@ -44,7 +44,7 @@ export const Pep$Corporate: FormStep = ({ countryList }) => {
 			<FormContent>
 				<ul className='space-y-[8px]'>
 					{signatories.map((s, i) => (
-						<li key={s.id}>
+						<li key={s._id}>
 							<Accordion
 								defaultValue={'item-0'}
 								collapsible
@@ -109,11 +109,7 @@ function SignatoryForm({
 	return (
 		<>
 			<FormText className='[&>ul_ol]:list-[lower-alpha]'>
-				{isLoading ? (
-					<Ellipsis className='w-5 h-5 animate-pulse' />
-				) : (
-					<Markdown skipHtml>{pepText}</Markdown>
-				)}
+				{isLoading ? <DisclosuresSkeleton /> : <Markdown skipHtml>{pepText}</Markdown>}
 			</FormText>
 			{fields.map((f) => (
 				<FormFactory

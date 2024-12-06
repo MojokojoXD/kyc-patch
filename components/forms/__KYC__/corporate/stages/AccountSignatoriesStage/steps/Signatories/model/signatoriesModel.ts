@@ -40,6 +40,7 @@ export const signatoriesModel = ({
 				placeholder: 'Specify',
 			},
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -51,6 +52,7 @@ export const signatoriesModel = ({
 			required: 'Please enter first name',
 			validate: (v) => (v as string).length > 2 || 'Entry too short',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -58,6 +60,7 @@ export const signatoriesModel = ({
 		inline: true,
 		label: '',
 		placeholder: 'Middle name',
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -69,6 +72,7 @@ export const signatoriesModel = ({
 			required: 'Please enter last name',
 			validate: (v) => (v as string).length > 2 || 'Entry too short',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -81,6 +85,7 @@ export const signatoriesModel = ({
 				validator.isEmail(v as string) ||
 				'Email must be of the format: name@example.com',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'date',
@@ -94,6 +99,7 @@ export const signatoriesModel = ({
 			disableFutureDays: true,
 			minYear: MIN_AGE,
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'radio',
@@ -108,6 +114,7 @@ export const signatoriesModel = ({
 		componentProps: {
 			className: 'grid-cols-2',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'radio',
@@ -122,6 +129,7 @@ export const signatoriesModel = ({
 		componentProps: {
 			className: 'grid-cols-4',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -131,6 +139,7 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please enter place of birth',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'dropdown',
@@ -145,6 +154,7 @@ export const signatoriesModel = ({
 
 			priorityKeys: countryList[0],
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'dropdown',
@@ -159,6 +169,7 @@ export const signatoriesModel = ({
 
 			priorityKeys: countryList[0],
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'dropdown',
@@ -173,6 +184,7 @@ export const signatoriesModel = ({
 
 			priorityKeys: countryList[0],
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'radio',
@@ -187,6 +199,7 @@ export const signatoriesModel = ({
 				'Non-Resident Foreigner',
 			],
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'phone',
@@ -198,6 +211,7 @@ export const signatoriesModel = ({
 
 			priorityKeys: countryList[0],
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -207,6 +221,7 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please enter residential address',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -216,6 +231,7 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please enter city/town',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -225,6 +241,7 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please enter profession',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -234,6 +251,7 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please enter occupation',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -243,6 +261,7 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please enter job title',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -252,6 +271,7 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please enter TIN',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -261,46 +281,52 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please enter postal Address',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
 		name: `accountSignatories.signatories.${index}.address.digitalAddress`,
-		label: 'Digital Address',
+		label: 'Digital Address (Optional)',
 		placeholder: 'Enter digital Address',
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
 		name: `accountSignatories.signatories.${index}.address.nearestLandmark`,
-		label: 'Nearest Landmark',
+		label: 'Nearest Landmark (Optional)',
 		placeholder: 'Enter landmark',
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
 		name: `accountSignatories.signatories.${index}.professionalLicenseNo`,
 		label: 'Professional License Number (If Applicable)',
 		placeholder: 'Enter number',
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
-		name: `accountSignatories.signatories.${index}.emergencyContact.contactName`,
+		name: `accountSignatories.signatories.${index}.address.emergencyContact.contactName`,
 		label: 'Emergency Contact',
 		placeholder: 'Contact name',
 		rules: {
 			required: 'Please enter contact name',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
-		name: `accountSignatories.signatories.${index}.emergencyContact.relation`,
+		name: `accountSignatories.signatories.${index}.address.emergencyContact.relation`,
 		label: '',
 		placeholder: 'Relation to client',
 		rules: {
 			required: 'Please enter relation to client',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'phone',
-		name: `accountSignatories.signatories.${index}.emergencyContact.phoneNumber`,
+		name: `accountSignatories.signatories.${index}.address.emergencyContact.phoneNumber`,
 		label: '',
 		placeholder: 'Contact phone number',
 		options: {
@@ -310,6 +336,7 @@ export const signatoriesModel = ({
 		componentProps: {
 			phoneMode: 'single',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -319,30 +346,35 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please enter mothers maiden name',
 		},
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
 		name: `accountSignatories.signatories.${index}.maidenName`,
 		label: 'Maiden Name (Optional)',
 		placeholder: 'Enter maiden name',
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
 		name: `accountSignatories.signatories.${index}.religion`,
 		label: 'Religion',
 		placeholder: 'Enter religion',
+		tags: ['NG'],
 	},
 	{
 		fieldType: 'text',
 		name: `accountSignatories.signatories.${index}.stateOfOrigin`,
 		label: 'State of Origin',
 		placeholder: 'Enter state of origin',
+		tags: ['NG'],
 	},
 	{
 		fieldType: 'text',
 		name: `accountSignatories.signatories.${index}.localGovernment`,
 		label: 'Local Government',
 		placeholder: 'Enter local government',
+		tags: ['NG'],
 	},
 	{
 		fieldType: 'radio',
@@ -371,8 +403,9 @@ export const signatoriesModel = ({
 	},
 ];
 
+export const MAX_SIGNATORIES = 4;
 export const signatoriesDefaultValues: Signatory = {
-	id: FormHelpers.generateUniqueIdentifier(),
+  _id: FormHelpers.generateUniqueIdentifier(),
 	role: [],
 	address: {
 		phoneNumber: [
@@ -451,5 +484,5 @@ export const signatoriesDefaultValues: Signatory = {
 	tin: '',
 	religion: '',
 	stateOfOrigin: '',
-	localGovernment: '',
+  localGovernment: '',
 };

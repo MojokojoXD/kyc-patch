@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Style+Script&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Style+Script&display=swap'); */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,11 +7,6 @@
 :root{
     --x-dashboard: 0 2rem;
     --h-dashboard-header: 5.5rem;
-}
-
-.signature input,
-.signature-preview {
-	font-family: 'Style Script', cursive !important;
 }
 
 *{

@@ -16,7 +16,7 @@ import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import Markdown from 'react-markdown';
 import { kestrelNomineeModel$Corporate } from './model/kestrelNomineeModel$Corporate';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
 import { format } from 'date-fns';
 
@@ -42,66 +42,65 @@ export const KestrelNorminee$Corporate: FormStep = () => {
 	}
 
 	return (
-		<>
-			<FormHeader>
-				<FormTitle>
-					Nominee Agreement - Kestrel Capital Nominees Services LTD
-				</FormTitle>
-			</FormHeader>
-			<FormContent>
-				{signatories.map((s, i) => {
-					const signatoryFirstName = s.firstName ?? '';
-					const signatoryLastName = s.lastName ?? '';
-					const signatoryMiddleName = s.middleName ?? '';
-					const signatoryIDNumber = s.proofOfIdentity?.idNumber ?? '';
-					const signatoryAddress = s.address?.residentialAddress ?? '';
-					const signatoryCity = s.address?.city ?? '';
+	<>
+		<FormHeader>
+			<FormTitle>Nominee Agreement - Kestrel Capital Nominees Services LTD</FormTitle>
+		</FormHeader>
+		<FormContent className='space-y-1'>
+			{signatories.map((s, i) => {
+				const signatoryFirstName = s.firstName ?? '';
+				const signatoryLastName = s.lastName ?? '';
+				const signatoryMiddleName = s.middleName ?? '';
+				const signatoryIDNumber = s.proofOfIdentity?.idNumber ?? '';
+				const signatoryAddress = s.address?.residentialAddress ?? '';
+				const signatoryCity = s.address?.city ?? '';
 
-					const signatoryGist = `
+				//Warning ---- don't adjust indentation. It'll affect how the markdown is formatted
+				const signatoryGist = `
 Name: ${signatoryFirstName} ${signatoryMiddleName} ${signatoryLastName}\\
 ID Number: ${signatoryIDNumber}\\
 Address: ${signatoryAddress}\\
 City: ${signatoryCity}
 `;
 
-					return (
-						<Accordion
-							collapsible
-							key={s.id}
-							type={'single'}
-							defaultValue='item-0'>
-							<AccordionItem value={`item-${i}`}>
-								<AccordionTrigger>
-									Signatory #{i + 1} {signatoryFirstName} {signatoryLastName}
-								</AccordionTrigger>
-								<AccordionContent
-									className='data-[state=closed]:hidden'
-									forceMount>
-									<>
-										<FormText>
-											{isLoading ? (
-												<Ellipsis className='w-5 h-5 animate-pulse' />
-											) : (
-												<Markdown skipHtml>
-													{(kestrelNomineeText as string)
-														.replace('{{applicantGist}}', signatoryGist)
-														.replace('{{date}}', today)}
-												</Markdown>
-											)}
-										</FormText>
-										{kestrelNomineeModel$Corporate({ index: i, clientID }).map((f) => (
-											<FormFactory
-												key={f.name}
-												{...f}
-											/>
-										))}
-									</>
-								</AccordionContent>
-							</AccordionItem>
-						</Accordion>
-					);
-				})}
-			</FormContent>
-		</>
-	);
+				return (
+					<Accordion
+						collapsible
+						key={s._id}
+						type={'single'}
+						defaultValue='item-0'>
+						<AccordionItem value={`item-${i}`}>
+							<AccordionTrigger>
+								Signatory #{i + 1} {signatoryFirstName} {signatoryLastName}
+							</AccordionTrigger>
+							<AccordionContent
+								className='data-[state=closed]:hidden'
+								forceMount>
+								<>
+									<FormText>
+										{isLoading ? (
+											<DisclosuresSkeleton />
+										) : (
+											<Markdown skipHtml>
+												{(kestrelNomineeText as string)
+													.replace('{{applicantGist}}', signatoryGist)
+													.replace('{{date}}', today)}
+											</Markdown>
+										)}
+									</FormText>
+									{kestrelNomineeModel$Corporate({ index: i, clientID }).map((f) => (
+										<FormFactory
+											key={f.name}
+											{...f}
+										/>
+									))}
+								</>
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
+				);
+			})}
+		</FormContent>
+	</>
+);
 };

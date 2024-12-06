@@ -40,7 +40,7 @@ export default function FormPhone({
 	componentProps = { phoneMode: 'multi', maxPhoneCount: 2 },
 	options,
 }: FormPhoneProps) {
-	const { control } = useFormContext();
+	const { control, setValue } = useFormContext();
 
 	const { fields, append, remove } = useFieldArray({
 		control,
@@ -61,9 +61,9 @@ export default function FormPhone({
 
 	useEffect(() => {
 		if (fields.length === 0) {
-			append({ value: '', countryCode: 'GH' });
+			setValue(name, [{ value: '', countryCode: 'GH' }]);
 		}
-	}, [append, fields]);
+	}, [setValue, fields, name]);
 
 	return (
 		<>
@@ -87,8 +87,9 @@ export default function FormPhone({
 											<FormControl>
 												<div
 													className={cn(
-														'focus:border-primary-500 flex has-[:focus]:border-primary-500 rounded-lg border border-neutral-200 text-neutral-700 bg-white paragraph2Regular grow relative items-center overflow-hidden',
-														readonly && 'opacity-70 focus:border-neutral-200 [:focus]:border-primary-500'
+														'focus:border-primary-500 flex has-[:focus]:border-primary-500 rounded-lg border border-neutral-200 text-neutral-700 bg-white paragraph2Regular grow relative items-center overflow-hidden hover:border-primary-300',
+														readonly &&
+															'focus:border-neutral-200 [:focus]:border-primary-100 disabled:hover:border-neutral-100 disabled:border-neutral-100 disabled:bg-neutral-50/80'
 													)}>
 													<CustomCountrySelect
 														disabled={readonly}
@@ -120,6 +121,7 @@ export default function FormPhone({
 													) : (
 														<Input
 															readOnly
+															disabled={readonly}
 															className='border-none cursor-not-allowed'
 															value={field.value.value}
 														/>
@@ -170,7 +172,7 @@ function CustomCountrySelect({
 	disabled,
 	onValueChange,
 	defaultValue,
-	options = { keys: [], priorityKeys: []},
+	options = { keys: [], priorityKeys: [] },
 }: CustomCountrySelectProps) {
 	const countries = useMemo(
 		() => [...(options.keys || []), ...(options.priorityKeys || [])],
@@ -200,32 +202,32 @@ function CustomCountrySelect({
 			</SelectTrigger>
 			<SelectContent className=''>
 				<SelectGroup>
-          { options?.priorityKeys?.map( ( c ) =>
-          {
-            if ( typeof c === 'string' ) return <></>
-            if( !('cty_name' in c) ) return <></>
+					{options?.priorityKeys?.map((c) => {
+						if (typeof c === 'string') return <></>;
+						if (!('cty_name' in c)) return <></>;
 
-            return(
-						<SelectItem
-							value={c.cty_code}
-							key={c.cty_code}>
-							{c.cty_name.toLowerCase()} ({c.call_code})
-						</SelectItem>
-					)})}
+						return (
+							<SelectItem
+								value={c.cty_code}
+								key={c.cty_code}>
+								{c.cty_name.toLowerCase()} ({c.call_code})
+							</SelectItem>
+						);
+					})}
 				</SelectGroup>
 				<hr className='my-2 border-neutral-200' />
 				<SelectGroup>
-          { options?.keys?.map( ( c ) =>
-          {
-            if ( typeof c === 'string' ) return <></>
-            if( !('cty_name' in c) ) return <></>
-            return(
-						<SelectItem
-							value={c.cty_code}
-							key={c.cty_code}>
-							{c.cty_name.toLowerCase()} ({c.call_code})
-						</SelectItem>
-					)})}
+					{options?.keys?.map((c) => {
+						if (typeof c === 'string') return <></>;
+						if (!('cty_name' in c)) return <></>;
+						return (
+							<SelectItem
+								value={c.cty_code}
+								key={c.cty_code}>
+								{c.cty_name.toLowerCase()} ({c.call_code})
+							</SelectItem>
+						);
+					})}
 				</SelectGroup>
 			</SelectContent>
 		</Select>

@@ -99,7 +99,8 @@ export default function FormRadio({
 							<FormLabel>{componentProps.otherProps?.label}</FormLabel>
 							<FormControl>
 								<Input
-									{...field}
+                  { ...field }
+                  disabled={readonly}
 									placeholder={componentProps.otherProps?.placeholder}
 								/>
 							</FormControl>

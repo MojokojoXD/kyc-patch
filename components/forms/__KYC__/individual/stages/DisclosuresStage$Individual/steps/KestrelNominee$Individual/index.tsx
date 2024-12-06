@@ -5,7 +5,7 @@ import {
 	AccordionContent,
 	AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 import {
 	FormHeader,
 	FormTitle,
@@ -136,7 +136,7 @@ function KestrelNomineeForm({
 			<div className='space-y-10'>
 				<FormText className='max-h-96 overflow-auto'>
 					{isLoading ? (
-						<Ellipsis className='w-5 h-5 animate-pulse' />
+						<DisclosuresSkeleton/>
 					) : (
 						<Markdown skipHtml>
 							{kestrelNomineeText

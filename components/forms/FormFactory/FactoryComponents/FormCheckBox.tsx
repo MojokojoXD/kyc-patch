@@ -31,7 +31,7 @@ export default function FormCheckBox({
 			render={({ field, fieldState }) => (
 				<FormItem className='space-y-2'>
 					<FormLabel className={fieldState.error ? 'text-error-500' : undefined}>
-						{label}
+						{label + ' (one or more)'}
 					</FormLabel>
 					<FormControl>
 						<div className={cn('grid gap-[4px]', componentProps.className)}>

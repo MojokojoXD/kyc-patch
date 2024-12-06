@@ -159,9 +159,9 @@ export const personalModel$NOK$Individual = ({
 		rules: {
 			validate: {
 				isNumber: (v) =>
-					validator.isNumeric(v as string) || 'Entry must be a number',
+					!v || validator.isNumeric(v as string) || 'Entry must be a number',
 				isWithinRange: (v) =>
-					(parseInt(v as string) >= 0 && parseInt(v as string) <= 100) ||
+					!v || (parseInt(v as string) >= 0 && parseInt(v as string) <= 100) ||
 					'Percentage must be between 0 and 100',
 			},
 		},

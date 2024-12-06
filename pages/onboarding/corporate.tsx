@@ -1,10 +1,15 @@
+import Head from 'next/head';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import {
 	corporateStages,
 	CorporateStageDict,
 } from '@/components/forms/__KYC__/corporate/config/corporateFormConfigs';
 import { Form } from '@/components/ui/form';
-import { FormLayout, FormNav, FormNavButtons } from '@/components/forms/FormLayout';
+import {
+	FormLayout,
+	FormNav,
+	FormNavButtons,
+} from '@/components/forms/FormLayout';
 import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import * as Stages from '@/components/forms/__KYC__/corporate/stages/stagesComponents';
 import { useCloseTabWarning } from '@/components/forms/utils/customHooks/useCloseTabWarning';
@@ -44,8 +49,7 @@ export default function CorporateForm() {
 		'document checklist': <Stages.DocumentCheckListStage$Corporate />,
 	};
 
-    const submitHandler: SubmitHandler<CorporateFormSchema> = ( data ) =>
-    {
+	const submitHandler: SubmitHandler<CorporateFormSchema> = (data) => {
 		const payload = {
 			clientID,
 			submissionID,
@@ -69,24 +73,29 @@ export default function CorporateForm() {
 	}
 
 	return (
-	//@ts-expect-error will fix type mismatch between context types
-	<KYCContext.Provider value={KYCForm}>
-		<FormLayout>
-			<FormNav />
-			<Loading reveal={isLoading} />
-			<div className='relative w-full bg-neutral-50 flex justify-center overflow-auto h-full py-10'>
-				<Form {...KYCForm.form}>
-					<form
-						onSubmit={handleSubmit(submitHandler)}
-						className='w-full max-w-[44.75rem]'>
-						<div className='border border-neutral-100 rounded-xl overflow-hidden'>
-							{corporateStagesDict[currentStage]}
-							<FormNavButtons />
-						</div>
-					</form>
-				</Form>
-			</div>
-		</FormLayout>
-	</KYCContext.Provider>
-);
+    <>
+      <Head>
+        <title>SecondSTAX KYC - Corporate</title>
+      </Head>
+			{/* @ts-expect-error will fix type mismatch between context types */}
+			<KYCContext.Provider value={KYCForm}>
+				<FormLayout>
+					<FormNav />
+					<Loading reveal={isLoading} />
+					<div className='relative w-full bg-neutral-50 flex justify-center overflow-auto h-full py-10'>
+						<Form {...KYCForm.form}>
+							<form
+								onSubmit={handleSubmit(submitHandler)}
+								className='w-full max-w-[44.75rem]'>
+								<div className='border border-neutral-100 rounded-xl overflow-hidden'>
+									{corporateStagesDict[currentStage]}
+									<FormNavButtons />
+								</div>
+							</form>
+						</Form>
+					</div>
+				</FormLayout>
+			</KYCContext.Provider>
+		</>
+	);
 }

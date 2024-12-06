@@ -4,12 +4,12 @@ import {
 	FormContent,
 	FormText,
 } from '@/components/forms/FormLayout';
-import { Ellipsis } from 'lucide-react';
 import type { FormStep } from '@/types/Components/onboarding';
 import { kestrelTermsModel$Individual } from './model/kestrelTermsModel$Individual';
 import FormFactory from '@/components/forms/FormFactory';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
 import Markdown from 'react-markdown';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 
 export const KestrelTerms$Individual: FormStep = () => {
 	const [kestrelTermsText, isLoading, error] = useFetchMarkdown('kestrelTerms');
@@ -29,7 +29,7 @@ export const KestrelTerms$Individual: FormStep = () => {
 			<FormContent>
 				<FormText className='max-h-96 overflow-auto'>
 					{isLoading ? (
-						<Ellipsis className='h-5 w-5 animate-pulse' />
+						<DisclosuresSkeleton/>
 					) : (
 						<Markdown skipHtml>{kestrelTermsText as string}</Markdown>
 					)}

@@ -10,7 +10,7 @@ import FormFactory from '@/components/forms/FormFactory';
 import { declarationsModel$Individual } from './model/declarationsModel$Individual';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
 import Markdown from 'react-markdown';
-import { Ellipsis } from 'lucide-react';
+import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
 
 export const Declarations$Individual: FormStep = () => {
 	const [mdTexts, isLoading, error] = useFetchMarkdown([
@@ -35,7 +35,7 @@ export const Declarations$Individual: FormStep = () => {
 						<h2>Databank</h2>
 						<FormText>
 							{isLoading ? (
-								<Ellipsis className='h-5 w-5 animate-pulse' />
+								<DisclosuresSkeleton />
 							) : (
 								<Markdown>{mdTexts[0]}</Markdown>
 							)}
@@ -45,7 +45,7 @@ export const Declarations$Individual: FormStep = () => {
 						<h2>Kestrel</h2>
 						<FormText>
 							{isLoading ? (
-								<Ellipsis className='h-5 w-5 animate-pulse' />
+								<DisclosuresSkeleton />
 							) : (
 								<Markdown>{mdTexts[1]}</Markdown>
 							)}

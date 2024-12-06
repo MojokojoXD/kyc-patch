@@ -1,23 +1,29 @@
+import { useMemo } from 'react';
 import type { FormStep } from '@/types/Components/onboarding';
 import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
-import type { Signatory } from '@/types/forms/corporateSchema';
+import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import {
 	Accordion,
 	AccordionItem,
 	AccordionContent,
 	AccordionTrigger,
 } from '@/components/ui/accordion';
-import { FormHeader, FormTitle, FormContent } from '@/components/forms/FormLayout';
+import {
+	FormHeader,
+	FormTitle,
+	FormContent,
+} from '@/components/forms/FormLayout';
 import FormFactory from '@/components/forms/FormFactory';
+import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 import { proofOfIdentityModel$Corporate } from './model/proofOfIdentityModel$Corporate';
 
 export const ProofOfIdentity$Corporate: FormStep = () => {
-	const { form } = useKYCFormContext();
+	const { form } = useKYCFormContext<CorporateFormSchema>();
 	const { getValues } = form;
 
-	const currentSignatoriesList =
-		(getValues('accountSignatories.signatories') as Signatory[]) || [];
+	const signatories =
+		getValues('accountSignatories.signatories') ?? [];
 
 	return (
 		<>
@@ -26,8 +32,8 @@ export const ProofOfIdentity$Corporate: FormStep = () => {
 			</FormHeader>
 			<FormContent>
 				<ul className='space-y-[8px]'>
-					{currentSignatoriesList.map((s, i) => (
-						<li key={s.id}>
+					{signatories.map((s, i) => (
+						<li key={s._id}>
 							<Accordion
 								defaultValue={'item-0'}
 								collapsible
@@ -39,7 +45,7 @@ export const ProofOfIdentity$Corporate: FormStep = () => {
 									<AccordionContent
 										className='data-[state=closed]:hidden pb-16 overflow-visible'
 										forceMount>
-										<SignatoryForm applicantId={i} />
+                    <SignatoryForm applicantId={ i } readonly={ s._fillSrc === 'AUTO' } />
 									</AccordionContent>
 								</AccordionItem>
 							</Accordion>
@@ -51,12 +57,28 @@ export const ProofOfIdentity$Corporate: FormStep = () => {
 	);
 };
 
-interface SignatoryFormProps extends SingleFormFieldsGeneratorProps {}
+interface SignatoryFormProps extends SingleFormFieldsGeneratorProps
+{
+  readonly: boolean;
+}
 
-function SignatoryForm({ applicantId }: SignatoryFormProps) {
-	const fields = proofOfIdentityModel$Corporate({
-		index: applicantId,
-	});
+function SignatoryForm( { applicantId, readonly }: SignatoryFormProps )
+{
+  const fields = useMemo( () =>
+  {
+    const rawFields = proofOfIdentityModel$Corporate( {
+      index: applicantId,
+    } );
+
+    const aggregator = new FormFieldAggregator( rawFields );
+    aggregator.modifyFields( 'read-only', {
+      readonly
+    })
+
+    return aggregator.generate();
+
+  },[ applicantId, readonly ]);
+
 
 	return (
 		<>

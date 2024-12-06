@@ -46,7 +46,6 @@ export default function FormInput({
 								field.onChange(inputValue);
 							}}
 							placeholder={placeholder}
-							className='disabled:hover:border-neutral-200'
 						/>
 					</FormControl>
 					<FormMessage position={componentProps.errorPosition}>

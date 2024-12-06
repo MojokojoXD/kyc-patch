@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { CustomProgress } from './CustomProgress';
 import { cn } from '@/lib/utils';
 import { useState, useEffect, useRef } from 'react';
-import type { FormAction } from '@/components/forms/utils/formReducer';
 
 type ProgressStage = {
 	readonly name: string;
@@ -17,7 +16,7 @@ type ProgressStage = {
 
 interface FormProgressSheetProps<TSteps> {
 	formStages: readonly TSteps[];
-	formAction: FormAction;
+	formAction: ( stage: string, step?: string ) => void;
 	stage: string;
 	step: string;
 }
@@ -76,10 +75,7 @@ export default function FormProgressSheet<T extends ProgressStage>({
 								<AccordionTrigger
 									onClick={() => {
 										if (_stage.name === stage) return;
-										formAction({
-											type: 'jump_to_form_location',
-											toStage: _stage.name,
-										});
+										formAction(_stage.name);
 									}}
 									disabled={!progressStage.current.has(_stage.name)}
 									className='border-none data-[state=closed]:rounded-none data-[state=open]:rounded-none bg-transparent px-5 leading-relaxed text-base font-medium text-neutral-700 capitalize'>
@@ -99,11 +95,7 @@ export default function FormProgressSheet<T extends ProgressStage>({
 												variant={'link'}
 												disabled={!progressStep.current.has(_step)}
 												onClick={() =>
-													formAction({
-														type: 'jump_to_form_location',
-														toStage: _stage.name,
-														toStep: _step,
-													})
+													formAction(_stage.name,_step)
 												}
 												size={'sm'}
 												className={cn(
