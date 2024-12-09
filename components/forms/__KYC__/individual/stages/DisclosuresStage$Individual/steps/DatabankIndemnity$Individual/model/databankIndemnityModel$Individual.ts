@@ -11,7 +11,7 @@ export const databankIndemnityModel$Individual = ({
         fieldType: 'signature',
         label: '',
 		name: `applicant.${index}.disclosures.databank.emailIndemnity.signatureResource`,
-		componentProps: {
+    componentProps: {
 			clientID: clientID,
 		},
 	},

@@ -10,15 +10,15 @@ import { CustomToggle } from '@/components/ui/CompoundUI/CustomToggle';
 import { cn } from '@/lib/utils';
 import { Controller } from 'react-hook-form';
 
-interface FormCheckBoxProps extends FactoryComponentProps {}
+interface FormCheckBoxProps extends FactoryComponentProps<'checkbox'> {}
 
-export default function FormCheckBox({
+export default function FormCheckbox({
 	label,
 	name,
 	options,
 	readonly,
 	rules,
-	componentProps = { className: '', toggleStyles: '' },
+	componentProps,
 }: FormCheckBoxProps) {
 	const { control } = useFormContext();
 
@@ -30,43 +30,50 @@ export default function FormCheckBox({
 			defaultValue={[]}
 			render={({ field, fieldState }) => (
 				<FormItem className='space-y-2'>
-					<FormLabel className={fieldState.error ? 'text-error-500' : undefined}>
+					<FormLabel
+						className={cn(
+							componentProps?.classNames?.labelStyles,
+							fieldState.error && 'text-error-500'
+						)}>
 						{label + ' (one or more)'}
 					</FormLabel>
 					<FormControl>
-						<div className={cn('grid gap-[4px]', componentProps.className)}>
+						<div
+							className={cn('grid gap-[4px]', componentProps?.classNames?.boxGroupStyles)}>
 							{options?.keys &&
-                options.keys.map( ( o ) =>
-                {
-                  if( typeof o !== 'string' ) return <></>
-                  return(
-									<CustomToggle
-										key={o}
-										{...field}
-										onChange={(e) => {
-											let temp = [];
+								options.keys.map((o) => {
+									if (typeof o !== 'string') return <></>;
+									return (
+										<CustomToggle
+											key={o}
+											{...field}
+											onChange={(e) => {
+												let temp = [];
 
-											if (e.target.checked) {
-												temp = [...field.value, e.target.value];
+												if (e.target.checked) {
+													temp = [...field.value, e.target.value];
+													field.onChange(temp);
+													return;
+												}
+
+												temp = (field.value as string[]).filter((v) => v !== e.target.value);
+
 												field.onChange(temp);
-												return;
-											}
-
-											temp = (field.value as string[]).filter((v) => v !== e.target.value);
-
-											field.onChange(temp);
-										}}
-										className={componentProps.toggleStyles}
-										value={o}
-										type={'checkbox'}
-										readonly={readonly}
-										label={o}
-										selected={field.value.includes(o)}
-									/>
-								)})}
+											}}
+											className={componentProps?.classNames?.toggleStyles}
+											value={o}
+											type={'checkbox'}
+											readonly={readonly}
+											label={o}
+											selected={field.value.includes(o)}
+										/>
+									);
+								})}
 						</div>
 					</FormControl>
-					<FormMessage>{fieldState.error?.message}</FormMessage>
+					<FormMessage position={componentProps?.classNames?.errorPosition}>
+						{fieldState.error?.message}
+					</FormMessage>
 				</FormItem>
 			)}
 		/>

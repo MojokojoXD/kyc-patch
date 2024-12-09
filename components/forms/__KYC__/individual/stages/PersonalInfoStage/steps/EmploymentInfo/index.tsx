@@ -21,7 +21,7 @@ import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboardi
 import { BrokerCurrency } from '@/utils/vars/brokers';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 
-export const EmploymentInfo: FormStep = ({ countryList }) => {
+export const EmploymentInfo: FormStep = () => {
 	const {
 		form: { getValues },
 	} = useKYCFormContext<IndividualFormSchema>();
@@ -52,7 +52,6 @@ export const EmploymentInfo: FormStep = ({ countryList }) => {
 										forceMount>
 										<EmploymentForm
 											applicantId={i}
-											countryList={countryList}
 										/>
 									</AccordionContent>
 								</AccordionItem>
@@ -69,7 +68,6 @@ interface EmploymentFormProps extends SingleFormFieldsGeneratorProps {}
 
 function EmploymentForm({
 	applicantId,
-	countryList = [],
 }: EmploymentFormProps) {
 	const { watch, resetField } = useFormContext<IndividualFormSchema>();
 
@@ -82,7 +80,6 @@ function EmploymentForm({
 	const aggregatorResults = useMemo(() => {
 		const rawFields = employmentModel({
 			index: applicantId,
-			countryList,
 			currency,
 		});
 		const aggregator = new FormFieldAggregator(rawFields);
@@ -99,7 +96,7 @@ function EmploymentForm({
 		});
 
 		return aggregator.generate();
-	}, [applicantId, currentEmploymentStatus, countryList, currency]);
+	}, [applicantId, currentEmploymentStatus, currency]);
 
 	useEffect(() => {
 		if (

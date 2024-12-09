@@ -85,10 +85,9 @@ export class FormFieldAggregator {
         Beyond this we modify the properties on the field themselves;  
       */
 
-			// if ( !modifierOptions.fieldType || !modifierOptions.readonly || !modifierOptions.required ) return;
 
 			tagSpecificFieldIndices.forEach((index) => {
-				const fieldToModify = this._intermediateFields[index];
+				const fieldToModify= this._intermediateFields[index];
 
 				this._intermediateFields[index] = {
 					//destructure all default value

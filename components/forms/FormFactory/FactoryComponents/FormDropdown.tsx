@@ -8,7 +8,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from '../../../ui/form';
-import { useFormContext } from 'react-hook-form';
+import { useKYCFormContext } from '../../utils/formController';
 import {
 	Select,
 	SelectContent,
@@ -17,9 +17,10 @@ import {
 	SelectValue,
 	SelectGroup,
 } from '../../../ui/select';
+import { cn } from '@/lib/utils';
 import { Controller } from 'react-hook-form';
 
-interface FormDropdownProps extends FactoryComponentProps {}
+interface FormDropdownProps extends FactoryComponentProps<'dropdown'> {}
 
 export default function FormDropdown({
 	label,
@@ -29,8 +30,19 @@ export default function FormDropdown({
 	rules,
 	options = { keys: [], priorityKeys: [] },
 	defaultValue = '',
+	componentProps = { isCountryList: false },
 }: FormDropdownProps) {
-	const { control } = useFormContext();
+	const {
+		form: { control },
+		formVars: { countryList },
+	} = useKYCFormContext();
+
+	const dropdownItems = { ...options };
+
+	if (componentProps.isCountryList) {
+		dropdownItems.keys = countryList[1];
+		dropdownItems.priorityKeys = countryList[0];
+	}
 
 	const dropdownItemValueGetter = (value: DropdownOption) => {
 		if (typeof value === 'object') {
@@ -51,7 +63,11 @@ export default function FormDropdown({
 			}}
 			render={({ field, fieldState }) => (
 				<FormItem className='space-y-2'>
-					<FormLabel className={fieldState.error ? 'text-error-500' : undefined}>
+					<FormLabel
+						className={cn(
+							componentProps.classNames?.labelStyles,
+							fieldState.error ? 'text-error-500' : undefined
+						)}>
 						{label}
 					</FormLabel>
 					<FormControl>
@@ -61,14 +77,14 @@ export default function FormDropdown({
 								defaultValue={field.value}>
 								<SelectTrigger
 									disabled={readonly}
-									className='capitalize'>
+									className={cn('capitalize', componentProps.classNames?.selectTriggerStyles)}>
 									<SelectValue placeholder={placeholder} />
 								</SelectTrigger>
-								<SelectContent>
+								<SelectContent className={componentProps.classNames?.selectPopoverStyles}>
 									<SelectGroup>
-										{options.priorityKeys &&
-											options.priorityKeys.map((o) => {
-                        const value = dropdownItemValueGetter( o );
+										{dropdownItems.priorityKeys &&
+											dropdownItems.priorityKeys.map((o) => {
+												const value = dropdownItemValueGetter(o);
 
 												return (
 													<SelectItem
@@ -79,14 +95,13 @@ export default function FormDropdown({
 												);
 											})}
 									</SelectGroup>
-									{options.priorityKeys && options.priorityKeys?.length > 0 && (
+									{dropdownItems.priorityKeys && dropdownItems.priorityKeys?.length > 0 && (
 										<hr className='my-2 border-neutral-200' />
 									)}
 									<SelectGroup>
-										{options.keys &&
-                      options.keys.map( ( o ) =>
-                      {
-                        const value = dropdownItemValueGetter( o )
+										{dropdownItems.keys &&
+											dropdownItems.keys.map((o) => {
+												const value = dropdownItemValueGetter(o);
 												return (
 													<SelectItem
 														key={value}
@@ -100,7 +115,9 @@ export default function FormDropdown({
 							</Select>
 						</div>
 					</FormControl>
-					<FormMessage>{fieldState.error?.message}</FormMessage>
+					<FormMessage position={componentProps.classNames?.errorPosition}>
+						{fieldState.error?.message}
+					</FormMessage>
 				</FormItem>
 			)}
 		/>

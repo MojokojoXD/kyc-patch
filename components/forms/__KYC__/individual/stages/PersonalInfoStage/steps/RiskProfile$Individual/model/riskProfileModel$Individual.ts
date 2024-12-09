@@ -19,7 +19,9 @@ export const riskProfileModel$Individual = ({
 			keys: ['High', 'Medium', 'Low'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-3',
+			classNames: {
+				radioGroupStyles: 'grid grid-cols-3',
+			},
 		},
 		tags: ['DATAB', 'AFRIN'],
 	},
@@ -51,12 +53,7 @@ export const riskProfileModel$Individual = ({
 			required: 'Select time period',
 		},
 		options: {
-			keys: [
-				'Less than 1 year',
-				'1 to 2 years',
-				'3 to 5 years',
-				'More than 5 years',
-			],
+			keys: ['Less than 1 year', '1 to 2 years', '3 to 5 years', 'More than 5 years'],
 		},
 		tags: ['DATAB'],
 	},
@@ -83,7 +80,9 @@ export const riskProfileModel$Individual = ({
 			keys: ['Limited', 'Moderate', 'Extensive'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-3 gap-[4px]',
+			classNames: {
+				radioGroupStyles: 'grid grid-cols-3 gap-[4px]',
+			},
 		},
 		tags: ['DATAB', 'KESTR'],
 	},
@@ -102,7 +101,9 @@ export const riskProfileModel$Individual = ({
 			],
 		},
 		componentProps: {
-			toggleStyles: 'normal-case',
+			classNames: {
+				toggleStyles: 'normal-case',
+			},
 		},
 		tags: ['KESTR'],
 	},
@@ -167,8 +168,8 @@ export const riskProfileModel$Individual = ({
 			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually', 'Other'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-2',
-			otherProps: {
+			classNames: { radioGroupStyles: 'grid grid-cols-2' },
+			otherInputProps: {
 				label: 'Other? Specify',
 				placeholder: 'Enter other top up frequency',
 			},
@@ -198,8 +199,8 @@ export const riskProfileModel$Individual = ({
 			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually', 'Other'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-2',
-			otherProps: {
+			classNames: { radioGroupStyles: 'grid grid-cols-2' },
+			otherInputProps: {
 				label: 'Other? Specify',
 				placeholder: 'Enter other withdrawal frequency',
 			},
@@ -209,9 +210,7 @@ export const riskProfileModel$Individual = ({
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.riskProfile.regularWithdrawalAmount`,
-		label: `Expected Regular Withdrawal Amount ${
-			currency && '(' + currency + ')'
-		}`,
+		label: `Expected Regular Withdrawal Amount ${currency && '(' + currency + ')'}`,
 		placeholder: 'Enter regular withdrawal amount',
 		rules: {
 			required: 'Please enter amount',
@@ -232,8 +231,10 @@ export const riskProfileModel$Individual = ({
 			keys: ['Email', 'Online', 'Collection at Branch'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-3 gap-[4px]',
-			toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap',
+			classNames: {
+				toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap',
+				radioGroupStyles: 'grid grid-cols-3 gap-[4px]',
+			},
 		},
 	},
 	{
@@ -247,17 +248,22 @@ export const riskProfileModel$Individual = ({
 			keys: ['Semi-Annual', 'Annual', 'Monthly'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-3 gap-[4px]',
-			toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap',
+			classNames: {
+				radioGroupStyles: 'grid grid-cols-3 gap-[4px]',
+				toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap',
+			},
 		},
 	},
 	{
 		fieldType: 'agreement',
 		name: `applicant.${index}.riskProfile.agreementOfTerms.agreed`,
 		label:
-            'I/We understand investing in equities/shares is inherently risker than investing in fixed income products or holding cash',
-        rules: {
-            required: 'You must accept the above terms to continue'
-        }
+			'I/We understand investing in equities/shares is inherently risker than investing in fixed income products or holding cash',
+		rules: {
+			required: 'You must accept the above terms to continue',
+		},
+		componentProps: {
+			agreementVersion: '1.0',
+		},
 	},
 ];

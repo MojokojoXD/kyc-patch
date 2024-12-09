@@ -1,14 +1,12 @@
-import type { CountryList, BankList } from '@/types/forms/common';
+import type { BankList } from '@/types/forms/common';
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 
 
 export const bankDetailsModel$Individual = ({
 	index,
-	countryList = [],
 	bankList = [],
 }: {
 	index: number;
-	countryList?: CountryList;
 	bankList?: BankList[];
 }): FormFactoryProps[] => [
 	{
@@ -20,10 +18,9 @@ export const bankDetailsModel$Individual = ({
 		rules: {
 			required: 'Select country',
 		},
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
+    componentProps: {
+      isCountryList: true
+    }
 	},
 	{
 		fieldType: 'dropdown',

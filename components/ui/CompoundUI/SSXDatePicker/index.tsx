@@ -33,8 +33,8 @@ export const SSXDatePicker = ({
 	const calendarPopoverRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
-		const observableNode = calendarPopoverRef.current! as Element;
-
+    const observableNode = calendarPopoverRef.current! as Element;
+    
 		const observer = new IntersectionObserver(
 			(intersectionData) => {
 				const [entry] = intersectionData;
@@ -45,7 +45,7 @@ export const SSXDatePicker = ({
 					? setPopoverPosition('bottom')
 					: null;
 			},
-			{ root: null, threshold: 0.6, rootMargin: '0px' }
+			{ root: null, threshold: 0.7, rootMargin: '0px' }
 		);
 
 		observer.observe(observableNode);

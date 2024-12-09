@@ -19,7 +19,7 @@ import { contactDetailsModel$Individual } from './model/contactDetailsModel$Indi
 import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 
-export const ContactDetail$Individual: FormStep = ({ countryList }) => {
+export const ContactDetail$Individual: FormStep = () => {
 	const {
 		form: { getValues },
 	} = useKYCFormContext<IndividualFormSchema>();
@@ -50,7 +50,6 @@ export const ContactDetail$Individual: FormStep = ({ countryList }) => {
 										forceMount>
 										<ContactForm
 											applicantId={i}
-											countryList={countryList}
 										/>
 									</AccordionContent>
 								</AccordionItem>
@@ -65,16 +64,15 @@ export const ContactDetail$Individual: FormStep = ({ countryList }) => {
 
 type ContactFormProps = SingleFormFieldsGeneratorProps & object;
 
-function ContactForm({ applicantId, countryList = [] }: ContactFormProps) {
+function ContactForm({ applicantId}: ContactFormProps) {
 	const aggregatorResult = useMemo(() => {
 		const rawFields = contactDetailsModel$Individual({
 			index: applicantId,
-			countryList,
 		});
 		const aggregator = new FormFieldAggregator(rawFields);
 
 		return aggregator.generate();
-	}, [applicantId, countryList]);
+	}, [applicantId]);
 
 	return (
 		<>

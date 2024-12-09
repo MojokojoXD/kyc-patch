@@ -78,7 +78,7 @@ export interface BaseContact {
 export interface ExpandedContact extends BaseContact {
 	postalAddress: string;
 	postalCode?: string;
-	faxNumber?: PhoneInfo;
+	faxNumber: PhoneInfo;
 	digitalAddress?: string;
 	nearestLandmark?: string;
 	emergencyContact: EmergencyContact;

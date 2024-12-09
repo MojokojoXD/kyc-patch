@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
 import type { FactoryComponentProps } from '@/types/Components/formFactory';
 import { Controller } from 'react-hook-form';
 import {
@@ -10,17 +9,23 @@ import {
 } from '../../../ui/form';
 import { FileUploader } from '@/components/ui/CompoundUI/FileUploader';
 import { FileHelpers } from '@/utils/clientActions/fileHelpers';
+import { cn } from '@/lib/utils';
+import { useKYCFormContext } from '../../utils/formController';
 
-interface FormFileUploadProps extends FactoryComponentProps {}
+interface FormFileUploadProps extends FactoryComponentProps<'file-upload'> {}
 
 export default function FormFileUpload({
 	name,
 	label,
 	defaultValue = '',
 	rules,
-	componentProps = { clientID: '', fileFieldName: '' },
+	componentProps = { fileFieldName: 'default_file_name' },
 }: FormFileUploadProps) {
-	const { control, getValues, setError, resetField, setValue } = useFormContext();
+	const {
+		form,
+		formVars: { clientID },
+	} = useKYCFormContext();
+	const { control, getValues, setError, resetField, setValue } = form;
 	const [isLoading, setIsLoading] = useState(false);
 
 	const currentCloudURL = getValues(name) || '';
@@ -40,7 +45,13 @@ export default function FormFileUpload({
 			rules={!rules ? {} : rules}
 			render={({ field, fieldState }) => (
 				<FormItem>
-					<FormLabel>{label}</FormLabel>
+					<FormLabel
+						className={cn(
+							componentProps.classNames?.labelStyles,
+							fieldState.error ? 'text-error-500' : undefined
+						)}>
+						{label}
+					</FormLabel>
 					<FormControl>
 						<FileUploader
 							id={field.name}
@@ -60,14 +71,10 @@ export default function FormFileUpload({
 
 								setIsLoading(true);
 
-								const renamedFile = FileHelpers.modifyFileName(
-									file,
-									componentProps.clientID as string,
-									{
-										fileType: 'file',
-										fieldName: componentProps?.fileFieldName,
-									}
-								);
+								const renamedFile = FileHelpers.modifyFileName(file, clientID, {
+									fileType: 'file',
+									fieldName: componentProps?.fileFieldName,
+								});
 
 								const result = await FileHelpers.uploadFileAndDownload(renamedFile);
 
@@ -90,7 +97,9 @@ export default function FormFileUpload({
 							}}
 						/>
 					</FormControl>
-					<FormMessage>{fieldState.error?.message}</FormMessage>
+					<FormMessage position={componentProps.classNames?.errorPosition}>
+						{fieldState.error?.message}
+					</FormMessage>
 				</FormItem>
 			)}
 		/>

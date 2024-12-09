@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
 import { FileHelpers } from '@/utils/clientActions/fileHelpers';
 import type { FactoryComponentProps } from '@/types/Components/formFactory';
 import SignatureUploader from '@/components/ui/CompoundUI/SignatureUploader';
@@ -10,17 +9,23 @@ import {
 	FormMessage,
 	FormLabel,
 } from '../../../ui/form';
+import { useKYCFormContext } from '../../utils/formController';
+import { cn } from '@/lib/utils';
 
-interface FormSignatureUploadProps extends FactoryComponentProps {}
+interface FormSignatureUploadProps extends FactoryComponentProps<'signature'> {}
 
 export default function FormSignatureUpload({
 	name,
-	componentProps = { clientID: '' },
+	componentProps = { classNames: { errorPosition: 'relative' } },
 	defaultValue = '',
 	rules,
 }: FormSignatureUploadProps) {
 	const [isLoading, setIsLoading] = useState(false);
-	const { control, setError, setValue, getValues, resetField } = useFormContext();
+	const {
+		form,
+		formVars: { clientID },
+	} = useKYCFormContext();
+	const { control, setError, setValue, getValues, resetField } = form;
 
 	const { filename, objectURL } = (getValues('_formMetadata.' + name) as {
 		filename: string;
@@ -40,7 +45,13 @@ export default function FormSignatureUpload({
 			rules={!rules ? {} : rules}
 			render={({ field, fieldState }) => (
 				<FormItem className='bg-neutral-50 p-[24px] rounded-lg border border-neutral-200 space-y-2.5 text-neutral-700'>
-					<FormLabel>Upload Your Signature</FormLabel>
+					<FormLabel
+						className={cn(
+							componentProps?.classNames?.labelStyles,
+							fieldState.error && 'text-error-500'
+						)}>
+						Upload Your Signature
+					</FormLabel>
 					<FormControl>
 						<SignatureUploader
 							ref={field.ref}
@@ -65,14 +76,10 @@ export default function FormSignatureUpload({
 
 								setIsLoading(true);
 
-								const renamedFile = FileHelpers.modifyFileName(
-									file,
-									componentProps.clientID as string,
-									{
-										id: 0,
-										fileType: 'signature',
-									}
-								);
+								const renamedFile = FileHelpers.modifyFileName(file, clientID, {
+									id: 0,
+									fileType: 'signature',
+								});
 
 								const result = await FileHelpers.uploadFileAndDownload(renamedFile);
 
@@ -90,7 +97,9 @@ export default function FormSignatureUpload({
 							}}
 						/>
 					</FormControl>
-					<FormMessage className='relative'>{fieldState.error?.message}</FormMessage>
+					<FormMessage position={componentProps?.classNames?.errorPosition}>
+						{fieldState.error?.message}
+					</FormMessage>
 				</FormItem>
 			)}
 		/>

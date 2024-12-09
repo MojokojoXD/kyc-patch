@@ -1,18 +1,11 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 import type { ClientInfo } from '@/types/forms/individualSchema';
 import OPTIONS from '@/utils/vars/_formDefaults/personal_multiple_choice.json';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
-const MIN_AGE = 18
+const MIN_AGE = 18;
 
-export const bioInfoModel = ({
-	index,
-	countryList = [],
-}: {
-	index: number;
-	countryList?: CountryList;
-}): FormFactoryProps[] => [
+export const bioInfoModel = ({ index }: { index: number }): FormFactoryProps[] => [
 	{
 		fieldType: 'radio',
 		name: `applicant.${index}.title.presets`,
@@ -24,8 +17,10 @@ export const bioInfoModel = ({
 			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr', 'Other'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-5',
-			otherProps: {
+			classNames: {
+				radioGroupStyles: 'grid grid-cols-5',
+			},
+			otherInputProps: {
 				label: 'Other? Specify',
 				placeholder: 'Enter title',
 			},
@@ -41,6 +36,9 @@ export const bioInfoModel = ({
 			validate: (v: string) => v.length > 1 || 'entry is too short',
 		},
 		placeholder: 'First name',
+		componentProps: {
+			classNames: { errorPosition: 'absolute' },
+		},
 	},
 	{
 		fieldType: 'text',
@@ -48,6 +46,9 @@ export const bioInfoModel = ({
 		name: `applicant.${index}.middleName`,
 		label: '',
 		placeholder: 'Middle name(Optional)',
+		componentProps: {
+			classNames: { errorPosition: 'absolute' },
+		},
 	},
 	{
 		fieldType: 'text',
@@ -59,6 +60,9 @@ export const bioInfoModel = ({
 			validate: (v: string) => v.length > 1 || 'entry is too short',
 		},
 		placeholder: 'Last name',
+		componentProps: {
+			classNames: { errorPosition: 'absolute' },
+		},
 	},
 	{
 		fieldType: 'date',
@@ -69,8 +73,8 @@ export const bioInfoModel = ({
 		},
 		placeholder: 'Select dates',
 		componentProps: {
-            disableFutureDays: true,
-            minYear: MIN_AGE
+			disableFutureDays: true,
+			minYear: MIN_AGE,
 		},
 	},
 	{
@@ -91,7 +95,7 @@ export const bioInfoModel = ({
 	},
 	{
 		fieldType: 'radio',
-		name: `applicant.${index}.gender` as const,
+		name: `applicant.${index}.gender`,
 		label: 'Gender',
 		rules: {
 			required: 'Select gender',
@@ -100,12 +104,12 @@ export const bioInfoModel = ({
 			keys: OPTIONS.bio.gender,
 		},
 		componentProps: {
-			className: 'grid grid-cols-2 gap-[4px]',
+			classNames: { radioGroupStyles: 'grid grid-cols-2 gap-[4px]' },
 		},
 	},
 	{
 		fieldType: 'radio',
-		name: `applicant.${index}.maritalStatus` as const,
+		name: `applicant.${index}.maritalStatus`,
 		label: 'Marital Status',
 		rules: {
 			required: 'Select marital status',
@@ -114,7 +118,7 @@ export const bioInfoModel = ({
 			keys: OPTIONS.bio.maritalStatus,
 		},
 		componentProps: {
-			className: 'grid grid-cols-4 gap-[4px]',
+			classNames: { radioGroupStyles: 'grid grid-cols-4 gap-[4px]' },
 		},
 	},
 	{
@@ -134,10 +138,7 @@ export const bioInfoModel = ({
 		rules: {
 			required: 'Select country of residence',
 		},
-		options: {
-			keys: countryList.at(1),
-			priorityKeys: countryList.at(0),
-		},
+		componentProps: { isCountryList: true },
 		placeholder: 'Select country',
 	},
 
@@ -148,10 +149,7 @@ export const bioInfoModel = ({
 		rules: {
 			required: 'Select nationality',
 		},
-		options: {
-			keys: countryList.at(1),
-			priorityKeys: countryList.at(0),
-		},
+		componentProps: { isCountryList: true },
 		placeholder: 'Select country',
 	},
 	{
@@ -174,7 +172,7 @@ export const bioInfoModel = ({
 			],
 		},
 		componentProps: {
-			toggleStyles: 'pointer-events-none',
+			classNames: { toggleStyles: 'pointer-events-none' },
 		},
 	},
 	{
@@ -196,7 +194,7 @@ export const bioInfoModel = ({
 			required: 'Select date',
 		},
 		componentProps: {
-            disableFutureDays: true
+			disableFutureDays: true,
 		},
 		tags: ['GH'],
 	},
@@ -219,7 +217,7 @@ export const bioInfoModel = ({
 			required: 'Select date',
 		},
 		componentProps: {
-            disablePastDays: true,
+			disablePastDays: true,
 		},
 		tags: ['GH'],
 	},
@@ -292,17 +290,18 @@ export const bioInfoDefaultValue: ClientInfo = {
 			},
 		],
 		email: '',
-        postalAddress: '',
-        emergencyContact: {
-            contactName: '',
-            relation: '',
-            phoneNumber: [
-                {
-                    value: '',
-                    countryCode: 'GH'
-                }
-            ]
-        }
+    postalAddress: '',
+    faxNumber: [ { value: '', countryCode: 'GH' } ],
+		emergencyContact: {
+			contactName: '',
+			relation: '',
+			phoneNumber: [
+				{
+					value: '',
+					countryCode: 'GH',
+				},
+			],
+		},
 	},
 	employment: {
 		status: '',
@@ -344,12 +343,12 @@ export const bioInfoDefaultValue: ClientInfo = {
 			nomineeAgreement: {
 				signatureResource: '',
 			},
-        },
-        databank: {
-            emailIndemnity: {
-                signatureResource: ''
-            }
-        }
-    },
-    fileUploads: {}
+		},
+		databank: {
+			emailIndemnity: {
+				signatureResource: '',
+			},
+		},
+	},
+	fileUploads: {},
 };

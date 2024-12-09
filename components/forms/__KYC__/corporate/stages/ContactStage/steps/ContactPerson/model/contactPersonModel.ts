@@ -1,13 +1,10 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 
 const MIN_AGE = 18;
 
 export const contactPersonModel = ({
-	countryList = [],
 }: {
 	index?: number;
-	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'radio',
@@ -128,11 +125,9 @@ export const contactPersonModel = ({
 		rules: {
 			required: 'Select citizenship',
 		},
-		options: {
-			keys: countryList[1],
-
-			priorityKeys: countryList[0],
-		},
+    componentProps: {
+      isCountryList: true,
+    }
 	},
 	{
 		fieldType: 'dropdown',

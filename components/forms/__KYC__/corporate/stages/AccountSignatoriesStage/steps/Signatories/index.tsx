@@ -30,8 +30,8 @@ import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 export const Signatories: FormStep = ({ countryList }) => {
 	const { form, onFormNav } = useKYCFormContext<CorporateFormSchema>();
-	const { control, setValue, resetField, getValues } = form;
-	const { touchedFields } = useFormState<CorporateFormSchema>({
+	const { control, resetField, getValues } = form;
+	const { touchedFields, dirtyFields } = useFormState<CorporateFormSchema>({
 		name: 'accountSignatories.signatories',
 		exact: true,
 	});
@@ -45,7 +45,6 @@ export const Signatories: FormStep = ({ countryList }) => {
 
   onFormNav( function ()
   {
-    debugger
 		if (!('accountSignatories' in touchedFields)) return;
 
 		const currentTouchedSignatories = touchedFields.accountSignatories!.signatories;
@@ -80,11 +79,20 @@ export const Signatories: FormStep = ({ countryList }) => {
 		replace(signatoriesCopy);
 	});
 
-	useEffect(() =>
-		signatories.length === 0
-			? setValue('accountSignatories.signatories', [{ ...signatoriesDefaultValues }])
-			: undefined
-	);
+	useEffect(() => {
+		let isInitialized = false;
+		const signatoriesCount = signatories.length;
+
+    if ( !isInitialized && signatoriesCount === 0 )
+    {
+      console.log( 'here' )
+      signatories.length === 0 ? append( signatoriesDefaultValues ) : undefined;
+      resetField( 'accountSignatories.signatories', { keepDirty: false } );
+		}
+		return () => {
+			isInitialized = true;
+		};
+	});
 
 	return (
 		<>

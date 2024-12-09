@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import type { FactoryComponentProps } from '@/types/Components/formFactory';
 import { Input } from '@/components/ui/input';
-import { FormItem, FormControl, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+	FormItem,
+	FormControl,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { useFormContext, Controller } from 'react-hook-form';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { Button } from '@/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-interface FormPwdInputProps extends FactoryComponentProps {}
+interface FormPwdInputProps extends FactoryComponentProps<'text'> {}
 
 export default function FormPasswordInput({
 	label,
@@ -16,7 +22,7 @@ export default function FormPasswordInput({
 	defaultValue = '',
 	readonly = false,
 	rules,
-	componentProps = { isCurrency: false, errorPosition: 'absolute' },
+	componentProps = { isCurrency: false },
 }: FormPwdInputProps) {
 	const { control } = useFormContext();
 	const [revealPwd, setRevealPwd] = useState(false);
@@ -29,7 +35,11 @@ export default function FormPasswordInput({
 			rules={!rules ? {} : rules}
 			render={({ field, fieldState }) => (
 				<FormItem className='space-y-2 mr-1'>
-					<FormLabel className={fieldState.error ? 'text-error-500' : undefined}>
+					<FormLabel
+						className={cn(
+							componentProps?.classNames?.labelStyles,
+							fieldState.error ? 'text-error-500' : undefined
+						)}>
 						{label}
 					</FormLabel>
 					<FormControl>
@@ -41,7 +51,7 @@ export default function FormPasswordInput({
 								onChange={(e) => {
 									let inputValue = e.target.value;
 
-									if (componentProps.isCurrency && !Number.isNaN(parseInt(inputValue))) {
+									if (componentProps?.isCurrency && !Number.isNaN(parseInt(inputValue))) {
 										inputValue = inputValue.replace(/,/g, '');
 
 										inputValue = FormHelpers.currencyInputFormatter(inputValue);
@@ -64,7 +74,7 @@ export default function FormPasswordInput({
 							</Button>
 						</div>
 					</FormControl>
-					<FormMessage position={componentProps.errorPosition}>
+					<FormMessage position={componentProps?.classNames?.errorPosition}>
 						{fieldState.error?.message}
 					</FormMessage>
 				</FormItem>

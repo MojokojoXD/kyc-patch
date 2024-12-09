@@ -16,6 +16,8 @@ import {
 } from './formReducer';
 import type { UseFormReturn, FieldValues } from 'react-hook-form';
 import { useRouter } from 'next/router';
+import { useAsyncAction } from './customHooks/useAsyncAction';
+import { getCountryList } from '@/utils/vars/countries';
 
 type ParsedURLQuery = {
 	c_id: string;
@@ -23,7 +25,9 @@ type ParsedURLQuery = {
 	submission: string;
 };
 
-type Action = () => void;
+// type SyncData<T> = T | Promise<T>;
+
+type Action = () => boolean | undefined;
 
 export type KYCContextValue = ReturnType<typeof useKYCForm>;
 
@@ -46,18 +50,18 @@ export function useKYCFormContext<
 //Reference to a function to be called when the form changes stages or steps
 let actionBeforeFormNav: Action | null = null;
 
-const invokeActionBeforeFormNav = () => {
-	actionBeforeFormNav?.call(undefined);
-	actionBeforeFormNav = null;
-};
+const invokeActionBeforeFormNav = () => 
+  actionBeforeFormNav?.call( undefined );
+
+const resetActionBeforeFormNav = () => { actionBeforeFormNav = null }
 
 export function useKYCForm<
 	TForm extends FieldValues,
 	TStages extends Stages = Stages
 >(stages: TStages, form: UseFormReturn<TForm>) {
 	//Global error and loading state
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState('');
+	const [globalLoading, setGlobalLoading] = useState(true);
+	const [globalError, setGlobalError] = useState('');
 
 	//Reducer for handling form stage and step movement i.e next, prev, jump to step
 	const [formNav, formAction] = useReducer(
@@ -66,11 +70,15 @@ export function useKYCForm<
 			FormReducerAction<TStages[number]['name'], TStages[number]['steps'][number]>
 		>,
 		{
-			currentStage: stages[2].name,
-			currentStep: stages[2].steps[0],
+			currentStage: stages[1].name,
+			currentStep: stages[1].steps[0],
 			allStages: stages,
 		}
 	);
+
+	//Fetch resources that are used across all forms here.
+	const [countryList, isFetchingCountryList, countryListError] =
+		useAsyncAction(getCountryList);
 
 	//collect broker info and client info from page url query params
 	const router = useRouter();
@@ -81,14 +89,14 @@ export function useKYCForm<
       async operation or calculations that take time
   */
 	const toggleLoading = useCallback(
-		(toggle: boolean) => setIsLoading(toggle),
+		(toggle: boolean) => setGlobalLoading(toggle),
 		[]
 	);
 
 	/* 
       Set global error stage form any component with KYC context to show critical failure.
   */
-	const getError = useCallback((error: string) => setError(error), []);
+	const setError = useCallback((error: string) => setGlobalError(error), []);
 
 	//function to be invoked within next button click
 	const onFormNav = (action: Action) => {
@@ -100,23 +108,43 @@ export function useKYCForm<
 		invokeActionBeforeFormNav();
 
 		if (await form.trigger(undefined, { shouldFocus: true })) {
-    }
-    formAction({ type: 'next' });
+		}
+		formAction({ type: 'next' });
 	}, [form]);
 
 	// advance form one step backward
-	const prev = useCallback(() => {
-		invokeActionBeforeFormNav();
-		formAction({ type: 'prev' });
-	}, []);
+	const prev = useCallback(async () => {
+		const shouldValidate = invokeActionBeforeFormNav();
+
+    let isValid = true;
+
+		if (shouldValidate) {
+      isValid = await form.trigger(undefined, { shouldFocus: true });
+    }
+
+    if ( isValid )
+    {
+      resetActionBeforeFormNav();
+      formAction( { type: 'prev' } );
+    }
+	}, [form]);
 
 	//jump to any part of the form given stage and step
 	const goToFormLocation = useCallback(
-		(stage: typeof formNav.currentStage, step?: typeof formNav.currentStep) => {
-			invokeActionBeforeFormNav();
+		async (
+			stage: typeof formNav.currentStage,
+			step?: typeof formNav.currentStep
+		) => {
+			const shouldValidate = invokeActionBeforeFormNav();
+
+			if (shouldValidate && (await form.trigger(undefined, { shouldFocus: false }))) {
+				formAction({ type: 'jump_to_form_location', toStage: stage, toStep: step });
+				return;
+			}
+
 			formAction({ type: 'jump_to_form_location', toStage: stage, toStep: step });
 		},
-		[formNav]
+		[formNav, form]
 	);
 
 	//effect to detect form vars in URL
@@ -124,10 +152,10 @@ export function useKYCForm<
 		if (router.isReady) {
 			if (urlQuery.c_id && urlQuery.b_code && urlQuery.submission) {
 			} else {
-				setError('missing or malformed client ID or broker code');
+				setGlobalError('missing or malformed client ID or broker code');
 			}
 
-			setIsLoading(false);
+			setGlobalLoading(false);
 		}
 	}, [router, urlQuery]);
 
@@ -139,13 +167,14 @@ export function useKYCForm<
 				clientID: urlQuery.c_id ?? '',
 				brokerCode: urlQuery.b_code ?? '',
 				submissionID: urlQuery.submission ?? '',
+				countryList: countryList ?? [],
 			},
 			formAction,
 			form: form as UseFormReturn<TForm>,
 			toggleLoading,
-			getError,
-			isLoading,
-			error,
+			setError,
+			isLoading: globalLoading || isFetchingCountryList,
+			error: globalError || countryListError.message,
 			next,
 			prev,
 			onFormNav,
@@ -159,11 +188,14 @@ export function useKYCForm<
 			formAction,
 			form,
 			urlQuery,
-			error,
-			isLoading,
-			getError,
+			setError,
 			toggleLoading,
 			goToFormLocation,
+			globalError,
+			countryListError,
+			globalLoading,
+			isFetchingCountryList,
+			countryList,
 		]
 	);
 }

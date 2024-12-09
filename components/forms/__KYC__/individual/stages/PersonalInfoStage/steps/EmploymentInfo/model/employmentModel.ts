@@ -1,14 +1,11 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const employmentModel = ({
 	index,
-	countryList = [],
 	currency = '',
 }: {
 	index: number;
-	countryList?: CountryList;
 	currency?: string;
 }): FormFactoryProps[] => [
 	{
@@ -83,10 +80,6 @@ export const employmentModel = ({
 		name: `applicant.${index}.employment.statusDetails.phoneNumber`,
 		label: 'Employer/Business/School Phone Number',
 		placeholder: 'Enter phone number',
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
 		tags: ['remove-all-except'],
 	},
 	{
@@ -138,14 +131,13 @@ export const employmentModel = ({
 		fieldType: 'dropdown',
 		name: `applicant.${index}.employment.statusDetails.countryOfEmployment`,
 		label: 'Country of Employment',
-		placeholder: 'Enter country of employment',
+		placeholder: 'Select country of employment',
 		rules: {
 			required: 'Select country',
 		},
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
+    componentProps: {
+      isCountryList: true,
+    }
 	},
 
 	{

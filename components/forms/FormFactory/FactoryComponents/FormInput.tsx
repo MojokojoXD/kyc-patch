@@ -1,10 +1,16 @@
 import type { FactoryComponentProps } from '@/types/Components/formFactory';
 import { Input } from '@/components/ui/input';
-import { FormItem, FormControl, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+	FormItem,
+	FormControl,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { useFormContext, Controller } from 'react-hook-form';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
+import { cn } from '@/lib/utils';
 
-interface FormInputProps extends FactoryComponentProps {}
+interface FormInputProps extends FactoryComponentProps<'text'> {}
 
 export default function FormInput({
 	label,
@@ -13,7 +19,9 @@ export default function FormInput({
 	defaultValue = '',
 	readonly = false,
 	rules,
-	componentProps = { isCurrency: false, errorPosition: 'absolute' },
+	componentProps = {
+		isCurrency: false,
+	},
 }: FormInputProps) {
 	const { control } = useFormContext();
 
@@ -24,13 +32,18 @@ export default function FormInput({
 			defaultValue={defaultValue}
 			rules={!rules ? {} : rules}
 			render={({ field, fieldState }) => (
-				<FormItem className='space-y-2 mr-1'>
-					<FormLabel className={fieldState.error ? 'text-error-500' : undefined}>
+				<FormItem className='mr-1'>
+					<FormLabel
+						className={cn(
+							componentProps?.classNames?.labelStyles,
+							fieldState.error ? 'text-error-500' : undefined
+						)}>
 						{label}
 					</FormLabel>
 					<FormControl>
 						<Input
-							{...field}
+              { ...field }
+              value={ field.value ?? '' }
 							disabled={readonly}
 							onChange={(e) => {
 								let inputValue = e.target.value;
@@ -48,7 +61,7 @@ export default function FormInput({
 							placeholder={placeholder}
 						/>
 					</FormControl>
-					<FormMessage position={componentProps.errorPosition}>
+					<FormMessage position={componentProps?.classNames?.errorPosition}>
 						{fieldState.error?.message}
 					</FormMessage>
 				</FormItem>

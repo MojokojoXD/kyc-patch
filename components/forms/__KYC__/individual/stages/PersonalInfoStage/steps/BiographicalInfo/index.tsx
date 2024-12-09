@@ -21,12 +21,12 @@ import type {
 	SingleFormFieldsGeneratorProps,
 } from '@/types/Components/onboarding';
 
-export const BiographicalInfo: FormStep = ({ countryList }) => {
+export const BiographicalInfo: FormStep = () => {
 	const {
 		form: { getValues },
 	} = useKYCFormContext<IndividualFormSchema>();
 
-	const applicants = getValues('applicant');
+	const applicants = getValues('applicant') ?? [];
 
 	return (
 		<>
@@ -53,7 +53,6 @@ export const BiographicalInfo: FormStep = ({ countryList }) => {
 										forceMount>
 										<BiographicalForm
 											applicantId={i}
-											countryList={countryList}
 										/>
 									</AccordionContent>
 								</AccordionItem>
@@ -70,7 +69,6 @@ interface BiographicalFormProps extends SingleFormFieldsGeneratorProps {}
 
 function BiographicalForm({
 	applicantId,
-	countryList = [],
 }: BiographicalFormProps) {
 	const { watch, setValue, unregister } =
 		useKYCFormContext<IndividualFormSchema>().form;
@@ -96,7 +94,6 @@ function BiographicalForm({
 	const aggregatorResults = useMemo(() => {
 		const rawfields = bioInfoModel({
 			index: applicantId,
-			countryList,
 		});
 		const aggregator = new FormFieldAggregator(rawfields);
 
@@ -113,7 +110,7 @@ function BiographicalForm({
 			unregister(`applicant.${applicantId}.residence.details`);
 
 		return aggregator.generate();
-	}, [applicantId, countryList, residenceStatus, isNigeriaResident, unregister]);
+	}, [applicantId, residenceStatus, isNigeriaResident, unregister]);
 
 	useEffect(
 		() => setValue(`applicant.${applicantId}.residence.status`, residenceStatus),

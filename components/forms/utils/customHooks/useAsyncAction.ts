@@ -19,33 +19,30 @@ export function useAsyncAction<T>(
 		message: '',
 	});
 
-    useEffect( () =>
-    {
-        let ignore = false;
+	useEffect(() => {
+		let ignore = false;
 		const runAction = async () => {
 			setLoading(true);
 
 			try {
-                const data = await action();
-                if ( !ignore )
-                {
-                    setData(data);
-                    setLoading(false);
-                }
-			} catch (error) {
-				if (typeof error === 'string') {
-					setError({ flag: true, message: error });
+				const data = await action();
+				if (!ignore) {
+					setData(data);
+					setLoading(false);
 				}
+			} catch (error) {
+				if (typeof error === 'string') setError({ flag: true, message: error });
+
+				if (error instanceof Error) setError({ flag: true, message: error.message });
 
 				console.log(error);
 			}
 		};
 
-        runAction();
-        return () =>
-        {
-            ignore = true;
-        }
+		runAction();
+		return () => {
+			ignore = true;
+		};
 	}, [action]);
 
 	return [data, loading, error];

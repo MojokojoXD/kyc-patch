@@ -12,7 +12,7 @@ import { Controller } from 'react-hook-form';
 import { Input } from '../../../ui/input';
 import { useEffect, useRef } from 'react';
 
-interface FormRadioProps extends FactoryComponentProps {}
+interface FormRadioProps extends FactoryComponentProps<'radio'> {}
 
 export default function FormRadio({
 	label,
@@ -22,9 +22,10 @@ export default function FormRadio({
 	defaultValue = '',
 	readonly,
 	componentProps = {
-		toggleStyles: 'text-nowrap truncate',
-		className: '',
-		otherProps: {
+		classNames: {
+			toggleStyles: 'text-nowrap truncate',
+		},
+		otherInputProps: {
 			label: 'Other? Specify',
 			placeholder: 'Specify',
 		},
@@ -62,25 +63,26 @@ export default function FormRadio({
 				rules={{ ...rules }}
 				render={({ field, fieldState }) => (
 					<FormItem className='space-y-2'>
-						<FormLabel className={fieldState.error ? 'text-error-500' : undefined}>
+						<FormLabel className={cn(componentProps.classNames?.labelStyles,fieldState.error && 'text-error-500')}>
 							{label}
 						</FormLabel>
-						<div className={cn('grid gap-[4px]', componentProps.className)}>
+						<div
+							className={cn('grid gap-[4px]', componentProps.classNames?.radioGroupStyles)}>
 							{options &&
-                options.keys?.map( ( o ) =>
-                {
-                  if( typeof o !== 'string' ) return<></>
-                  return(
-									<CustomToggle
-										key={o}
-										readonly={readonly}
-										{...field}
-										value={o}
-										className={componentProps.toggleStyles}
-										label={o}
-										selected={field.value === o}
-									/>
-								)})}
+								options.keys?.map((o) => {
+									if (typeof o !== 'string') return <></>;
+									return (
+										<CustomToggle
+											key={o}
+											readonly={readonly}
+											{...field}
+											value={o}
+											className={componentProps.classNames?.toggleStyles}
+											label={o}
+											selected={field.value === o}
+										/>
+									);
+								})}
 						</div>
 						<FormMessage>{fieldState.error?.message}</FormMessage>
 					</FormItem>
@@ -96,12 +98,12 @@ export default function FormRadio({
 					}}
 					render={({ field, fieldState }) => (
 						<FormItem>
-							<FormLabel>{componentProps.otherProps?.label}</FormLabel>
+							<FormLabel>{componentProps.otherInputProps?.label}</FormLabel>
 							<FormControl>
 								<Input
-                  { ...field }
-                  disabled={readonly}
-									placeholder={componentProps.otherProps?.placeholder}
+									{...field}
+									disabled={readonly}
+									placeholder={componentProps.otherInputProps?.placeholder}
 								/>
 							</FormControl>
 							<FormMessage>{fieldState.error?.message}</FormMessage>

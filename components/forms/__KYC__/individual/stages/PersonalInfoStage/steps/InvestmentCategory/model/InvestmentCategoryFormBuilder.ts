@@ -1,4 +1,4 @@
-import type { FormFactoryProps } from "@/types/Components/formFactory";
+import type { FormFactoryProps } from '@/types/Components/formFactory';
 
 const investmentCatergoryFields: FormFactoryProps[] = [
 	{
@@ -16,26 +16,25 @@ const investmentCatergoryFields: FormFactoryProps[] = [
 		},
 		rules: {
 			required: 'Select investment category',
-        },
-        componentProps: {
-            className: 'grid grid-cols-2 gap-[4px]'
-        }
+		},
+		componentProps: {
+			classNames: { boxGroupStyles: 'grid grid-cols-2 gap-[4px]' },
+		},
 	},
 	{
 		fieldType: 'radio',
 		name: 'taxExempt',
 		label: 'Are you tax exempt?',
-        options: {
-            keys: [ 'Yes', 'No' ]
-        },
-        componentProps: {
-            className: 'grid grid-cols-2 gap-[4px]'
-        },
-        rules: {
-            required: 'Select tax exempt status'
-        }
+		options: {
+			keys: ['Yes', 'No'],
+		},
+		componentProps: {
+			classNames: { radioGroupStyles: 'grid grid-cols-2 gap-[4px]' },
+		},
+		rules: {
+			required: 'Select tax exempt status',
+		},
 	},
 ];
 
-
-export { investmentCatergoryFields }
+export { investmentCatergoryFields };

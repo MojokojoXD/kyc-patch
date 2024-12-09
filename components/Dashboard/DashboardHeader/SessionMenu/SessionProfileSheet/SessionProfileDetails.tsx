@@ -33,9 +33,8 @@ export function SessionProfileDetails() {
 					<p className='paragraph2Regular'>Joined on {formattedJoinedDate} </p>
 				</div>
 				<div>
-					{/* don't know if this is supposed to be static */}
 					<span className='flex justify-center items-center h-10 inline-block aspect-square rounded-md bg-primary-50 text-primary-500 paragraph2Medium border border-primary-100 cursor-default'>
-						SA
+						{ user_name.split(' ') }
 					</span>
 				</div>
 			</div>

@@ -18,8 +18,8 @@ export type FormReducerFn<
 > = (state: TState, action: TAction) => TState;
 
 export type FormReducerAction<TStage = string, TStep = string> =
-	| { type: 'next' }
-	| { type: 'prev' }
+  | { type: 'next', isValidated?: boolean; }
+  | { type: 'prev', isValidated?: boolean; }
 	| {
 			type: 'remove_step';
 			stage: TStage;

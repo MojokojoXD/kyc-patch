@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import type { FactoryComponentProps } from '@/types/Components/formFactory';
 import {
 	FormItem,
@@ -27,8 +27,9 @@ import Image from 'next/image';
 import type { Country } from '@/types/forms/common';
 import { cn } from '@/lib/utils';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
+import { useKYCFormContext } from '../../utils/formController';
 
-interface FormPhoneProps extends FactoryComponentProps {}
+interface FormPhoneProps extends FactoryComponentProps<'phone'> {}
 
 export default function FormPhone({
 	label,
@@ -40,9 +41,9 @@ export default function FormPhone({
 	componentProps = { phoneMode: 'multi', maxPhoneCount: 2 },
 	options,
 }: FormPhoneProps) {
-	const { control, setValue } = useFormContext();
+	const { control } = useFormContext();
 
-	const { fields, append, remove } = useFieldArray({
+	const { fields, append, remove, replace } = useFieldArray({
 		control,
 		name: name,
 	});
@@ -61,9 +62,9 @@ export default function FormPhone({
 
 	useEffect(() => {
 		if (fields.length === 0) {
-			setValue(name, [{ value: '', countryCode: 'GH' }]);
+			replace([{ value: '', CountryCode: 'GH' }]);
 		}
-	}, [setValue, fields, name]);
+	}, [fields.length, replace]);
 
 	return (
 		<>
@@ -75,12 +76,15 @@ export default function FormPhone({
 								<Controller
 									control={control}
 									name={`${name}.${i}`}
-									defaultValue={{ value: '', areaCode: 'GH' }}
 									rules={ruleSet}
 									render={({ field, fieldState }) => (
 										<div className='space-y-2.5'>
 											{i === 0 && (
-												<FormLabel className={cn(fieldState.error && 'text-error-500')}>
+												<FormLabel
+													className={cn(
+														componentProps?.classNames?.labelStyles,
+														fieldState.error && 'text-error-500'
+													)}>
 													{label}
 												</FormLabel>
 											)}
@@ -109,7 +113,7 @@ export default function FormPhone({
 															className='border-none'
 															placeholder={placeholder}
 															ref={field.ref}
-															value={field.value.value}
+															value={field.value.value ?? ''}
 															onChange={(v) =>
 																field.onChange({
 																	...field.value,
@@ -164,7 +168,7 @@ export default function FormPhone({
 	);
 }
 
-type Options = Pick<FactoryComponentProps, 'options'>;
+type Options = Pick<FactoryComponentProps<'phone'>, 'options'>;
 
 type CustomCountrySelectProps = Options & SelectProps & object;
 
@@ -172,11 +176,13 @@ function CustomCountrySelect({
 	disabled,
 	onValueChange,
 	defaultValue,
-	options = { keys: [], priorityKeys: [] },
 }: CustomCountrySelectProps) {
+	const {
+		formVars: { countryList },
+	} = useKYCFormContext();
 	const countries = useMemo(
-		() => [...(options.keys || []), ...(options.priorityKeys || [])],
-		[options]
+		() => [...countryList[0], ...countryList[1]],
+		[countryList]
 	);
 
 	const flagURL = FormHelpers.getFlagURL(
@@ -202,7 +208,7 @@ function CustomCountrySelect({
 			</SelectTrigger>
 			<SelectContent className=''>
 				<SelectGroup>
-					{options?.priorityKeys?.map((c) => {
+					{countryList[0].map((c) => {
 						if (typeof c === 'string') return <></>;
 						if (!('cty_name' in c)) return <></>;
 
@@ -217,7 +223,7 @@ function CustomCountrySelect({
 				</SelectGroup>
 				<hr className='my-2 border-neutral-200' />
 				<SelectGroup>
-					{options?.keys?.map((c) => {
+					{countryList[1].map((c) => {
 						if (typeof c === 'string') return <></>;
 						if (!('cty_name' in c)) return <></>;
 						return (

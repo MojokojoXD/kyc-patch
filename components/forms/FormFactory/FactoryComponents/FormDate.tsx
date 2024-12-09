@@ -10,7 +10,7 @@ import {
 import { useFormContext } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-export interface FormDateProps extends FactoryComponentProps {}
+export interface FormDateProps extends FactoryComponentProps<'date'> {}
 
 export default function FormDate({
 	label,
@@ -18,13 +18,15 @@ export default function FormDate({
 	defaultValue = '',
 	readonly,
 	rules,
-	componentProps = {
+  componentProps ,
+}: FormDateProps) {
+  const { control } = useFormContext();
+  
+  const { classNames, ...others } = componentProps ? componentProps : {
 		disableFutureDays: false,
 		disablePastDays: false,
 		minYear: 0,
-	},
-}: FormDateProps) {
-	const { control } = useFormContext();
+	}
 
 	return (
 		<Controller
@@ -43,12 +45,12 @@ export default function FormDate({
 								onDateChange={(date) => field.onChange(date.toISOString())}
 								value={field.value}
 								placeholder={'Select Date'}
-                { ...componentProps }
+                { ...others }
                 readonly={ readonly }
 							/>
 						</div>
 					</FormControl>
-					<FormMessage>{fieldState.error?.message}</FormMessage>
+					<FormMessage position={ classNames?.errorPosition }>{fieldState.error?.message}</FormMessage>
 				</FormItem>
 			)}
 		/>

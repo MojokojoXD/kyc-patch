@@ -18,20 +18,21 @@ export function Layout({ children }: LayoutProps) {
 }
 
 type MainProps = BaseProps & {
-    noLogo?: boolean;
+	noLogo?: boolean;
 };
 
 export function Main({ children, noLogo = false }: MainProps) {
 	return (
-		<div className='w-[508px] bg-white p-[24px] space-y-[32px] rounded-xl shadow-sm border border-neutral-50 text-neutral-700'>
-            <div className={ cn( 'relative h-[56px] w-[57px]', noLogo && 'hidden' ) }>
-                <Link href={'/'}>
-                    <Image
-                        src={logo}
-                        fill
-                        alt='secondstax mini logo'
-                    />
-                </Link>
+		<div className='relative w-[508px] bg-white p-[24px] space-y-[32px] rounded-xl shadow-sm border border-neutral-50 text-neutral-700'>
+			<div className={cn('relative h-[56px] w-[57px]', noLogo && 'hidden')}>
+				<Link href={'/'}>
+					<Image
+						src={logo}
+						fill
+						alt='secondstax mini logo'
+						sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+					/>
+				</Link>
 			</div>
 			{children}
 		</div>
@@ -53,7 +54,7 @@ export function Header({ title = '', tagline = '' }: HeaderProps) {
 }
 
 type BodyProps = BaseProps & {
-    error?: string;
+	error?: string;
 };
 export function Body({ children, error = '' }: BodyProps) {
 	return (

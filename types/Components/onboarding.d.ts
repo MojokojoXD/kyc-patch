@@ -20,5 +20,4 @@ export type FormStage<TSteps = string> = FC<FormStageProps<TSteps>>;
 
 export interface SingleFormFieldsGeneratorProps {
 	applicantId: number;
-	countryList?: CountryList;
 }

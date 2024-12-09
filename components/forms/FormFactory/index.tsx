@@ -1,19 +1,19 @@
 import FormInput from './FactoryComponents/FormInput';
 import FormDate from './FactoryComponents/FormDate';
 import FormRadio from './FactoryComponents/FormRadio';
-import FormCheckBox from './FactoryComponents/FormCheckBox';
+import FormCheckbox from './FactoryComponents/FormCheckBox';
 import FormDropdown from './FactoryComponents/FormDropdown';
 import FormPhone from './FactoryComponents/FormPhone';
 import FormSignatureUpload from './FactoryComponents/FormSignatureUpload';
 import FormAgreement from './FactoryComponents/FormAgreement';
 import FormFileUpload from './FactoryComponents/FormFileUpload';
-import type { FormFactoryProps } from '@/types/Components/formFactory';
-
+import type { FormFieldModel } from '@/types/Components/formFactory';
 export default function FormFactory({
 	fieldType,
-	inline,
+  inline,
+  reviewerOverride,
 	...fieldProps
-}: FormFactoryProps) {
+}: FormFieldModel) {
 	const renderFormField = () => {
 		switch (fieldType) {
 			case 'text':
@@ -23,7 +23,7 @@ export default function FormFactory({
 			case 'radio':
 				return <FormRadio {...fieldProps} />;
 			case 'checkbox':
-				return <FormCheckBox {...fieldProps} />;
+				return <FormCheckbox {...fieldProps} />;
 			case 'dropdown':
 				return <FormDropdown {...fieldProps} />;
 			case 'phone':

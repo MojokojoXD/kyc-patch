@@ -23,7 +23,7 @@ import {
 
 const GHANA = 'GHANA';
 
-export const ContactPerson: FormStep = ({ countryList }) => {
+export const ContactPerson: FormStep = () => {
 	const { form, onFormNav } = useKYCFormContext<CorporateFormSchema>();
 	const { watch, setValue, getValues } = form;
 	const { replace } = useFieldArray<

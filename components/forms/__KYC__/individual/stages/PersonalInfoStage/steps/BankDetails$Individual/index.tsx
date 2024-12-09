@@ -23,7 +23,7 @@ import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregato
 import { bankDetailsModel$Individual } from './model/bankDetailsModel$Individual';
 import type { Path } from 'react-hook-form';
 
-export const BankDetails$Individual: FormStep = ({ countryList }) => {
+export const BankDetails$Individual: FormStep = () => {
 	const {
 		form: { getValues },
 	} = useKYCFormContext<IndividualFormSchema>();
@@ -61,7 +61,6 @@ export const BankDetails$Individual: FormStep = ({ countryList }) => {
 										forceMount>
 										<BankForm
 											applicantId={i}
-											countryList={countryList}
 											bankList={bankList || []}
 										/>
 									</AccordionContent>
@@ -79,7 +78,7 @@ type BankFormProps = SingleFormFieldsGeneratorProps & {
 	bankList: Awaited<ReturnType<typeof getBankList>>;
 };
 
-function BankForm({ applicantId, countryList = [], bankList }: BankFormProps) {
+function BankForm({ applicantId, bankList }: BankFormProps) {
 	const {
 		form: { watch },
 		formVars: { brokerCode },
@@ -96,7 +95,6 @@ function BankForm({ applicantId, countryList = [], bankList }: BankFormProps) {
 	const aggregatorResults = useMemo(() => {
 		const rawFields = bankDetailsModel$Individual({
 			index: applicantId,
-			countryList,
 			bankList,
 		});
 		const aggregator = new FormFieldAggregator(rawFields);
@@ -132,7 +130,6 @@ function BankForm({ applicantId, countryList = [], bankList }: BankFormProps) {
 		return aggregator.generate();
 	}, [
 		applicantId,
-		countryList,
 		bankList,
 		currentResidence,
 		currentBankCountry,

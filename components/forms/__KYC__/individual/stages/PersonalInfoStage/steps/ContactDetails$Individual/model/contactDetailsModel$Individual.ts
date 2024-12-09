@@ -1,13 +1,10 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const contactDetailsModel$Individual = ({
 	index,
-	countryList = [],
 }: {
 	index: number;
-	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
@@ -41,15 +38,7 @@ export const contactDetailsModel$Individual = ({
 		fieldType: 'phone',
 		name: `applicant.${index}.contacts.phoneNumber`,
 		label: 'Phone Number',
-        placeholder: 'Enter phone number',
-		componentProps: {
-			phoneMode: 'multi',
-			maxPhoneCount: 2,
-		},
-		options: {
-			keys: countryList.at(1),
-			priorityKeys: countryList.at(0),
-		},
+		placeholder: 'Enter phone number',
 	},
 	{
 		fieldType: 'text',
@@ -88,10 +77,6 @@ export const contactDetailsModel$Individual = ({
 		name: `applicant.${index}.contacts.emergencyContact.phoneNumber`,
 		label: '',
 		placeholder: 'Enter contact phone number',
-		options: {
-			keys: countryList.at(1),
-			priorityKeys: countryList.at(0),
-		},
 		componentProps: {
 			phoneMode: 'single',
 		},
@@ -109,16 +94,12 @@ export const contactDetailsModel$Individual = ({
 		fieldType: 'phone',
 		name: `applicant.${index}.contacts.faxNumber`,
 		label: 'Fax Number (Optional)',
-        placeholder: 'Enter Fax Number',
-        rules: null,
-		options: {
-			keys: countryList.at(1),
-			priorityKeys: countryList.at(0),
-		},
+    placeholder: 'Enter Fax Number',
+    rules: null,
 		componentProps: {
 			phoneMode: 'single',
-        },
-        tags: ['KE']
+		},
+		tags: ['KE'],
 	},
 	{
 		fieldType: 'text',

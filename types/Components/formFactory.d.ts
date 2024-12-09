@@ -1,9 +1,9 @@
 import type { Country, BankList } from '../forms/common';
-import type { InputProps } from '@/components/ui/input';
 import type { RegisterOptions } from 'react-hook-form';
 import type { BrokerCode } from '../forms/broker';
 import type { Path } from 'react-hook-form';
-import type { SSXDatePickerProps } from '@/components/CompoundUI/SSXDatePicker/date-picker';
+import type { FormComponentProps } from './formComponentProps';
+
 type DropdownOption = Country | BankList | string;
 
 type Tag =
@@ -30,32 +30,15 @@ type FactoryFieldType =
 	| 'agreement'
 	| 'file-upload';
 
-export interface FormFactoryProps extends FactoryComponentProps {
-	fieldType: FactoryFieldType;
-}
 
-export type FactoryComponentProps = {
+
+export type FormFieldModel<TFormField extends FactoryFieldType = FactoryFieldType> = {
+	fieldType: TFormField;
 	label: string;
 	inline?: boolean;
-	readonly name: Path | string;
+	readonly name: Path<object> | string;
 	readonly?: boolean;
-	componentProps?: Partial<
-		Omit<InputProps, 'disabled' | 'placeholder'> &
-			SSXDatePickerProps & {
-				phoneMode?: 'single' | 'multi';
-				maxPhoneCount?: number;
-				toggleStyles?: string;
-				clientID?: string;
-				agreementVersion?: string;
-				fileFieldName?: string;
-				isCurrency?: boolean;
-				errorPosition?: 'relative' | 'absolute';
-				otherProps?: {
-					label: string;
-					placeholder: string;
-				};
-			}
-	>;
+	componentProps?: FormComponentProps<TFormField>;
 	rules?: RegisterOptions | null;
 	placeholder?: string;
 	defaultValue?: string | boolean;
@@ -70,3 +53,16 @@ export type FactoryComponentProps = {
 		label?: string;
 	};
 };
+
+export type FormFactoryProps =
+	| FormFieldModel<'agreement'>
+	| FormFieldModel<'checkbox'>
+	| FormFieldModel<'date'>
+	| FormFieldModel<'dropdown'>
+	| FormFieldModel<'file-upload'>
+	| FormFieldModel<'phone'>
+	| FormFieldModel<'radio'>
+	| FormFieldModel<'signature'>
+	| FormFieldModel<'text'>;
+
+export type FactoryComponentProps<TFieldType extends FactoryFieldType> = Omit<FormFieldModel<TFieldType>, 'reviewerOverride' | 'tags' | 'fieldType' | 'inline'>;

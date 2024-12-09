@@ -25,17 +25,18 @@ import { useKYCFormContext } from '@/components/forms/utils/formController';
 export const Review$Personal$Individual: FormStep = () => {
 	const {
 		form: { getValues },
-		formAction,
+    goToFormLocation,
+    onFormNav
 	} = useKYCFormContext<IndividualFormSchema, IndividualFormMetadata>();
 
 	const applicantCount = (getValues('applicant') || [{}]).length;
 
-	const editStep = (step: IndividualFormStep) =>
-		formAction({
-			type: 'jump_to_form_location',
-			toStage: 'personal',
-			toStep: step,
-		});
+  const editStep = ( step: IndividualFormStep ) =>
+  {
+    goToFormLocation( 'personal', step );
+    
+    onFormNav( () => true) 
+  }
 
 	const accordionTitle = (index: number) => ({
 		firstName: `applicant.${index}.firstName`,
