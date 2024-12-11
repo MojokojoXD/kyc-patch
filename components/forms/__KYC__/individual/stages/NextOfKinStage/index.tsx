@@ -6,21 +6,17 @@ import type { FormComponentDict } from '../../../../utils/formReducer';
 import type { IndividualFormStep } from '../../config/individualFormMetadata';
 import type { IndividualFormMetadata } from '../../config/individualFormMetadata';
 import { useKYCFormContext } from '../../../../utils/formController';
-import { getCountryList } from '@/utils/vars/countries';
-import { useAsyncAction } from '@/components/forms/utils/customHooks/useAsyncAction';
-import Loading from '@/components/ui/Loading';
 
 export const NextOfKinStage = () => {
 	const { formNav } = useKYCFormContext<object, IndividualFormMetadata>();
 
-	const [countryList, isloading] = useAsyncAction(getCountryList);
 
 	const NOKStepDict: FormComponentDict<IndividualFormStep> = {
 		'personal information_next of kin': (
-			<Personal$NOK$Individual countryList={countryList} />
+			<Personal$NOK$Individual />
 		),
 		'contact details_next of kin': (
-			<Contact$NOK$Individual countryList={countryList} />
+			<Contact$NOK$Individual />
 		),
 		'proof of identity_next of kin': <ProofOfIdentity$NOK$Individual />,
 		'review_next of kin': <Review$NOK$Individual />,
@@ -28,7 +24,6 @@ export const NextOfKinStage = () => {
 
 	return (
 		<>
-			<Loading reveal={isloading} />
 			{NOKStepDict[formNav.currentStep]}
 		</>
 	);

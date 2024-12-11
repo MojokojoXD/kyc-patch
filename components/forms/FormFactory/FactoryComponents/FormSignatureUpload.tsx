@@ -16,7 +16,7 @@ interface FormSignatureUploadProps extends FactoryComponentProps<'signature'> {}
 
 export default function FormSignatureUpload({
 	name,
-	componentProps = { classNames: { errorPosition: 'relative' } },
+	componentProps = { classNames: { errorPosition: 'relative' }, indexer: 0 },
 	defaultValue = '',
 	rules,
 }: FormSignatureUploadProps) {
@@ -77,7 +77,7 @@ export default function FormSignatureUpload({
 								setIsLoading(true);
 
 								const renamedFile = FileHelpers.modifyFileName(file, clientID, {
-									id: 0,
+									id: componentProps.indexer,
 									fileType: 'signature',
 								});
 

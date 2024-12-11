@@ -22,7 +22,7 @@ import { useKYCFormContext } from '@/components/forms/utils/formController';
 import Markdown from 'react-markdown';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
 
-export const Pep$Individual: FormStep = ({ countryList }) => {
+export const Pep$Individual: FormStep = () => {
 	const {
 		form: { getValues },
 	} = useKYCFormContext<IndividualFormSchema>();
@@ -58,7 +58,6 @@ export const Pep$Individual: FormStep = ({ countryList }) => {
 									forceMount>
 									<PepForm
 										applicantId={i}
-										countryList={countryList}
 										pepText={pepText as string}
 										isLoading={isloading}
 									/>
@@ -77,12 +76,7 @@ interface PepFormProps extends SingleFormFieldsGeneratorProps {
 	isLoading: boolean;
 }
 
-function PepForm({
-	applicantId,
-	countryList = [],
-	pepText,
-	isLoading,
-}: PepFormProps) {
+function PepForm({ applicantId, pepText, isLoading }: PepFormProps) {
 	const {
 		form: { watch, resetField },
 	} = useKYCFormContext<IndividualFormSchema>();
@@ -94,13 +88,12 @@ function PepForm({
 	const aggregatorResults = useMemo(() => {
 		const rawFields = pepModel$Individual({
 			index: applicantId,
-			countryList,
 		});
 		const aggregator = new FormFieldAggregator(rawFields);
 
 		aggregator.modifyFields('remove-all-except', {
-      remove: currentPepStatus === 'No' || !currentPepStatus,
-      required: currentPepStatus === 'Yes'
+			remove: currentPepStatus === 'No' || !currentPepStatus,
+			required: currentPepStatus === 'Yes',
 		});
 
 		if (currentPepStatus === 'No') {
@@ -110,17 +103,13 @@ function PepForm({
 		}
 
 		return aggregator.generate();
-	}, [applicantId, countryList, currentPepStatus, resetField]);
+	}, [applicantId, currentPepStatus, resetField]);
 
 	return (
 		<div>
 			<div className='space-y-10'>
 				<FormText className='max-h-96 overflow-auto [&>ul_ol]:list-[lower-alpha]'>
-					{isLoading ? (
-            <DisclosuresSkeleton/>
-					) : (
-						<Markdown>{pepText}</Markdown>
-					)}
+					{isLoading ? <DisclosuresSkeleton /> : <Markdown>{pepText}</Markdown>}
 				</FormText>
 				<div className='space-y-11'>
 					{aggregatorResults.map((f) => (

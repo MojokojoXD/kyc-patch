@@ -33,7 +33,8 @@ interface FormFileUploadComponentProps {
 }
 
 interface FormSignatureUploadComponentProps {
-	classNames?: ComponentClasses;
+  classNames?: ComponentClasses;
+  indexer?: number;
 }
 
 interface FormCheckboxComponentProps {

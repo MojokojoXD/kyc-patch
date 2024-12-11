@@ -1,12 +1,6 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 
-export const incorporationFields = ({
-	countryList = [],
-}: {
-	index?: number;
-	countryList?: CountryList;
-}): FormFactoryProps[] => [
+export const incorporationFields = ({}: { index?: number }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
 		name: 'businessInfo.incorporation.certificateNo',
@@ -26,8 +20,8 @@ export const incorporationFields = ({
 		fieldType: 'text',
 		name: 'businessInfo.incorporation.KRAPin',
 		label: 'KRA PIN',
-        placeholder: 'Enter KRA PIN',
-        tags: [ 'KESTR' ]
+		placeholder: 'Enter KRA PIN',
+		tags: ['KESTR'],
 	},
 	{
 		fieldType: 'date',
@@ -37,7 +31,7 @@ export const incorporationFields = ({
 			required: 'Select date',
 		},
 		componentProps: {
-			disableFutureDays: true
+			disableFutureDays: true,
 		},
 	},
 	{
@@ -54,9 +48,8 @@ export const incorporationFields = ({
 		name: 'businessInfo.incorporation.parentCountryIncorporation',
 		label: "Parent Company's Country of Incorporation (If Applicable)",
 		placeholder: 'Select country',
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
+		componentProps: {
+			isCountryList: true,
 		},
 	},
 ];

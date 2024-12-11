@@ -83,7 +83,7 @@ export default function Home() {
 							<FormInput
 								name={'username'}
 								componentProps={{
-									errorPosition: 'relative',
+                  classNames: { errorPosition: 'relative' },
 								}}
 								label=''
 								placeholder='Enter your email address'
@@ -96,7 +96,7 @@ export default function Home() {
 							<FormPasswordInput
 								name={'password'}
 								componentProps={{
-									errorPosition: 'relative',
+                  classNames: { errorPosition: 'relative' },
 								}}
 								label=''
 								placeholder='Enter password'

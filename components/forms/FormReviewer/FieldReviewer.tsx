@@ -1,13 +1,13 @@
 import type {
-	FormFactoryProps,
-	FactoryFieldType,
+  FactoryFieldType,
+  FormFieldModel
 } from '@/types/Components/formFactory';
 import { PrimitiveFieldReviewer } from './ReviewerComponents/PrimitiveFieldReviewer';
 import { ArrayFieldReviewer } from './ReviewerComponents/ArrayFieldReviewer';
 import { SignatureFieldReviewer } from './ReviewerComponents/SignatureFieldReviewer';
 import { FileUploadReviewer } from './ReviewerComponents/FileUploadReviewer';
 
-interface FieldReviewerProps extends FormFactoryProps {}
+interface FieldReviewerProps extends FormFieldModel<FactoryFieldType> {}
 
 export function FieldReviewer({
 	fieldType,

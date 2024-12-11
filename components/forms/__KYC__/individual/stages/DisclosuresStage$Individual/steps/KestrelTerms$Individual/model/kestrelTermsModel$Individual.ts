@@ -12,7 +12,6 @@ export const kestrelTermsModel$Individual: FormFactoryProps[] = [
 				'Click on the button above to agree to the terms above to continue',
 		},
 		componentProps: {
-			type: 'agreement',
 			agreementVersion: '1.0',
 		},
 	},

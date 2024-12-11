@@ -1,15 +1,11 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 import type { Director } from '@/types/forms/corporateSchema';
 import validator from 'validator';
 
-
 export const directorsModel = ({
 	index,
-	countryList = [],
 }: {
 	index: number;
-	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
@@ -52,7 +48,6 @@ export const directorsModel = ({
 		},
 		options: {
 			keys: ['Passport', 'National ID', "Driver's License"],
-			
 		},
 		tags: ['read-only'],
 	},
@@ -61,12 +56,7 @@ export const directorsModel = ({
 		name: `accountSignatories.directors.${index}.phoneNumber`,
 		label: 'Phone/Mobile Number(s)',
 		placeholder: 'Enter phone/mobile number',
-		options: {
-			keys: countryList[1],
-			
-			priorityKeys: countryList[0],
-        },
-        tags: [ 'read-only' ]
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'radio',
@@ -79,7 +69,7 @@ export const directorsModel = ({
 			keys: ['Executive', 'Non-Executive'],
 		},
 		componentProps: {
-			className: 'grid-cols-2',
+			classNames: { radioGroupStyles: 'grid-cols-2' },
 		},
 	},
 	{
@@ -91,10 +81,9 @@ export const directorsModel = ({
 		},
 		options: {
 			keys: ['Yes', 'No'],
-			
 		},
 		componentProps: {
-			className: 'grid-cols-2',
+			classNames: { radioGroupStyles: 'grid-cols-2' },
 		},
 		tags: ['read-only'],
 	},
@@ -116,11 +105,6 @@ export const directorsModel = ({
 		rules: {
 			required: 'Select option',
 		},
-		options: {
-			keys: countryList[1],
-			
-			priorityKeys: countryList[0],
-		},
 		tags: ['remove', 'read-only'],
 	},
 	{
@@ -131,8 +115,7 @@ export const directorsModel = ({
 		rules: {
 			required: 'Please enter ownership',
 			validate: {
-				isNumeric: (v) =>
-					validator.isNumeric(v as string) || 'Entry must be a number',
+				isNumeric: (v) => validator.isNumeric(v as string) || 'Entry must be a number',
 				isWithinRange: (v) =>
 					(parseInt(v as string) >= 0 && parseInt(v as string) <= 100) ||
 					'Percentage must be between 0 and 100',
@@ -144,14 +127,14 @@ export const directorsModel = ({
 export const directorsDefaultValues: Director = {
 	firstName: '',
 	middleName: '',
-    lastName: '',
-    idType: '',
-    status: undefined,
+	lastName: '',
+	idType: '',
+	status: undefined,
 	idNumber: '',
 	phoneNumber: [
 		{
-            value: '',
-            countryCode: 'GH'
+			value: '',
+			countryCode: 'GH',
 		},
 	],
 	pepInfo: {

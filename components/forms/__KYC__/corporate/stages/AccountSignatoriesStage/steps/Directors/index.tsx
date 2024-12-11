@@ -58,7 +58,7 @@ const collateDirectorsFromSignatories = (
 	return collationResult;
 };
 
-export const Directors: FormStep = ({ countryList }) => {
+export const Directors: FormStep = () => {
 	const { form } = useKYCFormContext<CorporateFormSchema>();
 	const { control, setValue, watch, getValues } = form;
 	const { fields, append, remove } = useFieldArray({
@@ -167,7 +167,6 @@ export const Directors: FormStep = ({ countryList }) => {
 											forceMount>
 											<DirectorForm
 												applicantId={i}
-												countryList={countryList}
 											/>
 										</AccordionContent>
 									</AccordionItem>
@@ -197,7 +196,7 @@ export const Directors: FormStep = ({ countryList }) => {
 
 interface DirectorFormProps extends SingleFormFieldsGeneratorProps {}
 
-function DirectorForm({ applicantId, countryList }: DirectorFormProps) {
+function DirectorForm({ applicantId}: DirectorFormProps) {
 	const { form } = useKYCFormContext<CorporateFormSchema>();
 	const { watch } = form;
 
@@ -210,7 +209,7 @@ function DirectorForm({ applicantId, countryList }: DirectorFormProps) {
 		) as string) || '';
 
 	const fields = useMemo(() => {
-		const rawFields = directorsModel({ index: applicantId, countryList });
+		const rawFields = directorsModel({ index: applicantId });
 		const aggregator = new FormFieldAggregator(rawFields);
 
 		aggregator.modifyFields('read-only', {
@@ -222,7 +221,7 @@ function DirectorForm({ applicantId, countryList }: DirectorFormProps) {
 		});
 
 		return aggregator.generate();
-	}, [applicantId, countryList, isApplicantPrefilled, pepStatus]);
+	}, [applicantId, isApplicantPrefilled, pepStatus]);
 
 	return (
 		<>

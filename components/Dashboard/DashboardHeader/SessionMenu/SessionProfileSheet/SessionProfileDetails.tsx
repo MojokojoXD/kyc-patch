@@ -34,7 +34,7 @@ export function SessionProfileDetails() {
 				</div>
 				<div>
 					<span className='flex justify-center items-center h-10 inline-block aspect-square rounded-md bg-primary-50 text-primary-500 paragraph2Medium border border-primary-100 cursor-default'>
-						{ user_name.split(' ') }
+						{ user_name.split(' ').reduce( ( a, c ) => a[0] + c[0] ) }
 					</span>
 				</div>
 			</div>

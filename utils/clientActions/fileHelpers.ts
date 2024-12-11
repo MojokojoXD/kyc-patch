@@ -106,7 +106,7 @@ export class FileHelpers {
 
 			if (!cloudRes) {
 				return;
-			}
+      }
 			const imageURL = await this.download(cloudRes.url);
 
 			if (!imageURL) {

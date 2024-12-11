@@ -1,12 +1,9 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const contactDetailsModel$Corporate = ({
-	countryList = [],
 }: {
     index?: number,
-	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
@@ -40,10 +37,6 @@ export const contactDetailsModel$Corporate = ({
 		name: 'contacts.phoneNumber',
 		label: 'Phone/Mobile Number(s)',
 		placeholder: 'Enter phone number',
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
 	},
 	{
 		fieldType: 'text',
@@ -80,10 +73,6 @@ export const contactDetailsModel$Corporate = ({
 		name: 'contacts.emergencyContact.phoneNumber',
 		label: '',
 		placeholder: 'Contact phone number',
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
 		componentProps: {
 			phoneMode: 'single',
 		},

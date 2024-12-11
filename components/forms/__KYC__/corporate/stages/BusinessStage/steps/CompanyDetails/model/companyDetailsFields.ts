@@ -1,5 +1,4 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 const TURN_OVER_AMOUNTS = [
@@ -9,12 +8,7 @@ const TURN_OVER_AMOUNTS = [
 	'Above 10 million',
 ];
 
-export const companyDetailsFields = ({
-	countryList = [],
-}: {
-	index?: number;
-	countryList?: CountryList;
-}): FormFactoryProps[] => [
+export const companyDetailsFields = (_params?: { index?: number }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
 		name: 'businessInfo.details.name',
@@ -74,10 +68,6 @@ export const companyDetailsFields = ({
 		name: 'businessInfo.details.phoneNumber',
 		label: 'Phone/Mobile Number(s)',
 		placeholder: 'Enter phone/mobile number',
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
 	},
 	{
 		fieldType: 'text',
@@ -98,9 +88,8 @@ export const companyDetailsFields = ({
 		rules: {
 			required: 'Select country',
 		},
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
+		componentProps: {
+			isCountryList: true,
 		},
 	},
 	{

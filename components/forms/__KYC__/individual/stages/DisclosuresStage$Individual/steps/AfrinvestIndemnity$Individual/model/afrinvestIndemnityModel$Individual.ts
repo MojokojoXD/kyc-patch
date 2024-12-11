@@ -6,7 +6,6 @@ export const afrinvestIndemnityModel$Individual: FormFactoryProps[] = [
 		name: `agreements.afrinvest.emailIndemnity.agreed`,
 		label: 'I/We agree to the above indemnity provisions',
 		componentProps: {
-			type: 'agreement',
       agreementVersion: '1.0',
 		},
 	},

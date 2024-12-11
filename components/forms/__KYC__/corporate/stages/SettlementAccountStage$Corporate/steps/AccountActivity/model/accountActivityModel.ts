@@ -4,7 +4,7 @@ import validator from 'validator';
 export const accountActivityModel = ({
 	currency = 'GHC',
 }: {
-    index?: number;
+	index?: number;
 	currency?: string;
 }): FormFactoryProps[] => [
 	{
@@ -25,21 +25,21 @@ export const accountActivityModel = ({
 				'Retirement',
 			],
 		},
-        },
-        {
-            fieldType: 'radio',
-            name: 'settlementAccount.investmentActivity.frequency',
-            label: 'Expected Investment Frequency',
-            rules: {
-                required: 'Please select frequency',
-            },
-            options: {
-                keys: [ 'Monthly', 'Quarterly', 'Annually' ],
-            },
-            componentProps: {
-                className: 'grid-cols-3'
-            }
-    },
+	},
+	{
+		fieldType: 'radio',
+		name: 'settlementAccount.investmentActivity.frequency',
+		label: 'Expected Investment Frequency',
+		rules: {
+			required: 'Please select frequency',
+		},
+		options: {
+			keys: ['Monthly', 'Quarterly', 'Annually'],
+		},
+		componentProps: {
+			classNames: { radioGroupStyles: 'grid-cols-3' },
+		},
+	},
 	{
 		fieldType: 'text',
 		name: `settlementAccount.investmentActivity.initialAmount`,
@@ -64,8 +64,8 @@ export const accountActivityModel = ({
 			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually', 'Other'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-2',
-			otherProps: {
+			classNames: { radioGroupStyles: 'grid grid-cols-2' },
+			otherInputProps: {
 				label: 'Other? Specify',
 				placeholder: 'Enter other top up frequency',
 			},
@@ -95,8 +95,8 @@ export const accountActivityModel = ({
 			keys: ['Monthly', 'Quarterly', 'Bi-Annually', 'Annually', 'Other'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-2',
-			otherProps: {
+			classNames: { radioGroupStyles: 'grid grid-cols-2' },
+			otherInputProps: {
 				label: 'Other? Specify',
 				placeholder: 'Enter other withdrawal frequency',
 			},
@@ -106,9 +106,7 @@ export const accountActivityModel = ({
 	{
 		fieldType: 'text',
 		name: `settlementAccount.investmentActivity.withdrawals.amount`,
-		label: `Expected Regular Withdrawal Amount ${
-			currency && '(' + currency + ')'
-		}`,
+		label: `Expected Regular Withdrawal Amount ${currency && '(' + currency + ')'}`,
 		placeholder: 'Enter regular withdrawal amount',
 		rules: {
 			required: 'Please enter amount',

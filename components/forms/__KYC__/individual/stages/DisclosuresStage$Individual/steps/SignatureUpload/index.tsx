@@ -21,10 +21,9 @@ import { useKYCFormContext } from '@/components/forms/utils/formController';
 export const SignatureUpload: FormStep = () => {
 	const {
 		form: { getValues },
-		formVars: { clientID },
 	} = useKYCFormContext<IndividualFormSchema>();
 
-	const applicants = getValues(`applicant`) || [];
+  const applicants = getValues( `applicant` ) || [ {} ];
 
 	return (
 		<>
@@ -49,7 +48,6 @@ export const SignatureUpload: FormStep = () => {
 									forceMount>
 									<SignatureUploadForm
 										applicantId={i}
-										clientID={clientID}
 									/>
 								</AccordionContent>
 							</AccordionItem>
@@ -61,21 +59,17 @@ export const SignatureUpload: FormStep = () => {
 	);
 };
 
-interface SignatureUploadFormProps extends SingleFormFieldsGeneratorProps {
-	clientID?: string;
-}
+interface SignatureUploadFormProps extends SingleFormFieldsGeneratorProps {}
 
 function SignatureUploadForm({
 	applicantId,
-	clientID = '',
 }: SignatureUploadFormProps) {
 	const fields = useMemo(
 		() =>
 			signatureUploadModel({
 				index: applicantId,
-				clientID,
 			}),
-		[applicantId, clientID]
+		[applicantId]
 	);
 
 	return (

@@ -12,7 +12,8 @@ export interface CountryListResponse extends BaseSSXResponse
 
 
 
-const COUNTRY_LIST_URL = BASE_URL + '/kyc/lov/country';
+const COUNTRY_LIST_URL =
+	BASE_URL + '/kyc/lov/country';
 
 const handler: NextApiHandler = async( _req, res ) =>
 {
@@ -22,7 +23,6 @@ const handler: NextApiHandler = async( _req, res ) =>
       const ssxRes = await axios.get<CountryListResponse>( COUNTRY_LIST_URL );
 
       res.status( ssxRes.status ).json( ssxRes.data )
-
     } catch (error) {
       console.log( error );
 

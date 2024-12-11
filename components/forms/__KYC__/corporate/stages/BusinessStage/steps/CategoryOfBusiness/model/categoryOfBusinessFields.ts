@@ -20,7 +20,7 @@ export const categoryOfBusinessFields: FormFactoryProps[] = [
             ],
         },
         componentProps: {
-            otherProps: {
+            otherInputProps: {
                 label: 'Other? Specify',
                 placeholder: 'Specify'
             }

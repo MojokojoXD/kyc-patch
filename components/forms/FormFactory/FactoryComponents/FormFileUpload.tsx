@@ -76,7 +76,9 @@ export default function FormFileUpload({
 									fieldName: componentProps?.fileFieldName,
 								});
 
-								const result = await FileHelpers.uploadFileAndDownload(renamedFile);
+                const result = await FileHelpers.uploadFileAndDownload( renamedFile );
+                
+                console.log( result )
 
 								setIsLoading(false);
 

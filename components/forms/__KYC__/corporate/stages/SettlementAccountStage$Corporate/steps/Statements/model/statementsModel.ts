@@ -21,8 +21,10 @@ export const statementsModel: FormFactoryProps[] = [
 			keys: ['Email', 'Online', 'Collection at Branch'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-3 gap-[4px]',
-			toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap',
+			classNames: {
+				radioGroupStyles: 'grid grid-cols-3 gap-[4px]',
+				toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap',
+			},
 		},
 	},
 	{
@@ -36,8 +38,10 @@ export const statementsModel: FormFactoryProps[] = [
 			keys: ['Semi-Annual', 'Annual', 'Monthly'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-3 gap-[4px]',
-			toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap',
+			classNames: {
+				radioGroupStyles: 'grid grid-cols-3 gap-[4px]',
+				toggleStyles: 'paragraph1Regular text-[14px] truncate text-nowrap',
+			},
 		},
 	},
 ];

@@ -81,7 +81,7 @@ const ForgotPassword: NextPage = () => {
 									<FormInput
 										label=''
 										componentProps={{
-											errorPosition: 'relative',
+                      classNames: { errorPosition: 'relative' },
 										}}
 										placeholder='Enter your email address'
 										name={'email'}

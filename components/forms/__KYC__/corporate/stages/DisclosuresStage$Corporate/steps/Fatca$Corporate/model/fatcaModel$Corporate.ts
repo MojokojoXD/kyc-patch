@@ -24,8 +24,7 @@ export const fatcaModel$Corporate = ({
 			],
 		},
 		componentProps: {
-			toggleStyles: 'text-base',
-			className: 'gap-[16px]',
+			classNames: { toggleStyles: 'text-base', boxGroupStyles: 'gap-[16px]' },
 		},
 		tags: ['remove-all-except'],
 	},

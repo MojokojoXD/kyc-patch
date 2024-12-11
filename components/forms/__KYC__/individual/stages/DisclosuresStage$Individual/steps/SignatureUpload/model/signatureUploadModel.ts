@@ -1,17 +1,19 @@
-import type { FormFactoryProps } from "@/types/Components/formFactory";
+import type { FormFactoryProps } from '@/types/Components/formFactory';
 
-
-export const signatureUploadModel = ( { index, clientID = '' }: { index: number, clientID?: string; } ): FormFactoryProps[] => [
-    {
-        fieldType: 'signature',
-        name: `applicant.${ index }.disclosures.signatureResource`,
-        label: 'Signature',
-        componentProps: {
-            clientID: clientID,
-        },
-        rules: {
-            required: 'Please upload your signature'
-        }
-    }
+export const signatureUploadModel = ({
+	index,
+}: {
+	index: number;
+}): FormFactoryProps[] => [
+	{
+		fieldType: 'signature',
+		name: `applicant.${index}.disclosures.signatureResource`,
+		label: 'Signature',
+		rules: {
+			required: 'Please upload your signature',
+		},
+		componentProps: {
+			indexer: index,
+		},
+	},
 ];
-

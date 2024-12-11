@@ -1,7 +1,6 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 
-
-export const proofOfIdentityModel$NOK$Individual = ( {
+export const proofOfIdentityModel$NOK$Individual = ({
 	index,
 }: {
 	index: number;
@@ -14,11 +13,7 @@ export const proofOfIdentityModel$NOK$Individual = ( {
 			required: 'Select ID type',
 		},
 		options: {
-			keys: [
-				'Passport',
-				'National ID',
-				'Birth Certificate (If under 18 years old)',
-			],
+			keys: ['Passport', 'National ID', 'Birth Certificate (If under 18 years old)'],
 		},
 	},
 	{
@@ -39,7 +34,7 @@ export const proofOfIdentityModel$NOK$Individual = ( {
 			required: 'Please select date',
 		},
 		componentProps: {
-            disableFutureDays: true
+			disableFutureDays: true,
 		},
 	},
 	{
@@ -58,8 +53,7 @@ export const proofOfIdentityModel$NOK$Individual = ( {
 		placeholder: 'Select date',
 		componentProps: {
 			disablePastDays: true,
-        },
-        tags: ['deps']
+		},
+		tags: ['deps'],
 	},
 ];
-

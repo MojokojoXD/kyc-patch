@@ -1,20 +1,11 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 import type { Signatory } from '@/types/forms/corporateSchema';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 const MIN_AGE = 18;
 
-export const signatoriesModel = ({
-	index,
-	clientID = '',
-	countryList = [],
-}: {
-	index: number;
-	clientID?: string;
-	countryList?: CountryList;
-}): FormFactoryProps[] => [
+export const signatoriesModel = ({ index }: { index: number }): FormFactoryProps[] => [
 	{
 		fieldType: 'checkbox',
 		name: `accountSignatories.signatories.${index}.role`,
@@ -34,8 +25,8 @@ export const signatoriesModel = ({
 			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr', 'Other'],
 		},
 		componentProps: {
-			className: 'grid-cols-5',
-			otherProps: {
+			classNames: { radioGroupStyles: 'grid-cols-5' },
+			otherInputProps: {
 				label: 'Other? Specify',
 				placeholder: 'Specify',
 			},
@@ -112,7 +103,7 @@ export const signatoriesModel = ({
 			keys: ['Male', 'Female'],
 		},
 		componentProps: {
-			className: 'grid-cols-2',
+			classNames: { radioGroupStyles: 'grid-cols-2' },
 		},
 		tags: ['read-only'],
 	},
@@ -127,7 +118,7 @@ export const signatoriesModel = ({
 			keys: ['Single', 'Married', 'Separated', 'Divorced'],
 		},
 		componentProps: {
-			className: 'grid-cols-4',
+			classNames: { radioGroupStyles: 'grid-cols-4' },
 		},
 		tags: ['read-only'],
 	},
@@ -149,10 +140,8 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please select country',
 		},
-		options: {
-			keys: countryList[1],
-
-			priorityKeys: countryList[0],
+		componentProps: {
+			isCountryList: true,
 		},
 		tags: ['read-only'],
 	},
@@ -164,10 +153,8 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please select country',
 		},
-		options: {
-			keys: countryList[1],
-
-			priorityKeys: countryList[0],
+		componentProps: {
+			isCountryList: true,
 		},
 		tags: ['read-only'],
 	},
@@ -179,10 +166,8 @@ export const signatoriesModel = ({
 		rules: {
 			required: 'Please select country',
 		},
-		options: {
-			keys: countryList[1],
-
-			priorityKeys: countryList[0],
+		componentProps: {
+			isCountryList: true,
 		},
 		tags: ['read-only'],
 	},
@@ -206,11 +191,6 @@ export const signatoriesModel = ({
 		name: `accountSignatories.signatories.${index}.address.phoneNumber`,
 		label: 'Phone/Mobile Number(s)',
 		placeholder: 'Enter phone/mobile number',
-		options: {
-			keys: countryList[1],
-
-			priorityKeys: countryList[0],
-		},
 		tags: ['read-only'],
 	},
 	{
@@ -329,10 +309,6 @@ export const signatoriesModel = ({
 		name: `accountSignatories.signatories.${index}.address.emergencyContact.phoneNumber`,
 		label: '',
 		placeholder: 'Contact phone number',
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
 		componentProps: {
 			phoneMode: 'single',
 		},
@@ -387,16 +363,13 @@ export const signatoriesModel = ({
 			keys: ['A', 'B'],
 		},
 		componentProps: {
-			className: 'grid-cols-2',
+			classNames: {radioGroupStyles:'grid-cols-2'},
 		},
 	},
 	{
 		fieldType: 'signature',
 		name: `accountSignatories.signatories.${index}.signatureResource`,
 		label: 'Upload Your Signature',
-		componentProps: {
-			clientID,
-		},
 		rules: {
 			required: 'Please upload a signature',
 		},

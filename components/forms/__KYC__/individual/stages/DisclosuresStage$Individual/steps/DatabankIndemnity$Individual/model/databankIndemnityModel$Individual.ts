@@ -2,7 +2,6 @@ import type { FormFactoryProps } from '@/types/Components/formFactory';
 
 export const databankIndemnityModel$Individual = ({
 	index,
-	clientID = '',
 }: {
 	index: number;
 	clientID?: string;
@@ -11,8 +10,6 @@ export const databankIndemnityModel$Individual = ({
         fieldType: 'signature',
         label: '',
 		name: `applicant.${index}.disclosures.databank.emailIndemnity.signatureResource`,
-    componentProps: {
-			clientID: clientID,
-		},
+    
 	},
 ];

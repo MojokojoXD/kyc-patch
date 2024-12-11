@@ -7,44 +7,25 @@ import {
 import { Button } from '@/components/ui/button';
 import { CustomProgress } from './CustomProgress';
 import { cn } from '@/lib/utils';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { useKYCFormContext } from '@/components/forms/utils/formController';
 
-type ProgressStage = {
-	readonly name: string;
-	readonly steps: readonly string[];
-};
-
-interface FormProgressSheetProps<TSteps> {
-	formStages: readonly TSteps[];
-	formAction: ( stage: string, step?: string ) => void;
-	stage: string;
-	step: string;
-}
-
-export default function FormProgressSheet<T extends ProgressStage>({
-	formStages,
-	formAction,
-	stage,
-	step,
-}: FormProgressSheetProps<T>) {
-	const [currentStage, setCurrentStage] = useState<string>(stage);
+export default function FormProgressSheet()
+{
+  const { formNav, goToFormLocation } = useKYCFormContext();
 
 	const progressStep = useRef(new Set<string>());
 	const progressStage = useRef(new Set<string>());
 
-	progressStage.current.add(stage);
-	progressStep.current.add(step);
+	progressStage.current.add(formNav.currentStage);
+	progressStep.current.add(formNav.currentStep);
 
-	const maxNumberOfSteps = formStages.reduce((a, c) => a + c.steps.length, 0);
+	const maxNumberOfSteps = formNav.allStages.reduce((a, c) => a + c.steps.length, 0);
 
 	useEffect(() => {
-		const stepElement = document.getElementById(step);
+		const stepElement = document.getElementById(formNav.currentStep);
 		stepElement?.scrollIntoView();
-	}, [step]);
-
-	useEffect(() => {
-		setCurrentStage(stage);
-	}, [stage, setCurrentStage]);
+	}, [formNav.currentStep]);
 
 	return (
 		<div className='bg-white h-full w-full max-w-xs overflow-hidden px-5 border-r border-neutral-100 shadow-sm'>
@@ -63,9 +44,9 @@ export default function FormProgressSheet<T extends ProgressStage>({
 					<Accordion
 						type={'single'}
 						collapsible
-						value={stage || currentStage}
-						onValueChange={setCurrentStage}>
-						{formStages.map((_stage) => (
+						value={formNav.currentStage}
+						onValueChange={( v ) => goToFormLocation(v)}>
+						{formNav.allStages.map((_stage) => (
 							<AccordionItem
 								key={_stage.name}
 								value={_stage.name}
@@ -74,8 +55,8 @@ export default function FormProgressSheet<T extends ProgressStage>({
 								)}>
 								<AccordionTrigger
 									onClick={() => {
-										if (_stage.name === stage) return;
-										formAction(_stage.name);
+										if (_stage.name === formNav.currentStage) return;
+										goToFormLocation(_stage.name);
 									}}
 									disabled={!progressStage.current.has(_stage.name)}
 									className='border-none data-[state=closed]:rounded-none data-[state=open]:rounded-none bg-transparent px-5 leading-relaxed text-base font-medium text-neutral-700 capitalize'>
@@ -95,12 +76,12 @@ export default function FormProgressSheet<T extends ProgressStage>({
 												variant={'link'}
 												disabled={!progressStep.current.has(_step)}
 												onClick={() =>
-													formAction(_stage.name,_step)
+													goToFormLocation(_stage.name,_step)
 												}
 												size={'sm'}
 												className={cn(
 													'relative text-sm capitalize h-fit py-0 font-normal text-neutral-700 block hover:no-underline hover:text-neutral-700/75 transition-text ease-in-out duration-100 rounded-none py-1 border-s border-neutral-200 hover:border-neutral-300 w-full text-left transition-all z-10 pl-5 text-nowrap text-ellipsis',
-													step === _step &&
+													formNav.currentStep === _step &&
 														'border-l border-primary-400 hover:border-primary-400 text-primary-500 hover:text-primary-500 font-medium'
 												)}>
 												<li>{_step.split('_').at(0)}</li>

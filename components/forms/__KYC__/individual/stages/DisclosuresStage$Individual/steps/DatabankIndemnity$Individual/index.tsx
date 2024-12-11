@@ -24,7 +24,6 @@ import { FormLabel } from '@/components/ui/form';
 export const DatabankEmailIndemnity$Individual: FormStep = () => {
 	const {
 		form: { getValues },
-		formVars: { clientID },
 	} = useKYCFormContext<IndividualFormSchema>();
 
 	const [termsText, isLoading, error] = useFetchMarkdown(
@@ -51,8 +50,7 @@ export const DatabankEmailIndemnity$Individual: FormStep = () => {
 					const clientMiddleName = a.middleName ?? '';
 
 					const fullName = `${clientFirstName} ${clientMiddleName} ${clientLastName}`;
-          // const address = `${ a.contacts.residentialAddress ?? '' }, ${ a.contacts.city } ${ a.contacts.postalCode}, ${ a.countryOfResidence }`;
-          const address = ''
+          const address = `${ a.contacts.residentialAddress ?? '' }, ${ a.contacts.city } ${ a.contacts.postalCode}, ${ a.countryOfResidence }`;
 					return (
 						<Accordion
 							collapsible
@@ -88,7 +86,7 @@ export const DatabankEmailIndemnity$Individual: FormStep = () => {
 												id='indemnity__address'
 											/>
 										</FormLabel>
-										{databankIndemnityModel$Individual({ index: i, clientID }).map((f) => (
+										{databankIndemnityModel$Individual({ index: i }).map((f) => (
 											<FormFactory
 												key={f.name}
 												{...f}

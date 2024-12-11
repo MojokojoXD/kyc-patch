@@ -6,7 +6,6 @@ export const declarationsModel$Individual: FormFactoryProps[] = [
 		name: `agreements.declarations.agreed`,
 		label: 'I/We agree to the above declarations',
 		componentProps: {
-			type: 'agreement',
 			agreementVersion: '1.0',
 		},
 	},

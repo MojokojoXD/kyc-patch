@@ -88,14 +88,16 @@ export function Clients() {
 		request(
 			{ url: '/kyc/dashboard/getall', method: 'GET' },
 			function (data, error, status) {
-				if (status === 'COMPLETED') {
+        if ( status === 'COMPLETED' )
+        {
+          console.log( data, 'here' )
 					setClientsData(
 						data!.all_trans.filter((c) => c.client_first_name && c.client_last_name)
 					);
 					return;
 				}
 
-				error && setError(error);
+				status === 'FAILED' && setError(error);
 			}
 		);
 	}, [request]);

@@ -26,7 +26,6 @@ export const Review$Personal$Individual: FormStep = () => {
 	const {
 		form: { getValues },
     goToFormLocation,
-    onFormNav
 	} = useKYCFormContext<IndividualFormSchema, IndividualFormMetadata>();
 
 	const applicantCount = (getValues('applicant') || [{}]).length;
@@ -34,8 +33,6 @@ export const Review$Personal$Individual: FormStep = () => {
   const editStep = ( step: IndividualFormStep ) =>
   {
     goToFormLocation( 'personal', step );
-    
-    onFormNav( () => true) 
   }
 
 	const accordionTitle = (index: number) => ({

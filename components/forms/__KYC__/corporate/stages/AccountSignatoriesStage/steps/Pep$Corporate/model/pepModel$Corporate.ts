@@ -1,12 +1,9 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 
 export const pepModel$Corporate = ({
 	index,
-	countryList = [],
 }: {
 	index: number;
-	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'radio',
@@ -21,7 +18,7 @@ export const pepModel$Corporate = ({
 			
         },
         componentProps: {
-            className: 'grid-cols-2'
+            classNames: {radioGroupStyles:'grid-cols-2'}
         },
         tags: ['remove-all-except']
 	},
@@ -42,9 +39,8 @@ export const pepModel$Corporate = ({
 		rules: {
 			required: 'Select option',
 		},
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
+    componentProps: {
+      isCountryList: true,
+    }
 	},
 ];

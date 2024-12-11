@@ -12,7 +12,6 @@ export const afrinvestPrivacyPolicyModel: FormFactoryProps[] = [
 				Boolean(v) || 'You must accept the above privacy policy to continue',
 		},
 		componentProps: {
-			type: 'agreement',
 			agreementVersion: '1.0',
 		},
 	},

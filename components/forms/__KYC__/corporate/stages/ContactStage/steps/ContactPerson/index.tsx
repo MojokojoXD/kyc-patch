@@ -76,7 +76,7 @@ export const ContactPerson: FormStep = () => {
 	});
 
 	const fields = useMemo(() => {
-		const rawFields = contactPersonModel({ countryList });
+		const rawFields = contactPersonModel({});
 
 		const aggregator = new FormFieldAggregator(rawFields);
 
@@ -86,7 +86,7 @@ export const ContactPerson: FormStep = () => {
 		});
 
 		return aggregator.generate();
-	}, [countryList, residenceStatus]);
+	}, [residenceStatus]);
 
   //Do nothing or update existing contact signatory person if signatories is at maximum
   if (

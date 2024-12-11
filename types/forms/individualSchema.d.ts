@@ -30,7 +30,7 @@ export type ClientInfo = Omit<
 		contacts: common.ExpandedContact;
 		employment: {
 			status: string;
-			statusDetails?: Employed | StudentEmployment | null;
+			statusDetails?: EmploymentDetails | null;
 		};
 		bank: {
 			locale: common.Bank;
@@ -69,28 +69,30 @@ export type ClientInfo = Omit<
 		fileUploads: FileUploads;
 	};
 
-export interface Employed {
-	occupation: string;
-	name: string;
-	address: string;
-	city: string;
-	postalAddress: string;
-	postalCode: string;
-	positionHeld: string;
+export interface EmploymentDetails {
+  occupation?: string;
+  
+  profession?: string;
+	name?: string;
+	address?: string;
+	city?: string;
+	postalAddress?: string;
+	postalCode?: string;
+	positionHeld?: string;
 	phoneNumber: common.PhoneInfo;
 	email: string;
-	natureOfBusiness: string;
-	countryOfEmployment: string;
-	digitalAddress: string;
-	nearestLandmark: string;
-	yearsOfTotalEmployment: string;
-	yearsOfCurrentEmployment: string;
-	yearsOfPreviousEmployment: string;
-	incomeRange: string;
-	licenseNumber: string;
+	natureOfBusiness?: string;
+	countryOfEmployment?: string;
+	digitalAddress?: string;
+	nearestLandmark?: string;
+	yearsOfTotalEmployment?: string;
+	yearsOfCurrentEmployment?: string;
+	yearsOfPreviousEmployment?: string;
+	incomeRange?: string;
+	licenseNumber?: string;
 }
 
-type StudentEmployment = Pick<Employed, 'email' | 'phoneNumber'> & {
+type StudentEmployment = Pick<EmploymentDetails, 'email' | 'phoneNumber'> & {
 	// add additional fields here if needed
 };
 

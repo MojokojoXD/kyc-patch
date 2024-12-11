@@ -50,7 +50,9 @@ export default async function handler(
             throw new Error( 'failed to generate cloud url' );
         }
 
-        const signatureStorageURL = new URL( googleCloudURL );
+      const signatureStorageURL = new URL( googleCloudURL );
+      
+      console.log( signatureStorageURL )
 
         const signatureFileName = signatureStorageURL.pathname.split( '/' ).pop();
 

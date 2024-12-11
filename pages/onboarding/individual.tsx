@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useEffect } from 'react';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
@@ -20,12 +21,14 @@ import {
 	KYCContext,
 } from '@/components/forms/utils/formController';
 import Loading from '@/components/ui/Loading';
+import axios from 'axios';
 
 export default function IndividualForm() {
 	const form = useForm<IndividualFormSchema>({
 		mode: 'onChange',
 	});
 
+  const router = useRouter();
 	const KYCForm = useKYCForm(individualFormMetadata, form);
 
 	const {
@@ -37,7 +40,9 @@ export default function IndividualForm() {
 		formNav: { currentStage },
 		formAction,
 		error,
-		isLoading,
+    isLoading,
+    toggleLoading,
+    setError,
 	} = KYCForm;
 
 	useCloseTabWarning(isDirty);
@@ -66,28 +71,34 @@ export default function IndividualForm() {
 			});
 	}, [clientType, formAction]);
 
-	const submitHandler: SubmitHandler<IndividualFormSchema> = async (data) => {
+  const submitHandler: SubmitHandler<IndividualFormSchema> = async ( data ) =>
+  {
+
 		const payload = {
 			clientID,
 			submissionID,
-			payload: {
-				...data,
-			},
-		};
+			data: {...data},
+    };
 
-		console.log(payload);
-
+    
+    toggleLoading( true );
 		try {
-			const res = await fetch('/api/forms', {
-				method: 'POST',
-				body: JSON.stringify(payload),
-			});
+      const res = await axios.post < { Status: 'SUCC' | 'FAIL', link: string }>('/api/forms', payload);
 
-			if (res.ok) {
-			}
+      if ( res.status === 200 && res.data.Status === 'SUCC' )
+      {
+        router.replace( `/onboarding/verification?form=individual&metamap=${ res.data.link }` );
+      }
+      
+
 		} catch (error) {
-			console.log(error);
-		}
+      console.log( error );
+      setError( 'Form submission failed. Please contact system admin!' )
+        
+    } finally
+    {
+      toggleLoading( false );
+    }
 	};
 
 	if (error) {
@@ -95,7 +106,7 @@ export default function IndividualForm() {
 		return (
 			<p className='p-10'>Something went wrong! Please contact system admin</p>
 		);
-	}
+  }
 
   return (
     <>
@@ -111,8 +122,8 @@ export default function IndividualForm() {
             <Form {...KYCForm.form}>
               <form
                 onSubmit={handleSubmit(submitHandler)}
-                className='w-full max-w-[44.75rem]'>
-                <div className='border border-neutral-100 rounded-xl overflow-hidden'>
+                className='w-full max-w-[44.75rem] flex border border-neutral-100  bg-white'>
+                <div className='w-full h-full flex flex-col rounded-xl'>
                   {individualStagesDict[currentStage]}
                   <FormNavButtons />
                 </div>

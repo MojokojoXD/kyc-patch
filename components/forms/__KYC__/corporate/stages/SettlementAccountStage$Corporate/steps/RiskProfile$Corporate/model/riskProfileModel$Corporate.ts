@@ -1,8 +1,7 @@
-import type { FormFactoryProps } from "@/types/Components/formFactory";
-
+import type { FormFactoryProps } from '@/types/Components/formFactory';
 
 export const riskProfileModel$Corporate: FormFactoryProps[] = [
-    {
+	{
 		fieldType: 'radio',
 		name: `settlementAccount.riskProfile.tolerance`,
 		label: 'Risk Tolerance',
@@ -13,10 +12,10 @@ export const riskProfileModel$Corporate: FormFactoryProps[] = [
 			keys: ['High', 'Medium', 'Low'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-3',
+			classNames: { radioGroupStyles: 'grid grid-cols-3' },
 		},
-    },
-    {
+	},
+	{
 		fieldType: 'radio',
 		name: `settlementAccount.riskProfile.investmentHorizon`,
 		label: 'What is the your intended investment horizon',
@@ -24,13 +23,17 @@ export const riskProfileModel$Corporate: FormFactoryProps[] = [
 			required: 'Select option',
 		},
 		options: {
-			keys: ['Short Term (1 year)', 'Medium Term (2-5 years)', 'Long Term (5 years+)'],
+			keys: [
+				'Short Term (1 year)',
+				'Medium Term (2-5 years)',
+				'Long Term (5 years+)',
+			],
 		},
 		componentProps: {
-			toggleStyles: 'normal-case',
+			classNames: { toggleStyles: 'normal-case' },
 		},
-    },
-    {
+	},
+	{
 		fieldType: 'radio',
 		name: `settlementAccount.riskProfile.investmentKnowledge`,
 		label: 'What is the level of your investment knowledge?',
@@ -41,10 +44,10 @@ export const riskProfileModel$Corporate: FormFactoryProps[] = [
 			keys: ['Limited', 'Moderate', 'Extensive'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-3 gap-[4px]',
+			classNames: { radioGroupStyles: 'grid grid-cols-3 gap-[4px]' },
 		},
-    },
-    {
+	},
+	{
 		fieldType: 'radio',
 		name: `settlementAccount.riskProfile.reaction`,
 		label:
@@ -60,16 +63,17 @@ export const riskProfileModel$Corporate: FormFactoryProps[] = [
 				"Not overly concerned; I'm in it for the long term",
 			],
 		},
-    },
-    {
-        fieldType: 'agreement',
-        name: 'settlementAccount.riskProfile.riskAgreement.agreed',
-        label: 'I/We understand investing in equities/shares is inherently risker than investing in fixed income products or holding cash',
-        rules: {
-            required: 'You must accept these terms to continue'
-        },
-        componentProps: {
-            agreementVersion: '1.0'
-        }
-    }
-]
+	},
+	{
+		fieldType: 'agreement',
+		name: 'settlementAccount.riskProfile.riskAgreement.agreed',
+		label:
+			'I/We understand investing in equities/shares is inherently risker than investing in fixed income products or holding cash',
+		rules: {
+			required: 'You must accept these terms to continue',
+		},
+		componentProps: {
+			agreementVersion: '1.0',
+		},
+	},
+];

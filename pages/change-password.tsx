@@ -109,7 +109,7 @@ const SetNewPwd: NextPage = () => {
 									<FormInput
 										name={'email'}
 										componentProps={{
-											errorPosition: 'relative',
+                      classNames: { errorPosition: 'relative' },
 										}}
 										label=''
 										placeholder='Enter email'
@@ -123,7 +123,7 @@ const SetNewPwd: NextPage = () => {
 									<FormInput
 										label=''
 										componentProps={{
-											errorPosition: 'relative',
+                      classNames: { errorPosition: 'relative' },
 										}}
 										placeholder='Enter verification code'
 										name={'verificationCode'}
@@ -134,7 +134,7 @@ const SetNewPwd: NextPage = () => {
 									<FormPasswordInput
 										label=''
 										componentProps={{
-											errorPosition: 'relative',
+                      classNames: { errorPosition: 'relative' },
 										}}
 										placeholder='Enter new password'
 										name={'newPwd'}

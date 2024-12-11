@@ -1,12 +1,9 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 
 export const contactModel$NOK$Individual = ({
 	index,
-	countryList = [],
 }: {
 	index: number;
-	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
@@ -33,10 +30,6 @@ export const contactModel$NOK$Individual = ({
 		placeholder: 'Enter phone number',
 		componentProps: {
 			phoneMode: 'single',
-		},
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
 		},
         },
         {

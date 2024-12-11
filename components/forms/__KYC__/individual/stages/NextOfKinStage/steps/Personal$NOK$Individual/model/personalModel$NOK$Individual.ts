@@ -1,13 +1,10 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const personalModel$NOK$Individual = ({
 	index,
-	countryList = [],
 }: {
 	index: number;
-	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'radio',
@@ -20,8 +17,8 @@ export const personalModel$NOK$Individual = ({
 			required: 'Select Title',
 		},
 		componentProps: {
-			className: 'grid grid-cols-5',
-			otherProps: {
+			classNames: { radioGroupStyles: 'grid grid-cols-5' },
+			otherInputProps: {
 				label: 'Other? Specify',
 				placeholder: 'Specify',
 			},
@@ -37,6 +34,11 @@ export const personalModel$NOK$Individual = ({
 			validate: (v: string) => v.length > 1 || 'entry is too short',
 		},
 		placeholder: 'First name',
+		componentProps: {
+			classNames: {
+				errorPosition: 'absolute',
+			},
+		},
 	},
 	{
 		fieldType: 'text',
@@ -55,6 +57,11 @@ export const personalModel$NOK$Individual = ({
 			validate: (v: string) => v.length > 1 || 'entry is too short',
 		},
 		placeholder: 'Last name',
+		componentProps: {
+			classNames: {
+				errorPosition: 'absolute',
+			},
+		},
 	},
 	{
 		fieldType: 'date',
@@ -88,7 +95,7 @@ export const personalModel$NOK$Individual = ({
 			keys: ['Male', 'Female'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-2 gap-[4px]',
+			classNames: { radioGroupStyles: 'grid grid-cols-2 gap-[4px]' },
 		},
 	},
 	{
@@ -102,7 +109,7 @@ export const personalModel$NOK$Individual = ({
 			keys: ['Single', 'Married', 'Divorced', 'Separated'],
 		},
 		componentProps: {
-			className: 'grid grid-cols-4 gap-[4px]',
+			classNames: { radioGroupStyles: 'grid grid-cols-4 gap-[4px]' },
 		},
 	},
 	{
@@ -112,10 +119,9 @@ export const personalModel$NOK$Individual = ({
 		rules: {
 			required: 'Select country of birth',
 		},
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
+    componentProps: {
+      isCountryList: true,
+    },
 		placeholder: 'Select country',
 	},
 	{
@@ -131,10 +137,9 @@ export const personalModel$NOK$Individual = ({
 		rules: {
 			required: 'Select country of residence',
 		},
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
+    componentProps: {
+      isCountryList: true,
+    },
 		placeholder: 'Select country',
 	},
 
@@ -145,10 +150,9 @@ export const personalModel$NOK$Individual = ({
 		rules: {
 			required: 'Select nationality',
 		},
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
+    componentProps: {
+      isCountryList: true,
+    },
 		placeholder: 'Select country',
 	},
 	{
@@ -161,7 +165,8 @@ export const personalModel$NOK$Individual = ({
 				isNumber: (v) =>
 					!v || validator.isNumeric(v as string) || 'Entry must be a number',
 				isWithinRange: (v) =>
-					!v || (parseInt(v as string) >= 0 && parseInt(v as string) <= 100) ||
+					!v ||
+					(parseInt(v as string) >= 0 && parseInt(v as string) <= 100) ||
 					'Percentage must be between 0 and 100',
 			},
 		},

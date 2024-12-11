@@ -1,16 +1,13 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 import type { BeneficialOwner } from '@/types/forms/corporateSchema';
 import validator from 'validator';
 
-const MIN_AGE = 18 ;
+const MIN_AGE = 18;
 
 export const beneficialOwnersModel = ({
 	index,
-	countryList = [],
 }: {
 	index: number;
-	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'text',
@@ -61,11 +58,7 @@ export const beneficialOwnersModel = ({
 		name: `accountSignatories.beneficialOwners.${index}.phoneNumber`,
 		label: 'Phone/Mobile Number(s)',
 		placeholder: 'Enter phone/mobile number',
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-        },
-        tags: ['read-only']
+		tags: ['read-only'],
 	},
 	{
 		fieldType: 'text',
@@ -86,8 +79,8 @@ export const beneficialOwnersModel = ({
 			required: 'Please select date',
 		},
 		componentProps: {
-            minYear: MIN_AGE,
-            disableFutureDays: true
+			minYear: MIN_AGE,
+			disableFutureDays: true,
 		},
 		tags: ['read-only'],
 	},
@@ -100,10 +93,9 @@ export const beneficialOwnersModel = ({
 		},
 		options: {
 			keys: ['Yes', 'No'],
-			
 		},
 		componentProps: {
-			className: 'grid-cols-2',
+			classNames: { radioGroupStyles: 'grid-cols-2' },
 		},
 		tags: ['read-only'],
 	},
@@ -125,10 +117,9 @@ export const beneficialOwnersModel = ({
 		rules: {
 			required: 'Select option',
 		},
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
+    componentProps: {
+      isCountryList: true,
+    },
 		tags: ['remove', 'read-only'],
 	},
 	{
@@ -139,8 +130,7 @@ export const beneficialOwnersModel = ({
 		rules: {
 			required: 'Please enter ownership',
 			validate: {
-				isNumeric: (v) =>
-					validator.isNumeric(v as string) || 'Entry must be a number',
+				isNumeric: (v) => validator.isNumeric(v as string) || 'Entry must be a number',
 				isWithinRange: (v) =>
 					(parseInt(v as string) >= 0 && parseInt(v as string) <= 100) ||
 					'Percentage must be between 0 and 100',
@@ -152,13 +142,13 @@ export const beneficialOwnersModel = ({
 export const beneficialOwnersDefaultValues: BeneficialOwner = {
 	firstName: '',
 	middleName: '',
-    lastName: '',
-    idType: '',
+	lastName: '',
+	idType: '',
 	idNumber: '',
 	phoneNumber: [
 		{
-            value: '',
-            countryCode: 'GH'
+			value: '',
+			countryCode: 'GH',
 		},
 	],
 	pepInfo: {
@@ -171,5 +161,5 @@ export const beneficialOwnersDefaultValues: BeneficialOwner = {
 	dateOfBirth: '',
 	residentialAddress: '',
 	ownership: '',
-    isPrefill: false,
+	isPrefill: false,
 };

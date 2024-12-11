@@ -8,8 +8,8 @@ import {
 } from '@/components/forms/FormLayout';
 import FormFactory from '@/components/forms/FormFactory';
 
-export const CompanyDetails: FormStep = ({ countryList }) => {
-	const rawFields = companyDetailsFields({ countryList });
+export const CompanyDetails: FormStep = () => {
+	const rawFields = companyDetailsFields();
 
 	return (
 		<>

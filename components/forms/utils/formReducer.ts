@@ -10,6 +10,8 @@ export interface FormReducerState<TStage = string, TStep = string> {
 	readonly currentStage: TStage;
 	readonly currentStep: TStep;
 	allStages: Stages;
+
+	shouldValidate?: boolean;
 }
 
 export type FormReducerFn<
@@ -18,8 +20,8 @@ export type FormReducerFn<
 > = (state: TState, action: TAction) => TState;
 
 export type FormReducerAction<TStage = string, TStep = string> =
-  | { type: 'next', isValidated?: boolean; }
-  | { type: 'prev', isValidated?: boolean; }
+	| { type: 'next'; payload?: { shouldValidate?: boolean } }
+	| { type: 'prev'; payload?: { shouldValidate?: boolean } }
 	| {
 			type: 'remove_step';
 			stage: TStage;
@@ -30,6 +32,7 @@ export type FormReducerAction<TStage = string, TStep = string> =
 			type: 'jump_to_form_location';
 			toStage: TStage;
 			toStep?: TStep;
+			payload?: { shouldValidate?: boolean };
 	  };
 
 export type FormAction<TStage = string, TStep = string> = Dispatch<
@@ -52,7 +55,11 @@ export type FormComponentDict<
 
 */
 
-const historyTrace = new Stack<{ stage: string; step: string }>();
+const historyTrace = new Stack<{
+	stage: string;
+	step: string;
+	shouldValidate?: boolean;
+}>();
 
 export const formReducer: FormReducerFn = (state, action) => {
 	const { currentStage, currentStep, allStages } = state;
@@ -69,7 +76,11 @@ export const formReducer: FormReducerFn = (state, action) => {
 			)
 				return state;
 
-			historyTrace.push({ stage: currentStage, step: currentStep });
+			historyTrace.push({
+				stage: currentStage,
+				step: currentStep,
+				shouldValidate: false,
+			});
 
 			const nextStageIndex =
 				currentStepIndex === currentSteps.length - 1
@@ -87,20 +98,19 @@ export const formReducer: FormReducerFn = (state, action) => {
 		case 'prev': {
 			if (historyTrace.size() === 0) return state;
 
-			const prevProgress = historyTrace.pop();
+			const prevStepInfo = historyTrace.pop();
 
 			return {
 				...state,
-				currentStage: prevProgress!.stage,
-				currentStep: prevProgress!.step,
+				currentStage: prevStepInfo!.stage,
+				currentStep: prevStepInfo!.step,
+				shouldValidate: false,
 			};
 		}
 		case 'remove_step': {
 			const clonedStages = [...allStages];
 
-			const stageIndexToEdit = clonedStages.findIndex(
-				(s) => s.name === action.stage
-			);
+			const stageIndexToEdit = clonedStages.findIndex((s) => s.name === action.stage);
 
 			if (stageIndexToEdit === -1)
 				throw new Error('Stage ' + currentStage + ' is not supported');
@@ -136,16 +146,17 @@ export const formReducer: FormReducerFn = (state, action) => {
 			historyTrace.push({
 				stage: currentStage,
 				step: currentStep,
+				shouldValidate: false,
 			});
 
 			return {
 				...state,
 				currentStage: nextStageName,
 				currentStep: nextStepName,
+				shouldValidate: action.payload?.shouldValidate,
 			};
 		}
 		default:
 			throw new Error('action type is not supported');
 	}
 };
-

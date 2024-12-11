@@ -19,7 +19,7 @@ import { fatcaModel$Individual } from './model/fatcaModel$Individual';
 import { FormFieldAggregator } from '../../../../../../utils/FormFieldAggregator';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 
-export const Fatca$Individual: FormStep = ({ countryList }) => {
+export const Fatca$Individual: FormStep = () => {
 	const {
 		form: { getValues },
 	} = useKYCFormContext<IndividualFormSchema>();
@@ -52,7 +52,6 @@ export const Fatca$Individual: FormStep = ({ countryList }) => {
 									forceMount>
 									<FatcaForm
 										applicantId={i}
-										countryList={countryList}
 									/>
 								</AccordionContent>
 							</AccordionItem>
@@ -66,7 +65,7 @@ export const Fatca$Individual: FormStep = ({ countryList }) => {
 
 interface FatcaFormProps extends SingleFormFieldsGeneratorProps {}
 
-function FatcaForm({ applicantId, countryList }: FatcaFormProps) {
+function FatcaForm({ applicantId }: FatcaFormProps) {
 	const {
 		form: { watch },
 	} = useKYCFormContext<IndividualFormSchema>();
@@ -78,7 +77,6 @@ function FatcaForm({ applicantId, countryList }: FatcaFormProps) {
 	const aggregatorResults = useMemo(() => {
 		const rawFields = fatcaModel$Individual({
 			index: applicantId,
-			countryList,
 		});
 
 		const aggregator = new FormFieldAggregator(rawFields);
@@ -88,7 +86,7 @@ function FatcaForm({ applicantId, countryList }: FatcaFormProps) {
 		});
 
 		return aggregator.generate();
-	}, [applicantId, countryList, currentFatcaStatus]);
+	}, [applicantId, currentFatcaStatus]);
 
 	return (
 		<>

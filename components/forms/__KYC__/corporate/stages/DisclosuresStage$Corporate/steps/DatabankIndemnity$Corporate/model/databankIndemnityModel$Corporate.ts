@@ -2,10 +2,8 @@ import type { FormFactoryProps } from '@/types/Components/formFactory';
 
 export const databankIndemnityModel$Corporate = ({
 	index,
-	clientID = '',
 }: {
 	index: number;
-	clientID?: string;
     } ): FormFactoryProps[] => [
 	{
 		fieldType: 'signature',
@@ -15,8 +13,5 @@ export const databankIndemnityModel$Corporate = ({
 		rules: {
 			required: 'Please upload your signature',
         },
-        componentProps: {
-            clientID,
-        }
 	},
 ];

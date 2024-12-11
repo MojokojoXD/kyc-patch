@@ -1,2 +1,1 @@
-
-export const BASE_URL ="https://kycapi.uat.secondstax.com";
+export const BASE_URL = 'https://kycapi.uat.secondstax.com';

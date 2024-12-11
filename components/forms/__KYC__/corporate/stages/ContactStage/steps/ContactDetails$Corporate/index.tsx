@@ -10,7 +10,7 @@ import FormFactory from '@/components/forms/FormFactory';
 import { useFieldArray } from 'react-hook-form';
 import type { FormStep } from '@/types/Components/onboarding';
 
-export const ContactDetails$Corporate: FormStep = ({ countryList }) => {
+export const ContactDetails$Corporate: FormStep = () => {
 	const { form, onFormNav } = useKYCFormContext<CorporateFormSchema>();
 	const { getValues } = form;
 	const { update } = useFieldArray<
@@ -19,7 +19,7 @@ export const ContactDetails$Corporate: FormStep = ({ countryList }) => {
 	>({
 		name: 'accountSignatories.signatories',
 	});
-	const fields = contactDetailsModel$Corporate({ countryList });
+	const fields = contactDetailsModel$Corporate({});
 
 	onFormNav(function () {
 		const signatories = getValues('accountSignatories.signatories');

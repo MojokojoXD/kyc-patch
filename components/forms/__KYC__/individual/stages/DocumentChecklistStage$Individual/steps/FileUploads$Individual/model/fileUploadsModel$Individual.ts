@@ -1,8 +1,7 @@
 import type { FormFactoryProps } from "@/types/Components/formFactory";
-import type { ClientID } from "@/types/forms/broker";
 
 
-export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: number; clientID?: ClientID; } ): FormFactoryProps[] => [
+export const fileUploadsModel$Individual = ( { index }: { index: number; } ): FormFactoryProps[] => [
     {
         fieldType: 'file-upload',
         name: `applicant.${ index }.fileUploads.applicantID.fileName`,
@@ -11,7 +10,6 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
             required: 'Please upload notorized ID',
         },
         componentProps: {
-            clientID: clientID,
             fileFieldName: 'applicantID'
         }
     },
@@ -23,7 +21,6 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
             required: 'Please upload passport photograph',
         },
         componentProps: {
-            clientID: clientID,
             fileFieldName: 'passportPhotograph'
         }
     },
@@ -32,7 +29,6 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
         name: `applicant.${ index }.fileUploads.taxCertificate.fileName`,
         label: 'Tax Registration Certificate (Optional)',
         componentProps: {
-            clientID: clientID,
             fileFieldName: 'taxCertificate'
         }
     },
@@ -41,7 +37,6 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
         name: `applicant.${ index }.fileUploads.BVN.fileName`,
         label: 'BVN (Optional)',
         componentProps: {
-            clientID: clientID,
             fileFieldName: 'BVN'
         }
     },
@@ -53,7 +48,6 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
             required: 'Please upload proof of address'
         },
         componentProps: {
-            clientID: clientID,
             fileFieldName: 'proofOfAddress'
         }
     },
@@ -65,7 +59,6 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
             required: 'Please upload address map screenshot'
         },
         componentProps: {
-            clientID: clientID,
             fileFieldName: 'addressMap'
         }
     },
@@ -74,7 +67,6 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
         name: `applicant.${ index }.fileUploads.foreignAddress.fileName`,
         label: 'Proof of Foreign Address (Non-Resident Clients) (Optional)',
         componentProps: {
-            clientID: clientID,
             fileFieldName: 'foreignAddress'
         }
     },
@@ -83,7 +75,6 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
         name: `applicant.${ index }.fileUploads.residencePermit.fileName`,
         label: 'Residence/Work Permit (if applicable)',
         componentProps: {
-            clientID: clientID,
             fileFieldName: 'residencePermit'
         }
     },
@@ -92,7 +83,6 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
         name: `applicant.${ index }.fileUploads.proofOfBank.fileName`,
         label: 'Notarized Proof of Bank (3 months bank statement or cancelled cheque leaf) (Optional)',
         componentProps: {
-            clientID: clientID,
             fileFieldName: 'proofOfBank'
         }
     },
@@ -101,7 +91,6 @@ export const fileUploadsModel$Individual = ( { index, clientID = '' }: { index: 
         name: `applicant.${ index }.fileUploads.KRAPin.fileName`,
         label: 'Kenya KRA PIN Certificate (Optional)',
         componentProps: {
-            clientID: clientID,
             fileFieldName: 'KRAPin'
         }
     },

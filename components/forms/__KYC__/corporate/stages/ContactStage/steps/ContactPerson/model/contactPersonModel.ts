@@ -2,8 +2,7 @@ import type { FormFactoryProps } from '@/types/Components/formFactory';
 
 const MIN_AGE = 18;
 
-export const contactPersonModel = ({
-}: {
+export const contactPersonModel = ({}: {
 	index?: number;
 }): FormFactoryProps[] => [
 	{
@@ -17,8 +16,8 @@ export const contactPersonModel = ({
 			keys: ['Mr', 'Mrs', 'Ms', 'Prof', 'Dr', 'Other'],
 		},
 		componentProps: {
-			className: 'grid-cols-5',
-			otherProps: {
+			classNames: { radioGroupStyles: 'grid-cols-5' },
+			otherInputProps: {
 				label: 'Other? Specify',
 				placeholder: 'Specify',
 			},
@@ -77,7 +76,7 @@ export const contactPersonModel = ({
 			keys: ['Male', 'Female'],
 		},
 		componentProps: {
-			className: 'grid-cols-2',
+			classNames: { radioGroupStyles: 'grid-cols-2' },
 		},
 	},
 	{
@@ -91,7 +90,7 @@ export const contactPersonModel = ({
 			keys: ['Single', 'Married', 'Separated', 'Divorced'],
 		},
 		componentProps: {
-			className: 'grid-cols-4',
+			classNames: { radioGroupStyles: 'grid-cols-4' },
 		},
 	},
 	{
@@ -111,10 +110,8 @@ export const contactPersonModel = ({
 		rules: {
 			required: 'Select country of birth',
 		},
-		options: {
-			keys: countryList[1],
-
-			priorityKeys: countryList[0],
+		componentProps: {
+			isCountryList: true,
 		},
 	},
 	{
@@ -125,9 +122,9 @@ export const contactPersonModel = ({
 		rules: {
 			required: 'Select citizenship',
 		},
-    componentProps: {
-      isCountryList: true,
-    }
+		componentProps: {
+			isCountryList: true,
+		},
 	},
 	{
 		fieldType: 'dropdown',
@@ -137,10 +134,8 @@ export const contactPersonModel = ({
 		rules: {
 			required: 'Select country of residence',
 		},
-		options: {
-			keys: countryList[1],
-
-			priorityKeys: countryList[0],
+		componentProps: {
+			isCountryList: true,
 		},
 	},
 	{
@@ -225,7 +220,7 @@ export const contactPersonModel = ({
 			keys: ['Yes', 'No'],
 		},
 		componentProps: {
-			className: 'grid-cols-2',
+			classNames: { radioGroupStyles: 'grid-cols-2' },
 		},
 	},
 ];

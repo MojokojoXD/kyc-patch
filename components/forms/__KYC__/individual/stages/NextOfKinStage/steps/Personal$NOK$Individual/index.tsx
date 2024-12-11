@@ -14,7 +14,6 @@ import {
 	FormTitle,
 	FormSubHeader,
 	FormContent,
-	FormAutopopulate,
 } from '@/components/forms/FormLayout';
 import type { FormStep } from '@/types/Components/onboarding';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
@@ -23,7 +22,6 @@ import type { NOK } from '@/types/forms/individualSchema';
 import { cn } from '@/lib/utils';
 import { personalModel$NOK$Individual } from './model/personalModel$NOK$Individual';
 import FormFactory from '@/components/forms/FormFactory';
-import Loading from '@/components/ui/Loading';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
 const MAX_NUMBER_OF_KINS = 2;
@@ -48,30 +46,25 @@ const defaultNOKValues: NOK = {
 	percentageAllocation: '',
 };
 
-export const Personal$NOK$Individual: FormStep = ({ countryList }) => {
+export const Personal$NOK$Individual: FormStep = () => {
 	const {
 		form: { control },
-		toggleLoading,
 	} = useKYCFormContext<IndividualFormSchema>();
 
-	const { fields, append, remove } = useFieldArray({
+	const { fields, replace, append, remove } = useFieldArray({
 		control,
 		name: 'nextOfKin',
 	});
 
 	useEffect(() => {
 		if (fields.length === 0) {
-			toggleLoading(true);
-			append(defaultNOKValues);
+			replace(defaultNOKValues);
 			return;
 		}
-
-		toggleLoading(false);
-	}, [fields, append, toggleLoading]);
+	}, [fields, replace]);
 
 	return (
 		<>
-			<Loading reveal={fields.length === 0} />
 			<FormHeader>
 				<FormTitle>Next of Kin - Personal Information</FormTitle>
 				<FormSubHeader>Enter the information of your next of kin</FormSubHeader>
@@ -106,17 +99,7 @@ export const Personal$NOK$Individual: FormStep = ({ countryList }) => {
 										<AccordionContent
 											className='data-[state=closed]:hidden py-10 overflow-visible'
 											forceMount>
-											<FormAutopopulate
-												formIndex={i}
-												srcFields={personalModel$NOK$Individual({ index: 0 })}
-												srcPath='nextOfKin'
-												render={(index) => (
-													<NOKBioForm
-														applicantId={index}
-														countryList={countryList}
-													/>
-												)}
-											/>
+											<NOKBioForm applicantId={i} />
 										</AccordionContent>
 									</AccordionItem>
 								</Accordion>
@@ -144,14 +127,13 @@ export const Personal$NOK$Individual: FormStep = ({ countryList }) => {
 
 interface NOKBioForm extends SingleFormFieldsGeneratorProps {}
 
-function NOKBioForm({ applicantId, countryList = [] }: NOKBioForm) {
+function NOKBioForm({ applicantId }: NOKBioForm) {
 	const aggregatorResults = useMemo(
 		() =>
 			personalModel$NOK$Individual({
 				index: applicantId,
-				countryList,
 			}),
-		[applicantId, countryList]
+		[applicantId]
 	);
 
 	return (

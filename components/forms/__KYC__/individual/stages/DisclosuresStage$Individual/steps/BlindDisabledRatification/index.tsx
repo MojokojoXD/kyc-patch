@@ -5,7 +5,11 @@ import {
 	AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { FormHeader, FormTitle, FormContent } from '@/components/forms/FormLayout';
+import {
+	FormHeader,
+	FormTitle,
+	FormContent,
+} from '@/components/forms/FormLayout';
 import { Input } from '@/components/ui/input';
 import type { FormStep } from '@/types/Components/onboarding';
 import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
@@ -18,7 +22,7 @@ export const BlindDisabledRatification: FormStep = () => {
 		formAction,
 	} = useKYCFormContext<IndividualFormSchema>();
 
-	const applicants = getValues('applicant') || [];
+	const applicants = getValues('applicant') || [{}];
 
 	return (
 		<>
@@ -35,6 +39,10 @@ export const BlindDisabledRatification: FormStep = () => {
 			<FormContent>
 				<div className='space-y-[8px] py-5'>
 					{applicants.map((a, i) => {
+						const { firstName, middleName, lastName } = a;
+
+						const fullName = `${firstName ?? ''} ${middleName ?? ''} ${lastName ?? ''}`;
+
 						return (
 							<Accordion
 								key={a.id}
@@ -50,7 +58,7 @@ export const BlindDisabledRatification: FormStep = () => {
 										forceMount>
 										<RatificationForm
 											applicantId={i}
-											fullName={a.firstName + ' ' + a.middleName + '' + a.lastName}
+											fullName={fullName}
 										/>
 									</AccordionContent>
 								</AccordionItem>

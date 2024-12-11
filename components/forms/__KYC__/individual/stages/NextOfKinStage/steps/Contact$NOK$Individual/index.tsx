@@ -12,14 +12,13 @@ import {
 	FormTitle,
 	FormSubHeader,
 	FormContent,
-	FormAutopopulate,
 } from '@/components/forms/FormLayout';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
 import type { FormStep } from '@/types/Components/onboarding';
 import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 
-export const Contact$NOK$Individual: FormStep = ({ countryList }) => {
+export const Contact$NOK$Individual: FormStep = () => {
 	const {
 		form: { getValues },
 	} = useKYCFormContext<IndividualFormSchema>();
@@ -50,17 +49,7 @@ export const Contact$NOK$Individual: FormStep = ({ countryList }) => {
 									<AccordionContent
 										className='data-[state=closed]:hidden py-10'
 										forceMount>
-										<FormAutopopulate
-											formIndex={i}
-											srcFields={contactModel$NOK$Individual({ index: 0 })}
-											srcPath='nextOfKin'
-											render={(index) => (
-												<NOKContactForm
-													applicantId={index}
-													countryList={countryList}
-												/>
-											)}
-										/>
+										<NOKContactForm applicantId={i} />
 									</AccordionContent>
 								</AccordionItem>
 							</Accordion>
@@ -74,14 +63,13 @@ export const Contact$NOK$Individual: FormStep = ({ countryList }) => {
 
 interface NOKContactFormProps extends SingleFormFieldsGeneratorProps {}
 
-function NOKContactForm({ applicantId, countryList }: NOKContactFormProps) {
+function NOKContactForm({ applicantId }: NOKContactFormProps) {
 	const fields = useMemo(
 		() =>
 			contactModel$NOK$Individual({
 				index: applicantId,
-				countryList,
 			}),
-		[applicantId, countryList]
+		[applicantId]
 	);
 
 	return (

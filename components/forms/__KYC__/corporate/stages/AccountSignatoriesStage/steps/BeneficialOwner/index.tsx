@@ -62,7 +62,7 @@ const collateBeneficalOwnersFromSignatories = (
 	return collationResult;
 };
 
-export const BeneficialOwners: FormStep = ({ countryList }) => {
+export const BeneficialOwners: FormStep = () => {
 	const { form } = useKYCFormContext<CorporateFormSchema>();
 	const { control, setValue, watch, getValues } = form;
 	const { fields, append, remove } = useFieldArray({
@@ -178,7 +178,6 @@ export const BeneficialOwners: FormStep = ({ countryList }) => {
 											forceMount>
 											<BeneficialOwnerForm
 												applicantId={i}
-												countryList={countryList}
 											/>
 										</AccordionContent>
 									</AccordionItem>
@@ -210,7 +209,6 @@ interface BeneficialOwnerFormProps extends SingleFormFieldsGeneratorProps {}
 
 function BeneficialOwnerForm({
 	applicantId,
-	countryList,
 }: BeneficialOwnerFormProps) {
 	const { form } = useKYCFormContext<CorporateFormSchema>();
 	const { getValues, watch } = form;
@@ -225,7 +223,7 @@ function BeneficialOwnerForm({
 		) as string) || '';
 
 	const fields = useMemo(() => {
-		const rawFields = beneficialOwnersModel({ index: applicantId, countryList });
+		const rawFields = beneficialOwnersModel({ index: applicantId });
 		const aggregator = new FormFieldAggregator(rawFields);
 
 		aggregator.modifyFields('read-only', {
@@ -237,7 +235,7 @@ function BeneficialOwnerForm({
 		});
 
 		return aggregator.generate();
-	}, [applicantId, countryList, isApplicantPrefilled, pepStatus]);
+	}, [applicantId, isApplicantPrefilled, pepStatus]);
 
 	return (
 		<>

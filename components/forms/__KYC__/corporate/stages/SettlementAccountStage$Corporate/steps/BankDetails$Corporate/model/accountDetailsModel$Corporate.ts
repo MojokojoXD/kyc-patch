@@ -1,12 +1,10 @@
-import type { BankList,CountryList } from '@/types/forms/common';
+import type { BankList } from '@/types/forms/common';
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 
 const accountDetailsModel$Corporate = ({
-	countryList = [],
 	bankList = [],
 }: {
 	index?: number;
-	countryList?: CountryList;
 	bankList?: BankList[];
 }): FormFactoryProps[] => [
 	{
@@ -18,9 +16,8 @@ const accountDetailsModel$Corporate = ({
 		rules: {
 			required: 'Select country',
 		},
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
+		componentProps: {
+			isCountryList: true,
 		},
 	},
 	{
@@ -93,7 +90,7 @@ const accountDetailsModel$Corporate = ({
 		name: `settlementAccount.bank.account.KRAPin`,
 		label: 'KRA PIN Number',
 		placeholder: 'Enter KRA PIN number',
-		tags: ['KE','KESTR'],
+		tags: ['KE', 'KESTR'],
 	},
 	{
 		fieldType: 'text',

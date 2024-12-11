@@ -10,11 +10,11 @@ import { incorporationFields } from './model/incorporationFields';
 import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 
-export const Incorporation: FormStep = ({ countryList }) => {
+export const Incorporation: FormStep = () => {
 	const {
 		formVars: { brokerCode },
 	} = useKYCFormContext();
-	const rawFields = incorporationFields({ countryList });
+	const rawFields = incorporationFields({});
 
 	const aggregator = new FormFieldAggregator(rawFields);
 

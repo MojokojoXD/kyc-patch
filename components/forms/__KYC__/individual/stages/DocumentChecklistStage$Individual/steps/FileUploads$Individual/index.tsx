@@ -22,7 +22,6 @@ import { useKYCFormContext } from '@/components/forms/utils/formController';
 export const FileUploads$Individual: FormStep = () => {
 	const {
 		form: { getValues },
-		formVars: { clientID },
 	} = useKYCFormContext<IndividualFormSchema>();
 
 	const applicants = getValues('applicant') || [{}];
@@ -50,7 +49,6 @@ export const FileUploads$Individual: FormStep = () => {
 									forceMount>
 									<FileUploadForm
 										applicantId={i}
-										clientID={clientID}
 									/>
 								</AccordionContent>
 							</AccordionItem>
@@ -62,21 +60,18 @@ export const FileUploads$Individual: FormStep = () => {
 	);
 };
 
-interface FileUploadFormProps extends SingleFormFieldsGeneratorProps {
-	clientID?: string;
-}
+interface FileUploadFormProps extends SingleFormFieldsGeneratorProps {}
 
-function FileUploadForm({ applicantId, clientID }: FileUploadFormProps) {
+function FileUploadForm({ applicantId }: FileUploadFormProps) {
 	const aggregatorResults = useMemo(() => {
 		const rawFields = fileUploadsModel$Individual({
 			index: applicantId,
-			clientID,
 		});
 
 		const aggregator = new FormFieldAggregator(rawFields);
 
 		return aggregator.generate();
-	}, [applicantId, clientID]);
+	}, [applicantId]);
 	return (
 		<>
 			{aggregatorResults.map((f) => (

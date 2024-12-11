@@ -1,13 +1,10 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
-import type { CountryList } from '@/types/forms/common';
 import validator from 'validator';
 
 export const fatcaModel$Individual = ({
 	index,
-	countryList = [],
 }: {
 	index: number;
-	countryList?: CountryList;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'checkbox',
@@ -27,23 +24,27 @@ export const fatcaModel$Individual = ({
 			],
 		},
 		componentProps: {
-			toggleStyles: 'text-base',
-			className: 'gap-[16px]',
-        },
-        tags: [ 'remove-all-except' ]
+			classNames: {
+				toggleStyles: 'text-base',
+				boxGroupStyles: 'gap-4',
+			},
+		},
+		tags: ['remove-all-except'],
 	},
 	{
 		fieldType: 'text',
 		name: `applicant.${index}.disclosures.fatca.details.ownership`,
-        label: 'Ownership (%)',
-        placeholder: 'Enter ownership',
-        rules: {
-            required: 'Please enter ownership',
-            validate: {
-                isNumber: v => validator.isNumeric( v ) || 'Entry must be a number',
-                isWithinRange: v => parseInt(v) >= 0 && parseInt(v) <= 100 || 'Ownership must be between 0 and 100%',
-            }
-        }
+		label: 'Ownership (%)',
+		placeholder: 'Enter ownership',
+		rules: {
+			required: 'Please enter ownership',
+			validate: {
+				isNumber: (v) => validator.isNumeric(v) || 'Entry must be a number',
+				isWithinRange: (v) =>
+					(parseInt(v) >= 0 && parseInt(v) <= 100) ||
+					'Ownership must be between 0 and 100%',
+			},
+		},
 	},
 	{
 		fieldType: 'text',
@@ -54,7 +55,12 @@ export const fatcaModel$Individual = ({
 			required: 'Please enter first name',
 			validate: (v: string) => v.length > 1 || 'entry is too short',
 		},
-		placeholder: 'First name',
+    placeholder: 'First name',
+    componentProps: {
+      classNames: {
+        errorPosition: 'absolute'
+      }
+    }
 	},
 	{
 		fieldType: 'text',
@@ -72,7 +78,12 @@ export const fatcaModel$Individual = ({
 			required: 'Please enter last name',
 			validate: (v: string) => v.length > 1 || 'entry is too short',
 		},
-		placeholder: 'Last name',
+    placeholder: 'Last name',
+    componentProps: {
+      classNames: {
+        errorPosition: 'absolute'
+      }
+    }
 	},
 	{
 		fieldType: 'text',
@@ -97,23 +108,19 @@ export const fatcaModel$Individual = ({
 		name: `applicant.${index}.disclosures.fatca.details.phoneNumber`,
 		label: 'Foreign Phone Number',
 		placeholder: 'Enter foreign phone number',
-		
-        componentProps: {
-            phoneMode: 'single',
-        },
-		options: {
-			keys: countryList[1],
-			priorityKeys: countryList[0],
-		},
-        },
-        {
-            fieldType: 'text',
-            name: `applicant.${ index }.disclosures.fatca.details.tin`,
-            label: 'Foreign Tax Identification Number (TIN)/Social Security Number (SSN)/National Identity Number(NIN)',
-            placeholder: 'Enter TIN/SSN/NIN',
-            rules: {
-                required: 'Please enter TIN/SSN/NIN'
-            }
-    }
-];
 
+		componentProps: {
+			phoneMode: 'single',
+		},
+	},
+	{
+		fieldType: 'text',
+		name: `applicant.${index}.disclosures.fatca.details.tin`,
+		label:
+			'Foreign Tax Identification Number (TIN)/Social Security Number (SSN)/National Identity Number(NIN)',
+		placeholder: 'Enter TIN/SSN/NIN',
+		rules: {
+			required: 'Please enter TIN/SSN/NIN',
+		},
+	},
+];

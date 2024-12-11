@@ -27,7 +27,7 @@ type ParsedURLQuery = {
 
 // type SyncData<T> = T | Promise<T>;
 
-type Action = () => boolean | undefined;
+type Action = () => void;
 
 export type KYCContextValue = ReturnType<typeof useKYCForm>;
 
@@ -50,10 +50,10 @@ export function useKYCFormContext<
 //Reference to a function to be called when the form changes stages or steps
 let actionBeforeFormNav: Action | null = null;
 
-const invokeActionBeforeFormNav = () => 
-  actionBeforeFormNav?.call( undefined );
-
-const resetActionBeforeFormNav = () => { actionBeforeFormNav = null }
+const invokeActionBeforeFormNav = () => {
+	actionBeforeFormNav?.call(undefined);
+	actionBeforeFormNav = null;
+};
 
 export function useKYCForm<
 	TForm extends FieldValues,
@@ -70,8 +70,8 @@ export function useKYCForm<
 			FormReducerAction<TStages[number]['name'], TStages[number]['steps'][number]>
 		>,
 		{
-			currentStage: stages[1].name,
-			currentStep: stages[1].steps[0],
+			currentStage: stages[0].name,
+			currentStep: stages[0].steps[0],
 			allStages: stages,
 		}
 	);
@@ -108,41 +108,49 @@ export function useKYCForm<
 		invokeActionBeforeFormNav();
 
 		if (await form.trigger(undefined, { shouldFocus: true })) {
-		}
-		formAction({ type: 'next' });
+      formAction({ type: 'next' });
+    }
 	}, [form]);
 
-	// advance form one step backward
+	// advance form one step backward following the history trace. Eg: it will only go to the most recent step
 	const prev = useCallback(async () => {
-		const shouldValidate = invokeActionBeforeFormNav();
+		invokeActionBeforeFormNav();
 
-    let isValid = true;
-
-		if (shouldValidate) {
-      isValid = await form.trigger(undefined, { shouldFocus: true });
-    }
-
-    if ( isValid )
+    if (
+				formNav.shouldValidate &&
+				!(await form.trigger(undefined, { shouldFocus: true }))
+    )
     {
-      resetActionBeforeFormNav();
-      formAction( { type: 'prev' } );
-    }
-	}, [form]);
+      alert('To continue, please make sure all entries are valid!')
+      return;
+      };
+
+		formAction({ type: 'prev' });
+	}, [form, formNav.shouldValidate]);
 
 	//jump to any part of the form given stage and step
-	const goToFormLocation = useCallback(
-		async (
-			stage: typeof formNav.currentStage,
-			step?: typeof formNav.currentStep
+  const goToFormLocation = useCallback(
+    async (
+      stage: typeof formNav.currentStage,
+      step?: typeof formNav.currentStep,
 		) => {
-			const shouldValidate = invokeActionBeforeFormNav();
+			invokeActionBeforeFormNav();
 
-			if (shouldValidate && (await form.trigger(undefined, { shouldFocus: false }))) {
-				formAction({ type: 'jump_to_form_location', toStage: stage, toStep: step });
-				return;
-			}
+			if (
+				formNav.shouldValidate &&
+				!(await form.trigger(undefined, { shouldFocus: true }))
+      )
+      {
+              alert('To continue, please make sure all entries are valid!')
+        return;
+      };
 
-			formAction({ type: 'jump_to_form_location', toStage: stage, toStep: step });
+			formAction({
+				type: 'jump_to_form_location',
+				toStage: stage,
+				toStep: step,
+				payload: { shouldValidate: true },
+			});
 		},
 		[formNav, form]
 	);

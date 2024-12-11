@@ -16,20 +16,15 @@ import type {
 	IndividualFormStep,
 } from '../../config/individualFormMetadata';
 import type { FormComponentDict } from '../../../../utils/formReducer';
-import { useAsyncAction } from '@/components/forms/utils/customHooks/useAsyncAction';
-import { getCountryList } from '@/utils/vars/countries';
-import Loading from '@/components/ui/Loading';
 
 export const DisclosuresStage$Individual = () => {
 	const { formNav } = useKYCFormContext<object, IndividualFormMetadata>();
 
-	const [countryList, isLoading] = useAsyncAction(getCountryList);
-
 	const disclosuresStepsDict: FormComponentDict<IndividualFormStep> = {
 		'signature upload': <SignatureUpload />,
 		'customer ratification': <BlindDisabledRatification />,
-		pep: <Pep$Individual countryList={countryList} />,
-		fatca: <Fatca$Individual countryList={countryList} />,
+		pep: <Pep$Individual />,
+		fatca: <Fatca$Individual />,
 		'kestrel capital - terms': <KestrelTerms$Individual />,
 		'kestrel capital - nominee': <KestrelNominee$Individual />,
 		'afrinvest - email indemnity': <AfrinvestIndemnity$Individual />,
@@ -40,6 +35,5 @@ export const DisclosuresStage$Individual = () => {
 		review_disclosures: <Review$Disclosures$Individual />,
 	};
 
-	if (isLoading) return <Loading reveal={isLoading} />;
 	return <>{disclosuresStepsDict[formNav.currentStep]}</>;
 };

@@ -10,6 +10,7 @@ import { addClientFormModel } from './model/addClientFormModel';
 import FormFactory from '@/components/forms/FormFactory';
 import type { NewClientPayload } from './model/addClientForm';
 import { useSession } from '@/components/Dashboard/hooks/useSession';
+import { useKYCForm, KYCContext } from '@/components/forms/utils/formController';
 
 enum NewClientFormSteps {
 	Form = 1,
@@ -37,7 +38,9 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 		mode: 'onChange',
 	});
 
-	const { handleSubmit } = form;
+  const { handleSubmit } = form;
+  
+  const KYCForm = useKYCForm( [{name: 'add-client', steps: [ 'add-client' ]}], form )
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [submitError, setSubmitError] = useState('');
@@ -81,7 +84,10 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 	if (aggregateErrorState) {
 		console.log(aggregateErrorState);
 		return <p className='p-10'>Something went wrong!. Please try again later.</p>;
-	}
+  }
+  
+
+  if( KYCForm.isLoading )return <p>Loading...</p>
 
 	switch (step) {
 		case NewClientFormSteps.Form:
@@ -89,30 +95,33 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 				<>
 					{step === NewClientFormSteps.Form && (
 						<p className='paragraph2Medium absolute top-[32px]'>Add A New Client</p>
-					)}
-					<Form {...form}>
-						<form onSubmit={handleSubmit(submitHandler)}>
-							<div className='space-y-[40px] relative w-full'>
-								{clientFormFields.map((f) => (
-									<FormFactory
-										key={f.name}
-										{...f}
-									/>
-								))}
+          ) }
+          {/* @ts-expect-error  context type and useKYCForm return type mismatch */}
+          <KYCContext.Provider value={ KYCForm }>
+            <Form {...form}>
+              <form onSubmit={handleSubmit(submitHandler)}>
+                <div className='space-y-[40px] relative w-full'>
+                  {clientFormFields.map((f) => (
+                    <FormFactory
+                      key={f.name}
+                      {...f}
+                    />
+                  ))}
 
-								<Button
-									className='w-full'
-									type='submit'
-									disabled={aggregateLoadingState}>
-									{isLoading ? (
-										<Loader2 className='h-5 aspect-square ml-.5 animate-spin' />
-									) : (
-										'Confirm'
-									)}
-								</Button>
-							</div>
-						</form>
-					</Form>
+                  <Button
+                    className='w-full'
+                    type='submit'
+                    disabled={aggregateLoadingState}>
+                    {isLoading ? (
+                      <Loader2 className='h-5 aspect-square ml-.5 animate-spin' />
+                    ) : (
+                      'Confirm'
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </KYCContext.Provider>
 				</>
 			);
 		case NewClientFormSteps.ClientAdded:
