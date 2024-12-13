@@ -78,7 +78,6 @@ export default function FormFileUpload({
 
                 const result = await FileHelpers.uploadFileAndDownload( renamedFile );
                 
-                console.log( result )
 
 								setIsLoading(false);
 

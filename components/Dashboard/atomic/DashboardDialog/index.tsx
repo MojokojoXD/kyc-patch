@@ -8,6 +8,8 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 export interface DashboardDialogProps {
 	header: JSX.Element | string;
 
@@ -15,7 +17,9 @@ export interface DashboardDialogProps {
 
 	open: boolean;
 
-	hideCancelBtn?: boolean;
+  hideCancelBtn?: boolean;
+  
+  syncing?: boolean;
 	onDialogOpen: (open: boolean) => void;
 	onContinue: () => void;
 }
@@ -25,7 +29,8 @@ export function DashboardDialog({
 	children,
 	onDialogOpen,
 	open,
-	onContinue,
+  onContinue,
+  syncing,
 	hideCancelBtn = false,
 }: DashboardDialogProps) {
 	return (
@@ -51,7 +56,8 @@ export function DashboardDialog({
 						<Button
 							onClick={() => onContinue()}
 							className='w-full'>
-							Continue
+              Continue
+              <Loader2 className={cn('animate-spin text-white hidden', syncing && 'block' )} />
 						</Button>
 					</div>
 				</DialogFooter>

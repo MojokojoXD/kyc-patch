@@ -33,7 +33,7 @@ export async function protectedServerRequest({
 	[unknown, string | null ] | string
   >
 {
-  //covert the record of cookie headers from the request into a single string and remove the token cookie
+  //convert the record of cookie headers from the request into a single string and remove the token cookie
 	const securityCookies = Object.keys(securityHeaders).reduce(
 	(prevKey, currentKey) =>
 		currentKey !== 'token'

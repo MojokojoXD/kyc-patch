@@ -53,7 +53,7 @@ export class FormFieldAggregator {
 
 			let tagSpecificFieldIndices: number[] = [];
 
-			//Aggregate field indices that need to modified, if the tag parameter is provide or else world on all fields if no tag parameter is provided.
+			//Aggregate field indices that need to modified, if the tag parameter is provide or else use all fields if no tag parameter is provided.
 			if (fieldNameOrTag === '') {
 				tagSpecificFieldIndices = [...this._intermediateFields.keys()];
 			} else {

@@ -108,8 +108,8 @@ export function useKYCForm<
 		invokeActionBeforeFormNav();
 
 		if (await form.trigger(undefined, { shouldFocus: true })) {
-      formAction({ type: 'next' });
     }
+    formAction({ type: 'next' });
 	}, [form]);
 
 	// advance form one step backward following the history trace. Eg: it will only go to the most recent step
@@ -141,7 +141,7 @@ export function useKYCForm<
 				!(await form.trigger(undefined, { shouldFocus: true }))
       )
       {
-              alert('To continue, please make sure all entries are valid!')
+        alert('To continue, please make sure all entries are valid!')
         return;
       };
 

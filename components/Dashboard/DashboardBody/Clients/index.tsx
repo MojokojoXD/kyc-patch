@@ -53,7 +53,6 @@ export function Clients() {
 		Path<(typeof clientsData)[0]> | undefined
 	>('date_created');
 	const [error, setError] = useState<string | null>(null);
-	// const [isLoading, setIsLoading] = useState(true);
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const { request } = useSession<AllClientsEndpointResponse>();
@@ -90,7 +89,6 @@ export function Clients() {
 			function (data, error, status) {
         if ( status === 'COMPLETED' )
         {
-          console.log( data, 'here' )
 					setClientsData(
 						data!.all_trans.filter((c) => c.client_first_name && c.client_last_name)
 					);
