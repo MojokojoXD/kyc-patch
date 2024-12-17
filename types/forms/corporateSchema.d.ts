@@ -81,7 +81,7 @@ interface BaseSignatory
 
 export type Signatory = BaseSignatory &
 	common.AccountPerson &
-	common.AfrinvestSpecific & {
+  common.AfrinvestSpecific & {
 		pepInfo: common.PepInfo;
 		proofOfIdentity: common.ProofOfIdentity;
 		disclosures: {

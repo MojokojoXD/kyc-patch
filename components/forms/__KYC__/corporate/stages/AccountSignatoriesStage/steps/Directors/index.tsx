@@ -18,113 +18,37 @@ import { useKYCFormContext } from '@/components/forms/utils/formController';
 import { directorsDefaultValues, directorsModel } from './model/directorsModel';
 import type { SingleFormFieldsGeneratorProps } from '@/types/Components/onboarding';
 import type { FormStep } from '@/types/Components/onboarding';
-import type { Director } from '@/types/forms/corporateSchema';
-import type { Signatory } from '@/types/forms/corporateSchema';
 import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
 import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import { PrefillBannerDesc } from '../../PrefillBannerDesc';
+import { MAX_DIRECTORS } from './model/directorsModel';
+import { FormHelpers } from '@/utils/clientActions/formHelpers';
 
-const MAX_INDIVIDUALS = 2;
-
-const collateDirectorsFromSignatories = (
-	signatories: Signatory[]
-): Director[] => {
-	const collationResult: Director[] = [];
-
-	signatories.forEach((s) => {
-		if (!s.role.includes('Director/Executive/Trustee/Admin')) return;
-
-		collationResult.push({
-			id: s._id,
-			firstName: s.firstName ?? '',
-			middleName: s.middleName ?? '',
-			lastName: s.lastName ?? '',
-			idType: s.proofOfIdentity?.idType || '',
-			idNumber: s.proofOfIdentity?.idNumber || '',
-			phoneNumber: [...s.address.phoneNumber],
-			ownership: '',
-			status: undefined,
-			pepInfo: {
-				isPep: s.pepInfo?.isPep || undefined,
-				pepDetails: {
-					desc: s.pepInfo?.pepDetails?.desc || '',
-					country: s.pepInfo?.pepDetails?.country || '',
-				},
-			},
-			isPrefill: true,
-		});
-	});
-
-	return collationResult;
-};
 
 export const Directors: FormStep = () => {
 	const { form } = useKYCFormContext<CorporateFormSchema>();
-	const { control, setValue, watch, getValues } = form;
-	const { fields, append, remove } = useFieldArray({
+	const { control, watch, getValues } = form;
+	const { fields, append, remove, replace } = useFieldArray({
 		name: 'accountSignatories.directors',
 		control,
 	});
 
-	const signatories = getValues('accountSignatories.signatories');
+  useEffect( () =>
+  {
+    let isInitialized = false;
 
-	const currentDirectors = getValues('accountSignatories.directors');
+    if ( fields.length === 0 && !isInitialized )
+    {
+      replace( { ...directorsDefaultValues, id: FormHelpers.generateUniqueIdentifier() } )
+    }
 
-	useEffect(() => {
-		let directorsFromSignatory = collateDirectorsFromSignatories(signatories);
+    return () =>
+    {
+      isInitialized = true;
+    }
+  },[fields.length, replace])
 
-		const directorsInit =
-			directorsFromSignatory.length > 0
-				? directorsFromSignatory
-				: [directorsDefaultValues];
-
-		if (!currentDirectors || currentDirectors.length === 0) {
-			setValue('accountSignatories.directors', directorsInit);
-			return;
-		}
-
-		const result: Director[] = [];
-
-		currentDirectors.forEach((d) => {
-			if (!d.isPrefill) {
-				result.push(d);
-				return;
-			}
-
-			const existingDirectorFromSignatory = directorsFromSignatory.filter(
-				(s) => s.id === d.id
-			);
-
-			if (existingDirectorFromSignatory.length !== 0) {
-				const mergedDirector: Director = {
-					id: existingDirectorFromSignatory[0].id,
-					firstName: existingDirectorFromSignatory[0].firstName,
-					lastName: existingDirectorFromSignatory[0].lastName,
-					middleName: existingDirectorFromSignatory[0].middleName,
-					idType: existingDirectorFromSignatory[0].idType,
-					idNumber: existingDirectorFromSignatory[0].idNumber,
-					phoneNumber: [...existingDirectorFromSignatory[0].phoneNumber],
-					status: d.status,
-					pepInfo: { ...existingDirectorFromSignatory[0].pepInfo },
-					ownership: d.ownership,
-					isPrefill: existingDirectorFromSignatory[0].isPrefill,
-				};
-				result.push(mergedDirector);
-				directorsFromSignatory = directorsFromSignatory.filter((s) => s.id !== d.id);
-			}
-		});
-
-		if (result.length === 0) {
-			result.push(directorsDefaultValues);
-		}
-
-		setValue('accountSignatories.directors', [
-			...directorsFromSignatory,
-			...result,
-		]);
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+  
 
 	return (
 		<>
@@ -179,7 +103,7 @@ export const Directors: FormStep = () => {
 							type='button'
 							size={'sm'}
 							variant={'ghost'}
-							disabled={fields.length >= MAX_INDIVIDUALS}
+							disabled={fields.length >= MAX_DIRECTORS}
 							onClick={() => append(directorsDefaultValues)}
 							className='text-base text-primary-500'>
 							<span className='mr-1'>

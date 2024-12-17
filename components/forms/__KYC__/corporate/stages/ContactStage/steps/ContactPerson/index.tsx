@@ -99,7 +99,7 @@ export const ContactPerson: FormStep = () => {
   }
 
 	useEffect(() => {
-		setValue(`contacts.contactPerson.residenceStatus`, residenceStatus);
+		setValue(`contacts.contactPerson.residence.status`, residenceStatus);
 	}, [residenceStatus, setValue]);
 
 	return (

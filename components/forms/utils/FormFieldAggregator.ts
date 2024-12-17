@@ -40,7 +40,12 @@ export class FormFieldAggregator {
 			const config: Partial<ModifierFormFactoryProps> | null | undefined =
 				modifier(currentField);
 
-			if (!config) return;
+      if ( typeof config === 'undefined' ) return;
+      if ( !config )
+      {
+        this._intermediateFields = this._intermediateFields.filter( ( _f, i ) => i !== fieldIndex );
+        return;
+      }
 
 			this._intermediateFields[fieldIndex] = {
 				...currentField,
@@ -121,7 +126,7 @@ export class FormFieldAggregator {
 		}
 	}
 
-	generate = () => this._intermediateFields;
+	generate = () => [...this._intermediateFields];
 
 	private addOptionalToLabel = (label: string) => label + ' (Optional)';
 	private removeOptionalOnLabel = (label: string) => {

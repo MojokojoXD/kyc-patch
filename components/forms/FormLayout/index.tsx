@@ -27,7 +27,7 @@ function FormHeader( { children, ...props }: FormHeaderProps )
   }, [ props.content ] );
 
   return (
-    <div className='bg-white'>
+    <div>
       <div
         className='rounded-t-xl bg-neutral-100 flex justify-center items-center overflow-hidden'
         ref={ contentRef }>
@@ -41,7 +41,7 @@ function FormHeader( { children, ...props }: FormHeaderProps )
           />
         </div>
       </div>
-      <div className='flex flex-col pt-[40px] px-[40px] pb-[20px] justify-center'>
+      <div className='flex flex-col pt-[40px] px-[40px] pb-[20px] justify-center border-x border-neutral-100 bg-white'>
         <div className='space-y-[8px]'>{ children }</div>
       </div>
     </div>
@@ -75,7 +75,7 @@ export function FormContent( {
   return (
     <div
       className={ cn(
-        'px-[40px] pb-[40px] pt-[20px] space-y-8 grow bg-white rounded-xl',
+        'px-[40px] pb-[40px] pt-[20px] space-y-8 grow border-x border-neutral-100 bg-white text-neutral-700',
         className
       ) }
       { ...props }>
@@ -93,7 +93,7 @@ function FormNavButtons()
   if ( formNav.currentStep === 'submit' ) return null;
 
   return (
-    <div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 bg-white'>
+    <div className='flex items-center justify-end px-10 space-x-2 pb-16 pt-5 bg-white rounded-b-xl border-x border-b border-neutral-100'>
       { formNav.currentStage !== 'introduction' && (
         <Button
           type='button'

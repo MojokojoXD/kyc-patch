@@ -1,4 +1,5 @@
-import type { Country } from '@/types/forms/common';
+import type { Country, PhoneInfo } from '@/types/forms/common';
+import { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import { IndividualFormSchema } from '@/types/forms/individualSchema';
 import axios from 'axios';
 import type { AxiosRequestConfig } from 'axios';
@@ -41,7 +42,11 @@ export class FormHelpers {
 						gender: a.gender,
 						countryOfBirth: a.citizenship,
 						countryOfResidence: a.countryOfResidence,
-						residentialStatus: a.residence.status ?? '',
+            residentialStatus: a.residence.status ?? '',
+            residentPermitNumber: a.residence.details?.permitNumber ?? '',
+            permitIssueDate: a.residence.details?.permitIssueDate ?? '',
+            placeOfIssue: a.residence.details?.permitIssuePlace ?? '',
+            permitExpiryDate: a.residence.details?.permitExpiry ?? '',
 						mothersMaidenName: a.mothersMaidenName,
 						maidenName: a.maidenName ?? '',
 						tin: a.tin,
@@ -309,7 +314,334 @@ export class FormHelpers {
 				])),
 			],
 		};
-	}
+  }
+  
+  static transformCorporateSchemaToServerSchema( obj: CorporateFormSchema )
+  {
+
+    const phoneObjPropBuilder = ( phoneInfo: PhoneInfo ) =>
+    {
+        const parsedPhoneNumbers = phoneInfo.map( p => parsePhoneNumber( p.value ) );
+    
+      const temp: { [ x: string ]: { countryCode?: string; phoneNumber?: string; } } = {};
+    
+        parsedPhoneNumbers.forEach( ( p, i ) =>
+        {
+          if ( !p ) return;
+    
+        Object.defineProperty( temp, `tel${ i + 1 }`, {
+          value: {
+            countryCode: p.countryCallingCode,
+            phoneNumber: p.nationalNumber,
+          }
+        } );
+        } )
+      
+      return temp;
+    }
+
+    
+    return {
+      Business: [ 
+           [ { catBusiness: obj.businessInfo.categoryOfBusiness } ],
+           [
+                 {
+                   catInvestment: obj.businessInfo.categoryOfInvestment,
+                   taxexempt: obj.businessInfo.taxExempt,
+                 }
+           ],
+            [
+              {
+                ...phoneObjPropBuilder( obj.businessInfo.details.phoneNumber ),
+                companyName: obj.businessInfo.details.name,
+                companyType: obj.businessInfo.details.type,
+                companySector: obj.businessInfo.details.sectorIndustry,
+                companyPlace: obj.businessInfo.details.physicalAddress,
+                companyPostal: obj.businessInfo.details.postalAddress,
+                companyZip: obj.businessInfo.details.postCode,
+                city: obj.businessInfo.details.city,
+                companyEmail: obj.businessInfo.details.emailAddress,
+                countryOfIncorporation: obj.businessInfo.details.countryOfIncorporation,
+                companyWebsite: obj.businessInfo.details.emailAddress,
+                digitalAddress: obj.businessInfo.details.digitalAddress,
+                monthlyincome: obj.businessInfo.details.turnOver?.monthlyAmount ?? '',
+                annualincome: obj.businessInfo.details.turnOver?.annualAmount ?? '',
+              }
+                
+            ],
+        [
+          {
+            certificatenbr: obj.businessInfo.incorporation.certficateNo,
+            taxNumber: obj.businessInfo.incorporation.tin ?? '',
+            pinnbr: obj.businessInfo.incorporation.KRAPin ?? '',
+            dateOfBirth: obj.businessInfo.incorporation.date ?? '',
+            licenseNumber: obj.businessInfo.incorporation.licenseNo ?? '',
+            parentCompany: obj.businessInfo.incorporation.parentCountryIncorporation ?? '',
+          }
+        ]
+      ],
+      Contact: [
+        [
+          {
+          title: obj.contacts.contactPerson.title.presets === 'Other' ? obj.contacts.contactPerson.title.other : obj.contacts.contactPerson.title.presets,
+          firstName: obj.contacts.contactPerson.firstName,
+          middleName: obj.contacts.contactPerson.middleName,
+          lastName: obj.contacts.contactPerson.lastName,
+          dateOfBirth: obj.contacts.contactPerson.dateOfBirth,
+          gender: obj.contacts.contactPerson.gender,
+          maritalStatus: obj.contacts.contactPerson.maritalStatus,
+          placeOfBirth: obj.contacts.contactPerson.placeOfBirth,
+          countryOfBirth: obj.contacts.contactPerson.countryOfBirth,
+          countryOfResidence: obj.contacts.contactPerson.countryOfResidence,
+          countryOfCitizenship: obj.contacts.contactPerson.citizenship,
+          residentialStatus: obj.contacts.contactPerson.residence.status ?? '',
+          residentPermitNumber: obj.contacts.contactPerson.residence.details?.permitNumber ?? '',
+          issueDate: obj.contacts.contactPerson.residence.details?.permitIssueDate ?? '',
+          placeIssued: obj.contacts.contactPerson.residence.details?.permitIssuePlace ?? '',
+          expiryDate: obj.contacts.contactPerson.residence.details?.permitExpiry ?? '',
+          profession: obj.contacts.contactPerson.profession,
+          occupation: obj.contacts.contactPerson.occupation,
+          job: obj.contacts.contactPerson.jobTitle,
+          mothersmaidenname: obj.contacts.contactPerson.mothersMaidenName,
+          professionalLicenseNumber: obj.contacts.contactPerson.professionalLicenseNo ?? '',
+          tinNumber: obj.contacts.contactPerson.tin ?? '',
+          signatoryContact: obj.contacts.contactPerson.isSignatory
+          }
+            ],
+           [
+            {
+              mobile: { ...phoneObjPropBuilder( obj.contacts.emergencyContact.phoneNumber ).tel1 },
+              ...phoneObjPropBuilder( obj.contacts.phoneNumber ),
+              residentialAddress: obj.contacts.residentialAddress,
+              city: obj.contacts.city,
+              postalAddress: obj.contacts.postalAddress,
+              emailAddress: obj.contacts.email,
+              ContactName: obj.contacts.emergencyContact.contactName,
+              relation: obj.contacts.emergencyContact.relation,
+              digitalAddress: obj.contacts.digitalAddress,
+              nearestLandmark: obj.contacts.nearestLandmark,
+            }
+          ],
+          [
+            {
+              idType: obj.contacts.proofOfIdentity.idType,
+              idNumber: obj.contacts.proofOfIdentity.idNumber,
+              issueDate: obj.contacts.proofOfIdentity.issueDate,
+              placeOfIssue: obj.contacts.proofOfIdentity.placeOfIssue,
+              expiryDate: obj.contacts.proofOfIdentity.expiryDate
+            }
+          ]
+        
+      ],
+      Signatories: [
+        [ ...obj.accountSignatories.signatories.map( s => ( {
+          ContactName: s.address.emergencyContact.contactName,
+          city: s.address.city,
+          countryOfBirth: s.countryOfBirth,
+          countryOfCitizenship: s.citizenship,
+          countryOfResidence: s.countryOfResidence,
+          dateOfBirth: s.dateOfBirth,
+          digitalAddress: s.address.digitalAddress ?? '',
+          emailAddress: s.address.email,
+          expiryDate: s.residence.details?.permitExpiry ?? '',
+          firstName: s.firstName,
+          gender: s.gender ?? '',
+          issueDate: s.residence.details?.permitIssueDate ?? '',
+          job: s.jobTitle,
+          lastName: s.lastName,
+          localGovernment: s.localGovernment ?? '',
+          maidenName: s.maidenName ?? '',
+          mandate: s.signatureMandate ?? '',
+          maritalStatus: s.maritalStatus ?? '',
+          mobile: { ...phoneObjPropBuilder( s.address.emergencyContact.phoneNumber ).tel1 },
+          mothersmaidenname: s.mothersMaidenName,
+          nearestLandmark: s.address.nearestLandmark ?? '',
+          occupation: s.occupation,
+          placeIssued: s.residence.details?.permitIssuePlace ?? '',
+          placeOfBirth: s.placeOfBirth,
+          postalAddress: s.address.postalAddress,
+          profession: s.profession,
+          professionallisence: s.professionalLicenseNo ?? '',
+          relation: s.address.emergencyContact.relation,
+          religion: s.religion ?? '',
+          residentPermitNumber: s.residence.details?.permitNumber ?? '',
+          residentialAddress: s.address.residentialAddress,
+          residentialStatus: s.residence.status ?? '',
+          signature: s.signatureResource,
+          state: s.stateOfOrigin,
+          status: [ ...s.role ],
+          title: s.title,
+          tinNumber: s.tin,
+
+          ...phoneObjPropBuilder( s.address.phoneNumber ),
+        } ) ) ],
+        [
+          ...obj.accountSignatories.signatories.map( s => ( {
+            expiryDate: s.proofOfIdentity.expiryDate,
+            idNumber: s.proofOfIdentity.idNumber,
+            idType: s.proofOfIdentity.idType,
+            issueDate: s.proofOfIdentity.issueDate,
+            placeOfIssue: s.proofOfIdentity.placeOfIssue,
+        } ) )
+        ],
+        [
+          ...obj.accountSignatories.signatories.map( d => ( {
+            countryOfPep: d.pepInfo.pepDetails?.country ?? '',
+            pep: d.pepInfo.isPep,
+            specify: d.pepInfo.pepDetails?.desc ?? ''
+          }) )
+        ],
+        [
+          ...obj.accountSignatories.directors.map( d => ( {
+            countryOfPep: d.pepInfo?.pepDetails?.country ?? '',
+            dateOfBirth: '',
+            firatName: d.firstName,
+            homeAddress: '',
+            idNumber: d.idNumber,
+            idType: d.idType,
+            lastName: d.lastName,
+            middleName: d.middleName ?? '',
+            ownership: d.ownership,
+            pep: d.pepInfo?.isPep ?? 'No',
+            specify: d.pepInfo?.pepDetails?.desc ?? '',
+            status: d.status ?? '',
+            ...phoneObjPropBuilder( d.phoneNumber )
+          }))
+        ],
+        [
+          ...obj.accountSignatories.beneficialOwners.map( b => ( {
+             countryOfPep: b.pepInfo?.pepDetails?.country ?? '',
+            dateOfBirth: '',
+            firatName: b.firstName,
+            homeAddress: '',
+            idNumber: b.idNumber,
+            idType: b.idType,
+            lastName: b.lastName,
+            middleName: b.middleName ?? '',
+            ownership: b.ownership,
+            pep: b.pepInfo?.isPep ?? 'No',
+            specify: b.pepInfo?.pepDetails?.desc ?? '',
+            status: b.status ?? '',
+            ...phoneObjPropBuilder( b.phoneNumber )
+          }))
+        ],
+        [
+          ...obj.accountSignatories.affiliations.map( a => a.value )
+        ]
+      ],
+      Bank: [
+        [
+          {
+            accountName: obj.settlementAccount.bank.account.name,
+            accountNumber: obj.settlementAccount.bank.account.number,
+            accountType: obj.settlementAccount.bank.account.type,
+            bankBranch: obj.settlementAccount.bank.locale.branch,
+            bankCountry: obj.settlementAccount.bank.locale.country,
+            bankName: obj.settlementAccount.bank.locale.name,
+            bvn: obj.settlementAccount.bank.account.bvn ?? '',
+            routingNumber: obj.settlementAccount.bank.account.routingNumber ?? '',
+            swiftCode: obj.settlementAccount.bank.account.swiftCode ?? '',
+          }
+        ],
+        [
+          {
+            Topups: obj.settlementAccount.investmentActivity.topUps.timeline.presets === 'Other' ? obj.settlementAccount.investmentActivity.topUps.timeline.other : 
+              obj.settlementAccount.investmentActivity.topUps.timeline.presets ?? '',
+            Withdrawals: obj.settlementAccount.investmentActivity.withdrawals.timeline.presets === 'Other' ? obj.settlementAccount.investmentActivity.withdrawals.timeline.other : 
+              obj.settlementAccount.investmentActivity.withdrawals.timeline.presets ?? '',
+            expectedAmount: obj.settlementAccount.investmentActivity.withdrawalAmounts,
+            funds: [ ...obj.settlementAccount.investmentActivity.sourceOfFunds ],
+            initialAmount: obj.settlementAccount.investmentActivity.initialAmount,
+            investmentFrequency: obj.settlementAccount.investmentActivity.frequency,
+            reguralAmount: obj.settlementAccount.investmentActivity.topUpAmounts
+          }
+        ],
+        [
+          {
+            agrement: obj.settlementAccount.riskProfile.riskAgreement ? 'I/We understand investing in equities/shares is inherently risker than investing in fixed income products or holding cash' : '',
+            horizon: obj.settlementAccount.riskProfile.investmentHorizon,
+            investmentKnowledge: obj.settlementAccount.riskProfile.investmentKnowledge,
+            reaction: obj.settlementAccount.riskProfile.reaction,
+            risktrelance: obj.settlementAccount.riskProfile.tolerance
+          }
+        ],
+        [
+          {
+            investmentObjective: obj.settlementAccount.investmentActivity.objective,
+            modeStatementDelivery: obj.settlementAccount.statements.modeOfDelivery,
+            statementFrequency: obj.settlementAccount.statements.frequency
+          }
+        ]
+      ],
+      Disclosures: [
+        [
+          {
+            terms: obj.disclosures.kestrel.termsAndConditions.agreed ? 'I/We agree to the above Terms and Conditions' : '',
+
+          }
+        ],
+        [
+          obj.accountSignatories.signatories.map( s => ( {
+            signature: s.disclosures.kestrel.nomineeAgreement.signatureResource,
+          }) )
+        ],
+        [
+          obj.accountSignatories.signatories.map( s => ( {
+            signature: s.disclosures.databank.emailIndemnity.signatureResource,
+            YourHouseAddress: `${s.address.residentialAddress}, ${ s.address.city } ${ s.countryOfResidence }`
+          }) )
+        ],
+        [
+          {
+            afrinvestIndemnity: obj.disclosures.afrinvest.emailIndemnity.agreed ? "I/We agree to the above indemnity provisions." : '',
+          }
+        ],
+        [
+          { 
+            signatureMandate: obj.disclosures.signatureMandate
+           }
+        ],
+        [
+          {
+            declaration: obj.disclosures.declarations.agreed ? 'I/We agree to the above declarations' : ''
+          }
+        ],
+        [
+          ...obj.accountSignatories.signatories.map( s => ( {
+            factcastatus: [...s.disclosures.fatca.status],
+            ownership: s.disclosures.fatca.ownership,
+          }) )
+        ]
+      ],
+      DocumentChecklist: [
+        [
+          ...obj.accountSignatories.signatories.map( s => ( {
+            residentFile: s.documentChecklist.residencePermit.filename,
+            signatoriesIDFile: s.documentChecklist.signatoryID.filename,
+            signatoriesPhotosFile: s.documentChecklist.signatoryPhotographs.filename
+          } ) ),
+          {
+            BVNNumber: obj.generalDocumentChecklist.BVN.filename ?? '',
+            OriginalDirectorsIDsFile: obj.generalDocumentChecklist.directorsID.filename ?? '',
+            W9W8BENEFile: obj.generalDocumentChecklist.W9_W8BEN_E.filename ?? '',
+            authorizedPersonsPhotoFile: obj.generalDocumentChecklist.directors_authorizedPerson.filename ?? '',
+            bankFile: obj.generalDocumentChecklist.bankProof.filename ?? '',
+            beneficiariesIDFile: obj.generalDocumentChecklist.beneficiariesID.filename ?? '',
+            foreignAddressFile: obj.generalDocumentChecklist.proofForeignAddress.filename ?? '',
+            incorporationFile: obj.generalDocumentChecklist.incorporationCertificate.filename ?? '',
+            kenyaKraPinCertificate: obj.generalDocumentChecklist.KRAPin.filename ?? '',
+            officialRegistryFile: obj.generalDocumentChecklist.registrySearch.filename ?? '',
+            proofOfAddressFile: obj.generalDocumentChecklist.proofOfAddress.filename ?? '',
+            sealFile: obj.generalDocumentChecklist.companySeal.filename ?? '',
+            resolutionFile: obj.generalDocumentChecklist.boardResolution.filename ?? '',
+            taxRegistrationCertificateFile: obj.generalDocumentChecklist.taxCertificate.filename ?? '',
+            uboFile: obj.generalDocumentChecklist.UBO.filename ?? ''
+          }
+        ],
+
+      ]
+    }
+  }
 
 	static recursiveObjectSearch(path: string, target: unknown): unknown {
 		if (path === '') return target;

@@ -1,6 +1,6 @@
 import * as common from './common';
 
-export interface IndividualFormSchema {
+export type IndividualFormSchema = {
 	clientType: 'Individual' | 'Joint Account';
 	clientStatus: string;
 	csdNumber?: string;
@@ -18,7 +18,7 @@ export interface IndividualFormSchema {
 			privacyPolicy: common.Agreement;
 		};
 		declarations: common.Agreement;
-	};
+  };
 }
 
 export type ClientInfo = Omit<
@@ -99,13 +99,14 @@ type StudentEmployment = Pick<EmploymentDetails, 'email' | 'phoneNumber'> & {
 export interface NOK
 	extends Omit<
 		common.AccountPerson,
-		| 'profession'
-		| 'occupation'
-		| 'jobTitle'
-		| 'mothersMaidenName'
-		| 'maidenName'
-		| 'professionalLicense'
-		| 'tin'
+	| 'profession'
+	| 'occupation'
+	| 'jobTitle'
+	| 'mothersMaidenName'
+	| 'maidenName'
+	| 'professionalLicense'
+  | 'tin'
+  | 'residence'
 	> {
 	id: string;
 	relationshipToApplicant: string;

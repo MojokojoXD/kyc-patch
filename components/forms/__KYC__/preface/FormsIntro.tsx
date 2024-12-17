@@ -8,7 +8,7 @@ export const FormsIntro = () => {
 					<FormTitle>KYC Verification</FormTitle>
 				</FormHeader>
 				<FormContent>
-					<div className='max-w-prose paragraph2Medium text-neutral-700 grow space-y-1.5'>
+					<div className='max-w-prose paragraph2Regular text-neutral-700 grow space-y-1.5'>
 						<p>
 							Please comply with regulations and help us secure our application and
 							users with our simple verification process. Some questions are

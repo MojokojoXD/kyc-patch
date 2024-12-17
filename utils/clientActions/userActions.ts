@@ -9,7 +9,10 @@ const SUBMISSION_URL = BASE_URL + '/kyc/client/submit';
 
 interface UserBrokerResponse {
 	data: {
-		brokerData: BrokerDetails;
+    brokerData: BrokerDetails;
+    submissionData: {
+      type_of_client: string;
+    }[]
 	};
 }
 
@@ -67,14 +70,15 @@ export class UserActions {
 				}
 			);
 
-			if (res.status === 200) {
+			if (res.status === 200 ) {
 				const { broker_id, org_code, org_con1_email, org_cty, org_email } =
-					res.data.data.brokerData;
+          res.data.data.brokerData;
+        
+        const { type_of_client } = res.data.data.submissionData[0]
 
-				return { broker_id, org_code, org_con1_email, org_cty, org_email };
+				return { broker_id, org_code, org_con1_email, org_cty, org_email, type_of_client };
 			}
 
-			console.log(res);
 		} catch (error) {
 			console.log(error);
 		}

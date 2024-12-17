@@ -10,8 +10,6 @@ export default function Verification()
 
   const router = useRouter();
 
-  // if ( !router.isReady ) return <></>;
-
   let metamap: string | undefined; 
 
   if ( router.query.form === 'individual' && router.isReady ) metamap = router.query.metamap as string;

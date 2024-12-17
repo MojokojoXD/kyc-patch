@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { SSXActionSuccess as ActionSuccess } from '@/components/ui/CompoundUI/SSXActionSuccess';
 import { Button } from '@/components/ui/button';
@@ -21,26 +21,25 @@ interface NewClientFormProps {
 	toggleSheet: () => void;
 }
 
-export function NewClientForm({ toggleSheet }: NewClientFormProps) {
-	const [countryList, isFetchingCountry, countryListError] =
-		useAsyncAction(getCountryList);
 
+
+export function NewClientForm({ toggleSheet }: NewClientFormProps) {
+  const [countryList, isFetchingCountry, countryListError] =
+  useAsyncAction(getCountryList);
+  
 	const { profile, request } = useSession<{ Status: 'SUCC' | 'FAIL' }>();
-	const form = useForm<NewClientPayload>({
-		defaultValues: {
+	const addClientDefaultValues: NewClientPayload = {
 			clientFirstName: '',
 			clientLastName: '',
 			clientEmail: '',
 			clientPhone: [{ value: '', countryCode: 'GH' }],
 			brokerID: profile?.broker_id ?? '',
 			typeOfClient: '',
-		},
-		mode: 'onChange',
-	});
+		};
 
-  const { handleSubmit } = form;
+  const KYCForm = useKYCForm<NewClientPayload>( [ { name: 'add-client', steps: [ 'add-client' ] } ], addClientDefaultValues )
   
-  const KYCForm = useKYCForm( [{name: 'add-client', steps: [ 'add-client' ]}], form )
+  const { form } = KYCForm;
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [submitError, setSubmitError] = useState('');
@@ -96,10 +95,9 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 					{step === NewClientFormSteps.Form && (
 						<p className='paragraph2Medium absolute top-[32px]'>Add A New Client</p>
           ) }
-          {/* @ts-expect-error  context type and useKYCForm return type mismatch */}
           <KYCContext.Provider value={ KYCForm }>
             <Form {...form}>
-              <form onSubmit={handleSubmit(submitHandler)}>
+              <form onSubmit={form.handleSubmit(submitHandler)}>
                 <div className='space-y-[40px] relative w-full'>
                   {clientFormFields.map((f) => (
                     <FormFactory

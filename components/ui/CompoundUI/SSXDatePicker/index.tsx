@@ -97,7 +97,7 @@ export const SSXDatePicker = ({
             readOnly
             disabled={ readonly }
 						placeholder={placeholder}
-						className='text-4 font-[400] w-full cursor-pointer placeholder:text-neutral-200 py-6 h-12'
+						className='text-4 font-[400] w-full cursor-pointer placeholder:text-neutral-300 py-6 h-12'
 						onClick={() => setIsCalendarOpen((prevState) => !prevState)}
 					/>
 					{/*calendar icon*/}

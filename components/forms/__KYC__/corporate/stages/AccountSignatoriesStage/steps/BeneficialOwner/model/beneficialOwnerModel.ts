@@ -4,6 +4,8 @@ import validator from 'validator';
 
 const MIN_AGE = 18;
 
+export const MAX_BENEFICIAL_OWNERS = 5
+
 export const beneficialOwnersModel = ({
 	index,
 }: {
@@ -137,7 +139,9 @@ export const beneficialOwnersModel = ({
 			},
 		},
 	},
-];
+  ];
+
+
 
 export const beneficialOwnersDefaultValues: BeneficialOwner = {
 	firstName: '',

@@ -140,7 +140,7 @@ export const contactPersonModel = ({}: {
 	},
 	{
 		fieldType: 'radio',
-		name: 'contacts.contactPerson.residenceStatus',
+		name: 'contacts.contactPerson.residence.status',
 		readonly: true,
 		label: 'Residence Status',
 		options: {
@@ -151,6 +151,52 @@ export const contactPersonModel = ({}: {
 				'Non-Resident Foreigner',
 			],
 		},
+    },
+  {
+		fieldType: 'text',
+		name: `contacts.contactPerson.residence.permitNumber`,
+		label: 'Residence Permit Number',
+		placeholder: 'Enter permit number',
+		rules: {
+			required: 'Please enter permit number',
+		},
+		tags: ['GH'],
+	},
+	{
+		fieldType: 'date',
+		name: `contacts.contactPerson.residence.permitIssueDate`,
+		label: 'Permit Issue Date',
+		placeholder: 'DD/MM/YYYY',
+		rules: {
+			required: 'Select date',
+		},
+		componentProps: {
+			disableFutureDays: true,
+		},
+		tags: ['GH'],
+	},
+	{
+		fieldType: 'text',
+		name: `contacts.contactPerson.residence.permitIssuePlace`,
+		label: 'Place of Issue',
+		placeholder: 'Enter place of Issue',
+		rules: {
+			required: 'Please enter place of issue',
+		},
+		tags: ['GH'],
+	},
+	{
+		fieldType: 'date',
+		name: `contacts.contactPerson.residence.permitExpiry`,
+		label: 'Permit Expiry Date',
+		placeholder: 'DD/MM/YYYY',
+		rules: {
+			required: 'Select date',
+		},
+		componentProps: {
+			disablePastDays: true,
+		},
+		tags: ['GH'],
 	},
 	{
 		fieldType: 'text',

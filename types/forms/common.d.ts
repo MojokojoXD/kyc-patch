@@ -132,7 +132,15 @@ export interface AccountPerson {
 	countryOfBirth: string;
 	citizenship: string;
 	countryOfResidence: string;
-	residenceStatus?: ResidenceStatus;
+	residence: {
+			status?: ResidenceStatus;
+			details?: {
+				permitNumber: string;
+				permitIssueDate: string;
+				permitExpiry: string;
+				permitIssuePlace: string;
+			};
+	};
 	profession: string;
 	occupation: string;
 	jobTitle: string;

@@ -18,7 +18,7 @@ export const signatoryFileUploadsModel$Corporate = ({
 	},
 	{
 		fieldType: 'file-upload',
-		name: `accountSignatories.signatories.${index}.documentChecklist.residentPermit.fileName`,
+		name: `accountSignatories.signatories.${index}.documentChecklist.residencePermit.fileName`,
 		label: 'Resident/Work Permit (Optional)',
 		componentProps: {
 			fileFieldName: 'residentPermit',

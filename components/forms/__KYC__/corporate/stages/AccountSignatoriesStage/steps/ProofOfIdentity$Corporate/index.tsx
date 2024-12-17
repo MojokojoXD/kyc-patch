@@ -48,7 +48,7 @@ export const ProofOfIdentity$Corporate: FormStep = () =>
                   <AccordionContent
                     className='data-[state=closed]:hidden pb-16 overflow-visible'
                     forceMount>
-                    <SignatoryForm applicantId={ i } readonly={ s._fillSrc === 'AUTO' } />
+                    <SignatoryIdentityProofForm applicantId={ i } readonly={ s._fillSrc === 'AUTO' } />
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -60,12 +60,12 @@ export const ProofOfIdentity$Corporate: FormStep = () =>
   );
 };
 
-interface SignatoryFormProps extends SingleFormFieldsGeneratorProps
+interface SignatoryIdentityProofFormProps extends SingleFormFieldsGeneratorProps
 {
   readonly: boolean;
 }
 
-function SignatoryForm( { applicantId, readonly }: SignatoryFormProps )
+function SignatoryIdentityProofForm( { applicantId, readonly }: SignatoryIdentityProofFormProps )
 {
   const fields = useMemo( () =>
   {

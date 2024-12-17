@@ -26,8 +26,7 @@ import type { Signatory } from '@/types/forms/corporateSchema';
 import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
 import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import { PrefillBannerDesc } from '../../PrefillBannerDesc';
-
-const MAX_INDIVIDUALS = 5;
+import { MAX_BENEFICIAL_OWNERS } from './model/beneficialOwnerModel';
 
 const collateBeneficalOwnersFromSignatories = (
 	signatories: Signatory[]
@@ -190,7 +189,7 @@ export const BeneficialOwners: FormStep = () => {
 							type='button'
 							size={'sm'}
 							variant={'ghost'}
-							disabled={fields.length >= MAX_INDIVIDUALS}
+							disabled={fields.length >= MAX_BENEFICIAL_OWNERS}
 							onClick={() => append(beneficialOwnersDefaultValues)}
 							className='text-base text-primary-500'>
 							<span className='mr-1'>

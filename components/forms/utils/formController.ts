@@ -7,17 +7,19 @@ import {
 	useState,
 	useEffect,
 } from 'react';
-import {
+import
+  {
+    type FormReducerAction,
+    type FormReducerState,
 	type FormReducerFn,
-	type FormReducerAction,
-	type FormReducerState,
 	type Stages,
 	formReducer,
 } from './formReducer';
-import type { UseFormReturn, FieldValues } from 'react-hook-form';
+import { type FieldValues, useForm, DefaultValues } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useAsyncAction } from './customHooks/useAsyncAction';
 import { getCountryList } from '@/utils/vars/countries';
+
 
 type ParsedURLQuery = {
 	c_id: string;
@@ -29,7 +31,7 @@ type ParsedURLQuery = {
 
 type Action = () => void;
 
-export type KYCContextValue = ReturnType<typeof useKYCForm>;
+type KYCContextValue = ReturnType<typeof useKYCForm<never, never>>;
 
 export const KYCContext = createContext<KYCContextValue | null>(null);
 
@@ -37,11 +39,9 @@ export const KYCContext = createContext<KYCContextValue | null>(null);
 export function useKYCFormContext<
 	TSchema extends FieldValues = FieldValues,
 	TStages extends Stages = Stages
->() {
-	const context = useContext(KYCContext) as ReturnType<
-		typeof useKYCForm<TSchema, TStages>
-	>;
-
+  >()
+{
+	const context = useContext(KYCContext) as ReturnType<typeof useKYCForm<TSchema,TStages>>;
 	if (!context) throw new Error('useKYCForm must be used within a KYC context');
 
 	return context;
@@ -58,20 +58,23 @@ const invokeActionBeforeFormNav = () => {
 export function useKYCForm<
 	TForm extends FieldValues,
 	TStages extends Stages = Stages
->(stages: TStages, form: UseFormReturn<TForm>) {
+>(stages: TStages, formDefaultValues?: DefaultValues<TForm>) {
 	//Global error and loading state
 	const [globalLoading, setGlobalLoading] = useState(true);
-	const [globalError, setGlobalError] = useState('');
+  const [ globalError, setGlobalError ] = useState( '' );
+  
+  const form = useForm<TForm>( { mode: 'onChange', ...( typeof formDefaultValues !== 'undefined' && { defaultValues: formDefaultValues } ) });
+
 
 	//Reducer for handling form stage and step movement i.e next, prev, jump to step
 	const [formNav, formAction] = useReducer(
-		formReducer as FormReducerFn<
-			FormReducerState<TStages[number]['name'], TStages[number]['steps'][number]>,
-			FormReducerAction<TStages[number]['name'], TStages[number]['steps'][number]>
-		>,
+    formReducer as FormReducerFn<
+      FormReducerState< typeof stages[number]['name'], typeof stages[number]['steps'][number]>,
+      FormReducerAction< typeof stages[number]['name'], typeof stages[number]['steps'][number]>
+    >,
 		{
-			currentStage: stages[0].name,
-			currentStep: stages[0].steps[0],
+			currentStage: stages[3].name,
+			currentStep: stages[3].steps[0],
 			allStages: stages,
 		}
 	);
@@ -108,42 +111,40 @@ export function useKYCForm<
 		invokeActionBeforeFormNav();
 
 		if (await form.trigger(undefined, { shouldFocus: true })) {
-    }
-    formAction({ type: 'next' });
+		}
+		formAction({ type: 'next' });
 	}, [form]);
 
 	// advance form one step backward following the history trace. Eg: it will only go to the most recent step
 	const prev = useCallback(async () => {
 		invokeActionBeforeFormNav();
 
-    if (
-				formNav.shouldValidate &&
-				!(await form.trigger(undefined, { shouldFocus: true }))
-    )
-    {
-      alert('To continue, please make sure all entries are valid!')
-      return;
-      };
+		if (
+			formNav.shouldValidate &&
+			!(await form.trigger(undefined, { shouldFocus: true }))
+		) {
+			alert('To continue, please make sure all entries are valid!');
+			return;
+		}
 
 		formAction({ type: 'prev' });
 	}, [form, formNav.shouldValidate]);
 
 	//jump to any part of the form given stage and step
-  const goToFormLocation = useCallback(
-    async (
-      stage: typeof formNav.currentStage,
-      step?: typeof formNav.currentStep,
+	const goToFormLocation = useCallback(
+		async (
+			stage: typeof formNav.currentStage,
+			step?: typeof formNav.currentStep
 		) => {
 			invokeActionBeforeFormNav();
 
 			if (
 				formNav.shouldValidate &&
 				!(await form.trigger(undefined, { shouldFocus: true }))
-      )
-      {
-        alert('To continue, please make sure all entries are valid!')
-        return;
-      };
+			) {
+				alert('To continue, please make sure all entries are valid!');
+				return;
+			}
 
 			formAction({
 				type: 'jump_to_form_location',
@@ -175,10 +176,10 @@ export function useKYCForm<
 				clientID: urlQuery.c_id ?? '',
 				brokerCode: urlQuery.b_code ?? '',
 				submissionID: urlQuery.submission ?? '',
-				countryList: countryList ?? [],
+				countryList: countryList ?? [[],[]],
 			},
 			formAction,
-			form: form as UseFormReturn<TForm>,
+			form,
 			toggleLoading,
 			setError,
 			isLoading: globalLoading || isFetchingCountryList,

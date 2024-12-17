@@ -124,6 +124,8 @@ export const directorsModel = ({
 	},
 ];
 
+export const MAX_DIRECTORS = 2;
+
 export const directorsDefaultValues: Director = {
 	firstName: '',
 	middleName: '',

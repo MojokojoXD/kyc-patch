@@ -6,7 +6,9 @@ export type Stages<TStage = string, TStep = string> = readonly {
 	readonly steps: readonly TStep[];
 }[];
 
-export interface FormReducerState<TStage = string, TStep = string> {
+
+export interface FormReducerState<TStage = string, TStep = string>
+{
 	readonly currentStage: TStage;
 	readonly currentStep: TStep;
 	allStages: Stages;

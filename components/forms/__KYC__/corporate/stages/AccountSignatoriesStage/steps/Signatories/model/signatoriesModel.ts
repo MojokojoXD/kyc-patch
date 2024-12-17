@@ -42,7 +42,12 @@ export const signatoriesModel = ({ index }: { index: number }): FormFactoryProps
 		rules: {
 			required: 'Please enter first name',
 			validate: (v) => (v as string).length > 2 || 'Entry too short',
-		},
+    },
+    componentProps: {
+      classNames: {
+        errorPosition: 'absolute',
+      }
+    },
 		tags: ['read-only'],
 	},
 	{
@@ -50,7 +55,12 @@ export const signatoriesModel = ({ index }: { index: number }): FormFactoryProps
 		name: `accountSignatories.signatories.${index}.middleName`,
 		inline: true,
 		label: '',
-		placeholder: 'Middle name',
+    placeholder: 'Middle name',
+    componentProps: {
+      classNames: {
+        errorPosition: 'absolute',
+      }
+    },
 		tags: ['read-only'],
 	},
 	{
@@ -62,7 +72,12 @@ export const signatoriesModel = ({ index }: { index: number }): FormFactoryProps
 		rules: {
 			required: 'Please enter last name',
 			validate: (v) => (v as string).length > 2 || 'Entry too short',
-		},
+    },
+    componentProps: {
+      classNames: {
+        errorPosition: 'absolute',
+      }
+    },
 		tags: ['read-only'],
 	},
 	{
@@ -173,7 +188,7 @@ export const signatoriesModel = ({ index }: { index: number }): FormFactoryProps
 	},
 	{
 		fieldType: 'radio',
-		name: `accountSignatories.signatories.${index}.residenceStatus`,
+		name: `accountSignatories.signatories.${index}.residence.status`,
 		readonly: true,
 		label: 'Residence Status',
 		options: {
@@ -185,6 +200,52 @@ export const signatoriesModel = ({ index }: { index: number }): FormFactoryProps
 			],
 		},
 		tags: ['read-only'],
+  },
+  {
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.residence.permitNumber`,
+		label: 'Residence Permit Number',
+		placeholder: 'Enter permit number',
+		rules: {
+			required: 'Please enter permit number',
+		},
+		tags: ['GH','read-only'],
+	},
+	{
+		fieldType: 'date',
+		name: `accountSignatories.signatories.${index}.residence.permitIssueDate`,
+		label: 'Permit Issue Date',
+		placeholder: 'DD/MM/YYYY',
+		rules: {
+			required: 'Select date',
+		},
+		componentProps: {
+			disableFutureDays: true,
+		},
+		tags: ['GH','read-only'],
+	},
+	{
+		fieldType: 'text',
+		name: `accountSignatories.signatories.${index}.residence.permitIssuePlace`,
+		label: 'Place of Issue',
+		placeholder: 'Enter place of Issue',
+		rules: {
+			required: 'Please enter place of issue',
+		},
+		tags: ['GH','read-only'],
+	},
+	{
+		fieldType: 'date',
+		name: `accountSignatories.signatories.${index}.residence.permitExpiry`,
+		label: 'Permit Expiry Date',
+		placeholder: 'DD/MM/YYYY',
+		rules: {
+			required: 'Select date',
+		},
+		componentProps: {
+			disablePastDays: true,
+		},
+		tags: ['GH','read-only'],
 	},
 	{
 		fieldType: 'phone',
@@ -447,7 +508,15 @@ export const signatoriesDefaultValues: Signatory = {
 	countryOfBirth: '',
 	citizenship: '',
 	countryOfResidence: '',
-	residenceStatus: undefined,
+  residence: {
+    status: undefined,
+    details: {
+      permitNumber: '',
+      permitExpiry: '',
+      permitIssueDate: '',
+      permitIssuePlace: '',
+    }
+  },
 	profession: '',
 	occupation: '',
 	jobTitle: '',
