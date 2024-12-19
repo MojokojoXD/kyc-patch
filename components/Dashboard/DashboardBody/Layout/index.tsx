@@ -95,7 +95,7 @@ export function Portal({ current, children }: PortalProps) {
 		) ?? null;
 
 	return (
-		<div className='p-[32px] space-y-[16px] text-neutral-700 h-fit max-w-screen-xl w-full mx-auto'>
+		<div className='p-[32px] space-y-[16px] text-neutral-700 h-fit max-w-screen-2xl w-full mx-auto'>
 			{currentView}
 		</div>
 	);

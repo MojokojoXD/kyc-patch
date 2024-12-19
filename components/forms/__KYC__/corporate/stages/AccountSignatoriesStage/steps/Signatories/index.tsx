@@ -13,36 +13,26 @@ import
     AccordionContent,
     AccordionTrigger,
   } from '@/components/ui/accordion';
-import
-  {
-    FormHeader,
-    FormTitle,
-    FormContent,
-  } from '@/components/forms/FormLayout';
+import { FormHeader, FormTitle, FormContent } from '@/components/forms/FormLayout';
 import { CirclePlus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import FormFactory from '@/components/forms/FormFactory';
 import { useFieldArray } from 'react-hook-form';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 import { FormStep } from '@/types/Components/onboarding';
-import type {
-  BeneficialOwner,
-  CorporateFormSchema,
-  Director,
-} from '@/types/forms/corporateSchema';
+import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
 import { PrefillBannerDesc } from '../../PrefillBannerDesc';
 import { useFormState } from 'react-hook-form';
 import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import { MAX_DIRECTORS } from '../Directors/model/directorsModel';
 import { MAX_BENEFICIAL_OWNERS } from '../BeneficialOwner/model/beneficialOwnerModel';
-import { useComputeDirectorsFromSignatory } from './hooks/useComputeDirectorsFromSignatory';
-
+import { directorOrBeneficialOwnerBuilder } from '../../utils/signatoriesFn';
 
 export const Signatories: FormStep = () =>
 {
   const { form, onFormNav } = useKYCFormContext<CorporateFormSchema>();
-  const { control, resetField, getValues } = form;
+  const { control, resetField, getValues, setValue } = form;
   const { touchedFields } = useFormState<CorporateFormSchema>( {
     name: 'accountSignatories.signatories',
     exact: true,
@@ -59,12 +49,29 @@ export const Signatories: FormStep = () =>
     'accountSignatories.beneficialOwners',
   ] );
 
-  onFormNav( function ()
+  const totalDirectorSignatories =
+    signatories.reduce(
+      ( a, c ) => ( c.role.includes( 'Director/Executive/Trustee/Admin' ) ? a + 1 : a ),
+      0
+    ) + ( directors ?? [] ).filter( d => d._fillSrc !== 'AUTO' ).length;
+  const totalBeneficiarySignatories =
+    signatories.reduce( ( a, c ) => ( c.role.includes( 'Beneficial Owner' ) ? a + 1 : a ), 0 ) +
+    ( beneficiaries ?? [] ).filter( b => b._fillSrc !== 'AUTO' ).length;
+
+  onFormNav(  ()=>
   {
+    const directorsInit = directorOrBeneficialOwnerBuilder( signatories, directors, 'directors' );
+    const beneficiariesInit = directorOrBeneficialOwnerBuilder(
+      signatories,
+      beneficiaries,
+      'beneficiaries'
+    );
+    setValue( 'accountSignatories.directors', directorsInit );
+    setValue( 'accountSignatories.beneficialOwners', beneficiariesInit );
+
     if ( !( 'accountSignatories' in touchedFields ) ) return;
 
-    const currentTouchedSignatories =
-      touchedFields.accountSignatories!.signatories;
+    const currentTouchedSignatories = touchedFields.accountSignatories!.signatories;
 
     if ( !currentTouchedSignatories ) return;
 
@@ -106,15 +113,16 @@ export const Signatories: FormStep = () =>
 
     if ( !isInitialized && signatoriesCount === 0 )
     {
-      signatories.length === 0 ? append( signatoriesDefaultValues ) : undefined;
+      replace( signatoriesDefaultValues );
       resetField( 'accountSignatories.signatories', { keepDirty: false } );
     }
     return () =>
     {
       isInitialized = true;
     };
-  } );
+  }, [ append, replace, resetField, signatories.length ] );
 
+ 
   return (
     <>
       <FormHeader>
@@ -140,7 +148,13 @@ export const Signatories: FormStep = () =>
                         <p className='inline-block'>Signatory #{ i + 1 }</p>
                         { i > 0 && (
                           <span
-                            onClick={ () => remove( i ) }
+                            onClick={ () =>
+                            {
+                              const adjustedDirectors =
+                                directors?.filter( d => f._id !== d._id ) ?? [];
+                              setValue( `accountSignatories.directors`, adjustedDirectors );
+                              remove( i );
+                            } }
                             className='h-fit py-0 w-fit px-0 text-error-500 paragraph1Regular flex items-center'
                           >
                             <Minus className='h-4 w-4 inline mr-1' /> Delete
@@ -154,8 +168,8 @@ export const Signatories: FormStep = () =>
                     >
                       <SignatoryForm
                         applicantId={ i }
-                        directors={ directors ?? [] }
-                        beneficiaries={ beneficiaries ?? [] }
+                        totalSelectedDirectors={ totalDirectorSignatories }
+                        totalSelectedBeneficiaries={ totalBeneficiarySignatories }
                       />
                     </AccordionContent>
                   </AccordionItem>
@@ -191,44 +205,31 @@ export const Signatories: FormStep = () =>
 
 interface SignatoryFormProps extends SingleFormFieldsGeneratorProps
 {
-  directors: Director[];
-  beneficiaries: BeneficialOwner[];
+  totalSelectedDirectors: number;
+
+  totalSelectedBeneficiaries: number;
 }
 
 const GHANA = 'GHANA';
 
 function SignatoryForm( {
   applicantId,
-  directors,
-  beneficiaries,
+  totalSelectedDirectors,
+  totalSelectedBeneficiaries,
 }: SignatoryFormProps )
 {
-  const directorsCount = directors.length;
-  const beneficiariesCount = beneficiaries.length;
-
   const { form } = useKYCFormContext<CorporateFormSchema>();
 
   const { setValue, watch, getValues } = form;
 
-  const currentSignatory = getValues( `accountSignatories.signatories.${ applicantId }` );
+  const _fillSrc = getValues( `accountSignatories.signatories.${ applicantId }._fillSrc` );
 
-  const computedDirectors = useComputeDirectorsFromSignatory( currentSignatory, directors );
-
-  if ( computedDirectors )
-  {
-    setValue( `accountSignatories.directors`, computedDirectors );
-  }
-
-
-  const [ signatoryResidence, signatoryCitizenship, residenceStatus ] = watch( [
+  const [ signatoryResidence, signatoryCitizenship, residenceStatus, role ] = watch( [
     `accountSignatories.signatories.${ applicantId }.countryOfResidence`,
     `accountSignatories.signatories.${ applicantId }.citizenship`,
     `accountSignatories.signatories.${ applicantId }.residence.status`,
+    `accountSignatories.signatories.${ applicantId }.role`,
   ] );
-
-
-  const { _fillSrc } = currentSignatory;
-
 
   const fields = useMemo( () =>
   {
@@ -251,36 +252,35 @@ function SignatoryForm( {
       remove: residenceStatus && residenceStatus === 'Resident Ghanaian',
     } );
 
-    aggregator.modifyFields(
-      `accountSignatories.signatories.${ applicantId }.role`,
-      function ( f )
+    aggregator.modifyFields( `accountSignatories.signatories.${ applicantId }.role`, function ( f )
+    {
+      let evaluatedRoles = [ ...( f.options?.keys ?? [] ) ];
+
+      if (
+        totalSelectedDirectors >= MAX_DIRECTORS &&
+        !role.includes( 'Director/Executive/Trustee/Admin' )
+      )
       {
-        let evaluatedRoles = [ ...( f.options?.keys ? f.options.keys : [] ) ];
-
-        if ( directorsCount >= MAX_DIRECTORS )
-        {
-          evaluatedRoles = evaluatedRoles.filter(
-            r => !( r as string ).startsWith( 'Director' )
-          );
-        }
-
-        if ( beneficiariesCount >= MAX_BENEFICIAL_OWNERS )
-        {
-          evaluatedRoles = evaluatedRoles.filter(
-            r => !( r as string ).startsWith( 'Beneficial' )
-          );
-        }
-
-        return evaluatedRoles.length === 0
-          ? null
-          : {
-            ...f,
-            options: {
-              keys: [ ...evaluatedRoles ],
-            },
-          };
+        evaluatedRoles = evaluatedRoles.filter( r => !( r as string ).startsWith( 'Director' ) );
       }
-    );
+
+      if (
+        totalSelectedBeneficiaries >= MAX_BENEFICIAL_OWNERS &&
+        !role.includes( 'Beneficial Owner' )
+      )
+      {
+        evaluatedRoles = evaluatedRoles.filter( r => !( r as string ).startsWith( 'Beneficial' ) );
+      }
+
+      return evaluatedRoles.length === 0
+        ? null
+        : {
+          ...f,
+          options: {
+            keys: [ ...evaluatedRoles ],
+          },
+        };
+    } );
 
     return aggregator.generate();
   }, [
@@ -288,8 +288,9 @@ function SignatoryForm( {
     _fillSrc,
     signatoryResidence,
     residenceStatus,
-    directorsCount,
-    beneficiariesCount,
+    totalSelectedDirectors,
+    role,
+    totalSelectedBeneficiaries,
   ] );
 
   useEffect( () =>
@@ -303,10 +304,7 @@ function SignatoryForm( {
             ? 'Non-Resident Ghanaian'
             : 'Non-Resident Foreigner';
 
-    setValue(
-      `accountSignatories.signatories.${ applicantId }.residence.status`,
-      residenceStatus
-    );
+    setValue( `accountSignatories.signatories.${ applicantId }.residence.status`, residenceStatus );
   }, [ signatoryCitizenship, signatoryResidence, applicantId, setValue ] );
 
   return (

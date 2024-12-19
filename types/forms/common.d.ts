@@ -13,9 +13,11 @@ export type Levels = 'Low' | 'Medium' | 'High'
 
 export type StatementDeliveryMode = 'Email' | 'Online' | 'Collection at Branch';
 
+
+export type FillSrc = 'AUTO' | 'MANUAL' | undefined;
 export interface FileStorage
 {
-    filename: string;    
+    fileName: string;    
 }
 
 export interface FieldsWithOther<TPresets = string,TOther = string>
@@ -39,7 +41,6 @@ export type ResidenceStatus =
 	| 'Resident Foreigner'
 	| 'Non-Resident Ghanaian'
 	| 'Non-Resident Foreigner';
-
 export type MaritalStatus =
 	| 'Single'
 	| 'Married'

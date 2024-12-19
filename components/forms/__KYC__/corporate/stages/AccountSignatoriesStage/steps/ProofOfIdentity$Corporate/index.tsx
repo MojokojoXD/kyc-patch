@@ -19,14 +19,26 @@ import FormFactory from '@/components/forms/FormFactory';
 import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
 import { useKYCFormContext } from '@/components/forms/utils/formController';
 import { proofOfIdentityModel$Corporate } from './model/proofOfIdentityModel$Corporate';
+import { directorOrBeneficialOwnerBuilder } from '../../utils/signatoriesFn';
 
 export const ProofOfIdentity$Corporate: FormStep = () =>
 {
-  const { form } = useKYCFormContext<CorporateFormSchema>();
-  const { getValues } = form;
+  const { form, onFormNav } = useKYCFormContext<CorporateFormSchema>();
+  const { getValues,setValue } = form;
 
   const signatories =
     getValues( 'accountSignatories.signatories' ) ?? [];
+  
+  const currentDirectors = getValues( `accountSignatories.directors` ) ?? [];
+  const currentBeneficiaries = getValues( 'accountSignatories.beneficialOwners' ) ?? []
+  
+  onFormNav( function ()
+  {
+    const directorsProofOfIdentityUpdate = directorOrBeneficialOwnerBuilder( signatories, currentDirectors, 'directors' );
+    const beneficiariesProofOfIdentityUpdate = directorOrBeneficialOwnerBuilder( signatories, currentBeneficiaries, 'beneficiaries' )
+    setValue( 'accountSignatories.directors', directorsProofOfIdentityUpdate );
+    setValue( 'accountSignatories.beneficialOwners', beneficiariesProofOfIdentityUpdate );
+  })
 
   return (
     <>

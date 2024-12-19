@@ -300,16 +300,16 @@ export class FormHelpers {
 			],
 			DocumentChecklist: [
 				...obj.applicant.map((a) => ([{
-					applicantID: a.fileUploads.applicantID.filename ?? '',
-          passportPhotograph: a.fileUploads.passportPhotograph.filename ?? '',
-          taxRegistration: a.fileUploads.taxCertificate.filename ?? '',
-          BVNNumber: a.fileUploads.BVN.filename ?? '',
-          proofOfAddress: a.fileUploads.proofOfAddress.filename ?? '',
-          mapScreenshot: a.fileUploads.addressMap.filename ?? '',
-          proofOfForeignAddress: a.fileUploads.foreignAddress.filename ?? '',
-          residenceWorkPermit: a.fileUploads.residencePermit.filename ?? '',
-          bankStatement3Months: a.fileUploads.proofOfBank.filename ?? '',
-          kenyaKRAPINCertificate: a.fileUploads.KRAPin.filename ?? ''
+					applicantID: a.fileUploads.applicantID.fileName ?? '',
+          passportPhotograph: a.fileUploads.passportPhotograph.fileName ?? '',
+          taxRegistration: a.fileUploads.taxCertificate.fileName ?? '',
+          BVNNumber: a.fileUploads.BVN.fileName ?? '',
+          proofOfAddress: a.fileUploads.proofOfAddress.fileName ?? '',
+          mapScreenshot: a.fileUploads.addressMap.fileName ?? '',
+          proofOfForeignAddress: a.fileUploads.foreignAddress.fileName ?? '',
+          residenceWorkPermit: a.fileUploads.residencePermit.fileName ?? '',
+          bankStatement3Months: a.fileUploads.proofOfBank.fileName ?? '',
+          kenyaKRAPINCertificate: a.fileUploads.KRAPin.fileName ?? ''
           }
 				])),
 			],
@@ -340,6 +340,7 @@ export class FormHelpers {
       return temp;
     }
 
+    debugger
     
     return {
       Business: [ 
@@ -521,7 +522,6 @@ export class FormHelpers {
             ownership: b.ownership,
             pep: b.pepInfo?.isPep ?? 'No',
             specify: b.pepInfo?.pepDetails?.desc ?? '',
-            status: b.status ?? '',
             ...phoneObjPropBuilder( b.phoneNumber )
           }))
         ],
@@ -615,27 +615,28 @@ export class FormHelpers {
       ],
       DocumentChecklist: [
         [
+        
           ...obj.accountSignatories.signatories.map( s => ( {
-            residentFile: s.documentChecklist.residencePermit.filename,
-            signatoriesIDFile: s.documentChecklist.signatoryID.filename,
-            signatoriesPhotosFile: s.documentChecklist.signatoryPhotographs.filename
+            residentFile: s.documentChecklist.residencePermit.fileName,
+            signatoriesIDFile: s.documentChecklist.signatoryID.fileName,
+            signatoriesPhotosFile: s.documentChecklist.signatoryPhotographs.fileName
           } ) ),
           {
-            BVNNumber: obj.generalDocumentChecklist.BVN.filename ?? '',
-            OriginalDirectorsIDsFile: obj.generalDocumentChecklist.directorsID.filename ?? '',
-            W9W8BENEFile: obj.generalDocumentChecklist.W9_W8BEN_E.filename ?? '',
-            authorizedPersonsPhotoFile: obj.generalDocumentChecklist.directors_authorizedPerson.filename ?? '',
-            bankFile: obj.generalDocumentChecklist.bankProof.filename ?? '',
-            beneficiariesIDFile: obj.generalDocumentChecklist.beneficiariesID.filename ?? '',
-            foreignAddressFile: obj.generalDocumentChecklist.proofForeignAddress.filename ?? '',
-            incorporationFile: obj.generalDocumentChecklist.incorporationCertificate.filename ?? '',
-            kenyaKraPinCertificate: obj.generalDocumentChecklist.KRAPin.filename ?? '',
-            officialRegistryFile: obj.generalDocumentChecklist.registrySearch.filename ?? '',
-            proofOfAddressFile: obj.generalDocumentChecklist.proofOfAddress.filename ?? '',
-            sealFile: obj.generalDocumentChecklist.companySeal.filename ?? '',
-            resolutionFile: obj.generalDocumentChecklist.boardResolution.filename ?? '',
-            taxRegistrationCertificateFile: obj.generalDocumentChecklist.taxCertificate.filename ?? '',
-            uboFile: obj.generalDocumentChecklist.UBO.filename ?? ''
+            BVNNumber: obj.generalDocumentChecklist.BVN.fileName ?? '',
+            OriginalDirectorsIDsFile: obj.generalDocumentChecklist.directorsID.fileName ?? '',
+            W9W8BENEFile: obj.generalDocumentChecklist.W9_W8BEN_E.fileName ?? '',
+            authorizedPersonsPhotoFile: obj.generalDocumentChecklist.directors_authorizedPerson.fileName ?? '',
+            bankFile: obj.generalDocumentChecklist.bankProof.fileName ?? '',
+            beneficiariesIDFile: obj.generalDocumentChecklist.beneficiariesID.fileName ?? '',
+            foreignAddressFile: obj.generalDocumentChecklist.proofForeignAddress.fileName ?? '',
+            incorporationFile: obj.generalDocumentChecklist.incorporationCertificate.fileName ?? '',
+            kenyaKraPinCertificate: obj.generalDocumentChecklist.KRAPin.fileName ?? '',
+            officialRegistryFile: obj.generalDocumentChecklist.registrySearch.fileName ?? '',
+            proofOfAddressFile: obj.generalDocumentChecklist.proofOfAddress.fileName ?? '',
+            sealFile: obj.generalDocumentChecklist.companySeal.fileName ?? '',
+            resolutionFile: obj.generalDocumentChecklist.boardResolution.fileName ?? '',
+            taxRegistrationCertificateFile: obj.generalDocumentChecklist.taxCertificate.fileName ?? '',
+            uboFile: obj.generalDocumentChecklist.UBO.fileName ?? ''
           }
         ],
 

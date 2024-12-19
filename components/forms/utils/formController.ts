@@ -50,7 +50,8 @@ export function useKYCFormContext<
 //Reference to a function to be called when the form changes stages or steps
 let actionBeforeFormNav: Action | null = null;
 
-const invokeActionBeforeFormNav = () => {
+const invokeActionBeforeFormNav = async() =>
+{
 	actionBeforeFormNav?.call(undefined);
 	actionBeforeFormNav = null;
 };
@@ -73,8 +74,8 @@ export function useKYCForm<
       FormReducerAction< typeof stages[number]['name'], typeof stages[number]['steps'][number]>
     >,
 		{
-			currentStage: stages[3].name,
-			currentStep: stages[3].steps[0],
+			currentStage: stages[0].name,
+			currentStep: stages[0].steps[0],
 			allStages: stages,
 		}
 	);
@@ -108,16 +109,16 @@ export function useKYCForm<
 
 	// advance form one step
 	const next = useCallback(async () => {
-		invokeActionBeforeFormNav();
-
+		await invokeActionBeforeFormNav();
+    
 		if (await form.trigger(undefined, { shouldFocus: true })) {
+      formAction({ type: 'next' });
 		}
-		formAction({ type: 'next' });
 	}, [form]);
 
 	// advance form one step backward following the history trace. Eg: it will only go to the most recent step
 	const prev = useCallback(async () => {
-		invokeActionBeforeFormNav();
+		await invokeActionBeforeFormNav();
 
 		if (
 			formNav.shouldValidate &&
@@ -136,7 +137,7 @@ export function useKYCForm<
 			stage: typeof formNav.currentStage,
 			step?: typeof formNav.currentStep
 		) => {
-			invokeActionBeforeFormNav();
+			await invokeActionBeforeFormNav();
 
 			if (
 				formNav.shouldValidate &&

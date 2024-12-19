@@ -61,7 +61,9 @@ export default function FormDropdown({
 			rules={{
 				...rules,
 			}}
-			render={({ field, fieldState }) => (
+      render={ ( { field, fieldState } ) =>
+      {
+        return(
 				<FormItem className='space-y-2'>
 					<FormLabel
 						className={cn(
@@ -119,7 +121,7 @@ export default function FormDropdown({
 						{fieldState.error?.message}
 					</FormMessage>
 				</FormItem>
-			)}
+			)}}
 		/>
 	);
 }

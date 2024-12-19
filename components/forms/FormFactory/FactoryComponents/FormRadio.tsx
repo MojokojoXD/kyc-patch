@@ -19,7 +19,7 @@ export default function FormRadio({
 	name,
 	rules,
 	options,
-	defaultValue = '',
+	defaultValue,
 	readonly,
 	componentProps = {
 		classNames: {

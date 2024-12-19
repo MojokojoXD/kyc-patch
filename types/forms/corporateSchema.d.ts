@@ -101,7 +101,7 @@ export type Signatory = BaseSignatory &
 			};
 		};
   documentChecklist: DocumentChecklist;
-  _fillSrc?: 'AUTO' | 'MANUAL' ;
+  _fillSrc?: common.FillSrc
 	};
 
 type BaseDirectoryOrBeneficialOwnerFields = Pick<
@@ -110,18 +110,16 @@ type BaseDirectoryOrBeneficialOwnerFields = Pick<
 > &
 	Pick<common.ExpandedContact, 'residentialAddress' | 'phoneNumber'> &
 	Pick<common.ProofOfIdentity, 'idType' | 'idNumber'> & {
-		id?: string;
-		status?: 'executive' | 'non-Executive';
+  _id?: string;
+		status?: 'executive' | 'non-Executive' ;
 		ownership: string;
 		pepInfo?: Partial<common.PepInfo>;
-		isPrefill?: boolean;
+		_fillSrc?: common.FillSrc;
 	};
 
-export type Director = Omit<BaseDirectoryOrBeneficialOwnerFields, 'dateOfBirth' | 'residentialAddress'> &
-	Record<string, unknown>;
+export type Director = Omit<BaseDirectoryOrBeneficialOwnerFields, 'dateOfBirth' | 'residentialAddress'>;
 
-export type BeneficialOwner = Omit<BaseDirectoryOrBeneficialOwnerFields,'status'> &
-	Record<string, unknown>;
+export type BeneficialOwner = Omit<BaseDirectoryOrBeneficialOwnerFields,'status'>;
 
 interface SettlementAccount {
 	bank: {

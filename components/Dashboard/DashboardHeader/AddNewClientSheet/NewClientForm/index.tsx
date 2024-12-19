@@ -11,6 +11,7 @@ import FormFactory from '@/components/forms/FormFactory';
 import type { NewClientPayload } from './model/addClientForm';
 import { useSession } from '@/components/Dashboard/hooks/useSession';
 import { useKYCForm, KYCContext } from '@/components/forms/utils/formController';
+import { NewClientFormSkeleton } from './NewClientFormSkeleton';
 
 enum NewClientFormSteps {
 	Form = 1,
@@ -56,7 +57,8 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 				payload.typeOfClient === 'Individual or Joint'
 					? 'Individual'
 					: payload.typeOfClient,
-		};
+    };
+
 
 		request(
 			{ url: '/kyc/broker/client', method: 'POST', data: newClient },
@@ -86,7 +88,7 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
   }
   
 
-  if( KYCForm.isLoading )return <p>Loading...</p>
+  if( KYCForm.isLoading )return <NewClientFormSkeleton/>
 
 	switch (step) {
 		case NewClientFormSteps.Form:

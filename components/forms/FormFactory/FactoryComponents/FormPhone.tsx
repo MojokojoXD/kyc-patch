@@ -139,9 +139,9 @@ export default function FormPhone( {
                               type='button'
                               size={ 'icon' }
                               variant={ 'ghost' }
-                              className='absolute right-1 text-primary-500'
+                              className='absolute right-1 text-error-500'
                               onClick={ () => remove( i ) }>
-                              <X className='h-[24px] w-[24px]' />
+                              <X className='h-5 aspect-square' />
                             </Button>
                           ) }
                         </div>

@@ -29,6 +29,7 @@ import axios from 'axios';
 export default function IndividualForm()
 {
   const router = useRouter();
+ 
   const KYCForm = useKYCForm<IndividualFormSchema, typeof individualFormMetadata>( individualFormMetadata );
 
   const {
@@ -88,8 +89,9 @@ export default function IndividualForm()
     toggleLoading( true );
     try
     {
-      const res = await axios.post<{ Status: 'SUCC' | 'FAIL', link: string; }>( '/api/forms', payload );
+      const res = await axios.post<{ Status: 'SUCC' | 'FAIL', link: string; }>( '/api/forms?form=individual', payload );
 
+   
       if ( res.status === 200 && res.data.Status === 'SUCC' )
       {
         router.replace( `/onboarding/verification?form=individual&metamap=${ res.data.link }` );

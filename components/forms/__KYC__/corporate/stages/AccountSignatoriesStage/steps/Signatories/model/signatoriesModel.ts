@@ -203,7 +203,7 @@ export const signatoriesModel = ({ index }: { index: number }): FormFactoryProps
   },
   {
 		fieldType: 'text',
-		name: `accountSignatories.signatories.${index}.residence.permitNumber`,
+		name: `accountSignatories.signatories.${index}.residence.details.permitNumber`,
 		label: 'Residence Permit Number',
 		placeholder: 'Enter permit number',
 		rules: {
@@ -213,7 +213,7 @@ export const signatoriesModel = ({ index }: { index: number }): FormFactoryProps
 	},
 	{
 		fieldType: 'date',
-		name: `accountSignatories.signatories.${index}.residence.permitIssueDate`,
+		name: `accountSignatories.signatories.${index}.residence.details.permitIssueDate`,
 		label: 'Permit Issue Date',
 		placeholder: 'DD/MM/YYYY',
 		rules: {
@@ -226,7 +226,7 @@ export const signatoriesModel = ({ index }: { index: number }): FormFactoryProps
 	},
 	{
 		fieldType: 'text',
-		name: `accountSignatories.signatories.${index}.residence.permitIssuePlace`,
+		name: `accountSignatories.signatories.${index}.residence.details.permitIssuePlace`,
 		label: 'Place of Issue',
 		placeholder: 'Enter place of Issue',
 		rules: {
@@ -236,7 +236,7 @@ export const signatoriesModel = ({ index }: { index: number }): FormFactoryProps
 	},
 	{
 		fieldType: 'date',
-		name: `accountSignatories.signatories.${index}.residence.permitExpiry`,
+		name: `accountSignatories.signatories.${index}.residence.details.permitExpiry`,
 		label: 'Permit Expiry Date',
 		placeholder: 'DD/MM/YYYY',
 		rules: {

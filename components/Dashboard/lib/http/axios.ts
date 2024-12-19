@@ -1,6 +1,6 @@
 import { BASE_URL } from '@/utils/vars/uri';
-import axios, { type Method } from 'axios';
-// import { BASE_URL } from '@/utils/vars/uri';
+import axios, {  type Method } from 'axios';
+
 export const protectedAxiosInstance = axios.create({
 	baseURL: BASE_URL,
 	withCredentials: true,
@@ -100,8 +100,9 @@ export async function protectedServerRequest({
 			return [resentRequest.data, newSecurityCookies + `token=${newAccessToken};Same-Site=Strict;Secure;HttpOnly;Path=/` ];
 
 		throw resentRequest
-	} catch (error) {
-		console.log(error);
-		return 'critical error reaching ssx servers';
+  } catch ( error )
+  {
+    
+    throw error
 	}
 }

@@ -60,7 +60,7 @@ export default function OnboardingPage( {
 {
   const router = useRouter();
 
-  const getUAPAgreementHandler = ( decisionTaken: boolean ) => decisionTaken && router.replace( `/onboarding/${ clientType.toLowerCase() }?c_id=${ clientID }&b_code=${ broker.broker_id }&submission=${ submissionID }` );
+  const getUAPAgreementHandler = ( decisionTaken: boolean ) => decisionTaken && router.replace( `/onboarding/${ clientType.toLowerCase() }?c_id=${ clientID }&b_code=${ broker.org_code }&submission=${ submissionID }` );
 
 
   return (

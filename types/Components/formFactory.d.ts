@@ -41,7 +41,7 @@ export type FormFieldModel<TFormField extends FactoryFieldType = FactoryFieldTyp
 	componentProps?: FormComponentProps<TFormField>;
 	rules?: RegisterOptions | null;
 	placeholder?: string;
-	defaultValue?: string | boolean;
+	defaultValue?: string | boolean | undefined;
 	options?: {
 		keys: DropdownOption[] | undefined;
 		priorityKeys?: DropdownOption[];

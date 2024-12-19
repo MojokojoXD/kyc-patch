@@ -1,0 +1,467 @@
+{
+  "clientID": "31c76073-3fa0-46e0-897f-fe878fe321de",
+  "submissionID": "d525c5f0-cceb-45c1-af63-6fc0a0b20fa1",
+  "payload": {
+    "applicant": [
+      {
+        "id": "klk157f",
+        "title": { "presets": "Mr", "other": "" },
+        "firstName": "John",
+        "middleName": "",
+        "lastName": "Doe",
+        "dateOfBirth": "2006-11-07T07:00:00.000Z",
+        "gender": "Male",
+        "maritalStatus": "single",
+        "placeOfBirth": "Accra",
+        "countryOfResidence": "GHANA",
+        "citizenship": "GHANA",
+        "profession": "some profession",
+        "occupation": "some occupation",
+        "maidenName": "some maiden name",
+        "mothersMaidenName": "some name",
+        "professionalLicenseNo": "some license number",
+        "tin": "some tin",
+        "residence": {
+          "status": "Resident Ghanaian",
+          "permitNumber": "12345",
+          "permitIssueDate": "2024-11-07T07:00:00.000Z",
+          "permitIssuePlace": "Accra",
+          "permitExpiry": "2006-11-07T07:00:00.000Z"
+        },
+        "contacts": {
+          "residentialAddress": "1460 N 3005 W",
+          "city": "Provo",
+          "phoneNumber": [{ "value": "+233244686246", "countryCode": "GH" }],
+          "email": "kojo.boakye@secondstax",
+          "postalAddress": "P.O Box 2852 Accra",
+          "emergencyContact": {
+            "contactName": "James Doe",
+            "relation": "Friend",
+            "phoneNumber": [{ "value": "+233244123455", "countryCode": "GH" }]
+          },
+          "postalCode": "84057",
+          "digitalAddress": "some address",
+          "nearestLandmark": "some landmark",
+          "faxNumber": [{ "value": "", "countryCode": "GH" }]
+        },
+        "employment": {
+          "status": "Employed",
+          "statusDetails": {
+            "occupation": "some occupation",
+            "profession": "some profession",
+            "name": "some name",
+            "address": "some address",
+            "digitalAddress": "some digi address",
+            "nearestLandmark": "some landmark",
+            "city": "some city",
+            "postalAddress": "some postal address",
+            "postalCode": "123451",
+            "positionHeld": "some position",
+            "natureOfBusiness": "some business",
+            "countryOfEmployment": "GHANA",
+            "yearsOfTotalEmployment": "12",
+            "yearsOfCurrentEmployment": "12",
+            "yearsOfPreviousEmployment": "12",
+            "licenseNumber": "some number",
+            "email": "business@someemail.com",
+            "tin": "some tine",
+            "monthlyIncomeRange": "Below 1,000",
+            "phoneNumber": [{ "value": "+233244622425", "countryCode": "GH" }]
+          }
+        },
+        "bank": {
+          "locale": {
+            "country": "GHANA",
+            "name": "Bank of Africa Ghana Limited",
+            "branch": "some branch"
+          },
+          "account": {
+            "name": "some name",
+            "number": "some number",
+            "bvn": "some number",
+            "type": "check ",
+            "dateOpened": "2024-11-06T07:00:00.000Z",
+            "swiftCode": "some code",
+            "routingNumber": "some route"
+          }
+        },
+        "proofOfIdentity": {
+          "idNumber": "som id",
+          "idType": "National ID",
+          "issueDate": "2024-11-14T07:00:00.000Z",
+          "placeOfIssue": "Accra",
+          "expiryDate": "2024-11-27T07:00:00.000Z"
+        },
+        "riskProfile": {
+          "sourceOfFunds": ["Inheritance/Gifts"],
+          "tolerance": "High",
+          "investmentObjective": "some objective",
+          "beneficialOwner": "some beneficial owner",
+          "significantWithdrawalTimetable": "3 to 5 years",
+          "emergencyFunds": "No",
+          "investmentKnowledge": "Moderate",
+          "investmentHorizon": "Medium Term (2-5 years)",
+          "reaction": "Concerned; no consider selling my investment",
+          "initialInvestmentAmount": "100,000",
+          "topUpActivity": { "frequency": "Monthly" },
+          "regularTopUpAmount": "10,234",
+          "withdrawalActivity": { "frequency": "Bi-Annually" },
+          "regularWithdrawalAmount": "858,852",
+          "statements": { "deliveryMode": "Email" },
+          "statement": { "frequency": "Annual" },
+          "agreementOfTerms": {
+            "agreed": true,
+            "version": "-1",
+            "timestamp": "2024-11-19T19:16:11.543Z"
+          }
+        },
+        "disclosures": {
+          "signatureResource": "signature0_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043899300.png",
+          "ratification": {
+            "nameOfDeclarant": "some declarant",
+            "languageOfUnderstanding": "French"
+          },
+          "pepInfo": {
+            "isPep": "Yes",
+            "pepDetails": { "desc": "some reason", "country": "GHANA" }
+          },
+          "fatca": {
+            "status": ["Are you a U.S Resident?"],
+            "details": {
+              "ownership": "21",
+              "firstName": "John",
+              "middleName": "",
+              "lastName": "Doe",
+              "foreignResidentialAddress": "some address",
+              "foreignMailingAddress": "some address",
+              "tin": "some tin",
+              "phoneNumber": [{ "value": "+233123456677", "countryCode": "GH" }]
+            }
+          },
+          "kestrel": {
+            "nomineeAgreement": {
+              "signatureResource": "signature0_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043964138.png"
+            }
+          },
+          "databank": {
+            "emailIndemnity": {
+              "signatureResource": "signature0_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043974888.png"
+            }
+          }
+        },
+        "fileUploads": {
+          "applicantID": {
+            "fileName": "applicantID_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043995374.png"
+          },
+          "passportPhotograph": {
+            "fileName": "passportPhotograph_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043999975.png"
+          },
+          "taxCertificate": {
+            "fileName": "taxCertificate_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044005776.png"
+          },
+          "BVN": {
+            "fileName": "BVN_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044009525.png"
+          },
+          "proofOfAddress": {
+            "fileName": "proofOfAddress_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044016542.png"
+          },
+          "addressMap": {
+            "fileName": "addressMap_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044023093.png"
+          },
+          "foreignAddress": {
+            "fileName": "foreignAddress_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044026974.png"
+          },
+          "residencePermit": {
+            "fileName": "residencePermit_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044031410.png"
+          },
+          "proofOfBank": {
+            "fileName": "proofOfBank_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044034829.png"
+          },
+          "KRAPin": {
+            "fileName": "KRAPin_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044038331.png"
+          }
+        },
+        "licenseNumber": "some license number",
+        "stateOfOrigin": "Abuja",
+        "localGovernment": "some local government",
+        "religion": "christian"
+      },
+      {
+        "id": "klk157f",
+        "title": { "presets": "Mr", "other": "" },
+        "firstName": "John",
+        "middleName": "",
+        "lastName": "Doe",
+        "dateOfBirth": "2006-11-07T07:00:00.000Z",
+        "gender": "Male",
+        "maritalStatus": "single",
+        "placeOfBirth": "Accra",
+        "countryOfResidence": "GHANA",
+        "citizenship": "GHANA",
+        "profession": "some profession",
+        "occupation": "some occupation",
+        "maidenName": "some maiden name",
+        "mothersMaidenName": "some name",
+        "professionalLicenseNo": "some license number",
+        "tin": "some tin",
+        "residence": {
+          "status": "Resident Ghanaian",
+          "permitNumber": "12345",
+          "permitIssueDate": "2024-11-07T07:00:00.000Z",
+          "permitIssuePlace": "Accra",
+          "permitExpiry": "2006-11-07T07:00:00.000Z"
+        },
+        "contacts": {
+          "residentialAddress": "1460 N 3005 W",
+          "city": "Provo",
+          "phoneNumber": [{ "value": "+233244686246", "countryCode": "GH" }],
+          "email": "kwadwoneer@gmail.com",
+          "postalAddress": "P.O Box 2852 Accra",
+          "emergencyContact": {
+            "contactName": "James Doe",
+            "relation": "Friend",
+            "phoneNumber": [{ "value": "+233244123455", "countryCode": "GH" }]
+          },
+          "postalCode": "84057",
+          "digitalAddress": "some address",
+          "nearestLandmark": "some landmark",
+          "faxNumber": [{ "value": "", "countryCode": "GH" }]
+        },
+        "employment": {
+          "status": "Employed",
+          "statusDetails": {
+            "occupation": "some occupation",
+            "profession": "some profession",
+            "name": "some name",
+            "address": "some address",
+            "digitalAddress": "some digi address",
+            "nearestLandmark": "some landmark",
+            "city": "some city",
+            "postalAddress": "some postal address",
+            "postalCode": "123451",
+            "positionHeld": "some position",
+            "natureOfBusiness": "some business",
+            "countryOfEmployment": "GHANA",
+            "yearsOfTotalEmployment": "12",
+            "yearsOfCurrentEmployment": "12",
+            "yearsOfPreviousEmployment": "12",
+            "licenseNumber": "some number",
+            "email": "business@someemail.com",
+            "tin": "some tine",
+            "monthlyIncomeRange": "Below 1,000",
+            "phoneNumber": [{ "value": "+233244622425", "countryCode": "GH" }]
+          }
+        },
+        "bank": {
+          "locale": {
+            "country": "GHANA",
+            "name": "Bank of Africa Ghana Limited",
+            "branch": "some branch"
+          },
+          "account": {
+            "name": "some name",
+            "number": "some number",
+            "bvn": "some number",
+            "type": "check ",
+            "dateOpened": "2024-11-06T07:00:00.000Z",
+            "swiftCode": "some code",
+            "routingNumber": "some route"
+          }
+        },
+        "proofOfIdentity": {
+          "idNumber": "som id",
+          "idType": "National ID",
+          "issueDate": "2024-11-14T07:00:00.000Z",
+          "placeOfIssue": "Accra",
+          "expiryDate": "2024-11-27T07:00:00.000Z"
+        },
+        "riskProfile": {
+          "sourceOfFunds": ["Inheritance/Gifts"],
+          "tolerance": "High",
+          "investmentObjective": "some objective",
+          "beneficialOwner": "some beneficial owner",
+          "significantWithdrawalTimetable": "3 to 5 years",
+          "emergencyFunds": "No",
+          "investmentKnowledge": "Moderate",
+          "investmentHorizon": "Medium Term (2-5 years)",
+          "reaction": "Concerned; no consider selling my investment",
+          "initialInvestmentAmount": "100,000",
+          "topUpActivity": { "frequency": "Monthly" },
+          "regularTopUpAmount": "10,234",
+          "withdrawalActivity": { "frequency": "Bi-Annually" },
+          "regularWithdrawalAmount": "858,852",
+          "statements": { "deliveryMode": "Email" },
+          "statement": { "frequency": "Annual" },
+          "agreementOfTerms": {
+            "agreed": true,
+            "version": "-1",
+            "timestamp": "2024-11-19T19:16:11.543Z"
+          }
+        },
+        "disclosures": {
+          "signatureResource": "signature0_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043899300.png",
+          "ratification": {
+            "nameOfDeclarant": "some declarant",
+            "languageOfUnderstanding": "French"
+          },
+          "pepInfo": {
+            "isPep": "Yes",
+            "pepDetails": { "desc": "some reason", "country": "GHANA" }
+          },
+          "fatca": {
+            "status": ["Are you a U.S Resident?"],
+            "details": {
+              "ownership": "21",
+              "firstName": "John",
+              "middleName": "",
+              "lastName": "Doe",
+              "foreignResidentialAddress": "some address",
+              "foreignMailingAddress": "some address",
+              "tin": "some tin",
+              "phoneNumber": [{ "value": "+233123456677", "countryCode": "GH" }]
+            }
+          },
+          "kestrel": {
+            "nomineeAgreement": {
+              "signatureResource": "signature0_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043964138.png"
+            }
+          },
+          "databank": {
+            "emailIndemnity": {
+              "signatureResource": "signature0_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043974888.png"
+            }
+          }
+        },
+        "fileUploads": {
+          "applicantID": {
+            "fileName": "applicantID_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043995374.png"
+          },
+          "passportPhotograph": {
+            "fileName": "passportPhotograph_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043999975.png"
+          },
+          "taxCertificate": {
+            "fileName": "taxCertificate_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044005776.png"
+          },
+          "BVN": {
+            "fileName": "BVN_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044009525.png"
+          },
+          "proofOfAddress": {
+            "fileName": "proofOfAddress_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044016542.png"
+          },
+          "addressMap": {
+            "fileName": "addressMap_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044023093.png"
+          },
+          "foreignAddress": {
+            "fileName": "foreignAddress_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044026974.png"
+          },
+          "residencePermit": {
+            "fileName": "residencePermit_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044031410.png"
+          },
+          "proofOfBank": {
+            "fileName": "proofOfBank_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044034829.png"
+          },
+          "KRAPin": {
+            "fileName": "KRAPin_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044038331.png"
+          }
+        },
+        "licenseNumber": "some license number",
+        "stateOfOrigin": "Abuja",
+        "localGovernment": "some local government",
+        "religion": "christian"
+      }
+    ],
+    "clientType": "Joint Account",
+    "clientStatus": "New Client",
+    "csdNumber": "",
+    "catInvestment": ["Fixed Income"],
+    "taxExempt": "Yes",
+    "nextOfKin": [
+      {
+        "id": "5t1lsye",
+        "title": { "presets": "Mr", "other": "" },
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "middleName": "",
+        "dateOfBirth": "2024-11-06T07:00:00.000Z",
+        "relationshipToApplicant": "Daughter",
+        "gender": "Male",
+        "maritalStatus": "Married",
+        "countryOfBirth": "GHANA",
+        "placeOfBirth": "",
+        "countryOfResidence": "GHANA",
+        "citizenship": "",
+        "percentageAllocation": "12",
+        "countryOfCitizenship": "GHANA",
+        "contacts": {
+          "residentialAddress": "some address",
+          "city": "some city",
+          "email": "",
+          "phoneNumber": [{ "value": "+23312334556", "countryCode": "GH" }]
+        },
+        "proofOfIdentity": {
+          "idType": "Passport",
+          "idNumber": "some number",
+          "issueDate": "2024-11-01T06:00:00.000Z",
+          "placeOfIssue": "Accra",
+          "expiryDate": "2024-12-13T07:00:00.000Z"
+        }
+      },
+      {
+        "id": "5t1lsye",
+        "title": { "presets": "Mr", "other": "" },
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "middleName": "",
+        "dateOfBirth": "2024-11-06T07:00:00.000Z",
+        "relationshipToApplicant": "Daughter",
+        "gender": "Male",
+        "maritalStatus": "Married",
+        "countryOfBirth": "GHANA",
+        "placeOfBirth": "",
+        "countryOfResidence": "GHANA",
+        "citizenship": "",
+        "percentageAllocation": "12",
+        "countryOfCitizenship": "GHANA",
+        "contacts": {
+          "residentialAddress": "some address",
+          "city": "some city",
+          "email": "",
+          "phoneNumber": [{ "value": "+23312334556", "countryCode": "GH" }]
+        },
+        "proofOfIdentity": {
+          "idType": "Passport",
+          "idNumber": "some number",
+          "issueDate": "2024-11-01T06:00:00.000Z",
+          "placeOfIssue": "Accra",
+          "expiryDate": "2024-12-13T07:00:00.000Z"
+        }
+      }
+    ],
+    "agreements": {
+      "kestrel": {
+        "termsAndConditions": {
+          "agreed": true,
+          "version": "1.0",
+          "timestamp": "2024-11-19T19:19:17.687Z"
+        }
+      },
+      "afrinvest": {
+        "emailIndemnity": {
+          "agreed": true,
+          "version": "1.0",
+          "timestamp": "2024-11-19T19:19:28.837Z"
+        },
+        "privacyPolicy": {
+          "agreed": true,
+          "version": "1.0",
+          "timestamp": "2024-11-19T19:19:42.533Z"
+        }
+      },
+      "declarations": {
+        "agreed": true,
+        "version": "1.0",
+        "timestamp": "2024-11-19T19:19:39.139Z"
+      }
+    }
+  }
+}

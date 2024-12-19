@@ -32,8 +32,10 @@ const handler: NextApiHandler = async (req, res) => {
     res.status( 400 ).send( ssxServerRes );
     
 	} catch (error) {
-		console.log(error);
-		if (error instanceof AxiosError) {
+		
+    if ( error instanceof AxiosError )
+    {
+      console.log( error.response )
 			res
 				.status(error.status as number)
 				.json({ Status: 'FAIL', Message: error.message });

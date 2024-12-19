@@ -1,0 +1,256 @@
+{
+  "clientID": "fcec13c3-ed84-4cd0-bd39-2e38f75025b5",
+  "submissionID": "19d3aaad-e854-4204-a3f1-0195d5918da7",
+  "data": {
+    "Business": [
+      [{ "catBusiness": "Sole Proprietorship" }],
+      [{ "catInvestment": ["Fixed Income", "Equities/Shares"], "taxexempt": "Yes" }],
+      [
+        {
+          "companyName": "Some company name",
+          "companyType": "some nature of business",
+          "companySector": "some industry",
+          "companyPlace": "some address",
+          "companyPostal": "some postal address",
+          "city": "some city",
+          "countryOfIncorporation": "GHANA",
+          "digitalAddress": "some digital address",
+          "monthlyincome": "Between 10,000 - 100,000",
+          "annualincome": "Between 10,000 - 100,000"
+        }
+      ],
+      [
+        {
+          "taxNumber": "some tin",
+          "pinnbr": "some kra pin",
+          "dateOfBirth": "2024-12-18T07:00:00.000Z",
+          "licenseNumber": "some license number",
+          "parentCompany": "GHANA"
+        }
+      ]
+    ],
+    "Contact": [
+      [
+        {
+          "title": "Mr",
+          "firstName": "John",
+          "middleName": "",
+          "lastName": "Doe",
+          "dateOfBirth": "2006-12-11T07:00:00.000Z",
+          "gender": "Male",
+          "maritalStatus": "Single",
+          "placeOfBirth": "Some place of birth",
+          "countryOfBirth": "GHANA",
+          "countryOfResidence": "GHANA",
+          "countryOfCitizenship": "KENYA",
+          "residentialStatus": "Resident Foreigner",
+          "residentPermitNumber": "12345",
+          "issueDate": "2024-12-17T07:00:00.000Z",
+          "placeIssued": "some issue place",
+          "expiryDate": "2024-12-24T07:00:00.000Z",
+          "profession": "some profession",
+          "occupation": "some occupation",
+          "job": "some job title",
+          "mothersmaidenname": "some maiden name",
+          "professionalLicenseNumber": "some license number",
+          "tinNumber": "some tin",
+          "signatoryContact": "Yes"
+        }
+      ],
+      [
+        {
+          "mobile": { "countryCode": "233", "phoneNumber": "23526229" },
+          "residentialAddress": "some physical address",
+          "city": "some city",
+          "postalAddress": "some postal address",
+          "emailAddress": "someemail@example.com",
+          "ContactName": "some emerg contact",
+          "relation": "some relation",
+          "digitalAddress": "some digital address",
+          "nearestLandmark": "some nearest landmark"
+        }
+      ],
+      [
+        {
+          "idType": "Passport",
+          "idNumber": "123456",
+          "issueDate": "2024-12-10T07:00:00.000Z",
+          "placeOfIssue": "some place of issue",
+          "expiryDate": "2024-12-23T07:00:00.000Z"
+        }
+      ]
+    ],
+    "Signatories": [
+      [
+        {
+          "ContactName": "some emerg contact",
+          "city": "some city",
+          "countryOfBirth": "GHANA",
+          "countryOfCitizenship": "KENYA",
+          "countryOfResidence": "GHANA",
+          "dateOfBirth": "2006-12-11T07:00:00.000Z",
+          "digitalAddress": "some digital address",
+          "emailAddress": "someemail@example.com",
+          "expiryDate": "2024-12-24T07:00:00.000Z",
+          "firstName": "John",
+          "gender": "Male",
+          "issueDate": "2024-12-17T07:00:00.000Z",
+          "job": "some job title",
+          "lastName": "Doe",
+          "localGovernment": "some local government",
+          "maidenName": "some maiden name opt",
+          "mandate": "A",
+          "maritalStatus": "Single",
+          "mobile": { "countryCode": "233", "phoneNumber": "23526229" },
+          "mothersmaidenname": "some maiden name",
+          "nearestLandmark": "some nearest landmark",
+          "occupation": "some occupation",
+          "placeIssued": "some issue place",
+          "placeOfBirth": "Some place of birth",
+          "postalAddress": "some postal address",
+          "profession": "some profession",
+          "professionallisence": "some license number",
+          "relation": "some relation",
+          "religion": "some religion",
+          "residentPermitNumber": "12345",
+          "residentialAddress": "some physical address",
+          "residentialStatus": "Resident Foreigner",
+          "signature": "signature0_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734618944943.jpg",
+          "state": "some origin",
+          "status": ["Director/Executive/Trustee/Admin", "Beneficial Owner"],
+          "title": { "presets": "Mr" },
+          "tinNumber": "some tin"
+        }
+      ],
+      [
+        {
+          "expiryDate": "2024-12-23T07:00:00.000Z",
+          "idNumber": "123456",
+          "idType": "Passport",
+          "issueDate": "2024-12-10T07:00:00.000Z",
+          "placeOfIssue": "some place of issue"
+        }
+      ],
+      [{ "countryOfPep": "GHANA", "pep": "Yes", "specify": "some reason" }],
+      [
+        {
+          "countryOfPep": "GHANA",
+          "dateOfBirth": "",
+          "firatName": "John",
+          "homeAddress": "",
+          "idNumber": "123456",
+          "idType": "Passport",
+          "lastName": "Doe",
+          "middleName": "",
+          "ownership": "20",
+          "pep": "Yes",
+          "specify": "some reason",
+          "status": "Executive"
+        }
+      ],
+      [
+        {
+          "countryOfPep": "GHANA",
+          "dateOfBirth": "",
+          "firatName": "John",
+          "homeAddress": "",
+          "idNumber": "123456",
+          "idType": "Passport",
+          "lastName": "Doe",
+          "middleName": "",
+          "ownership": "20",
+          "pep": "Yes",
+          "specify": "some reason"
+        }
+      ],
+      ["some entity"]
+    ],
+    "Bank": [
+      [
+        {
+          "accountName": "some name",
+          "accountNumber": "some account number",
+          "accountType": "some account type",
+          "bankBranch": "some bank branch",
+          "bankCountry": "GHANA",
+          "bankName": "Access Bank (Ghana) Plc",
+          "bvn": "some bvn",
+          "routingNumber": "some routing number",
+          "swiftCode": "some swift code"
+        }
+      ],
+      [
+        {
+          "Topups": "Monthly",
+          "Withdrawals": "some activity",
+          "funds": ["Salaries/Wages", "Proceeds from Business", "Inheritance/Gifts"],
+          "initialAmount": "10,000",
+          "investmentFrequency": "Monthly"
+        }
+      ],
+      [
+        {
+          "agrement": "I/We understand investing in equities/shares is inherently risker than investing in fixed income products or holding cash",
+          "horizon": "Short Term (1 year)",
+          "investmentKnowledge": "Limited",
+          "reaction": "Extremely concerned; sell my investment",
+          "risktrelance": "High"
+        }
+      ],
+      [
+        {
+          "investmentObjective": "some objective",
+          "modeStatementDelivery": "Email",
+          "statementFrequency": "Semi-Annual"
+        }
+      ]
+    ],
+    "Disclosures": [
+      [{ "terms": "I/We agree to the above Terms and Conditions" }],
+      [[{ "signature": "signature0_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619184296.jpg" }]],
+      [
+        [
+          {
+            "signature": "signature0_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619197251.jpg",
+            "YourHouseAddress": "some physical address, some city GHANA"
+          }
+        ]
+      ],
+      [{ "afrinvestIndemnity": "I/We agree to the above indemnity provisions." }],
+      [{ "signatureMandate": "One to sign [A only]" }],
+      [{ "declaration": "I/We agree to the above declarations" }],
+      [
+        {
+          "factcastatus": ["Are you a U.S Permanent Resident (Green Card holder)?"],
+          "ownership": "20"
+        }
+      ]
+    ],
+    "DocumentChecklist": [
+      [
+        {
+          "residentFile": "residentPermit_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619229945.jpg",
+          "signatoriesIDFile": "notorizedID_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619226010.jpg",
+          "signatoriesPhotosFile": "signatoryPhotographs_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619234723.jpg"
+        },
+        {
+          "BVNNumber": "BVN_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619283218.jpg",
+          "OriginalDirectorsIDsFile": "directorsID_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619252675.jpg",
+          "W9W8BENEFile": "W9_W8BEN_E_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619250187.jpg",
+          "authorizedPersonsPhotoFile": "directors_authorizedPerson_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619255571.jpg",
+          "bankFile": "bankProof_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619273555.jpg",
+          "beneficiariesIDFile": "beneficiariesID_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619240547.jpg",
+          "foreignAddressFile": "proofForeignAddress_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619264273.jpg",
+          "incorporationFile": "incorporationCertificate_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619243886.jpg",
+          "kenyaKraPinCertificate": "KRAPin_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619280611.jpg",
+          "officialRegistryFile": "registrySearch_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619267259.jpg",
+          "proofOfAddressFile": "proofOfAddress_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619261376.jpg",
+          "sealFile": "companySeal_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619278787.jpg",
+          "resolutionFile": "boardResolution_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619246425.jpg",
+          "taxRegistrationCertificateFile": "taxCertificate_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619258819.jpg",
+          "uboFile": "UBO_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619270660.jpg"
+        }
+      ]
+    ]
+  }
+}

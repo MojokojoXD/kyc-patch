@@ -1,0 +1,213 @@
+{
+  "clientID": "c9df9d57-5b84-41a4-8e92-416e5e18024b",
+  "submissionID": "7a59eb51-068e-4484-a4cc-2b146a4813f9",
+  "data": {
+    "Personal": [
+      [{ "clientType": "Individual", "clientStatus": "New Client" }],
+      [{ "catInvestment": ["Fixed Income"] }],
+      [
+        {
+          "firstName": "John",
+          "middleName": "",
+          "lastName": "Doe",
+          "title": "Mr",
+          "dateOfBirth": "2006-11-07T07:00:00.000Z",
+          "gender": "Male",
+          "countryOfBirth": "GHANA",
+          "countryOfResidence": "GHANA",
+          "residentialStatus": "Resident Ghanaian",
+          "residentPermitNumber": "",
+          "permitIssueDate": "",
+          "placeOfIssue": "",
+          "permitExpiryDate": "",
+          "mothersMaidenName": "some name",
+          "maidenName": "some maiden name",
+          "tin": "some tin",
+          "stateOfOrigin": "Abuja",
+          "localGovernment": "some local government",
+          "religion": "christian"
+        }
+      ],
+      [
+        {
+          "emailAddress": "johndoe@gmail.com",
+          "residentialAddress": "1460 N 3005 W",
+          "city": "Provo",
+          "postalAddress": "P.O Box 2852 Accra",
+          "postCode": "84057",
+          "phoneNumber": { "countryCode": "233", "phoneNumber": "244686246", "country": "GH" },
+          "contactName": "James Doe",
+          "relation": "Friend",
+          "mobile": { "countryCode": "233", "phoneNumber": "244123455", "country": "GH" },
+          "digitalAddress": "some address",
+          "nearestLandmark": "some landmark"
+        }
+      ],
+      [
+        {
+          "employmentStatus": "Employed",
+          "employerPhoneNumber": {
+            "countryCode": "233",
+            "phoneNumber": "244622425",
+            "country": "GH"
+          },
+          "occupation": "some occupation",
+          "profession": "some profession",
+          "employerName": "some name",
+          "employerAddress": "some address",
+          "employerCity": "some city",
+          "employerPostalAddress": "some postal address",
+          "employerPostCode": "123451",
+          "positionHeld": "some position",
+          "employerEmailAddress": "business@someemail.com",
+          "natureOfBusiness": "some business",
+          "countryOfEmployment": "GHANA",
+          "employerDigitalAddress": "some digi address",
+          "employerNearestLandmark": "some landmark",
+          "yearsOfTotalEmployment": "12",
+          "yearsOfCurrentEmployment": "12",
+          "yearsOfPreviousEmployment": "12"
+        }
+      ],
+      [
+        {
+          "bankCountry": "GHANA",
+          "bankName": "Bank of Africa Ghana Limited",
+          "bankBranch": "some branch",
+          "accountName": "some name",
+          "accountNumber": "some number",
+          "bvn": "some number",
+          "accountType": "check ",
+          "dateOpened": "2024-11-06T07:00:00.000Z",
+          "swiftCode": "some code",
+          "routingNumber": "some route"
+        }
+      ],
+      [
+        {
+          "idType": "National ID",
+          "idNumber": "som id",
+          "issueDate": "2024-11-14T07:00:00.000Z",
+          "idPlaceOfIssue": "Accra",
+          "idExpiryDate": "2024-11-27T07:00:00.000Z"
+        }
+      ],
+      [
+        {
+          "riskTolerance": "High",
+          "investmentObjective": "some objective",
+          "beneficialOwner": "some beneficial owner",
+          "investmentHorizon": "Medium Term (2-5 years)",
+          "initialInvestmentAmount": "100,000",
+          "significantPortionWithdrawal": "3 to 5 years",
+          "sourceOfFunds": ["Inheritance/Gifts"],
+          "emergencyFunds": "No",
+          "investmentKnowledge": "Moderate",
+          "modeStatementDelivery": "Email",
+          "reaction": "Concerned; no consider selling my investment",
+          "agreement": "true"
+        }
+      ]
+    ],
+    "NextOfKin": [
+      [
+        {
+          "title": "Mr",
+          "firstName": "Jane",
+          "middleName": "",
+          "lastName": "Doe",
+          "dateOfBirth": "2024-11-06T07:00:00.000Z",
+          "relationshipWithAccountApplicant": "Daughter",
+          "maritalStatus": "Married",
+          "gender": "Male",
+          "countryOfBirth": "GHANA",
+          "countryOfResidence": "GHANA",
+          "countryOfCitizenship": "",
+          "percentageAllocation": "12",
+          "placeOfBirth": ""
+        }
+      ],
+      [
+        {
+          "phoneNumber": { "countryCode": "233", "phoneNumber": "12334556", "country": "GH" },
+          "residentialAddress": "some address",
+          "city": "some city",
+          "emailAddress": ""
+        }
+      ],
+      [
+        {
+          "idType": "Passport",
+          "idNumber": "some number",
+          "idIssueDate": "2024-11-01T06:00:00.000Z",
+          "idPlaceOfIssue": "Accra",
+          "idExpiryDate": "2024-12-13T07:00:00.000Z"
+        }
+      ]
+    ],
+    "Disclosures": [
+      [
+        {
+          "signature": {
+            "fileName": "signature0_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043899300.png"
+          }
+        }
+      ],
+      [
+        {
+          "nameOfApplicant": "John  Doe",
+          "nameOfDeclarant": "some declarant",
+          "languageOfUnderstanding": "French"
+        }
+      ],
+      [{ "isPep": "Yes", "specify": "some reason", "countryOfPep": "GHANA" }],
+      [
+        {
+          "0": {
+            "fatcaStatus": ["Are you a U.S Resident?"],
+            "firstName": "John",
+            "middleName": "",
+            "lastName": "Doe",
+            "foreignTelephoneNumber": {
+              "countryCode": "233",
+              "phoneNumber": "123456677",
+              "country": "123456677"
+            },
+            "ownership": "21",
+            "foreignResidentialAddress": "some address",
+            "foreignMailingAddress": "some address",
+            "tin": "some tin"
+          }
+        }
+      ],
+      [{ "terms": "true" }],
+      [
+        {
+          "signature": {
+            "fileName": "signature0_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043964138.png"
+          }
+        }
+      ],
+      [{ "afrinvestIndemnity": "true" }],
+      [{ "declaration": "true" }],
+      [{ "signatureMandate": "" }],
+      [{ "privacyPolicy": "true" }]
+    ],
+    "DocumentChecklist": [
+      [
+        {
+          "applicantID": "applicantID_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043995374.png",
+          "passportPhotograph": "passportPhotograph_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732043999975.png",
+          "taxRegistration": "taxCertificate_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044005776.png",
+          "BVNNumber": "BVN_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044009525.png",
+          "proofOfAddress": "proofOfAddress_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044016542.png",
+          "mapScreenshot": "addressMap_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044023093.png",
+          "proofOfForeignAddress": "foreignAddress_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044026974.png",
+          "residenceWorkPermit": "residencePermit_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044031410.png",
+          "bankStatement3Months": "proofOfBank_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044034829.png",
+          "kenyaKRAPINCertificate": "KRAPin_86787f02-2d07-4aa9-b3ab-87a295dd7b2d_1732044038331.png"
+        }
+      ]
+    ]
+  }
+}

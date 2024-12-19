@@ -23,16 +23,28 @@ import { pepModel$Corporate } from './model/pepModel$Corporate';
 import { FormFieldAggregator } from '@/components/forms/utils/FormFieldAggregator';
 import { useFetchMarkdown } from '@/components/forms/utils/customHooks/useFetchMarkdown';
 import { DisclosuresSkeleton } from '@/components/ui/CompoundUI/Skeletons/DisclosuresSkeleton';
+import { directorOrBeneficialOwnerBuilder } from '../../utils/signatoriesFn';
 
 export const Pep$Corporate: FormStep = () =>
 {
   const {
-    form: { getValues },
+    form: { getValues,setValue },
+    onFormNav
   } = useKYCFormContext<CorporateFormSchema>();
 
   const [ pepText, isLoading, error ] = useFetchMarkdown( 'pep' );
 
   const signatories = getValues( 'accountSignatories.signatories' ) || [ {} ];
+  const currentDirectors = getValues( 'accountSignatories.directors' ) || [];
+  const currentBeneficiaries = getValues( 'accountSignatories.beneficialOwners' ) || []
+
+   onFormNav( function ()
+    {
+     const directorsPEPUpdate = directorOrBeneficialOwnerBuilder( signatories, currentDirectors, 'directors' );
+     const benefiariesPEPUpdate = directorOrBeneficialOwnerBuilder( signatories, currentBeneficiaries, 'beneficiaries' );
+      setValue( 'accountSignatories.directors', directorsPEPUpdate );
+      setValue( 'accountSignatories.beneficialOwners', benefiariesPEPUpdate );
+    })
 
   if ( error )
   {
@@ -43,7 +55,7 @@ export const Pep$Corporate: FormStep = () =>
   return (
     <>
       <FormHeader>
-        <FormTitle>Account Signatories</FormTitle>
+        <FormTitle>Politically Exposed Person (PEP) Self-Certification</FormTitle>
       </FormHeader>
       <FormContent>
         <ul className='space-y-[8px]'>

@@ -21,10 +21,13 @@ import
     useKYCForm,
   } from '@/components/forms/utils/formController';
 import Loading from '@/components/ui/Loading';
+import axios from 'axios';
+
 
 export default function CorporateForm()
 {
-  const KYCForm = useKYCForm<CorporateFormSchema, typeof corporateStages>( corporateStages );
+
+  const KYCForm = useKYCForm<CorporateFormSchema, typeof corporateStages>( corporateStages);
 
   const {
     form,
@@ -32,6 +35,7 @@ export default function CorporateForm()
     formVars: { clientID, submissionID },
     isLoading,
     error,
+    toggleLoading
   } = KYCForm;
 
   const {
@@ -51,18 +55,32 @@ export default function CorporateForm()
     'document checklist': <Stages.DocumentCheckListStage$Corporate />,
   };
 
-  const submitHandler: SubmitHandler<CorporateFormSchema> = ( data ) =>
+  const submitHandler: SubmitHandler<CorporateFormSchema> = async ( data ) =>
   {
     const payload = {
       clientID,
       submissionID,
-      payload: {
+      data: {
         ...data,
       },
     };
 
-    console.log( payload );
-    console.log( JSON.stringify( payload ) );
+    try
+    {
+      toggleLoading( true )
+
+      console.log( JSON.stringify(payload)  )
+
+      const res = await axios.post( '/api/forms?form=corporate', payload );
+
+      console.log( JSON.stringify(res.data) )
+      
+      toggleLoading( false );
+    } catch (error) {
+      console.log( error )
+
+      toggleLoading( false )
+    }
   };
 
   if ( error )

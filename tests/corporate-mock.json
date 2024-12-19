@@ -1,0 +1,327 @@
+{
+  "clientID": "fcec13c3-ed84-4cd0-bd39-2e38f75025b5",
+  "submissionID": "19d3aaad-e854-4204-a3f1-0195d5918da7",
+  "data": {
+    "businessInfo": {
+      "csdNumber": "",
+      "categoryOfInvestment": ["Fixed Income", "Equities/Shares"],
+      "details": {
+        "name": "Some company name",
+        "type": "some nature of business",
+        "sectorIndustry": "some industry",
+        "physicalAddress": "some address",
+        "postalAddress": "some postal address",
+        "city": "some city",
+        "email": "kojo.boakye@secondstax.com",
+        "countryOfIncorporation": "GHANA",
+        "website": "some website",
+        "digitalAddress": "some digital address",
+        "turnOver": {
+          "monthlyAmount": "Between 10,000 - 100,000",
+          "annualAmount": "Between 10,000 - 100,000"
+        },
+        "phoneNumber": [{ "value": "+23323452662", "CountryCode": "GH" }]
+      },
+      "incorporation": {
+        "certificateNo": "some certificate number",
+        "tin": "some tin",
+        "date": "2024-12-18T07:00:00.000Z",
+        "licenseNo": "some license number",
+        "parentCountryIncorporation": "GHANA",
+        "KRAPin": "some kra pin"
+      },
+      "categoryOfBusiness": "Sole Proprietorship",
+      "taxExempt": "Yes"
+    },
+    "contacts": {
+      "contactPerson": {
+        "title": { "presets": "Mr" },
+        "firstName": "John",
+        "middleName": "",
+        "lastName": "Doe",
+        "dateOfBirth": "2006-12-11T07:00:00.000Z",
+        "placeOfBirth": "Some place of birth",
+        "countryOfBirth": "GHANA",
+        "citizenship": "KENYA",
+        "countryOfResidence": "GHANA",
+        "residence": {
+          "status": "Resident Foreigner",
+          "details": {
+            "permitNumber": "12345",
+            "permitIssueDate": "2024-12-17T07:00:00.000Z",
+            "permitIssuePlace": "some issue place",
+            "permitExpiry": "2024-12-24T07:00:00.000Z"
+          },
+          "permitNumber": "",
+          "permitIssueDate": "",
+          "permitIssuePlace": "",
+          "permitExpiry": ""
+        },
+        "profession": "some profession",
+        "occupation": "some occupation",
+        "jobTitle": "some job title",
+        "mothersMaidenName": "some maiden name",
+        "maidenName": "some maiden name opt",
+        "professionalLicenseNo": "some license number",
+        "tin": "some tin",
+        "gender": "Male",
+        "maritalStatus": "Single",
+        "isSignatory": "Yes"
+      },
+      "residentialAddress": "some physical address",
+      "city": "some city",
+      "postalAddress": "some postal address",
+      "email": "kojo.boakye@secondstax.com",
+      "emergencyContact": {
+        "contactName": "some emerg contact",
+        "relation": "some relation",
+        "phoneNumber": [{ "value": "+23323526229", "CountryCode": "GH" }]
+      },
+      "digitalAddress": "some digital address",
+      "nearestLandmark": "some nearest landmark",
+      "phoneNumber": [{ "value": "+23324552960", "CountryCode": "GH" }],
+      "proofOfIdentity": {
+        "idNumber": "123456",
+        "issueDate": "2024-12-10T07:00:00.000Z",
+        "placeOfIssue": "some place of issue",
+        "expiryDate": "2024-12-23T07:00:00.000Z",
+        "idType": "Passport"
+      }
+    },
+    "accountSignatories": {
+      "signatories": [
+        {
+          "_id": "k1roqzc",
+          "role": ["Director/Executive/Trustee/Admin", "Beneficial Owner"],
+          "address": {
+            "phoneNumber": [{ "value": "+23324552960", "CountryCode": "GH" }],
+            "residentialAddress": "some physical address",
+            "email": "kojo.boakye@secondstax.com",
+            "city": "some city",
+            "postalAddress": "some postal address",
+            "digitalAddress": "some digital address",
+            "nearestLandmark": "some nearest landmark",
+            "emergencyContact": {
+              "contactName": "some emerg contact",
+              "relation": "some relation",
+              "phoneNumber": [{ "value": "+23323526229", "CountryCode": "GH" }]
+            }
+          },
+          "pepInfo": {
+            "isPep": "Yes",
+            "pepDetails": { "desc": "some reason", "country": "GHANA" }
+          },
+          "proofOfIdentity": {
+            "idNumber": "123456",
+            "issueDate": "2024-12-10T07:00:00.000Z",
+            "placeOfIssue": "some place of issue",
+            "expiryDate": "2024-12-23T07:00:00.000Z",
+            "idType": "Passport"
+          },
+          "disclosures": {
+            "fatca": {
+              "status": ["Are you a U.S Permanent Resident (Green Card holder)?"],
+              "ownership": "20"
+            },
+            "databank": {
+              "emailIndemnity": {
+                "signatureResource": "signature0_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619197251.jpg"
+              }
+            },
+            "kestrel": {
+              "nomineeAgreement": {
+                "signatureResource": "signature0_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619184296.jpg"
+              }
+            }
+          },
+          "documentChecklist": {
+            "signatoryID": {
+              "fileName": "notorizedID_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619226010.jpg"
+            },
+            "residencePermit": {
+              "fileName": "residentPermit_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619229945.jpg"
+            },
+            "signatoryPhotographs": {
+              "fileName": "signatoryPhotographs_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619234723.jpg"
+            }
+          },
+          "signatureMandate": "A",
+          "signatureResource": "signature0_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734618944943.jpg",
+          "title": { "presets": "Mr" },
+          "firstName": "John",
+          "middleName": "",
+          "lastName": "Doe",
+          "dateOfBirth": "2006-12-11T07:00:00.000Z",
+          "gender": "Male",
+          "maritalStatus": "Single",
+          "placeOfBirth": "Some place of birth",
+          "countryOfBirth": "GHANA",
+          "citizenship": "KENYA",
+          "countryOfResidence": "GHANA",
+          "residence": {
+            "status": "Resident Foreigner",
+            "details": {
+              "permitNumber": "12345",
+              "permitIssueDate": "2024-12-17T07:00:00.000Z",
+              "permitIssuePlace": "some issue place",
+              "permitExpiry": "2024-12-24T07:00:00.000Z"
+            },
+            "permitNumber": "",
+            "permitIssueDate": "",
+            "permitIssuePlace": "",
+            "permitExpiry": ""
+          },
+          "profession": "some profession",
+          "occupation": "some occupation",
+          "jobTitle": "some job title",
+          "mothersMaidenName": "some maiden name",
+          "maidenName": "some maiden name opt",
+          "professionalLicenseNo": "some license number",
+          "tin": "some tin",
+          "religion": "some religion",
+          "stateOfOrigin": "some origin",
+          "localGovernment": "some local government",
+          "_fillSrc": "AUTO"
+        }
+      ],
+      "directors": [
+        {
+          "firstName": "John",
+          "middleName": "",
+          "lastName": "Doe",
+          "idType": "Passport",
+          "status": "Executive",
+          "idNumber": "123456",
+          "phoneNumber": [{ "value": "+23324552960", "CountryCode": "GH" }],
+          "pepInfo": {
+            "isPep": "Yes",
+            "pepDetails": { "desc": "some reason", "country": "GHANA" }
+          },
+          "ownership": "20",
+          "_id": "k1roqzc",
+          "_fillSrc": "AUTO"
+        }
+      ],
+      "beneficialOwners": [
+        {
+          "firstName": "John",
+          "middleName": "",
+          "lastName": "Doe",
+          "idType": "Passport",
+          "idNumber": "123456",
+          "phoneNumber": [{ "value": "+23324552960", "CountryCode": "GH" }],
+          "pepInfo": {
+            "isPep": "Yes",
+            "pepDetails": { "desc": "some reason", "country": "GHANA" }
+          },
+          "ownership": "20",
+          "_id": "k1roqzc",
+          "dateOfBirth": "2006-12-11T07:00:00.000Z",
+          "residentialAddress": "some physical address some city GHANA",
+          "_fillSrc": "AUTO"
+        }
+      ],
+      "affiliations": [{ "value": "some entity" }]
+    },
+    "settlementAccount": {
+      "bank": {
+        "locale": {
+          "country": "GHANA",
+          "name": "Access Bank (Ghana) Plc",
+          "branch": "some bank branch"
+        },
+        "account": {
+          "name": "some name",
+          "number": "some account number",
+          "bvn": "some bvn",
+          "type": "some account type",
+          "swiftCode": "some swift code",
+          "routingNumber": "some routing number",
+          "KRAPin": "some kra pin"
+        }
+      },
+      "investmentActivity": {
+        "sourceOfFunds": ["Salaries/Wages", "Proceeds from Business", "Inheritance/Gifts"],
+        "initialAmount": "10,000",
+        "topUps": { "timeline": { "presets": "Monthly" }, "amount": "20,000" },
+        "withdrawals": {
+          "timeline": { "presets": "Other", "other": "some activity" },
+          "amount": "100,000"
+        },
+        "objective": "some objective",
+        "frequency": "Monthly"
+      },
+      "riskProfile": {
+        "riskAgreement": {
+          "version": "1.0",
+          "timestamp": "2024-12-19T16:01:12.345Z",
+          "agreed": true
+        },
+        "tolerance": "High",
+        "investmentHorizon": "Short Term (1 year)",
+        "investmentKnowledge": "Limited",
+        "reaction": "Extremely concerned; sell my investment"
+      },
+      "statements": { "modeOfDelivery": "Email", "frequency": "Semi-Annual" }
+    },
+    "disclosures": {
+      "kestrel": {
+        "termsAndConditions": {
+          "version": "1.0",
+          "timestamp": "2024-12-19T16:01:17.326Z",
+          "agreed": true
+        }
+      },
+      "afrinvest": {
+        "emailIndemnity": {
+          "version": "1.0",
+          "timestamp": "2024-12-19T16:01:24.114Z",
+          "agreed": true
+        }
+      },
+      "declarations": { "version": "1.0", "timestamp": "2024-12-19T16:01:28.102Z", "agreed": true },
+      "signatureMandate": "One to sign [A only]"
+    },
+    "generalDocumentChecklist": {
+      "beneficiariesID": {
+        "fileName": "beneficiariesID_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619240547.jpg"
+      },
+      "incorporationCertificate": {
+        "fileName": "incorporationCertificate_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619243886.jpg"
+      },
+      "boardResolution": {
+        "fileName": "boardResolution_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619246425.jpg"
+      },
+      "W9_W8BEN_E": {
+        "fileName": "W9_W8BEN_E_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619250187.jpg"
+      },
+      "directorsID": {
+        "fileName": "directorsID_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619252675.jpg"
+      },
+      "directors_authorizedPerson": {
+        "fileName": "directors_authorizedPerson_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619255571.jpg"
+      },
+      "taxCertificate": {
+        "fileName": "taxCertificate_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619258819.jpg"
+      },
+      "proofOfAddress": {
+        "fileName": "proofOfAddress_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619261376.jpg"
+      },
+      "proofForeignAddress": {
+        "fileName": "proofForeignAddress_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619264273.jpg"
+      },
+      "registrySearch": {
+        "fileName": "registrySearch_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619267259.jpg"
+      },
+      "UBO": { "fileName": "UBO_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619270660.jpg" },
+      "bankProof": {
+        "fileName": "bankProof_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619273555.jpg"
+      },
+      "companySeal": {
+        "fileName": "companySeal_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619278787.jpg"
+      },
+      "KRAPin": { "fileName": "KRAPin_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619280611.jpg" },
+      "BVN": { "fileName": "BVN_fcec13c3-ed84-4cd0-bd39-2e38f75025b5_1734619283218.jpg" }
+    }
+  }
+}

@@ -7,8 +7,7 @@ export const databankIndemnityModel$Corporate = ({
     } ): FormFactoryProps[] => [
 	{
 		fieldType: 'signature',
-        name: `accountSignatories.signatories.${ index }.disclosures.databank.emailIndemnity.
-        signatureResource`,
+        name: `accountSignatories.signatories.${ index }.disclosures.databank.emailIndemnity.signatureResource`,
         label: 'Signature',
 		rules: {
 			required: 'Please upload your signature',

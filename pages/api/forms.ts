@@ -3,6 +3,7 @@ import { FormHelpers } from '@/utils/clientActions/formHelpers';
 import axios from 'axios';
 import type { CorporateFormSchema } from '@/types/forms/corporateSchema';
 import type { IndividualFormSchema } from '@/types/forms/individualSchema';
+import { BASE_URL } from '@/utils/vars/uri';
 
 export interface KYCFormPayload
 {
@@ -40,13 +41,14 @@ const handler: NextApiHandler = async (req, res) => {
   try
   {
     const ssxRes = await axios.post(
-      `https://kycapi.uat.secondstax.com/kyc/client/submit/${ form === 'individual' ? 'ind' : 'corp' }`,
+      `${BASE_URL}/kyc/client/submit/${ form === 'individual' ? 'ind' : 'corp' }`,
       payload
     );
     res.status( 200 ).json( ssxRes.data );
 	} catch (error) {
+    console.log( error )
     if ( axios.isAxiosError( error ) )
-      {
+    {
       console.log( error.response )
 			res.status(error.status ?? 500).send( error.message );
 			return;
