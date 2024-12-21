@@ -156,8 +156,8 @@ export function Clients() {
 						'client name',
 						'client type',
 						'email address',
-						'broker',
 						'status',
+						'report',
 					]}
 					data={currentClients!}
 				/>

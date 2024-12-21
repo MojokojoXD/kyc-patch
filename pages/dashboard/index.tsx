@@ -61,7 +61,7 @@ const Dashboard = (
 ) => {
 	return (
 		<Session {...props}>
-			<IdleDetection />
+			{/* <IdleDetection /> */}
 			<DashboardHeader />
 			<DashboardBody />
 		</Session>
