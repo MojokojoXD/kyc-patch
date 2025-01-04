@@ -31,9 +31,11 @@ export default function Verification()
     ) : (
       <CircleCheck className={ headerIconClx } />
     );
+
   const title = isFormEmailVerified
     ? 'KYC Application Submitted'
     : 'Identity Verification Required';
+
   const blurb = isFormEmailVerified
     ? 'An email has been sent to the people listed below for a quick verification process to complete this KYC application'
     : 'You are required to complete an identity verification to complete your KYC application.';
@@ -42,19 +44,17 @@ export default function Verification()
   return (
     <FormLayout className='ring bg-black'>
       <div className='py-10 w-full'>
-        <div className='w-full max-w-[44.75rem] mx-auto rounded-xl overflow-hidden border border-neutral-100 h-full flex flex-col'>
-          <FormHeader></FormHeader>
+        <div className='w-full max-w-[44.75rem] mx-auto rounded-xl overflow-hidden border border-neutral-50 h-full flex flex-col'>
+          <FormHeader />
           <FormContent className='flex flex-col items-center h-full text-neutral-700 space-y-6'>
             <div className='space-y-6'>
               <div className='grow-0'>
                 <HeaderIcon />
-
               </div>
               <div className='space-y-2'>
                 <h1 className='heading5Bold text-center'> { title }</h1>
                 <p className='paragrappRegular text-neutral-500 max-w-sm text-center'>{ blurb } </p>
               </div>
-
               { !isFormEmailVerified ? (
                 <div>
                   <a
@@ -68,8 +68,6 @@ export default function Verification()
                     </Button>
                   </a>
                 </div>
-                
-                  
               ) : (
                 <div className='w-full'>
                   <div className='bg-neutral-50 p-6 border border-neutral-100 rounded-[0.2rem]'>
@@ -77,10 +75,10 @@ export default function Verification()
                       { verifiablePersons.map( v =>
                       {
                         return (
-                            <li key={ v.id }>
-                              <p className='paragraph2Medium'>{ v.fullName } </p>
-                              <p className='paragraph2Regular text-neutral-500'>{ v.email }</p>
-                            </li>
+                          <li key={ v.id }>
+                            <p className='paragraph2Medium'>{ v.fullName } </p>
+                            <p className='paragraph2Regular text-neutral-500'>{ v.email }</p>
+                          </li>
                         );
                       } ) }
                     </ul>

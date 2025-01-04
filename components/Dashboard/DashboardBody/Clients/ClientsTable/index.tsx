@@ -1,18 +1,18 @@
 import type { DashboardClient } from '../clients';
 import { useState, useCallback } from 'react';
 import
-  {
-    Table,
-    TableBody,
-    TableHeader,
-    TableRow,
-    TableData,
-    TableHead,
-  } from '@/components/ui/table';
+{
+  Table,
+  TableBody,
+  TableHeader,
+  TableRow,
+  TableData,
+  TableHead,
+} from '@/components/ui/table';
 import { SSXStatusBadge } from '@/components/ui/SSXStatusBadge';
 import type { ClientLogsResponse, ClientTabData } from '../clients';
 import { ClientSheet } from './ClientSheet';
-import { ClientReportWidget } from './ClientReportWidget';
+import { ClientReportPanel } from './ClientReportPanel';
 import { clientStatusMapping } from './utils/mappings';
 import { ChevronRight } from 'lucide-react';
 import { useSession } from '@/components/Dashboard/hooks/useSession';
@@ -106,15 +106,18 @@ export function ClientsTable( { data, headerLabels }: ClientsTableProps )
             return (
               <TableRow
                 key={ d.client_id }
-                // className='cursor-pointer  scale-100 transition-transform duration-150 ease-in-out active:scale-[0.99]'
-                // onClick={ () => handleToggleClientReportSheet( d ) }
+              // className='cursor-pointer  scale-100 transition-transform duration-150 ease-in-out active:scale-[0.99]'
+              // onClick={ () => handleToggleClientReportSheet( d ) }
               >
+
                 {/* full name */ }
                 <TableData className='capitalize'>
                   { d.client_first_name } { d.client_last_name }
                 </TableData>
+
                 {/* client type */ }
                 <TableData>{ d.type_of_client }</TableData>
+
                 {/* email address */ }
                 <TableData>{ d.client_email }</TableData>
 
@@ -125,10 +128,11 @@ export function ClientsTable( { data, headerLabels }: ClientsTableProps )
                     status={ clientStatusMapping[ d.status.toUpperCase() ] }
                   />
                 </TableData>
+
                 {/* client report area */ }
                 <TableData className=' capitalize'>
                   <span className='flex justify-between items-center'>
-                    <ClientReportWidget onReportSheetToggle={ () => handleToggleClientReportSheet(d) }/>
+                    <ClientReportPanel toggleClientSheet={ () => handleToggleClientReportSheet( d ) } client={ d } />
                     <ChevronRight className='h-4 opacity-40 group-hover:text-primary-7 transition-opacity duration-150 ease-in-out00' />
                   </span>
                 </TableData>

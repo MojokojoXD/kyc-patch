@@ -1,5 +1,5 @@
 import type { Method } from 'axios';
-import { AxiosError } from 'axios';
+import { AxiosError, type ResponseType } from 'axios';
 import { protectedAxiosInstance } from './http/axios';
 
 export interface JobFeedback {
@@ -11,7 +11,9 @@ export interface Job {
 	url: string;
 	method: Method;
 
-	data?: object;
+  data?: object;
+  
+  responseType?: ResponseType;
 }
 
 export enum RequestStatus {
@@ -56,7 +58,7 @@ export class RequestQueue implements Queueable {
 	private async request(job: Job, feedback: Feedback) {
 		feedback(null, null, RequestStatus.PROCESSING);
 
-		const { url, method, data } = job;
+		const { url, method, data, responseType } = job;
 
 		try {
 			const res = await protectedAxiosInstance({
@@ -64,9 +66,12 @@ export class RequestQueue implements Queueable {
         baseURL: '',
 				method,
         ...( data && { data } ),
+        ...( responseType && { responseType } )
 			});
 
-			if (res.status === 200 || res.status === 304) {
+      if ( res.status === 200 || res.status === 304 )
+      {
+        console.log( res )
 				feedback(res.data, null, RequestStatus.COMPLETED);
 				return;
 			}

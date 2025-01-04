@@ -18,7 +18,7 @@ export function useSearch<
                 
                 if ( typeof propValue !== 'string' ) continue;
 
-                isMatch = new RegExp( searchStr.toLowerCase() ).test( propValue.toLowerCase() );
+                isMatch = new RegExp( searchStr.trim().toLowerCase() ).test( propValue.toLowerCase() );
 
                 if ( isMatch ) break;
             };

@@ -22,6 +22,7 @@ import
   } from '@/components/forms/utils/formController';
 import Loading from '@/components/ui/Loading';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 
 export default function CorporateForm()
@@ -35,7 +36,8 @@ export default function CorporateForm()
     formVars: { clientID, submissionID },
     isLoading,
     error,
-    toggleLoading
+    toggleLoading,
+    setError
   } = KYCForm;
 
   const {
@@ -44,6 +46,7 @@ export default function CorporateForm()
   } = form;
 
   useCloseTabWarning( isDirty );
+  const router = useRouter()
 
   const corporateStagesDict: CorporateStageDict = {
     introduction: <Stages.FormsIntro />,
@@ -69,17 +72,29 @@ export default function CorporateForm()
     {
       toggleLoading( true )
 
-      console.log( JSON.stringify(payload)  )
-
       const res = await axios.post( '/api/forms?form=corporate', payload );
 
-      console.log( JSON.stringify(res.data) )
-      
-      toggleLoading( false );
-    } catch (error) {
-      console.log( error )
+      if ( res.status === 200 )
+      {
+        const verifiablePersons = data.accountSignatories.signatories.map( ( s, i ) => ( {
+          id: i,
+          fullName: `${ s.firstName } ${ s.middleName || '' } ${ s.lastName }`,
+          email: s.address.email
+        } ) );
 
-      toggleLoading( false )
+        const serializedPersons = JSON.stringify( verifiablePersons );
+
+        router.replace( `/verification?form=corporate&addr=${serializedPersons}`,'/verification' )
+      }
+      
+    } catch (error) {
+      console.log( error );
+
+      setError( 'Something went wrong! Please contact support' );
+
+    } finally
+    {
+      toggleLoading( false );
     }
   };
 

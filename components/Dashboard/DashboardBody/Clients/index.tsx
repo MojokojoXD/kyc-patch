@@ -89,6 +89,7 @@ export function Clients() {
 			function (data, error, status) {
         if ( status === 'COMPLETED' )
         {
+          console.log( data )
 					setClientsData(
 						data!.all_trans.filter((c) => c.client_first_name && c.client_last_name)
 					);

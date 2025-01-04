@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useSession } from '../../hooks/useSession';
 import
-  {
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-  } from '@/components/ui/popover';
-import { DashboardDialog } from '../../atomic/DashboardDialog';
+{
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@/components/ui/popover';
+import { DashboardDialog } from '../../general/DashboardDialog';
 import { SessionMenuTrigger } from './SessionMenuTrigger';
 import { SessionProfileSheet } from './SessionProfileSheet';
 import { MenuBtn } from './MenuBtn';

@@ -1,9 +1,9 @@
 import type { NextApiHandler } from 'next';
 import { protectedServerRequest } from '@/components/Dashboard/lib/http/axios';
-import { AxiosError,Method } from 'axios';
+import { AxiosError,Method, type ResponseType } from 'axios';
 
 const handler: NextApiHandler = async (req, res) => {
-	const { path } = req.query;
+  const { path, responseType } = req.query;
 
   const ssxURL = '/' + ( path as string[] ).join( '/' );
 
@@ -12,7 +12,8 @@ const handler: NextApiHandler = async (req, res) => {
 			endpoint: ssxURL,
 			method: <Method>req.method,
 			data: req.method === 'POST' ? req.body : undefined,
-			securityHeaders:  req.cookies,
+      securityHeaders: req.cookies,
+      ...( responseType && { responseType: responseType as ResponseType } )
     } );
     
     if ( typeof ssxServerRes !== 'string' )
@@ -33,9 +34,9 @@ const handler: NextApiHandler = async (req, res) => {
     
 	} catch (error) {
 		
+    console.log( error)
     if ( error instanceof AxiosError )
     {
-      console.log( error.response )
 			res
 				.status(error.status as number)
 				.json({ Status: 'FAIL', Message: error.message });

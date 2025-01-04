@@ -1,5 +1,5 @@
 import { BASE_URL } from '@/utils/vars/uri';
-import axios, {  type Method } from 'axios';
+import axios, {  type Method, type ResponseType } from 'axios';
 
 export const protectedAxiosInstance = axios.create({
 	baseURL: BASE_URL,
@@ -9,17 +9,19 @@ export const protectedAxiosInstance = axios.create({
 	},
 	timeout: 30_000,
 	headers: {
-		'Content-Type': 'application/json',
+		'Content-Type': 'application/json;application/octet-stream',
 	},
 	timeoutErrorMessage:
-		'Request failed because the connection timed out. Check you internet connection.',
+    'Request failed because the connection timed out. Check you internet connection.',
 });
 
 interface ProtectedServerRequestParams {
 	endpoint: string;
 	method: Method;
 	securityHeaders: Partial<{ [index: string]: string }>;
-	data?: unknown;
+  data?: unknown;
+  
+  responseType?: ResponseType;
 }
 
 let refreshTokenRetries = 3;
@@ -28,7 +30,8 @@ export async function protectedServerRequest({
 	endpoint,
 	method,
 	securityHeaders,
-	data,
+  data,
+  responseType
 }: ProtectedServerRequestParams): Promise<
 	[unknown, string | null ] | string
   >
@@ -51,9 +54,12 @@ export async function protectedServerRequest({
 			data: method === 'POST' ? data : undefined,
 			headers: {
 				cookie: securityCookies,
-				Authorization: `Bearer ${securityHeaders['token']}`,
-			},
-		});
+        Authorization: `Bearer ${ securityHeaders[ 'token' ] }`,
+      },
+      responseType,
+    } );
+    
+    //
 
 		if (res.status === 200) {
       // request is successful. We return the data property.
@@ -93,7 +99,8 @@ export async function protectedServerRequest({
 			headers: {
 				cookie: newSecurityCookies,
 				Authorization: `Bearer ${newAccessToken}`,
-			},
+      },
+      responseType
 		});
 
 		if (resentRequest.status === 200)
@@ -106,3 +113,4 @@ export async function protectedServerRequest({
     throw error
 	}
 }
+

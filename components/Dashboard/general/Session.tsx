@@ -25,7 +25,7 @@ export function Session({ children,profile}: SessionProviderProps) {
 	>(null);
 
 	const addRequestJob = useCallback<JobFeedbackFn>((job, feedback) => {
-		setRequestJobs((prevJobs) => {
+		setRequestJobs((prevJobs) => { 
 			if (!prevJobs) return [{ job, feedback }];
 
 			prevJobs.push({ job, feedback });

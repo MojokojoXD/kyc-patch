@@ -29,7 +29,7 @@ const handler: NextApiHandler<LoginResponse> = async (req, res) => {
 			Array.isArray(ssxCookies) &&
 				res.setHeader('Set-Cookie', [
 					...ssxCookies,
-					`token=${ssxServerRes.data.token};HttpOnly;Secure;SameSite=Strict;Path=/`,
+					`token=${ssxServerRes.data.token};Secure;SameSite=Strict;Path=/`,
 				]);
 
 			res.status(200).json({ Status: 'SUCC' });

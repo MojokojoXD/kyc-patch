@@ -25,12 +25,13 @@ import
 } from '@/components/forms/utils/formController';
 import Loading from '@/components/ui/Loading';
 import axios from 'axios';
+import individualMock from '@/tests/individual-mock.json';
 
 export default function IndividualForm()
 {
   const router = useRouter();
- 
-  const KYCForm = useKYCForm<IndividualFormSchema, typeof individualFormMetadata>( individualFormMetadata );
+
+  const KYCForm = useKYCForm<IndividualFormSchema, typeof individualFormMetadata>( individualFormMetadata, { ...individualMock.payload } );
 
   const {
     form,
@@ -91,7 +92,7 @@ export default function IndividualForm()
     {
       const res = await axios.post<{ Status: 'SUCC' | 'FAIL', link: string; }>( '/api/forms?form=individual', payload );
 
-   
+
       if ( res.status === 200 && res.data.Status === 'SUCC' )
       {
         router.replace( `/onboarding/verification?form=individual&metamap=${ res.data.link }` );
