@@ -35,14 +35,14 @@ export interface LoginCredentials {
 	password: string;
 }
 
-const LOGIN_URI = 'api/dashboard/login';
+const LOGIN_URI = 'api/dashboard/proxy/login';
 
 export default function Home() {
 	const router = useRouter();
 	const form = useForm<LoginCredentials>({
 		defaultValues: {
-			username: '',
-			password: '',
+			username: 'naijauser@niajabroker.com',
+			password: 'SSX_ADMIN',
 		},
 		reValidateMode: 'onChange',
 	});
@@ -58,7 +58,10 @@ export default function Home() {
 		try {
 			const res = await axios.post<LoginResponse>(LOGIN_URI, data, axiosOptions);
 
-			if (res.status === 200 && res.data.Status === 'SUCC') {
+      if ( res.status === 200 && res.data.Status === 'SUCC' )
+      {
+        console.log( res )
+        res.data.token && sessionStorage.setItem( 'token', res.data.token );
 				router.push('/dashboard');
 				return;
 			}

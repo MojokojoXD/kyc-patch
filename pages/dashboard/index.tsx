@@ -17,10 +17,9 @@ interface InitialDashboardProps
 
 export const getServerSideProps = ( async ( { req } ) =>
 {
-  const token = req.cookies[ 'token' ];
   const profileCookie = req.cookies[ 'securedRefreshtokenCookie' ];
 
-  if ( !profileCookie || !token )
+  if ( !profileCookie )
   {
     return {
       redirect: {
@@ -66,6 +65,7 @@ const Dashboard = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) =>
 {
+
   return (
     <Session { ...props }>
       {/* <IdleDetection /> */ }

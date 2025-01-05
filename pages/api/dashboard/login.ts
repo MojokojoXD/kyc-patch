@@ -32,7 +32,7 @@ const handler: NextApiHandler<LoginResponse> = async (req, res) => {
 					`token=${ssxServerRes.data.token};Secure;SameSite=Strict;Path=/`,
 				]);
 
-			res.status(200).json({ Status: 'SUCC' });
+			res.status(200).json(ssxServerRes.data);
 		}
 
 		res

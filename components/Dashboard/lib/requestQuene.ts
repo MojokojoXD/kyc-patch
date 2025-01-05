@@ -60,13 +60,19 @@ export class RequestQueue implements Queueable {
 
 		const { url, method, data, responseType } = job;
 
+    const accessToken = sessionStorage.getItem( 'token' );
+
 		try {
 			const res = await protectedAxiosInstance({
         url: '/api/dashboard/proxy' + url,
         baseURL: '',
 				method,
         ...( data && { data } ),
-        ...( responseType && { responseType } )
+        ...( responseType && { responseType } ),
+        withCredentials: true,
+        // headers: {
+        //   'Authorization': `Bearer ${ accessToken }`
+        // }
 			});
 
       if ( res.status === 200 || res.status === 304 )

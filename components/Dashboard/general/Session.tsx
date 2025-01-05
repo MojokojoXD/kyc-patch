@@ -13,7 +13,7 @@ import {
 import { protectedAxiosInstance } from '@/components/Dashboard/lib/http/axios';
 
 interface SessionProviderProps extends Pick<SessionContextSchema, 'profile'> {
-	children?: ReactNode;
+  children?: ReactNode;
 }
 
 export function Session({ children,profile}: SessionProviderProps) {
