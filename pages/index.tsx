@@ -41,8 +41,8 @@ export default function Home() {
 	const router = useRouter();
 	const form = useForm<LoginCredentials>({
 		defaultValues: {
-			username: 'naijauser@niajabroker.com',
-			password: 'SSX_ADMIN',
+			username: 'kestrel@test.com',
+			password: 'passw0rd',
 		},
 		reValidateMode: 'onChange',
 	});

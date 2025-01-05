@@ -10,12 +10,14 @@ const proxy = createProxyMiddleware( {
   pathRewrite: { '^/api/dashboard/proxy': '' },
   selfHandleResponse: true,
   on: {
-   
+    proxyReq: ( proxReq, req, res ) =>
+    {
+        console.log( proxReq.getHeaders() )
+    },
     proxyRes: responseInterceptor( async ( buff, proxyRes, req, _res ) =>
     {
       if ( proxyRes.statusCode === 401 )
       {
-        console.log( req.headers )
       }
       return buff;
     } ),
