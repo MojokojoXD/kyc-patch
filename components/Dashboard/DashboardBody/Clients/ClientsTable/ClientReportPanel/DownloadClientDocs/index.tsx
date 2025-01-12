@@ -1,25 +1,44 @@
 import { PanelButton } from '../PanelParts';
 import { Download } from 'lucide-react';
 import { useSession } from '@/components/Dashboard/hooks/useSession';
-import { saveAs } from 'file-saver';
-import type { Feedback } from '@/components/Dashboard/lib/requestQuene';
-import { BASE_URL } from '@/utils/vars/uri';
 interface DownloadClientDocsProps
 {
   clientID: string;
+
+  disabled?: boolean;
 }
 
 
-export function DownloadClientDocs( { clientID }: DownloadClientDocsProps )
+export function DownloadClientDocs( { clientID, disabled }: DownloadClientDocsProps )
 {
-  const { request } = useSession<Blob>();
+  const { request } = useSession();
 
-  const downloadHandler = () =>
+  const downloadHandler = async() =>
   {
-    
+    request( {
+      protectedEndpoint: `/kyc/broker/client/download/${ clientID }`,
+      onSuccess: async( res ) =>
+      {
+        const data = await res.blob();
+        
+        const fileURL = URL.createObjectURL( data )
+        const anchorTag = document.createElement( 'a' );
+
+        anchorTag.href = fileURL;
+        anchorTag.setAttribute( 'download', 'attachment.zip' )
+        
+        anchorTag.click();
+        anchorTag.remove();
+
+        URL.revokeObjectURL( fileURL );
+      },
+      onError: ( err ) => console.log( err )
+      })
   };
 
   return (
-    <PanelButton Icon={ Download } onClick={ downloadHandler } />
+    <>
+      <PanelButton Icon={ Download } onClick={ downloadHandler } disabled={ disabled }/>
+    </>
   );
 }

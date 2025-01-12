@@ -6,7 +6,6 @@ export interface Profile
     user_name: string;
     user_dept: string;
     user_org: string;
-    user_country: string;
     user_org_name: string;
     broker_id: string;
     user_date_created: string;

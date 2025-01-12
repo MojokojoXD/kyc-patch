@@ -24,7 +24,7 @@ interface ClientsTableProps
 }
 export function ClientsTable( { data, headerLabels }: ClientsTableProps )
 {
-  const { request, isRequesting } = useSession<ClientLogsResponse | null>();
+  const { request, isRequesting } = useSession();
 
   const [ openSheet, setOpenSheet ] = useState( false );
   const [ client, setClient ] = useState<ClientTabData | undefined>();
@@ -37,17 +37,16 @@ export function ClientsTable( { data, headerLabels }: ClientsTableProps )
       {
         if ( !clientID ) resolve( null );
         request(
-          { url: `/kyc/dashboard/${ clientID }`, method: 'GET' },
-          function ( res, error, status )
           {
-            if ( status === 'COMPLETED' )
+            protectedEndpoint: `/kyc/dashboard/${ clientID }`,
+            method: 'GET',
+            onSuccess: async ( res ) =>
             {
-              resolve( res );
-            }
-
-            status === 'FAILED' && reject( error );
-          }
-        );
+              const data = await res.json();
+              resolve( data );
+            },
+            onError: ( err ) => reject( err )
+          } );
       } ),
     [ request ]
   );
@@ -89,25 +88,12 @@ export function ClientsTable( { data, headerLabels }: ClientsTableProps )
           </TableRow>
         </TableHeader>
         <TableBody>
-          { data.length === 0 && (
-            <TableRow>
-              <TableData className='text-neutral-700/50'>
-                { isRequesting ? 'loading...' : 'No match' }
-              </TableData>
-              <TableData></TableData>
-              <TableData></TableData>
-              <TableData></TableData>
-              <TableData></TableData>
-            </TableRow>
-          ) }
           { data.map( d =>
           {
             if ( !d.client_first_name || !d.client_first_name || !d.broker ) return <></>;
             return (
               <TableRow
                 key={ d.client_id }
-              // className='cursor-pointer  scale-100 transition-transform duration-150 ease-in-out active:scale-[0.99]'
-              // onClick={ () => handleToggleClientReportSheet( d ) }
               >
 
                 {/* full name */ }

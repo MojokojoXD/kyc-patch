@@ -23,12 +23,13 @@ import
 import Loading from '@/components/ui/Loading';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import corporateMock from '@/tests/corporate-mock.json'
 
 
 export default function CorporateForm()
 {
 
-  const KYCForm = useKYCForm<CorporateFormSchema, typeof corporateStages>( corporateStages);
+  const KYCForm = useKYCForm<CorporateFormSchema, typeof corporateStages>( corporateStages, corporateMock.data );
 
   const {
     form,
@@ -84,7 +85,7 @@ export default function CorporateForm()
 
         const serializedPersons = JSON.stringify( verifiablePersons );
 
-        router.replace( `/verification?form=corporate&addr=${serializedPersons}`,'/verification' )
+        router.replace( `/onboarding/verification?form=corporate&addr=${serializedPersons}`,'/verification' )
       }
       
     } catch (error) {

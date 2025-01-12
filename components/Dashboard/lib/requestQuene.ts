@@ -1,111 +1,113 @@
-import type { Method } from 'axios';
-import { AxiosError, type ResponseType } from 'axios';
-import { protectedAxiosInstance } from './http/axios';
-
-export interface JobFeedback {
-	job: Job;
-	feedback: Feedback;
-}
-
-export interface Job {
-	url: string;
-	method: Method;
-
-  data?: object;
-  
-  responseType?: ResponseType;
-}
-
-export enum RequestStatus {
+import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
+export enum RequestStatus
+{
 	PENDING = 'PENDING',
 	PROCESSING = 'PROCESSING',
 	COMPLETED = 'COMPLETED',
 	FAILED = 'FAILED',
 }
-export interface Feedback<T = never> {
-	(
-		res: T | null,
-		error: string | null,
-		requestStatus: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED'
-	): void;
+export interface RequestJob extends Omit<RequestInit, 'body'> {
+  protectedEndpoint: string;
+  onSuccess: (data: Response) => void | Promise<void>;
+  onError: (err: unknown) => void;
+  url?: string;
+
+  data?: Record<string, unknown>
+
 }
 
-export interface JobFeedbackFn<T = never> {
-	(job: Job, result: Feedback<T>): void;
-}
 interface Queueable {
-	enqueue: (...request: { job: Job; feedback: Feedback }[]) => void;
 	dequeue: () => void;
 
-	process: () => void;
+  process: () => void;
+  
 }
 
 export class RequestQueue implements Queueable {
-	private jobsQueue: JobFeedback[] = [];
+	private jobsQueue: RequestJob[] = [];
 
-	constructor() {
-		if (typeof window === 'undefined')
-			throw new Error('RequestQueue can only be instantiated client side');
+	constructor( jobs: RequestJob[] ) {
+		this.jobsQueue = [ ...jobs ]
 	}
-	enqueue(...requests: typeof this.jobsQueue) {
-		this.jobsQueue.push(...requests);
-	}
-
 	dequeue() {
 		this.jobsQueue.shift();
 	}
 
-	private async request(job: Job, feedback: Feedback) {
-		feedback(null, null, RequestStatus.PROCESSING);
-
-		const { url, method, data, responseType } = job;
-
-    const accessToken = sessionStorage.getItem( 'token' );
-
-		try {
-			const res = await protectedAxiosInstance({
-        url: '/api/dashboard/proxy' + url,
-        baseURL: '',
-				method,
-        ...( data && { data } ),
-        ...( responseType && { responseType } ),
-        withCredentials: true,
-        // headers: {
-        //   'Authorization': `Bearer ${ accessToken }`
-        // }
-			});
-
-      if ( res.status === 200 || res.status === 304 )
-      {
-        console.log( res )
-				feedback(res.data, null, RequestStatus.COMPLETED);
-				return;
-			}
-
-      feedback( null, res.statusText, RequestStatus.FAILED );
-			
-      return true
-			
-		} catch (error) {
-			if (error instanceof AxiosError) {
-				feedback(null, error.message, RequestStatus.FAILED);
-			}
-
-			console.log(error);
-		}
-	}
-
 	async process() {
-		while (this.jobsQueue.length > 0) {
-			const didTokenRefreshFail = await this.request(
-				this.jobsQueue[0].job,
-				this.jobsQueue[0].feedback
-			);
+    const requestPromises = this.jobsQueue.map( r => this.requestJobBuilder( r ) )
+    
+    try {
+      
+      const res = await Promise.all( requestPromises );
 
-			if (didTokenRefreshFail) return false;
-			this.dequeue();
+      this.jobsQueue.forEach( ( j, i ) => j.onSuccess( res[ i ] ) );
+
+      return true;
+
+    } catch ( error )
+    {
+      
+      console.log( error );
+
     }
 
     return true
-	}
+  }
+  
+  private requestJobBuilder( config: RequestJob )
+  {
+    const {
+    protectedEndpoint,
+    url,
+    onSuccess,
+      onError,
+    data,
+      ...otherConfig } = config;
+    
+    let body: string | undefined = undefined
+    
+    if ( typeof window === 'undefined' ) throw new Error( 'RequestQueue can only be used client side' );
+
+  if (!protectedEndpoint && !url)
+    throw new Error( 'Dashboard endpoint or an external url must be provided to send a request' );
+  
+    if ( otherConfig.method === 'POST' && data )
+    {
+      body = JSON.stringify( data );
+  }
+  
+
+    const resource = url ? url : '/api/dashboard/proxy' + protectedEndpoint;
+    
+
+  return new Promise<Response>( async ( resolve, reject ) =>
+  {
+
+      try {
+        const res = await fetch( resource, {
+          ...otherConfig,
+          credentials: url ? 'omit' : 'include',
+          referrerPolicy: 'origin',
+          body: body,
+          headers: {
+            ...( otherConfig.headers ? { ...otherConfig.headers }  : { 'Content-Type': 'application/json' })
+          }
+        } );
+
+        if ( res.ok )
+        {
+          resolve( res );
+          return;
+        }
+
+        throw res
+        
+      } catch (error) {
+        
+        console.log( error )
+
+        reject(error);
+      }
+  })
+  }
 }

@@ -4,31 +4,11 @@ import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import validator from 'validator';
-import axios from 'axios';
-import { LoginResponse } from '@/types/accounts/user';
 import { useRouter } from 'next/router';
 import * as HomeLayout from '../components/home/layout';
 import FormInput from '@/components/forms/FormFactory/FactoryComponents/FormInput';
 import FormPasswordInput from '@/components/forms/FormFactory/FactoryComponents/FormPasswordInput';
 import { Loader2 } from 'lucide-react';
-
-export const getServerSideProps = (async ({ req, res }) => {
-	const profileCookie = req.cookies['securedRefreshtokenCookie'];
-	const accessToken = req.cookies['token'];
-
-	if (profileCookie && accessToken) {
-		return {
-			redirect: {
-				permanent: true,
-				destination: '/dashboard',
-			},
-		};
-	}
-
-	res.setHeader('Set-Cookie', `token=;expires=${new Date(0).toUTCString()}`);
-
-	return { props: {} };
-}) satisfies GetServerSideProps<Record<string, never>>;
 
 export interface LoginCredentials {
 	username: string;
@@ -53,19 +33,29 @@ export default function Home() {
 	const submitHandler: SubmitHandler<LoginCredentials> = async (data) => {
 		setIsLoading(true);
 
-		const axiosOptions = { withCredentials: true };
 
 		try {
-			const res = await axios.post<LoginResponse>(LOGIN_URI, data, axiosOptions);
-
-      if ( res.status === 200 && res.data.Status === 'SUCC' )
+      const res = await fetch( LOGIN_URI, {
+        method: 'POST',
+        body: JSON.stringify( data ),
+        credentials: 'include',
+        referrerPolicy: 'origin',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      } )
+      
+      if ( res.ok )
       {
-        console.log( res )
-        res.data.token && sessionStorage.setItem( 'token', res.data.token );
-				router.push('/dashboard');
-				return;
-			}
-			setNetworkError(res.data.Message);
+        const data = await res.json();
+        data.token && sessionStorage.setItem( 'token', data.token );
+
+        router.push( '/dashboard' );
+      } else
+      {
+        console.log( res );
+        setNetworkError( 'Something went wrong!' );
+      }
 		} catch (error) {
 			console.log(error);
 		} finally {

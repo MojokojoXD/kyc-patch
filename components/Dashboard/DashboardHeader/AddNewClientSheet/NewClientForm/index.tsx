@@ -28,7 +28,7 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
   const [countryList, isFetchingCountry, countryListError] =
   useAsyncAction(getCountryList);
   
-	const { profile, request } = useSession<{ Status: 'SUCC' | 'FAIL' }>();
+	const { profile, request } = useSession();
 	const addClientDefaultValues: NewClientPayload = {
 			clientFirstName: '',
 			clientLastName: '',
@@ -59,21 +59,24 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 					: payload.typeOfClient,
     };
 
+    console.log( newClient )
 
 		request(
-			{ url: '/kyc/broker/client', method: 'POST', data: newClient },
-			function (res, error, status) {
-				if (status === 'COMPLETED' && res?.Status === 'SUCC') {
-					setStep(NewClientFormSteps.ClientAdded);
-					setIsLoading(false);
-				}
-
-        if ( status === 'FAILED' )
+      {
+        protectedEndpoint: '/kyc/broker/client',
+        method: 'POST',
+        data: newClient,
+        onSuccess: async ( res ) =>
         {
-          setSubmitError( error as string );
+          setStep( NewClientFormSteps.ClientAdded );
           setIsLoading( false );
-        };
-			}
+        },
+        onError: ( _err ) =>
+        {
+          setIsLoading( false );
+          setSubmitError( 'Something went wrong!' );
+        }
+      }
 		);
 	};
 
@@ -110,6 +113,7 @@ export function NewClientForm({ toggleSheet }: NewClientFormProps) {
 
                   <Button
                     className='w-full'
+                    size={'lg'}
                     type='submit'
                     disabled={aggregateLoadingState}>
                     {isLoading ? (

@@ -1,10 +1,9 @@
 import { createContext } from 'react';
 import type { Profile } from '@/types/accounts/user';
-import { JobFeedbackFn } from '../lib/requestQuene';
-
-export interface SessionContextSchema<TResponseData = unknown> {
+import type { RequestJob } from '../lib/requestQuene';
+export interface SessionContextSchema {
 	isRequesting: boolean;
-	request: JobFeedbackFn<TResponseData>;
+	request: ( job: RequestJob ) => void;
 	logout: () => void;
 	profile: Profile | null | undefined;
 }

@@ -45,7 +45,8 @@ export const RetailClient: FormStep = () => {
 		} else {
 			formAction({ type: 'reset', stages: individualFormMetadata });
 		}
-	}, [clientType, formAction]);
+  }, [ clientType, formAction ] );
+  
 
 	return (
 		<>

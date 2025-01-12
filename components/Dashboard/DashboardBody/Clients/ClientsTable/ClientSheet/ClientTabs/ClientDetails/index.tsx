@@ -14,7 +14,7 @@ export function ClientDetails({ verifications, ...bio }: ClientDetailsProps) {
 		useState<ClientDetailsViews>('client_bio');
 
 	return (
-		<div className='space-y-[40px] pb-[40px]'>
+		<div className='space-y-[40px]'>
 			<div className='absolute top-[28px]'>
 				{currentView === 'client_bio' ? (
 					<p className='inline-block paragraph2Medium capitalize'>
@@ -38,7 +38,8 @@ export function ClientDetails({ verifications, ...bio }: ClientDetailsProps) {
 			<hr className='border-neutral-200' />
 			{verifications.length > 0 && currentView === 'client_bio' && (
 				<Button
-					variant={'outline'}
+          variant={ 'outline' }
+          size={'lg'}
 					className='w-full'
 					onClick={() => setCurrentView('verifications')}>
 					View Signatories

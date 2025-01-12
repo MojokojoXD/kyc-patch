@@ -1,70 +1,103 @@
-import {
-	sessionContext,
-	type SessionContextSchema,
+import
+{
+  sessionContext,
+  type SessionContextSchema,
 } from '../contexts/sessionContext';
 import { type ReactNode, useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import {
-	RequestQueue,
-	Job,
-	Feedback,
-	JobFeedbackFn,
+import
+{
+  RequestQueue,
+  RequestJob,
 } from '../lib/requestQuene';
-import { protectedAxiosInstance } from '@/components/Dashboard/lib/http/axios';
 
-interface SessionProviderProps extends Pick<SessionContextSchema, 'profile'> {
+interface SessionProviderProps extends Pick<SessionContextSchema, 'profile'>
+{
   children?: ReactNode;
 }
 
-export function Session({ children,profile}: SessionProviderProps) {
-	const router = useRouter();
+export function Session( { children, profile }: SessionProviderProps )
+{
+  const router = useRouter();
 
-	const [isRequesting, setIsRequesting] = useState(true);
-	const [requestJobs, setRequestJobs] = useState<
-		{ job: Job; feedback: Feedback }[] | null
-	>(null);
+  const [ isRequesting, setIsRequesting ] = useState( false );
+  const [ awaitingJobs, setAwaitingJobs ] = useState<RequestJob[] | null>( null );
+  const [ requestJobs, setRequestJobs ] = useState<
+    RequestJob[] | null
+  >( null );
 
-	const addRequestJob = useCallback<JobFeedbackFn>((job, feedback) => {
-		setRequestJobs((prevJobs) => { 
-			if (!prevJobs) return [{ job, feedback }];
+  const addRequestJob = useCallback( ( job: RequestJob ) =>
+  {
 
-			prevJobs.push({ job, feedback });
-			return prevJobs;
-		});
-	}, []);
+    if ( isRequesting )
+    {
+      setAwaitingJobs( prevAwaitableJobs =>
+      {
+        if ( !prevAwaitableJobs ) return [ job ];
+
+        return [ ...prevAwaitableJobs, job ];
+      } );
+
+      return;
+    };
+
+    setRequestJobs( ( prevJobs ) =>
+    {
+      if ( !prevJobs ) return [ job ];
+
+      prevJobs.push( job );
+      return prevJobs;
+    } );
+  }, [ isRequesting ] );
 
   const logout = useCallback( async () =>
   {
     try
     {
-      
-      const res = await protectedAxiosInstance.post( '/api/dashboard/logout', {}, { baseURL: '' } );
 
-      if( res.status === 200 ) router.replace('/');
+      const res = await fetch( '/api/dashboard/proxy/logout', { 
+        method: 'POST',
+        credentials: 'include',
+        referrerPolicy: 'origin'
+       } );
 
-    } catch (error) {
-      console.log(error) 
+      if ( res.ok )
+      {
+        sessionStorage.clear();
+        router.replace( '/' );
+      };
+
+    } catch ( error )
+    {
+      console.log( error );
     }
 
-	}, [router]);
+  }, [ router ] );
 
-	useEffect(() => {
-		(async () => {
-			if (requestJobs && requestJobs.length > 0) {
-				setIsRequesting(true);
+  useEffect( () =>
+  {
+    if ( awaitingJobs && !requestJobs && !isRequesting )
+      setRequestJobs( [ ...awaitingJobs ] );
+    
 
-				const queue = new RequestQueue();
+  }, [ awaitingJobs, requestJobs, isRequesting ] );
 
-				queue.enqueue(...requestJobs);
-
+  useEffect( () =>
+  {
+    ( async () =>
+    {
+      if ( requestJobs && requestJobs.length > 0 )
+      {
+        setIsRequesting( true );
+        const queue = new RequestQueue( requestJobs );
         const isProcessed = await queue.process();
-        
+
         !isProcessed && logout();
 
-				setRequestJobs(null);
-				setIsRequesting(false);
-			}
-		})();
+        setRequestJobs( null );
+        setIsRequesting( false );
+      }
+    } )();
   }, [ requestJobs, logout ] );
 
   const sessionContextValue = useMemo( () => ( {
@@ -72,12 +105,12 @@ export function Session({ children,profile}: SessionProviderProps) {
     isRequesting,
     request: addRequestJob,
     logout
-  }),[profile,isRequesting, addRequestJob,logout])
+  } ), [ profile, isRequesting, addRequestJob, logout ] );
 
-	return (
-		<sessionContext.Provider
-			value={ sessionContextValue }>
-			{children}
-		</sessionContext.Provider>
-	);
+  return (
+    <sessionContext.Provider
+      value={ sessionContextValue }>
+      { children }
+    </sessionContext.Provider>
+  );
 }

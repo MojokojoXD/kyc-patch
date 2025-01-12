@@ -8,7 +8,8 @@ import { DashboardHeader } from '@/components/Dashboard/DashboardHeader';
 import { DashboardBody } from '@/components/Dashboard/DashboardBody';
 import { Session } from '@/components/Dashboard/general/Session';
 import { IdleDetection } from '@/components/Dashboard/general/IdleDetection';
-import { protectedServerRequest } from '@/components/Dashboard/lib/http/axios';
+import { protectedServerRequest, protectedAxiosInstance } from '@/components/Dashboard/lib/http/axios';
+import { BASE_URL } from '@/utils/vars/uri';
 
 interface InitialDashboardProps
 {
@@ -31,24 +32,38 @@ export const getServerSideProps = ( async ( { req } ) =>
 
   try
   {
-    const ssxRes = await protectedServerRequest(
+
+    const headers = new Headers()
+
+    Object.keys( req.headers ).forEach( k => headers.append( k, req.headers[k] as string) )
+
+    const ssxRes = await fetch( BASE_URL + '/users/self',
       {
-        endpoint: '/users/self',
         method: 'GET',
-        securityHeaders: req.cookies
+        referrerPolicy: 'origin',
+        credentials: 'include',
+        headers: headers
       }
     );
+    
+    if ( ssxRes.ok )
+    {
+      const data: { profile: Profile[] } = await ssxRes.json();
 
-    if ( typeof ssxRes === 'string' )
-      throw ssxRes;
-
-    const [ data ] = ssxRes;
+      return {
+        props: {
+          profile: data.profile[0]
+        }
+      }
+    }
 
     return {
-      props: {
-        profile: ( data as { profile: Profile[]; } ).profile[ 0 ] ?? null,
-      },
-    };
+      redirect: {
+        permanent: true,
+        destination: '/'
+      }    
+    }
+     
   } catch ( error )
   {
     console.log( error );

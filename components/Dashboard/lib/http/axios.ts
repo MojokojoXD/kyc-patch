@@ -1,11 +1,16 @@
+import { BASE_URL } from '@/utils/vars/uri';
 import axios, {  type Method, type ResponseType } from 'axios';
 
 export const protectedAxiosInstance = axios.create({
+	baseURL: BASE_URL,
 	withCredentials: true,
 	validateStatus(status) {
 		return status === 200 || status === 401 || status === 304;
 	},
 	timeout: 30_000,
+	headers: {
+		'Content-Type': 'application/json;application/octet-stream',
+	},
 	timeoutErrorMessage:
     'Request failed because the connection timed out. Check you internet connection.',
 });

@@ -52,10 +52,10 @@ export function Clients() {
 	const [sortOption, setSortOption] = useState<
 		Path<(typeof clientsData)[0]> | undefined
 	>('date_created');
-	const [error, setError] = useState<string | null>(null);
+	const [error, _setError] = useState<string | null>(null);
 	const [currentPage, setCurrentPage] = useState(1);
 
-	const { request } = useSession<AllClientsEndpointResponse>();
+	const { request } = useSession();
 	const searchResult = useSearch<(typeof clientsData)[0]>(
 		searchStr,
 		clientsData,
@@ -85,21 +85,18 @@ export function Clients() {
 
 	useEffect(() => {
 		request(
-			{ url: '/kyc/dashboard/getall', method: 'GET' },
-			function (data, error, status) {
-        if ( status === 'COMPLETED' )
+      {
+        protectedEndpoint: '/kyc/dashboard/getall',
+        method: 'GET',
+        onSuccess: async( res ) =>
         {
-          console.log( data )
-					setClientsData(
-						data!.all_trans.filter((c) => c.client_first_name && c.client_last_name)
-					);
-					return;
-				}
-
-				status === 'FAILED' && setError(error);
-			}
-		);
-	}, [request]);
+          const data: AllClientsEndpointResponse = await res.json();
+          setClientsData( data.all_trans )
+        },
+        onError: ( err ) => console.log( err )
+      });
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const onPageChange = useCallback((page: number) => setCurrentPage(page), []);
 
