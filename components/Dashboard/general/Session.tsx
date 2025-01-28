@@ -55,17 +55,14 @@ export function Session( { children, profile }: SessionProviderProps )
     try
     {
 
-      const res = await fetch( '/api/dashboard/proxy/logout', { 
+      await fetch( '/api/dashboard/proxy/logout', { 
         method: 'POST',
         credentials: 'include',
         referrerPolicy: 'origin'
        } );
 
-      if ( res.ok )
-      {
         sessionStorage.clear();
         router.replace( '/' );
-      };
 
     } catch ( error )
     {
@@ -74,13 +71,13 @@ export function Session( { children, profile }: SessionProviderProps )
 
   }, [ router ] );
 
-  useEffect( () =>
-  {
-    if ( awaitingJobs && !requestJobs && !isRequesting )
-      setRequestJobs( [ ...awaitingJobs ] );
+  // useEffect( () =>
+  // {
+  //   if ( awaitingJobs && !requestJobs && !isRequesting )
+  //     setRequestJobs( [ ...awaitingJobs ] );
     
 
-  }, [ awaitingJobs, requestJobs, isRequesting ] );
+  // }, [ awaitingJobs, requestJobs, isRequesting ] );
 
   useEffect( () =>
   {
@@ -91,6 +88,7 @@ export function Session( { children, profile }: SessionProviderProps )
         setIsRequesting( true );
         const queue = new RequestQueue( requestJobs );
         const isProcessed = await queue.process();
+
 
         !isProcessed && logout();
 

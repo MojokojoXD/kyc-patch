@@ -7,17 +7,11 @@ export const retailClientModel: FormFactoryProps[] = [
 		defaultValue: 'Individual',
 		label: 'Client Type',
 		options: {
-			keys: ['Individual', 'Joint Account','SSX'],
+			keys: ['Individual', 'Joint Account'],
 		},
     componentProps: {
 			classNames: { radioGroupStyles: 'grid grid-cols-2 gap-[4px]' },
 		},
-  },
-  {
-    fieldType: 'text',
-    name: 'clientName',
-    label: 'Client Name',
-    placeholder: 'Client Name goes here'
   },
 	{
 		fieldType: 'radio',

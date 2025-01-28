@@ -19,6 +19,7 @@ export default async function handler(
         {
             res.status( 400 ).send( {message:'file name is missing'} );
         }
+      
         
         const imageRes = await fetch( SIGNATURE_DOWNLOAD_URL, {
             method: "POST",
@@ -39,10 +40,11 @@ export default async function handler(
 
             res.setHeader("Content-Type", "application/octet-stream")
     
-            res.status( 200 ).send(buff);
+          res.status( 200 ).send( buff );
+          return;
         }
         
-
+      
         res.status(404).json({ message: imageRes.statusText });
 
     } catch ( error )

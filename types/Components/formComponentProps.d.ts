@@ -7,7 +7,6 @@ interface ComponentClasses {
 	labelStyles?: ClassName;
 	errorPosition?: 'relative' | 'absolute';
 }
-
 interface FormInputComponentProps extends HTMLAttributes<'input'> {
 	isCurrency?: boolean;
 	classNames?: ComponentClasses & { inputStyles?: ClassName };
@@ -28,13 +27,16 @@ interface FormAgreementComponentProps {
 }
 
 interface FormFileUploadComponentProps {
+  fileNameEncoding?: string[]
 	fileFieldName?: string;
-	classNames?: ComponentClasses;
+  classNames?: ComponentClasses;
+  
 }
 
-interface FormSignatureUploadComponentProps {
+interface FormSignatureUploadComponentProps
+{
+  fileNameEncoding?: string[];
   classNames?: ComponentClasses;
-  indexer?: number;
 }
 
 interface FormCheckboxComponentProps {

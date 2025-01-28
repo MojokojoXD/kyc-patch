@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { GetServerSideProps } from 'next';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useForm, type SubmitHandler } from 'react-hook-form';

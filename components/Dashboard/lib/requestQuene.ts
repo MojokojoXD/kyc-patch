@@ -50,8 +50,6 @@ export class RequestQueue implements Queueable {
       console.log( error );
 
     }
-
-    return true
   }
   
   private requestJobBuilder( config: RequestJob )
@@ -106,7 +104,8 @@ export class RequestQueue implements Queueable {
         
         console.log( error )
 
-        reject(error);
+        reject( error );
+        
       }
   })
   }

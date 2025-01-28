@@ -31,7 +31,7 @@ export default function IndividualForm()
 {
   const router = useRouter();
 
-  const KYCForm = useKYCForm<IndividualFormSchema, typeof individualFormMetadata>( individualFormMetadata, individualMock.payload );
+  const KYCForm = useKYCForm<IndividualFormSchema, typeof individualFormMetadata>( individualFormMetadata, individualMock.data );
 
   const {
     form,
@@ -47,7 +47,6 @@ export default function IndividualForm()
   const {
     formState: { isDirty },
     handleSubmit,
-    getValues
   } = form;
 
   useCloseTabWarning( isDirty );
@@ -87,7 +86,6 @@ export default function IndividualForm()
       data: { ...data },
     };
 
-
     toggleLoading( true );
     try
     {
@@ -119,8 +117,6 @@ export default function IndividualForm()
     );
   }
 
-  console.log( getValues() );
-  
   return (
     <>
       <Head>

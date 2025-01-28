@@ -1,4 +1,4 @@
-import { createProxyMiddleware,fixRequestBody } from 'http-proxy-middleware';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import { BASE_URL } from '@/utils/vars/uri';
 import type { NextApiHandler } from 'next';
 

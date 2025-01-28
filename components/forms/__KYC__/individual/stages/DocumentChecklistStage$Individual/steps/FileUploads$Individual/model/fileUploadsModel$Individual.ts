@@ -1,7 +1,15 @@
 import type { FormFactoryProps } from "@/types/Components/formFactory";
 
 
-export const fileUploadsModel$Individual = ( { index }: { index: number; } ): FormFactoryProps[] => [
+export const fileUploadsModel$Individual = ( { index }: { index: number; } ): FormFactoryProps[] =>
+{
+  const fileNameEncoding = [
+    `applicant.${index}.firstName`,
+    `applicant.${index}.lastName`,
+    `applicant.${index}.contacts.email`,
+  ];
+  
+  return[
     {
         fieldType: 'file-upload',
         name: `applicant.${ index }.fileUploads.applicantID.fileName`,
@@ -10,7 +18,8 @@ export const fileUploadsModel$Individual = ( { index }: { index: number; } ): Fo
             required: 'Please upload notorized ID',
         },
         componentProps: {
-            fileFieldName: 'applicantID'
+          fileFieldName: 'applicant_id',
+          fileNameEncoding
         }
     },
     {
@@ -21,7 +30,8 @@ export const fileUploadsModel$Individual = ( { index }: { index: number; } ): Fo
             required: 'Please upload passport photograph',
         },
         componentProps: {
-            fileFieldName: 'passportPhotograph'
+          fileFieldName: 'passport_photograph',
+          fileNameEncoding
         }
     },
     {
@@ -29,7 +39,8 @@ export const fileUploadsModel$Individual = ( { index }: { index: number; } ): Fo
         name: `applicant.${ index }.fileUploads.taxCertificate.fileName`,
         label: 'Tax Registration Certificate (Optional)',
         componentProps: {
-            fileFieldName: 'taxCertificate'
+            fileFieldName: 'tax_certificate',
+            fileNameEncoding
         }
     },
     {
@@ -37,7 +48,8 @@ export const fileUploadsModel$Individual = ( { index }: { index: number; } ): Fo
         name: `applicant.${ index }.fileUploads.BVN.fileName`,
         label: 'BVN (Optional)',
         componentProps: {
-            fileFieldName: 'BVN'
+            fileFieldName: 'BVN',
+            fileNameEncoding
         }
     },
     {
@@ -48,7 +60,8 @@ export const fileUploadsModel$Individual = ( { index }: { index: number; } ): Fo
             required: 'Please upload proof of address'
         },
         componentProps: {
-            fileFieldName: 'proofOfAddress'
+            fileFieldName: 'proof_of_address',
+            fileNameEncoding
         }
     },
     {
@@ -59,7 +72,8 @@ export const fileUploadsModel$Individual = ( { index }: { index: number; } ): Fo
             required: 'Please upload address map screenshot'
         },
         componentProps: {
-            fileFieldName: 'addressMap'
+          fileFieldName: 'address_map',
+          fileNameEncoding
         }
     },
     {
@@ -67,7 +81,8 @@ export const fileUploadsModel$Individual = ( { index }: { index: number; } ): Fo
         name: `applicant.${ index }.fileUploads.foreignAddress.fileName`,
         label: 'Proof of Foreign Address (Non-Resident Clients) (Optional)',
         componentProps: {
-            fileFieldName: 'foreignAddress'
+            fileFieldName: 'foreign_address',
+            fileNameEncoding
         }
     },
     {
@@ -75,7 +90,8 @@ export const fileUploadsModel$Individual = ( { index }: { index: number; } ): Fo
         name: `applicant.${ index }.fileUploads.residencePermit.fileName`,
         label: 'Residence/Work Permit (if applicable)',
         componentProps: {
-            fileFieldName: 'residencePermit'
+            fileFieldName: 'residence_permit',
+            fileNameEncoding
         }
     },
     {
@@ -83,7 +99,8 @@ export const fileUploadsModel$Individual = ( { index }: { index: number; } ): Fo
         name: `applicant.${ index }.fileUploads.proofOfBank.fileName`,
         label: 'Notarized Proof of Bank (3 months bank statement or cancelled cheque leaf) (Optional)',
         componentProps: {
-            fileFieldName: 'proofOfBank'
+            fileFieldName: 'proof_of_bank',
+            fileNameEncoding
         }
     },
     {
@@ -91,7 +108,8 @@ export const fileUploadsModel$Individual = ( { index }: { index: number; } ): Fo
         name: `applicant.${ index }.fileUploads.KRAPin.fileName`,
         label: 'Kenya KRA PIN Certificate (Optional)',
         componentProps: {
-            fileFieldName: 'KRAPin'
+            fileFieldName: 'kra_pin',
+            fileNameEncoding
         }
     },
-];
+]};

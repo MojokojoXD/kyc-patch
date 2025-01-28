@@ -8,7 +8,6 @@ import { DashboardHeader } from '@/components/Dashboard/DashboardHeader';
 import { DashboardBody } from '@/components/Dashboard/DashboardBody';
 import { Session } from '@/components/Dashboard/general/Session';
 import { IdleDetection } from '@/components/Dashboard/general/IdleDetection';
-import { protectedServerRequest, protectedAxiosInstance } from '@/components/Dashboard/lib/http/axios';
 import { BASE_URL } from '@/utils/vars/uri';
 
 interface InitialDashboardProps
@@ -18,17 +17,17 @@ interface InitialDashboardProps
 
 export const getServerSideProps = ( async ( { req } ) =>
 {
-  const profileCookie = req.cookies[ 'securedRefreshtokenCookie' ];
+  // const profileCookie = req.cookies[ 'securedRefreshtokenCookie' ];
 
-  if ( !profileCookie )
-  {
-    return {
-      redirect: {
-        permanent: true,
-        destination: '/',
-      },
-    };
-  }
+  // if ( !profileCookie )
+  // {
+  //   return {
+  //     redirect: {
+  //       permanent: true,
+  //       destination: '/',
+  //     },
+  //   };
+  // }
 
   try
   {

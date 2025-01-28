@@ -90,7 +90,8 @@ export function useKYCForm<
 
 	/*
       Any component within the KYC context can toggle loading overlay to musk
-      async operation or calculations that take time
+      async operations or calculations that take time or operations that interfere 
+      with UI rendering
   */
 	const toggleLoading = useCallback(
 		(toggle: boolean) => setGlobalLoading(toggle),

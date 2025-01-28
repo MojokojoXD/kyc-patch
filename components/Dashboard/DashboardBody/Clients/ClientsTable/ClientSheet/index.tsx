@@ -31,10 +31,6 @@ export function ClientSheet( { open, client, onSheetChange }: ClientSheetProps )
 {
   const [ openDocView, setOpenDocView ] = useState( false );
   if ( !client ) return null;
-  const {
-    status,
-    client_id
-  } = client;
 
   const handleReportClick = () =>
   {
@@ -42,12 +38,13 @@ export function ClientSheet( { open, client, onSheetChange }: ClientSheetProps )
     setOpenDocView( true );
   };
 
+
   return (
     <>
       {
         openDocView &&
         <DocumentView
-          clientID={ client_id }
+          client={ client }
           openDocView={ openDocView }
           onDocViewChange={ setOpenDocView }
         />
@@ -78,9 +75,9 @@ export function ClientSheet( { open, client, onSheetChange }: ClientSheetProps )
             } }>
             <div className='space-y-6'>
               <SSXStatusBadge
-                label={ status.toLowerCase() }
+                label={ client.status.toLowerCase() }
                 size={ 'lg' }
-                status={ clientStatusMapping[ status.toUpperCase() ] as BadgeStatus }
+                status={ clientStatusMapping[ client.status.toUpperCase() ] as BadgeStatus }
               />
               <ClientTabs client={ client } />
             </div>

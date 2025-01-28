@@ -1,9 +1,9 @@
 import type { FormFactoryProps } from '@/types/Components/formFactory';
 
 export const signatureUploadModel = ({
-	index,
+  index,
 }: {
-	index: number;
+    index: number;
 }): FormFactoryProps[] => [
 	{
 		fieldType: 'signature',
@@ -12,8 +12,13 @@ export const signatureUploadModel = ({
 		rules: {
 			required: 'Please upload your signature',
 		},
-		componentProps: {
-			indexer: index,
+    componentProps: {
+      fileNameEncoding: [
+        `applicant.${ index }.firstName`,
+        `applicant.${ index }.middleName`,
+        `applicant.${ index }.lastName`,
+        `applicant.${ index }.contacts.email`,
+      ]
 		},
 	},
 ];
